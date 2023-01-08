@@ -157,8 +157,8 @@ MonoBehaviour:
   DayNightImage: {fileID: 1627915454}
   DayImage: {fileID: 21300000, guid: 42346d033dbe6e94bbb0c9975a1de64a, type: 3}
   NightImage: {fileID: 21300000, guid: 7b561b775952df745b047890019cbaa5, type: 3}
-  invenCanvas: {fileID: 0}
-  pauseCanvas: {fileID: 0}
+  invenCanvas: {fileID: 1041554078}
+  pauseCanvas: {fileID: 929733361}
 --- !u!4 &60588616
 Transform:
   m_ObjectHideFlags: 0
