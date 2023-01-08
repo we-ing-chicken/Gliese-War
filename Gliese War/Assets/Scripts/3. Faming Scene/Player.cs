@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     private string moveLRAxisName = "Horizontal"; // 좌우 움직임을 위한 입력축 이름
     private string meleeAttackButtonName = "Fire1"; // 발사를 위한 입력 버튼 이름
     private string magicAttackButtonName = "Fire2"; // 발사를 위한 입력 버튼 이름
+    private string JumpButtonName = "Jump";
 
     private Rigidbody playerRigidbody; // 플레이어 캐릭터의 리지드바디
 
@@ -19,6 +20,12 @@ public class Player : MonoBehaviour
     public float moveLR { get; private set; } // 감지된 회전 입력값
     public bool Mlattack { get; private set; } // 감지된 발사 입력값
     public bool Mgattack { get; private set; } // 감지된 발사 입력값
+    public bool p_Jump { get; private set; } // 감지된 발사 입력값
+
+    private bool isJump;
+
+    public float JumpPower;
+
 
 
     private void Start()
@@ -44,12 +51,15 @@ public class Player : MonoBehaviour
         // fire에 관한 입력 감지
         Mlattack = Input.GetButton(meleeAttackButtonName);
         Mgattack = Input.GetButton(magicAttackButtonName);
+        p_Jump = Input.GetButton(JumpButtonName);
+
 
     }
 
     private void FixedUpdate()
     {
         Move();
+        Jump();
     }
 
     private void Move()
@@ -61,5 +71,20 @@ public class Player : MonoBehaviour
 
 
     }
+    private void Jump()
+    {
+        if(p_Jump && !isJump)
+        {
+            playerRigidbody.AddForce(Vector3.up * JumpPower, ForceMode.Impulse);
+            isJump = true;
+        }
+    }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag == "Floor")
+        {
+            isJump = false;
+        }
+    }
 }
