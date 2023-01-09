@@ -1,71 +1,110 @@
 Shader "Custom/Banded_3"
 {
-    Properties
-    {
-        _Color("Main Color", Color) = (1,1,1,1)
-        _MainTex("Main Texture", 2D) = "white" {}
-        [HDR]
-        _AmbientColor("Ambient Color", Color) = (0.4,0.4,0.4,1)
-    }
-        SubShader
-        {
-            Tags { "Queue" = "transparent" "LightMode" = "ForwardBase" "PassFlage" = "OnlyDirectional" } //"RenderType"="Opaque"
-            LOD 100
-            cull back
-            Pass
-            {
-            Name "BANDED_LIGHTING"
+	Properties
+	{
+		_Color("Color", Color) = (1,1,1,1)
+		_MainTex("Main Texture", 2D) = "white" {}
+	[HDR]
+	_AmbientColor("Ambient Color", Color) = (0.4,0.4,0.4,1)
+	[HDR]
+	_SpecularColor("Specular Color", Color) = (0.9,0.9,0.9,1)
+		_Glossiness("Glossiness", Float) = 32
+		[HDR]
+		_RimColor("Rim Color", Color) = (1,1,1,1)
+		_RimAmount("Rim Amount", Range(0, 1)) = 0.716
+			_RimThreshold("Rim Threshold", Range(0, 1)) = 0.1
+	}
+		SubShader
+		{
+			Pass
+			{
+				Tags
+				{
+					"LightMode" = "ForwardBase"
+					"PassFlags" = "OnlyDirectional"
+				}
 
-            CGPROGRAM
+				CGPROGRAM
+				#pragma vertex vert
+				#pragma fragment frag
+			#pragma multi_compile_fwdbase
 
-            #pragma vertex vert
-            #pragma fragment frag
+			#include "UnityCG.cginc"
+			#include "Lighting.cginc"
+			#include "AutoLight.cginc"
 
-            #include "UnityCG.cginc"
-            #include "Lighting.cginc"
+			struct appdata
+			{
+				float4 vertex : POSITION;
+				float4 uv : TEXCOORD0;
+				float3 normal : NORMAL;
+			};
 
-            struct appdata
-            {
-                float4 vertex : POSITION;
-                float2 uv : TEXCOORD0;
-                float3 normal : NORMAL;
-            };
+			struct v2f
+			{
+				float4 pos : SV_POSITION;
+				float3 worldNormal : NORMAL;
+				float2 uv : TEXCOORD0;
+				float3 viewDir : TEXCOORD1;
+				SHADOW_COORDS(2)
+			};
 
-            struct v2f
-            {
-                float4 vertex : SV_POSITION;
-                float2 uv : TEXCOORD0;
-                float3 worldNormal : NORMAL;
-            };
+			sampler2D _MainTex;
+			float4 _MainTex_ST;
 
-            float4 _Color;
-            sampler2D _MainTex;
+			v2f vert(appdata IN)
+			{
+				v2f OUT;
+				OUT.pos = UnityObjectToClipPos(IN.vertex);
+				OUT.worldNormal = UnityObjectToWorldNormal(IN.normal);
+				OUT.viewDir = WorldSpaceViewDir(IN.vertex);
+				OUT.uv = TRANSFORM_TEX(IN.uv, _MainTex);
+				TRANSFER_SHADOW(OUT)
+				return OUT;
+			}
 
-            v2f vert(appdata IN)
-            {
-                v2f OUT;
+			float4 _Color;
 
-                OUT.vertex = UnityObjectToClipPos(IN.vertex);
-                OUT.uv = IN.uv;
-                OUT.worldNormal = UnityObjectToWorldNormal(IN.normal);
+			float4 _AmbientColor;
 
-                return OUT;
-            }
-            float4 _AmbientColor;
+			float4 _SpecularColor;
+			float _Glossiness;
 
-            fixed4 frag(v2f IN) : SV_Target
-            {
-                float3 normal = normalize(IN.worldNormal);
-                float NdotL = dot(_WorldSpaceLightPos0, normal);
-                //float lightIntensity = NdotL > 0.3 ? 1 : NdotL > -0.3 ? 0.5 : 0;
-                float lightIntensity = smoothstep(-1, 1, NdotL);
-                float4 light = lightIntensity * _LightColor0;
-                float4 texColor = tex2D(_MainTex, IN.uv);
+			float4 _RimColor;
+			float _RimAmount;
+			float _RimThreshold;
 
-                return _Color * (_AmbientColor + light);
-            }
+			float4 frag(v2f IN) : SV_Target
+			{
+				float3 normal = normalize(IN.worldNormal);
+				float3 viewDir = normalize(IN.viewDir);
 
-            ENDCG
-        }
-        }
+				float NdotL = dot(_WorldSpaceLightPos0, normal);
+
+				float shadow = SHADOW_ATTENUATION(IN);
+				float lightIntensity = smoothstep(0, 1, NdotL * shadow);
+				float4 light = lightIntensity * _LightColor0;
+
+				float3 halfVector = normalize(_WorldSpaceLightPos0 + viewDir);
+				float NdotH = dot(normal, halfVector);
+
+				float specularIntensity = pow(NdotH * lightIntensity, _Glossiness * _Glossiness);
+				float specularIntensitySmooth = smoothstep(0.005, 0.01, specularIntensity);
+				float4 specular = specularIntensitySmooth * _SpecularColor;
+
+				float rimDot = 1 - dot(viewDir, normal);
+				float rimIntensity = rimDot * pow(NdotL, _RimThreshold);
+				rimIntensity = smoothstep(_RimAmount - 0.01, _RimAmount + 0.01, rimIntensity);
+				float4 rim = rimIntensity * _RimColor;
+
+				float4 sample = tex2D(_MainTex, IN.uv);
+
+				return (light + _AmbientColor + rim) * _Color * sample;
+			}
+			ENDCG
+		}
+
+			// Shadow casting support.
+			UsePass "Legacy Shaders/VertexLit/SHADOWCASTER"
+		}
 }
