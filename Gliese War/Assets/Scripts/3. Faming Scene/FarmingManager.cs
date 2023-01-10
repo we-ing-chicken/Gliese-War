@@ -14,6 +14,7 @@ public class FarmingManager : MonoBehaviour
 
     private bool _isFadeOut = false;
     private bool _isEnd = false;
+    private bool _isPause = false;
 
     [Header("Timer")] private float _playTime = 0.0f; // 플레이한 시간
     private float FARMING_TIME = 360; // 게임 길이
@@ -71,7 +72,7 @@ public class FarmingManager : MonoBehaviour
 
     private void Update()
     {
-        if (!_isEnd)
+        if (!_isEnd && !_isPause)
         {
             TimeCheck();
             
@@ -90,12 +91,20 @@ public class FarmingManager : MonoBehaviour
                     SwitchCanvasActive(invenCanvas);
             }
 
-            if (Input.GetKeyDown(KeyCode.Escape))
+        }
+        
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (invenCanvas.gameObject.activeSelf)
+                SwitchCanvasActive(invenCanvas);
+            else
             {
-                if (invenCanvas.gameObject.activeSelf)
-                    SwitchCanvasActive(invenCanvas);
+                if (_isPause)
+                    _isPause = false;
                 else
-                    SwitchCanvasActive(pauseCanvas);
+                    _isPause = true;
+
+                SwitchCanvasActive(pauseCanvas);
             }
         }
     }
@@ -162,16 +171,17 @@ public class FarmingManager : MonoBehaviour
 
     public void Restart()
     {
-        //SceneManager.LoadScene();
+        SceneManager.LoadScene(2);
     }
 
     public void Exit()
     {
-        //SceneManager.LoadScene();
+        SceneManager.LoadScene(1);
     }
 
     public void Resume()
     {
-        //SceneManager.LoadScene();
+        _isPause = false;
+        SwitchCanvasActive(pauseCanvas);
     }
 }
