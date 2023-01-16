@@ -73,6 +73,7 @@ Shader "Custom/Banded_Lighting"
 				float4 _RimColor;
 				float _RimAmount;
 				float _RimThreshold;
+
 	
 				float4 frag(v2f IN) : SV_Target
 				{
