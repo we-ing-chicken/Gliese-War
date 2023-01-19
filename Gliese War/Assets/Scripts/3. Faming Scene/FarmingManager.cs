@@ -12,17 +12,18 @@ public class FarmingManager : MonoBehaviour
 {
     private static FarmingManager _instance;
 
-    private bool _isFadeOut = false;
     private bool _isEnd = false;
     private bool _isPause = false;
-
-    [Header("Timer")] private float _playTime = 0.0f; // 플레이한 시간
+    private bool _isFadeOut = true;
+    
+    [Header("Timer")]
+    [SerializeField] private float fadeTime = 2f;
+    private float _playTime = 0.0f; // 플레이한 시간
     private float FARMING_TIME = 360; // 게임 길이
     [SerializeField] private GameObject timerTxt; //타이머 텍스트
     private TextMeshProUGUI _timerTxtComp; // 타이머 텍스트 컴포넌트
 
-    [Header("Light")]
-    [SerializeField] private Light DirectionalLight; // 태양 오브젝트
+    [Header("Light")] [SerializeField] private Light DirectionalLight; // 태양 오브젝트
     private float _timeOfInGame;
 
     [Header("DayNight")] private bool _isNight;
@@ -32,6 +33,7 @@ public class FarmingManager : MonoBehaviour
 
     [Header("Canvas")] public Canvas invenCanvas;
     public Canvas pauseCanvas;
+    public Canvas fadeCanvas;
 
     public static FarmingManager Instance
     {
@@ -41,7 +43,7 @@ public class FarmingManager : MonoBehaviour
             {
                 if (_instance == null)
                     return null;
-                
+
                 _instance = FindObjectOfType(typeof(FarmingManager)) as FarmingManager;
             }
 
@@ -68,19 +70,25 @@ public class FarmingManager : MonoBehaviour
         _isNight = false;
 
         SetTimerText();
+        UpdateLighting(_timeOfInGame / 24f);
+        
+        SwitchCanvasActive(fadeCanvas);
+        StartCoroutine(FadeIn());
     }
 
     private void Update()
     {
+        if (_isFadeOut) return;
+
         if (!_isEnd && !_isPause)
         {
             TimeCheck();
-            
-            if(_isNight)
+
+            if (_isNight)
                 _timeOfInGame += 0.1f * 1f * Time.deltaTime;
             else
                 _timeOfInGame += 0.1f * 0.8f * Time.deltaTime;
-            
+
             _timeOfInGame %= 24;
             UpdateLighting(_timeOfInGame / 24f);
             UpdateDayNightImage();
@@ -90,9 +98,8 @@ public class FarmingManager : MonoBehaviour
                 if (!pauseCanvas.gameObject.activeSelf)
                     SwitchCanvasActive(invenCanvas);
             }
-
         }
-        
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (invenCanvas.gameObject.activeSelf)
@@ -108,10 +115,35 @@ public class FarmingManager : MonoBehaviour
             }
         }
     }
-    
+
+    IEnumerator FadeIn()
+    {
+        float alpha = fadeCanvas.transform.GetChild(0).GetComponent<Image>().color.a;
+        GameObject loadingText = fadeCanvas.transform.GetChild(0).GetChild(0).gameObject;
+
+        yield return new WaitForSeconds(fadeTime);
+        
+        loadingText.SetActive(false);
+        
+        while (true)
+        {
+            float t = 2f / 255;
+            alpha -= t;
+            fadeCanvas.transform.GetChild(0).GetComponent<Image>().color = new Vector4(0,0,0, alpha);
+            yield return new WaitForSeconds(0.01f);
+            if (alpha <= 0)
+                break;
+        }
+        
+        _isFadeOut = false;
+        SwitchCanvasActive(fadeCanvas);
+
+        yield return null;
+    }
+
     private void SwitchCanvasActive(Canvas temp)
     {
-        if(temp.gameObject.activeSelf)
+        if (temp.gameObject.activeSelf)
             temp.gameObject.SetActive(false);
         else
             temp.gameObject.SetActive(true);
@@ -162,11 +194,6 @@ public class FarmingManager : MonoBehaviour
         var m = time / 60;
         var s = time % 60;
         _timerTxtComp.text = (int)m + " : " + (s >= 10 ? (int)s : ("0" + (int)s));
-    }
-
-    private IEnumerator FadeOut()
-    {
-        yield return null;
     }
 
     public void Restart()
