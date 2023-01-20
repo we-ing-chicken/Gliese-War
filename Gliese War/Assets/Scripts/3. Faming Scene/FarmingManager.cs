@@ -19,7 +19,8 @@ public class FarmingManager : MonoBehaviour
     [Header("Timer")]
     [SerializeField] private float fadeTime = 2f;
     private float _playTime = 0.0f; // 플레이한 시간
-    private float FARMING_TIME = 360; // 게임 길이
+    //private float FARMING_TIME = 360; // 게임 길이
+    private float FARMING_TIME = 10; // 게임 길이
     [SerializeField] private GameObject timerTxt; //타이머 텍스트
     private TextMeshProUGUI _timerTxtComp; // 타이머 텍스트 컴포넌트
 
@@ -141,6 +142,27 @@ public class FarmingManager : MonoBehaviour
         yield return null;
     }
 
+    IEnumerator FadeOut()
+    {
+        SwitchCanvasActive(fadeCanvas);
+        
+        float alpha = fadeCanvas.transform.GetChild(0).GetComponent<Image>().color.a;
+        
+        while (true)
+        {
+            float t = 2f / 255;
+            alpha += t;
+            fadeCanvas.transform.GetChild(0).GetComponent<Image>().color = new Vector4(0,0,0, alpha);
+            yield return new WaitForSeconds(0.01f);
+            if (alpha >= 255)
+                break;
+        }
+
+        PlayBattlePhase();
+        
+        yield return null;
+    }
+
     private void SwitchCanvasActive(Canvas temp)
     {
         if (temp.gameObject.activeSelf)
@@ -184,6 +206,7 @@ public class FarmingManager : MonoBehaviour
         {
             _playTime = FARMING_TIME;
             _isEnd = true;
+            StartCoroutine(FadeOut());
         }
     }
 
@@ -210,5 +233,10 @@ public class FarmingManager : MonoBehaviour
     {
         _isPause = false;
         SwitchCanvasActive(pauseCanvas);
+    }
+
+    public void PlayBattlePhase()
+    {
+        SceneManager.LoadScene(3);
     }
 }

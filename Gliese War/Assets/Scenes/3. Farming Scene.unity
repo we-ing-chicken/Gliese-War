@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6627949d37e5566449d58f658bd84f92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fadeTime: 2
   timerTxt: {fileID: 1929064591}
   DirectionalLight: {fileID: 1032090209}
   DayNightImage: {fileID: 1627915454}
@@ -159,6 +160,7 @@ MonoBehaviour:
   NightImage: {fileID: 21300000, guid: 7b561b775952df745b047890019cbaa5, type: 3}
   invenCanvas: {fileID: 1041554078}
   pauseCanvas: {fileID: 929733361}
+  fadeCanvas: {fileID: 2112678940}
 --- !u!4 &60588616
 Transform:
   m_ObjectHideFlags: 0
@@ -3978,7 +3980,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2112678938
 MonoBehaviour:
   m_ObjectHideFlags: 0
