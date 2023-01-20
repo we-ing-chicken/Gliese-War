@@ -14,7 +14,7 @@ public class FarmingManager : MonoBehaviour
 
     private bool _isEnd = false;
     private bool _isPause = false;
-    private bool _isFadeOut = true;
+    private bool _isFading = true;
     
     [Header("Timer")]
     [SerializeField] private float fadeTime = 2f;
@@ -78,7 +78,7 @@ public class FarmingManager : MonoBehaviour
 
     private void Update()
     {
-        if (_isFadeOut) return;
+        if (_isFading) return;
 
         if (!_isEnd && !_isPause)
         {
@@ -135,7 +135,7 @@ public class FarmingManager : MonoBehaviour
                 break;
         }
         
-        _isFadeOut = false;
+        _isFading = false;
         SwitchCanvasActive(fadeCanvas);
 
         yield return null;
@@ -205,6 +205,7 @@ public class FarmingManager : MonoBehaviour
         {
             _playTime = FARMING_TIME;
             _isEnd = true;
+            _isFading = true;
             StartCoroutine(FadeOut());
         }
     }
