@@ -70,50 +70,50 @@ Shader "Custom/Outline"
             ENDCG
         }
         
-        Pass
-        {
-            Name "OBJECT"
+        //Pass
+        //{
+        //    Name "OBJECT"
 
-            CGPROGRAM // Allows talk between two languages : shader lab and nvidia C for graphics
+        //    CGPROGRAM // Allows talk between two languages : shader lab and nvidia C for graphics
 
-            #pragma vertex vert // Define for the building function
-            #pragma fragment frag // Define for coloring function
+        //    #pragma vertex vert // Define for the building function
+        //    #pragma fragment frag // Define for coloring function
 
-            #include "UnityCG.cginc" // Built in shader functions
+        //    #include "UnityCG.cginc" // Built in shader functions
 
-            struct appdata
-            {
-                float4 vertex : POSITION;
-                float2 uv : TEXCOORD0;
-            };
+        //    struct appdata
+        //    {
+        //        float4 vertex : POSITION;
+        //        float2 uv : TEXCOORD0;
+        //    };
 
-            struct v2f
-            {
-                float4 vertex : SV_POSITION;
-                float2 uv : TEXCOORD0;
-            };
+        //    struct v2f
+        //    {
+        //        float4 vertex : SV_POSITION;
+        //        float2 uv : TEXCOORD0;
+        //    };
 
-            float4 _Color;
-            sampler2D _MainTex;
+        //    float4 _Color;
+        //    sampler2D _MainTex;
 
-            v2f vert(appdata IN)
-            {
-                v2f OUT;
+        //    v2f vert(appdata IN)
+        //    {
+        //        v2f OUT;
 
-                OUT.vertex = UnityObjectToClipPos(IN.vertex);
-                OUT.uv = IN.uv;
+        //        OUT.vertex = UnityObjectToClipPos(IN.vertex);
+        //        OUT.uv = IN.uv;
 
-                return OUT;
-            }
+        //        return OUT;
+        //    }
 
-            fixed4 frag(v2f IN) : SV_Target
-            {
-                float4 texColor = tex2D(_MainTex, IN.uv);
+        //    fixed4 frag(v2f IN) : SV_Target
+        //    {
+        //        float4 texColor = tex2D(_MainTex, IN.uv);
 
-                return texColor * _Color;
-            }
+        //        return texColor * _Color;
+        //    }
 
-            ENDCG
-        }
+        //    ENDCG
+        //}
     }
 }
