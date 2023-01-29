@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations;
 
 public class Player : MonoBehaviour
 {
     public float moveSpeed = 5f; // 앞뒤 움직임의 속도
     public int life;
+    public float MouseX;
 
     private string moveFBAxisName = "Vertical"; // 앞뒤 움직임을 위한 입력축 이름
     private string moveLRAxisName = "Horizontal"; // 좌우 움직임을 위한 입력축 이름
@@ -13,11 +15,12 @@ public class Player : MonoBehaviour
     private string magicAttackButtonName = "Fire2"; // 발사를 위한 입력 버튼 이름
     private string JumpButtonName = "Jump";
 
-    private Rigidbody playerRigidbody; // 플레이어 캐릭터의 리지드바디
+    private CharacterController charactercontroller;
 
     
-    public float moveFB { get; private set; } // 감지된 움직임 입력값
-    public float moveLR { get; private set; } // 감지된 회전 입력값
+    public float moveFB { get; private set; } // 감지된 전후이동 입력값
+    public float moveLR { get; private set; } // 감지된 좌우이동 입력값
+    public float rot { get; private set; }    // 감지된 회전 입력값
     public bool Mlattack { get; private set; } // 감지된 발사 입력값
     public bool Mgattack { get; private set; } // 감지된 발사 입력값
     public bool p_Jump { get; private set; } // 감지된 발사 입력값
@@ -26,28 +29,36 @@ public class Player : MonoBehaviour
 
     public float JumpPower;
 
+    public Vector3 moveDistance;
+
 
 
     private void Start()
     {
-        playerRigidbody = GetComponent<Rigidbody>();
+        charactercontroller = GetComponent<CharacterController>();
+
+        rot = 1.0f;
     }
 
     private void Update()
     {
         // 게임오버 상태에서는 사용자 입력을 감지하지 않는다
-        if (GameManager.Instance != null && GameManager.Instance.isGameover)
-        {
-            moveFB = 0;
-            moveLR = 0;
-            Mlattack = false;
-            return;
-        }
+        //if (FarmingManager.Instance != null && FarmingManager._isEnd)
+        //{
+        //    moveFB = 0;
+        //    moveLR = 0;
+        //    Mlattack = false;
+        //    return;
+        //}
 
         // move에 관한 입력 감지
         moveFB = Input.GetAxis(moveFBAxisName);
+        Debug.Log(moveFB);
+
         // rotate에 관한 입력 감지
         moveLR = Input.GetAxis(moveLRAxisName);
+        Debug.Log(moveLR);
+
         // fire에 관한 입력 감지
         Mlattack = Input.GetButton(meleeAttackButtonName);
         Mgattack = Input.GetButton(magicAttackButtonName);
@@ -60,14 +71,16 @@ public class Player : MonoBehaviour
     {
         Move();
         Jump();
+        Look();
     }
 
     private void Move()
     {
 
-        Vector3 moveDistance = new Vector3(moveLR, 0, moveFB).normalized * moveSpeed * Time.deltaTime;
+        moveDistance = new Vector3(moveLR, 0, moveFB);
+        charactercontroller.Move(transform.TransformDirection(moveDistance) * Time.deltaTime * moveSpeed);
 
-        playerRigidbody.MovePosition(playerRigidbody.position + moveDistance);
+        //playerRigidbody.MovePosition(playerRigidbody.position + moveDistance);
 
 
     }
@@ -75,9 +88,15 @@ public class Player : MonoBehaviour
     {
         if(p_Jump && !isJump)
         {
-            playerRigidbody.AddForce(Vector3.up * JumpPower, ForceMode.Impulse);
+            //playerRigidbody.AddForce(Vector3.up * JumpPower, ForceMode.Impulse);
             isJump = true;
+            Debug.Log(isJump);
         }
+    }
+    private void Look()
+    {
+        MouseX += Input.GetAxis("Mouse X");
+        transform.rotation = Quaternion.Euler(0, MouseX, 0);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -85,6 +104,8 @@ public class Player : MonoBehaviour
         if(collision.gameObject.tag == "Floor")
         {
             isJump = false;
+            Debug.Log(isJump);
+
         }
     }
 }
