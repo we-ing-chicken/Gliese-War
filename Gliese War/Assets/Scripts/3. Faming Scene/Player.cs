@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     public float moveSpeed = 5f; // 앞뒤 움직임의 속도
     public int life;
     public float MouseX;
+    public float mouseSpeed;
 
     private string moveFBAxisName = "Vertical"; // 앞뒤 움직임을 위한 입력축 이름
     private string moveLRAxisName = "Horizontal"; // 좌우 움직임을 위한 입력축 이름
@@ -95,7 +96,7 @@ public class Player : MonoBehaviour
     }
     private void Look()
     {
-        MouseX += Input.GetAxis("Mouse X");
+        MouseX += Input.GetAxis("Mouse X") * mouseSpeed;
         transform.rotation = Quaternion.Euler(0, MouseX, 0);
     }
 
