@@ -43,13 +43,13 @@ public class Player : MonoBehaviour
     private void Update()
     {
         // 게임오버 상태에서는 사용자 입력을 감지하지 않는다
-        if (FarmingManager.Instance != null)
-        {
-            moveFB = 0;
-            moveLR = 0;
-            Mlattack = false;
-            return;
-        }
+        //if (FarmingManager.Instance != null && FarmingManager._isEnd)
+        //{
+        //    moveFB = 0;
+        //    moveLR = 0;
+        //    Mlattack = false;
+        //    return;
+        //}
 
         // move에 관한 입력 감지
         moveFB = Input.GetAxis(moveFBAxisName);
