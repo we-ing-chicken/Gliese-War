@@ -35,6 +35,8 @@ public class FarmingManager : MonoBehaviour
     public Canvas pauseCanvas;
     public Canvas fadeCanvas;
 
+    [SerializeField] private Inventory inventory;
+
     public static FarmingManager Instance
     {
         get
@@ -114,6 +116,38 @@ public class FarmingManager : MonoBehaviour
                 SwitchCanvasActive(pauseCanvas);
             }
         }
+        
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+            inventory.AcquireItem(inventory.knife[0]);
+        else if(Input.GetKeyDown(KeyCode.Alpha2))
+            inventory.AcquireItem(inventory.knife[1]);
+        else if(Input.GetKeyDown(KeyCode.Alpha3))
+            inventory.AcquireItem(inventory.knife[2]);
+        else if(Input.GetKeyDown(KeyCode.Alpha4))
+            inventory.AcquireItem(inventory.knife[3]);
+        else if(Input.GetKeyDown(KeyCode.Alpha5))
+            inventory.AcquireItem(inventory.knife[4]);
+        else if(Input.GetKeyDown(KeyCode.Alpha6))
+            inventory.AcquireItem(inventory.hammer[0]);
+        else if(Input.GetKeyDown(KeyCode.Alpha7))
+            inventory.AcquireItem(inventory.hammer[1]);
+        else if(Input.GetKeyDown(KeyCode.Alpha8))
+            inventory.AcquireItem(inventory.hammer[2]);
+        else if(Input.GetKeyDown(KeyCode.Alpha9))
+            inventory.AcquireItem(inventory.hammer[3]);
+        else if(Input.GetKeyDown(KeyCode.Alpha0))
+            inventory.AcquireItem(inventory.hammer[4]);
+        else if(Input.GetKeyDown(KeyCode.Y))
+            inventory.AcquireItem(inventory.spear[0]);
+        else if(Input.GetKeyDown(KeyCode.U))
+            inventory.AcquireItem(inventory.spear[1]);
+        else if(Input.GetKeyDown(KeyCode.I))
+            inventory.AcquireItem(inventory.spear[2]);
+        else if(Input.GetKeyDown(KeyCode.O))
+            inventory.AcquireItem(inventory.spear[3]);
+        else if(Input.GetKeyDown(KeyCode.P))
+            inventory.AcquireItem(inventory.spear[4]);
+        
     }
 
     IEnumerator FadeIn()
