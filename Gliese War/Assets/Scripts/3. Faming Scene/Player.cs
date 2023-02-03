@@ -6,9 +6,11 @@ using UnityEngine.Animations;
 public class Player : MonoBehaviour
 {
     public float moveSpeed = 5f; // 앞뒤 움직임의 속도
+    private float Gravity = 9.8f;
     public int life;
     public float MouseX;
     public float mouseSpeed;
+    public List<Equipment> equipList;
 
     private string moveFBAxisName = "Vertical"; // 앞뒤 움직임을 위한 입력축 이름
     private string moveLRAxisName = "Horizontal"; // 좌우 움직임을 위한 입력축 이름
@@ -17,28 +19,26 @@ public class Player : MonoBehaviour
     private string JumpButtonName = "Jump";
 
     private CharacterController charactercontroller;
-
     
     public float moveFB { get; private set; } // 감지된 전후이동 입력값
     public float moveLR { get; private set; } // 감지된 좌우이동 입력값
     public float rot { get; private set; }    // 감지된 회전 입력값
-    public bool Mlattack { get; private set; } // 감지된 발사 입력값
-    public bool Mgattack { get; private set; } // 감지된 발사 입력값
-    public bool p_Jump { get; private set; } // 감지된 발사 입력값
-
-    private bool isJump;
+    public bool Mlattack { get; private set; } // 감지된 발사1 입력값
+    public bool Mgattack { get; private set; } // 감지된 발사2 입력값
+    public bool p_Jump { get; private set; } // 감지된 점프 입력값
 
     public float JumpPower;
 
-    public Vector3 moveDistance;
+    public Vector3 moveDir;
 
 
 
     private void Start()
     {
         charactercontroller = GetComponent<CharacterController>();
-
+        moveDir = Vector3.zero;
         rot = 1.0f;
+        equipList = new List<Equipment>();
     }
 
     private void Update()
@@ -52,13 +52,13 @@ public class Player : MonoBehaviour
         //    return;
         //}
 
+        if (charactercontroller == null) return;
+
         // move에 관한 입력 감지
         moveFB = Input.GetAxis(moveFBAxisName);
-        Debug.Log(moveFB);
 
         // rotate에 관한 입력 감지
         moveLR = Input.GetAxis(moveLRAxisName);
-        Debug.Log(moveLR);
 
         // fire에 관한 입력 감지
         Mlattack = Input.GetButton(meleeAttackButtonName);
@@ -70,29 +70,33 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Move();
-        Jump();
+        if (charactercontroller == null) return;
         Look();
+
+        if (charactercontroller.isGrounded)
+        {
+            Move();
+            if (p_Jump) Jump();
+        }
+        else
+        {
+            Fall();
+        }
+        charactercontroller.Move(moveDir * Time.deltaTime);
+
     }
 
     private void Move()
     {
-
-        moveDistance = new Vector3(moveLR, 0, moveFB);
-        charactercontroller.Move(transform.TransformDirection(moveDistance) * Time.deltaTime * moveSpeed);
-
-        //playerRigidbody.MovePosition(playerRigidbody.position + moveDistance);
-
-
+        moveDir = charactercontroller.transform.TransformDirection(new Vector3(moveLR, 0, moveFB)) * moveSpeed;
     }
     private void Jump()
     {
-        if(p_Jump && !isJump)
-        {
-            //playerRigidbody.AddForce(Vector3.up * JumpPower, ForceMode.Impulse);
-            isJump = true;
-            Debug.Log(isJump);
-        }
+        moveDir.y = JumpPower;
+    }
+    private void Fall()
+    {
+        moveDir.y -= Gravity * Time.deltaTime;
     }
     private void Look()
     {
@@ -100,13 +104,15 @@ public class Player : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, MouseX, 0);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider other)
     {
-        if(collision.gameObject.tag == "Floor")
+        if (other.tag == "Equipment")
         {
-            isJump = false;
-            Debug.Log(isJump);
-
+            Debug.Log("YES");
+            Equipment neweq = other.GetComponent<Equipment>(); //PlayerBall의 스크립트 컴포넌트 가져오기
+            neweq.equip_generate();
+            equipList.Add(neweq);
+            other.gameObject.SetActive(false); //오브젝트 비활성화
         }
     }
 }
