@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -24,6 +25,21 @@ public class Inventory : MonoBehaviour
         //slots = slotsParent.GetComponentsInChildren<Slot>();
         slots = new List<Slot>();
         itemList = new Dictionary<Item, int>();
+        
+        for (int i = 0; i < knife.Length ; ++i)
+        {
+            itemList.Add(knife[i], 0);
+        }
+        
+        for (int i = 0; i < spear.Length ; ++i)
+        {
+            itemList.Add(spear[i], 0);
+        }
+        
+        for (int i = 0; i < hammer.Length ; ++i)
+        {
+            itemList.Add(hammer[i], 0);
+        }
     }
 
     private void Update()
@@ -51,8 +67,6 @@ public class Inventory : MonoBehaviour
 
     public void AcquireItem(Item _item, int _count = 1)
     {
-        Debug.Log(slots.Count);
-
         Slot temp = Instantiate(slotPrefab,slotsParent.transform);
         slots.Add(temp);
         temp.AddItem(_item,_count);
@@ -73,21 +87,18 @@ public class Inventory : MonoBehaviour
         {
             if (slots[i].item != null)
             {
-                if (!itemList.ContainsKey(slots[i].item))
-                    itemList.Add(slots[i].item, 1);
-                else
+                if (itemList.ContainsKey(slots[i].item))
                     itemList[slots[i].item]++;
             }
         }
 
         foreach (KeyValuePair<Item, int> d in itemList)
         {
-            Debug.Log(d.Key + "  " + d.Value);
             if (d.Value >= 3 && d.Key.itemRank != Item.ItemRank.Epic)
                 DeleteItem(d.Key, d.Value);
         }
 
-        itemList.Clear();
+        ResetItemList();
     }
 
     private void DeleteItem(Item item, int count)
@@ -111,6 +122,12 @@ public class Inventory : MonoBehaviour
             AddUpgradeItem(item);
         }
     }
+    
+    private void ResetItemList()
+    {
+        foreach (KeyValuePair<Item, int> d in itemList.ToList())
+            itemList[d.Key] = 0;
+    }
 
     private void AddUpgradeItem(Item item)
     {
@@ -129,5 +146,60 @@ public class Inventory : MonoBehaviour
                 break;
         }
     }
+    
+    public void SortButton()
+    {
+        ResetItemList();
+
+        for (int i = 0; i < slots.Count; ++i)
+        {
+            if (slots[i].item != null)
+            {
+                if (!itemList.ContainsKey(slots[i].item))
+                    itemList.Add(slots[i].item, 1);
+                else
+                    itemList[slots[i].item]++;
+            }
+        }
+
+        foreach (Slot s in slots)
+        {
+            Destroy(s.gameObject);
+        }
+        
+        slots = new List<Slot>();
+        
+        foreach (KeyValuePair<Item, int> d in itemList)
+        {
+            for (int i = 0; i < d.Value; ++i)
+            {
+                switch (d.Key.itemCategory)
+                {
+                    case Item.ItemCategory.Knife:
+                        AcquireItem(knife[GetItemNum(d.Key)]);
+                        break;
+
+                    case Item.ItemCategory.Hammer:
+                        AcquireItem(hammer[GetItemNum(d.Key)]);
+                        break;
+
+                    case Item.ItemCategory.Spear:
+                        AcquireItem(spear[GetItemNum(d.Key)]);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        }
+
+        ResetItemList();
+    }
+
+    private int GetItemNum(Item item)
+    {
+        return (int)item.itemRank;
+    }
+    
     
 }
