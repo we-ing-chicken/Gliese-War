@@ -68,6 +68,7 @@ public class FarmingManager : MonoBehaviour
         _timeOfInGame = 8.4f;
         _timerTxtComp = timerTxt.GetComponent<TextMeshProUGUI>();
         _isNight = false;
+        fadeCanvas.transform.GetChild(0).GetComponent<Image>().material.color = new Vector4(0f, 0f, 0f);
 
         SetTimerText();
         UpdateLighting(_timeOfInGame / 24f);
@@ -119,6 +120,10 @@ public class FarmingManager : MonoBehaviour
     IEnumerator FadeIn()
     {
         float alpha = fadeCanvas.transform.GetChild(0).GetComponent<Image>().color.a;
+        float mat_Rgb = fadeCanvas.transform.GetChild(0).GetComponent<Image>().material.color.r;
+        float mat_Blur = fadeCanvas.transform.GetChild(0).GetComponent<Image>().material.GetFloat("Radius");
+        UnityEngine.Debug.Log("mat_Blur : " + mat_Blur);
+
         GameObject loadingText = fadeCanvas.transform.GetChild(0).GetChild(0).gameObject;
 
         yield return new WaitForSeconds(fadeTime);
@@ -128,16 +133,23 @@ public class FarmingManager : MonoBehaviour
         while (true)
         {
             float t = 2f / 255;
+            //float blur = 2f / 7;
+            mat_Rgb += t;
+            //mat_Blur -= blur;
+
+            UnityEngine.Debug.Log(mat_Rgb);
             alpha -= t;
             fadeCanvas.transform.GetChild(0).GetComponent<Image>().color = new Vector4(0,0,0, alpha);
+            fadeCanvas.transform.GetChild(0).GetComponent<Image>().material.color = new Vector4(mat_Rgb, mat_Rgb, mat_Rgb);
+            //fadeCanvas.transform.GetChild(0).GetComponent<Image>().material.SetFloat("Radius", mat_Blur);
+            UnityEngine.Debug.Log(fadeCanvas.transform.GetChild(0).GetComponent<Image>().material.color);
             yield return new WaitForSeconds(0.01f);
-            if (alpha <= 0)
+            if (alpha <= 0 || mat_Rgb <= 0)
                 break;
         }
         
         _isFading = false;
         SwitchCanvasActive(fadeCanvas);
-
         yield return null;
     }
 

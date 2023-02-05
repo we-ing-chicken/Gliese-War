@@ -108,8 +108,7 @@ public class Player : MonoBehaviour
     {
         if (other.tag == "Equipment")
         {
-            Debug.Log("YES");
-            Equipment neweq = other.GetComponent<Equipment>(); //PlayerBall의 스크립트 컴포넌트 가져오기
+            Equipment neweq = other.GetComponent<Equipment>(); //Equipment의 스크립트 컴포넌트 가져오기
             neweq.equip_generate();
             equipList.Add(neweq);
             other.gameObject.SetActive(false); //오브젝트 비활성화
