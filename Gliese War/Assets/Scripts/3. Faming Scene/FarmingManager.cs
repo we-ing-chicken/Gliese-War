@@ -155,8 +155,9 @@ public class FarmingManager : MonoBehaviour
     {
         float alpha = fadeCanvas.transform.GetChild(0).GetComponent<Image>().color.a;
         float mat_Rgb = fadeCanvas.transform.GetChild(0).GetComponent<Image>().material.color.r;
-        float mat_Blur = fadeCanvas.transform.GetChild(0).GetComponent<Image>().material.GetFloat("Radius");
-        UnityEngine.Debug.Log("mat_Blur : " + mat_Blur);
+        //float mat_Blur = fadeCanvas.transform.GetChild(0).GetComponent<Image>().material.GetFloat("Radius");
+        //UnityEngine.Debug.Log("mat_Blur : " + mat_Blur);
+
 
         GameObject loadingText = fadeCanvas.transform.GetChild(0).GetChild(0).gameObject;
 
