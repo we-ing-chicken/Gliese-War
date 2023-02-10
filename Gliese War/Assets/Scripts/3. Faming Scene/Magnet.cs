@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Magnet : MonoBehaviour
 {
+    [SerializeField] private Inventory _inven;
     private GameObject player;
     private Rigidbody rigid;
     private float magnetStrength = 10f;
@@ -40,6 +41,8 @@ public class Magnet : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.transform.CompareTag("Player"))
-            Destroy(gameObject);
+        {
+            _inven.AcquireItem();
+        }
     }
 }
