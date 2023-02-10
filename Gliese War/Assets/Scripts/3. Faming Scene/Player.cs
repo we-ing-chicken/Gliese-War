@@ -101,14 +101,4 @@ public class Player : MonoBehaviour
         MouseX += Input.GetAxis("Mouse X") * mouseSpeed;
         transform.rotation = Quaternion.Euler(0, MouseX, 0);
     }
-
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Equipment")
-        {
-            Equipment neweq = other.GetComponent<Equipment>(); //Equipment의 스크립트 컴포넌트 가져오기
-            neweq.equip_generate();
-            other.gameObject.SetActive(false); //오브젝트 비활성화
-        }
-    }
 }
