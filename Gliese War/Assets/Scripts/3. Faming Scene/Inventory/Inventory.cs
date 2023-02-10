@@ -94,7 +94,7 @@ public class Inventory : MonoBehaviour
 
         foreach (KeyValuePair<Item, int> d in itemList)
         {
-            if (d.Value >= 3 && d.Key.itemRank != Item.ItemRank.Epic)
+            if (d.Value >= 3 && d.Key.itemRank != Item.ItemRank.Legendary)
                 DeleteItem(d.Key, d.Value);
         }
 

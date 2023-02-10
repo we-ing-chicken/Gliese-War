@@ -9,9 +9,9 @@ public class Item : ScriptableObject
     {
         Normal,
         Rare,
+        Epic,
         Unique,
-        Legendary,
-        Epic
+        Legendary
     }
 
     public enum ItemCategory
