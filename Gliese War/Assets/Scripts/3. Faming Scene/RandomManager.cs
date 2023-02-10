@@ -43,10 +43,29 @@ public static class RandomManager
         return Success;
     }
 
-    public static Item.ItemRank RandomBox(int RandAccur)
+    public static Item.ItemRank RandomBox(float RandAccur)
     {
         Item.ItemRank result = new Item.ItemRank();
-        //int normalTable = ;
+        float normalTable = RandAccur * 35 / 100;
+        float rareTable = RandAccur * (35 + 30) / 100;
+        float epicTable = RandAccur * (35 + 30 + 19) / 100;
+        float uniqueTable = RandAccur * (35 + 30 + 19 + 15) / 100;
+
+        int Rand = Random.Range(1, (int)RandAccur + 1);
+
+        if (Rand <= normalTable)
+            result = Item.ItemRank.Normal;
+        else if (normalTable < Rand && Rand <= rareTable)
+            result = Item.ItemRank.Rare;
+        else if (rareTable < Rand && Rand <= epicTable)
+            result = Item.ItemRank.Epic;
+        else if (epicTable < Rand && Rand <= uniqueTable)
+            result = Item.ItemRank.Unique;
+        else if (uniqueTable < Rand && Rand <= RandAccur)
+            result = Item.ItemRank.Legendary;
+
+
+        return result;
 
     }
 }

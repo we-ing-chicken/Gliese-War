@@ -10,7 +10,6 @@ public class Player : MonoBehaviour
     public int life;
     public float MouseX;
     public float mouseSpeed;
-    public List<Equipment> equipList;
 
     private string moveFBAxisName = "Vertical"; // 앞뒤 움직임을 위한 입력축 이름
     private string moveLRAxisName = "Horizontal"; // 좌우 움직임을 위한 입력축 이름
@@ -38,7 +37,6 @@ public class Player : MonoBehaviour
         charactercontroller = GetComponent<CharacterController>();
         moveDir = Vector3.zero;
         rot = 1.0f;
-        equipList = new List<Equipment>();
     }
 
     private void Update()
@@ -110,7 +108,6 @@ public class Player : MonoBehaviour
         {
             Equipment neweq = other.GetComponent<Equipment>(); //Equipment의 스크립트 컴포넌트 가져오기
             neweq.equip_generate();
-            equipList.Add(neweq);
             other.gameObject.SetActive(false); //오브젝트 비활성화
         }
     }

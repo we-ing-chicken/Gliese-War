@@ -12,8 +12,7 @@ public class Equipment : MonoBehaviour
     public void equip_generate()
     {
         // Randomly determine the equipment grade
-        int gradeIndex = Random.Range(0, 5);
-        grade = (Item.ItemRank)gradeIndex;
+        grade = RandomManager.RandomBox(10000000);
 
         // Randomly determine the attack power and physical strength within specified ranges
         attackPower = Random.Range(1, 31);
