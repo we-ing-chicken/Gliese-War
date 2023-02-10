@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public static class RandomManager
 {
     public static bool GetThisChanceResult(float Chance, int RandAccur)
@@ -40,5 +41,12 @@ public static class RandomManager
             Success = true;
         }
         return Success;
+    }
+
+    public static Item.ItemRank RandomBox(int RandAccur)
+    {
+        Item.ItemRank result = new Item.ItemRank();
+        //int normalTable = ;
+
     }
 }

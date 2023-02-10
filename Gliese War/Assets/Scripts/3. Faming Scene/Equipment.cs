@@ -4,16 +4,8 @@ using UnityEngine;
 
 public class Equipment : MonoBehaviour
 {
-    public enum Grade
-    {
-        Common,
-        Uncommon,
-        Rare,
-        Epic,
-        Legendary
-    }
-
-    public Grade grade;
+    
+    public Item.ItemRank grade;
     public int attackPower;
     public int physicalStrength;
 
@@ -21,7 +13,7 @@ public class Equipment : MonoBehaviour
     {
         // Randomly determine the equipment grade
         int gradeIndex = Random.Range(0, 5);
-        grade = (Grade)gradeIndex;
+        grade = (Item.ItemRank)gradeIndex;
 
         // Randomly determine the attack power and physical strength within specified ranges
         attackPower = Random.Range(1, 31);
