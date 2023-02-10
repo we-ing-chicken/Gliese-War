@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Drop : MonoBehaviour
 {
@@ -45,10 +47,12 @@ public class Drop : MonoBehaviour
 
             temp.transform.position = transform.position;
             temp.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
-            temp.AddComponent<Magnet>();
             
+            Magnet mag = temp.AddComponent<Magnet>();
+            mag.itemCategory = itemCategory;
+            mag._inven = _inven;
+                
             Rigidbody comp = temp.AddComponent<Rigidbody>();
-            
             comp.AddExplosionForce(200f, transform.position, 200f, 10f);
         }
     }

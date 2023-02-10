@@ -31,7 +31,7 @@ public class FarmingManager : MonoBehaviour
     [SerializeField] private Sprite DayImage; // 낮 이미지
     [SerializeField] private Sprite NightImage; // 밤 이미지
 
-    [Header("Canvas")] public Canvas invenCanvas;
+    [Header("Canvas")] public GameObject invenCanvas;
     public Canvas pauseCanvas;
     public Canvas fadeCanvas;
 
@@ -210,6 +210,14 @@ public class FarmingManager : MonoBehaviour
     }
 
     private void SwitchCanvasActive(Canvas temp)
+    {
+        if (temp.gameObject.activeSelf)
+            temp.gameObject.SetActive(false);
+        else
+            temp.gameObject.SetActive(true);
+    }
+    
+    private void SwitchCanvasActive(GameObject temp)
     {
         if (temp.gameObject.activeSelf)
             temp.gameObject.SetActive(false);
