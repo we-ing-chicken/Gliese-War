@@ -50,14 +50,15 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
             case Item.ItemRank.Rare:
                 return Color.blue;
             
-            case Item.ItemRank.Unique:
+            case Item.ItemRank.Epic:
                 return Color.magenta;
             
-            case Item.ItemRank.Legendary:
+            case Item.ItemRank.Unique:
                 return Color.yellow;
             
-            case Item.ItemRank.Epic:
+            case Item.ItemRank.Legendary:
                 return Color.cyan;
+            
             
             default:
                 return Color.black;
