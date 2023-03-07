@@ -5,6 +5,13 @@ using UnityEngine;
 
 public static class RandomManager
 {
+    public enum rankstat
+    {
+        attackPower,
+        defensePower,
+        health,
+        moveSpeed
+    }
     public static bool GetThisChanceResult(float Chance, int RandAccur)
     {
         if (Chance < 0.0000001f)
@@ -46,12 +53,13 @@ public static class RandomManager
     public static Item.ItemRank RandomBox(float RandAccur)
     {
         Item.ItemRank result = new Item.ItemRank();
-        float normalTable = RandAccur * 35 / 100;
-        float rareTable = RandAccur * (35 + 30) / 100;
-        float epicTable = RandAccur * (35 + 30 + 19) / 100;
-        float uniqueTable = RandAccur * (35 + 30 + 19 + 15) / 100;
+        float ra = RandAccur / 100;
+        float normalTable = ra * 30;
+        float rareTable = ra * (30 + 25);
+        float epicTable = ra * (30 + 25 + 25);
+        float uniqueTable = ra * (30 + 25 + 25 + 15);
 
-        int Rand = Random.Range(1, (int)RandAccur + 1);
+        int Rand = Random.Range(1, (int)ra + 1);
 
         if (Rand <= normalTable)
             result = Item.ItemRank.Normal;
@@ -61,11 +69,29 @@ public static class RandomManager
             result = Item.ItemRank.Epic;
         else if (epicTable < Rand && Rand <= uniqueTable)
             result = Item.ItemRank.Unique;
-        else if (uniqueTable < Rand && Rand <= RandAccur)
+        else if (uniqueTable < Rand && Rand <= ra)
             result = Item.ItemRank.Legendary;
 
-
         return result;
+    }
 
+    public static Item.Stat RandomStat(Item.ItemRank ir)
+    {
+        Item.Stat result = new Item.Stat();
+        switch(ir)
+        {
+            case Item.ItemRank.Normal:
+                break;
+            case Item.ItemRank.Rare:
+                break;
+            case Item.ItemRank.Epic:
+                break;
+            case Item.ItemRank.Unique:
+                break;
+            case Item.ItemRank.Legendary:
+                break;
+
+        }
+        return result;
     }
 }

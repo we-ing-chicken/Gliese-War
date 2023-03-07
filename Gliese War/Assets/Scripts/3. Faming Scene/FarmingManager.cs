@@ -172,7 +172,6 @@ public class FarmingManager : MonoBehaviour
             mat_Rgb += t;
             //mat_Blur -= blur;
 
-            UnityEngine.Debug.Log(mat_Rgb);
             alpha -= t;
             fadeCanvas.transform.GetChild(0).GetComponent<Image>().color = new Vector4(0,0,0, alpha);
             fadeCanvas.transform.GetChild(0).GetComponent<Image>().material.color = new Vector4(mat_Rgb, mat_Rgb, mat_Rgb);
