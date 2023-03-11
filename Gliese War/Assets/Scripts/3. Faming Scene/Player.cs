@@ -5,26 +5,35 @@ using UnityEngine.Animations;
 
 public class Player : MonoBehaviour
 {
-    public float moveSpeed = 5f; // ¾ÕµÚ ¿òÁ÷ÀÓÀÇ ¼Óµµ
+    public float moveSpeed = 5f; // ï¿½Õµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½
     private float Gravity = 9.8f;
     public int life;
     public float MouseX;
     public float mouseSpeed;
 
-    private string moveFBAxisName = "Vertical"; // ¾ÕµÚ ¿òÁ÷ÀÓÀ» À§ÇÑ ÀÔ·ÂÃà ÀÌ¸§
-    private string moveLRAxisName = "Horizontal"; // ÁÂ¿ì ¿òÁ÷ÀÓÀ» À§ÇÑ ÀÔ·ÂÃà ÀÌ¸§
-    private string meleeAttackButtonName = "Fire1"; // ¹ß»ç¸¦ À§ÇÑ ÀÔ·Â ¹öÆ° ÀÌ¸§
-    private string magicAttackButtonName = "Fire2"; // ¹ß»ç¸¦ À§ÇÑ ÀÔ·Â ¹öÆ° ÀÌ¸§
+    private string moveFBAxisName = "Vertical"; // ï¿½Õµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½
+    private string moveLRAxisName = "Horizontal"; // ï¿½Â¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½
+    private string meleeAttackButtonName = "Fire1"; // ï¿½ß»ç¸¦ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ ï¿½ï¿½Æ° ï¿½Ì¸ï¿½
+    private string magicAttackButtonName = "Fire2"; // ï¿½ß»ç¸¦ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ ï¿½ï¿½Æ° ï¿½Ì¸ï¿½
     private string JumpButtonName = "Jump";
+
+    public float offensivePower;
+    public float defensivePower;
+    public float maxHealth;
+    public float currHealth;
+    public float playerSpeed;
+
+    public List<Item> items;
+
 
     private CharacterController charactercontroller;
     
-    public float moveFB { get; private set; } // °¨ÁöµÈ ÀüÈÄÀÌµ¿ ÀÔ·Â°ª
-    public float moveLR { get; private set; } // °¨ÁöµÈ ÁÂ¿ìÀÌµ¿ ÀÔ·Â°ª
-    public float rot { get; private set; }    // °¨ÁöµÈ È¸Àü ÀÔ·Â°ª
-    public bool Mlattack { get; private set; } // °¨ÁöµÈ ¹ß»ç1 ÀÔ·Â°ª
-    public bool Mgattack { get; private set; } // °¨ÁöµÈ ¹ß»ç2 ÀÔ·Â°ª
-    public bool p_Jump { get; private set; } // °¨ÁöµÈ Á¡ÇÁ ÀÔ·Â°ª
+    public float moveFB { get; private set; } // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ìµï¿½ ï¿½Ô·Â°ï¿½
+    public float moveLR { get; private set; } // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Â¿ï¿½ï¿½Ìµï¿½ ï¿½Ô·Â°ï¿½
+    public float rot { get; private set; }    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ ï¿½Ô·Â°ï¿½
+    public bool Mlattack { get; private set; } // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½1 ï¿½Ô·Â°ï¿½
+    public bool Mgattack { get; private set; } // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½2 ï¿½Ô·Â°ï¿½
+    public bool p_Jump { get; private set; } // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·Â°ï¿½
 
     public float JumpPower;
 
@@ -41,7 +50,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        // °ÔÀÓ¿À¹ö »óÅÂ¿¡¼­´Â »ç¿ëÀÚ ÀÔ·ÂÀ» °¨ÁöÇÏÁö ¾Ê´Â´Ù
+        // ï¿½ï¿½ï¿½Ó¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¿ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê´Â´ï¿½
         //if (FarmingManager.Instance != null && FarmingManager._isEnd)
         //{
         //    moveFB = 0;
@@ -52,13 +61,13 @@ public class Player : MonoBehaviour
 
         if (charactercontroller == null) return;
 
-        // move¿¡ °üÇÑ ÀÔ·Â °¨Áö
+        // moveï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½ï¿½
         moveFB = Input.GetAxis(moveFBAxisName);
 
-        // rotate¿¡ °üÇÑ ÀÔ·Â °¨Áö
+        // rotateï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½ï¿½
         moveLR = Input.GetAxis(moveLRAxisName);
 
-        // fire¿¡ °üÇÑ ÀÔ·Â °¨Áö
+        // fireï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½ï¿½
         Mlattack = Input.GetButton(meleeAttackButtonName);
         Mgattack = Input.GetButton(magicAttackButtonName);
         p_Jump = Input.GetButton(JumpButtonName);

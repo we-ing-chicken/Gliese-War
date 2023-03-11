@@ -36,6 +36,9 @@ public class FarmingManager : MonoBehaviour
     public Canvas fadeCanvas;
 
     [SerializeField] private Inventory inventory;
+    public Player managed_player;
+
+    public GameObject characterCam;
 
     public static FarmingManager Instance
     {
@@ -99,14 +102,20 @@ public class FarmingManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Tab))
             {
                 if (!pauseCanvas.gameObject.activeSelf)
+                {
                     SwitchCanvasActive(invenCanvas);
+                    SwitchGameObjectActive(characterCam);
+                }
             }
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (invenCanvas.gameObject.activeSelf)
+            {
                 SwitchCanvasActive(invenCanvas);
+                SwitchGameObjectActive(characterCam);
+            }
             else
             {
                 if (_isPause)
@@ -217,6 +226,13 @@ public class FarmingManager : MonoBehaviour
     }
     
     private void SwitchCanvasActive(GameObject temp)
+    {
+        if (temp.gameObject.activeSelf)
+            temp.gameObject.SetActive(false);
+        else
+            temp.gameObject.SetActive(true);
+    }
+    private void SwitchGameObjectActive(GameObject temp)
     {
         if (temp.gameObject.activeSelf)
             temp.gameObject.SetActive(false);

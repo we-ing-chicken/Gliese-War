@@ -19,6 +19,8 @@ public class Inventory : MonoBehaviour
     public Item[] knife;
     public Item[] spear;
     public Item[] hammer;
+
+    public Player player;
     
     void Start()
     {
