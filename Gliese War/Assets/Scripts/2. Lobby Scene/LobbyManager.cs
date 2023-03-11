@@ -5,12 +5,9 @@ using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
-using MySql.Data;
-using MySql.Data.MySqlClient;
 
 public class LobbyManager : MonoBehaviour
 {
-    private MySqlDataReader reader;
     private string id;
 
     [Header("Lobby")] [SerializeField] private GameObject nickNameText;
@@ -28,17 +25,12 @@ public class LobbyManager : MonoBehaviour
         if (PlayerPrefs.HasKey("ID"))
             id = PlayerPrefs.GetString("ID");
         else
-            id = "hsson";
+            id = "test1234";
 
-        reader = MySqlConnector.Instance.doQuery("select * from User where ID = '" + id + "'");
-        reader.Read();
-        reader.Close();
-        
         nickNameText.GetComponent<TextMeshProUGUI>().text = id;
 
         careerList = careerListParent.GetComponentsInChildren<TextMeshProUGUI>();
         careerAnimation = careerCanvas.transform.GetChild(0).GetComponent<Animation>();
-        
     }
 
     private void Start()
@@ -54,19 +46,12 @@ public class LobbyManager : MonoBehaviour
     public void OpenCareer()
     {
         careerCanvas.gameObject.SetActive(true);
-
-        reader = MySqlConnector.Instance.doQuery("select * from Career where ID = '" + id + "'");
-        //reader = MySqlConnector.Instance.doQuery("select count(*) from User");
-        reader.Read();
-        
         careerAnimation.Play("CareerAnimation");
         
         for (int i = 0; i < careerList.Length; ++i)
         {
-            careerList[i].GetComponent<TextMeshProUGUI>().text = reader[i + 1].ToString();
+            careerList[i].GetComponent<TextMeshProUGUI>().text = "2";
         }
-
-        reader.Close();
     }
 
     public void CloseCareer()
