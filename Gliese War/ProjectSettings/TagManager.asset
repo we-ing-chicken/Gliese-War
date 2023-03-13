@@ -6,6 +6,10 @@ TagManager:
   tags:
   - Floor
   - Equipment
+  - Helmet
+  - Armor
+  - Shoes
+  - Weapon
   layers:
   - Default
   - TransparentFX

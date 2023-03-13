@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.45140076, g: 0.5008943, b: 0.5723211, a: 1}
+  m_IndirectSpecularColor: {r: 0.45140117, g: 0.5008937, b: 0.5723182, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -384,7 +384,7 @@ RectTransform:
   m_Children:
   - {fileID: 1388704567}
   m_Father: {fileID: 475144017}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
@@ -786,7 +786,7 @@ RectTransform:
   m_Children:
   - {fileID: 1400321010}
   m_Father: {fileID: 475144017}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
@@ -997,7 +997,7 @@ RectTransform:
   - {fileID: 1732738081}
   - {fileID: 1119052348}
   m_Father: {fileID: 475144017}
-  m_RootOrder: 5
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1093,7 +1093,7 @@ GameObject:
   - component: {fileID: 216773997}
   m_Layer: 5
   m_Name: Weapon2
-  m_TagString: Untagged
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1199,6 +1199,11 @@ MonoBehaviour:
   currHealth: 0
   playerSpeed: 0
   items: []
+  helmet: {fileID: 0}
+  armor: {fileID: 0}
+  shoe: {fileID: 0}
+  weapon1: {fileID: 0}
+  weapon2: {fileID: 0}
   JumpPower: 15
   moveDir: {x: 0, y: 0, z: 0}
 --- !u!23 &246860638
@@ -1691,7 +1696,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &475144017
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1704,12 +1709,12 @@ RectTransform:
   m_LocalScale: {x: 1.005, y: 1.005, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 166362250}
   - {fileID: 1249180174}
   - {fileID: 1062354432}
   - {fileID: 153293603}
   - {fileID: 1868388128}
   - {fileID: 64247017}
-  - {fileID: 166362250}
   m_Father: {fileID: 843150561}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2926,7 +2931,7 @@ RectTransform:
   m_Children:
   - {fileID: 1439720464}
   m_Father: {fileID: 475144017}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
@@ -3172,7 +3177,7 @@ GameObject:
   - component: {fileID: 1119052349}
   m_Layer: 5
   m_Name: Shoes
-  m_TagString: Untagged
+  m_TagString: Shoes
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3447,7 +3452,7 @@ RectTransform:
   m_Children:
   - {fileID: 779715381}
   m_Father: {fileID: 475144017}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -3891,7 +3896,7 @@ GameObject:
   - component: {fileID: 1427156089}
   m_Layer: 5
   m_Name: Weapon1
-  m_TagString: Untagged
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4641,8 +4646,8 @@ GameObject:
   - component: {fileID: 1655126651}
   - component: {fileID: 1655126650}
   m_Layer: 5
-  m_Name: Head
-  m_TagString: Untagged
+  m_Name: Helmet
+  m_TagString: Helmet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4928,8 +4933,8 @@ GameObject:
   - component: {fileID: 1732738083}
   - component: {fileID: 1732738082}
   m_Layer: 5
-  m_Name: Breast
-  m_TagString: Untagged
+  m_Name: Armor
+  m_TagString: Armor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5080,7 +5085,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1334296199608850411, guid: e6308ce1533191a49b3107a180922817, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1334296199608850411, guid: e6308ce1533191a49b3107a180922817, type: 3}
       propertyPath: m_AnchorMax.x
@@ -5214,6 +5219,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dragSlot: {fileID: 0}
+  item: {fileID: 0}
   itemImage: {fileID: 1868388130}
   itemName: {fileID: 1868388129}
 --- !u!1 &1929064591
