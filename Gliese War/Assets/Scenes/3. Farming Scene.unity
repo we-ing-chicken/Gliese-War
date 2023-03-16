@@ -1091,6 +1091,7 @@ GameObject:
   - component: {fileID: 216773996}
   - component: {fileID: 216773998}
   - component: {fileID: 216773997}
+  - component: {fileID: 216773999}
   m_Layer: 5
   m_Name: Weapon2
   m_TagString: Weapon
@@ -1156,6 +1157,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 216773995}
   m_CullTransparentMesh: 1
+--- !u!114 &216773999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 216773995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 382aafaf72f1de947b70fe3332a8e393, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: {fileID: 0}
+  itemImage: {fileID: 0}
 --- !u!1 &246860634
 GameObject:
   m_ObjectHideFlags: 0
@@ -2489,7 +2504,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b7d7e2e41b2247f41971976ff07245f2, type: 2}
   - {fileID: 11400000, guid: 81ff1b680e3c99643978a458a9da866e, type: 2}
   - {fileID: 11400000, guid: ac7de932d142f51479b871243f82f724, type: 2}
-  player: {fileID: 0}
 --- !u!114 &843150563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3193,6 +3207,7 @@ GameObject:
   - component: {fileID: 1119052348}
   - component: {fileID: 1119052350}
   - component: {fileID: 1119052349}
+  - component: {fileID: 1119052351}
   m_Layer: 5
   m_Name: Shoes
   m_TagString: Shoes
@@ -3258,6 +3273,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1119052347}
   m_CullTransparentMesh: 1
+--- !u!114 &1119052351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1119052347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 382aafaf72f1de947b70fe3332a8e393, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: {fileID: 0}
+  itemImage: {fileID: 0}
 --- !u!1 &1168694682
 GameObject:
   m_ObjectHideFlags: 0
@@ -3912,6 +3941,7 @@ GameObject:
   - component: {fileID: 1427156088}
   - component: {fileID: 1427156090}
   - component: {fileID: 1427156089}
+  - component: {fileID: 1427156091}
   m_Layer: 5
   m_Name: Weapon1
   m_TagString: Weapon
@@ -3977,6 +4007,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1427156087}
   m_CullTransparentMesh: 1
+--- !u!114 &1427156091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1427156087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 382aafaf72f1de947b70fe3332a8e393, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: {fileID: 0}
+  itemImage: {fileID: 0}
 --- !u!1 &1439720463
 GameObject:
   m_ObjectHideFlags: 0
@@ -4663,6 +4707,7 @@ GameObject:
   - component: {fileID: 1655126649}
   - component: {fileID: 1655126651}
   - component: {fileID: 1655126650}
+  - component: {fileID: 1655126652}
   m_Layer: 5
   m_Name: Helmet
   m_TagString: Helmet
@@ -4728,6 +4773,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1655126648}
   m_CullTransparentMesh: 1
+--- !u!114 &1655126652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1655126648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 382aafaf72f1de947b70fe3332a8e393, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: {fileID: 0}
+  itemImage: {fileID: 0}
 --- !u!1 &1690285662
 GameObject:
   m_ObjectHideFlags: 0
@@ -4950,6 +5009,7 @@ GameObject:
   - component: {fileID: 1732738081}
   - component: {fileID: 1732738083}
   - component: {fileID: 1732738082}
+  - component: {fileID: 1732738084}
   m_Layer: 5
   m_Name: Armor
   m_TagString: Armor
@@ -5015,6 +5075,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1732738080}
   m_CullTransparentMesh: 1
+--- !u!114 &1732738084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1732738080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 382aafaf72f1de947b70fe3332a8e393, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: {fileID: 0}
+  itemImage: {fileID: 0}
 --- !u!1 &1780743241
 GameObject:
   m_ObjectHideFlags: 0
@@ -5236,7 +5310,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78ce54fa679cea246abd8779a30465a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dragSlot: {fileID: 0}
+  dragedSlot: {fileID: 0}
   item: {fileID: 0}
   itemImage: {fileID: 1868388130}
   itemName: {fileID: 1868388129}
