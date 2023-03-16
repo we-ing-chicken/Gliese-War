@@ -6,33 +6,25 @@ using UnityEngine.UI;
 public class DragSlot : MonoBehaviour
 {
     static public DragSlot instance;
-    public Slot dragSlot;
+    public Slot dragedSlot;
+    public Item item;
 
     [SerializeField] private Image itemImage;
     [SerializeField] private Text itemName;
-    //[SerializeField] private Text itemCount;
     
     void Start()
     {
         instance = this;
     }
     
-    public void DragSetData(Image _itemImage, string _itemName)
+    public void DragSetData(Image _itemImage, string _itemName, Item _item)
     {
+        item = _item;
         itemImage.sprite = _itemImage.sprite;
         itemName.text = _itemName;
 
         SetColor(1);
     }
-
-    // public void DragSetData(Image _itemImage, string _itemName, string _itemCount)
-    // {
-    //     itemImage.sprite = _itemImage.sprite;
-    //     itemName.text = _itemName;
-    //     itemCount.text = _itemCount;
-    //     
-    //     SetColor(1);
-    // }
 
     public void SetColor(float _alpha)
     {

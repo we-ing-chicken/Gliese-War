@@ -1696,7 +1696,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &475144017
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2453,6 +2453,24 @@ MonoBehaviour:
   inventoryBase: {fileID: 843150560}
   slotsParent: {fileID: 1946295667}
   slotPrefab: {fileID: 4438518601032980941, guid: e6308ce1533191a49b3107a180922817, type: 3}
+  helmet:
+  - {fileID: 11400000, guid: 56bc88ca10fcb0840b4a409edffe2a3b, type: 2}
+  - {fileID: 11400000, guid: 071792fbd683f3d49afbf436ce92878e, type: 2}
+  - {fileID: 11400000, guid: 9cb49686350e1ba489068f328b708e09, type: 2}
+  - {fileID: 11400000, guid: 2dedb9a3031d3f54b9e98a46e6c83cbc, type: 2}
+  - {fileID: 11400000, guid: 1ecdb050ef4647c418370fce1934385e, type: 2}
+  armor:
+  - {fileID: 11400000, guid: 8ad0a299b4f8a50408f12a867799d6e4, type: 2}
+  - {fileID: 11400000, guid: 2058c631bd9b99048862277730e18339, type: 2}
+  - {fileID: 11400000, guid: 2082bbcca0869e942987367da749f49b, type: 2}
+  - {fileID: 11400000, guid: 79b2de6cb23b69b438f593da7bcbada4, type: 2}
+  - {fileID: 11400000, guid: 17a14d7d04db03a49bb931fba9426102, type: 2}
+  shoes:
+  - {fileID: 11400000, guid: 6176234b21863874d89465659baa5cfa, type: 2}
+  - {fileID: 11400000, guid: 90583d21b8907304b929bf8f98159ddc, type: 2}
+  - {fileID: 11400000, guid: bbe74d65a7e2cc844a5a2c5c92d43bb2, type: 2}
+  - {fileID: 11400000, guid: 15d48c5f4ed6e6648ab8bae67093309b, type: 2}
+  - {fileID: 11400000, guid: 4d9ba79403d7d2d428a36eda294723e4, type: 2}
   knife:
   - {fileID: 11400000, guid: 37030e55f953d1648adc88e3dd24bdf0, type: 2}
   - {fileID: 11400000, guid: 6281ae3d67e42bd43928ac56f1ef8472, type: 2}
@@ -3403,7 +3421,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be9a728ba5e54fd4db979250e37d0510, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _inven: {fileID: 0}
+  _inven: {fileID: 843150562}
 --- !u!4 &1224054238
 Transform:
   m_ObjectHideFlags: 0

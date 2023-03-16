@@ -5,6 +5,7 @@ using UnityEngine.Animations;
 
 public class Player : MonoBehaviour
 {
+    static public Player instance;
     public float moveSpeed = 5f; // �յ� �������� �ӵ�
     private float Gravity = 9.8f;
     public int life;
@@ -25,7 +26,12 @@ public class Player : MonoBehaviour
 
     public List<Item> items;
 
-
+    public Item helmet;
+    public Item armor;
+    public Item shoe;
+    public Item weapon1;
+    public Item weapon2;
+    
     private CharacterController charactercontroller;
     
     public float moveFB { get; private set; } // ������ �����̵� �Է°�
@@ -43,6 +49,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        instance = this;
         charactercontroller = GetComponent<CharacterController>();
         moveDir = Vector3.zero;
         rot = 1.0f;

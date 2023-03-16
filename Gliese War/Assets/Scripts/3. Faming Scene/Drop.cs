@@ -24,20 +24,46 @@ public class Drop : MonoBehaviour
         for (int i = 0; i < itemCount; ++i)
         {
             Item.ItemCategory itemCategory = (Item.ItemCategory)Random.Range(0, 4);
+            Item.WeaponType weaponType = Item.WeaponType.Nothing;
             GameObject temp;
 
             switch (itemCategory)
             {
-                case Item.ItemCategory.Hammer:
-                    temp = Instantiate(_inven.hammer[0].itemPrefab);
+                case Item.ItemCategory.Helmet:
+                    temp = Instantiate(_inven.helmet[0].itemPrefab);
                     break;
 
-                case Item.ItemCategory.Knife:
-                    temp = Instantiate(_inven.knife[0].itemPrefab);
+                case Item.ItemCategory.Armor:
+                    temp = Instantiate(_inven.armor[0].itemPrefab);
                     break;
 
-                case Item.ItemCategory.Spear:
-                    temp = Instantiate(_inven.spear[0].itemPrefab);
+                case Item.ItemCategory.Shoes:
+                    temp = Instantiate(_inven.shoes[0].itemPrefab);
+                    break;
+
+                case Item.ItemCategory.Weapon:
+                {
+                    weaponType = (Item.WeaponType)Random.Range(0, 3);
+                    switch (weaponType)
+                    {
+                        case Item.WeaponType.Knife:
+                            temp = Instantiate(_inven.knife[0].itemPrefab);
+                            break;
+                        
+                        case Item.WeaponType.Spear:
+                            temp = Instantiate(_inven.spear[0].itemPrefab);
+                            break;
+                        
+                        case Item.WeaponType.Hammer:
+                            temp = Instantiate(_inven.hammer[0].itemPrefab);
+                            break;
+                        
+                        default:
+                            temp = Instantiate(_inven.knife[0].itemPrefab);
+                            break;                        
+                    }
+                    
+                }
                     break;
                 
                 default:
@@ -47,9 +73,18 @@ public class Drop : MonoBehaviour
 
             temp.transform.position = transform.position;
             temp.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
-            
+
             Magnet mag = temp.AddComponent<Magnet>();
             mag.itemCategory = itemCategory;
+            
+            if (itemCategory == Item.ItemCategory.Weapon)
+            {
+                mag.weaponType = weaponType;
+            }
+            else
+            {
+                mag.weaponType = Item.WeaponType.Nothing;
+            }
             mag._inven = _inven;
                 
             Rigidbody comp = temp.AddComponent<Rigidbody>();
