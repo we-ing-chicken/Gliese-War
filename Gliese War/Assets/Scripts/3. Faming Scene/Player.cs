@@ -45,14 +45,15 @@ public class Player : MonoBehaviour
 
     public Vector3 moveDir;
 
-
-
+    public bool isNear;
+    
     private void Start()
     {
         instance = this;
         charactercontroller = GetComponent<CharacterController>();
         moveDir = Vector3.zero;
         rot = 1.0f;
+        isNear = false;
     }
 
     private void Update()
