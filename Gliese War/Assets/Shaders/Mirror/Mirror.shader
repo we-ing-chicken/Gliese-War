@@ -96,9 +96,9 @@ Shader "Custom/Mirror"
 		o.Emission = UNITY_SAMPLE_TEXCUBE(unity_SpecCube0, rv).rgb * unity_SpecCube0_HDR.r;
 
 
-		fixed3 blendTarget = UNITY_SAMPLE_TEXCUBE(unity_SpecCube1, rv).rgb * unity_SpecCube1_HDR.r;
+		//fixed3 blendTarget = UNITY_SAMPLE_TEXCUBE(unity_SpecCube1, rv).rgb * unity_SpecCube1_HDR.r;
 
-		o.Emission = lerp(blendTarget, o.Emission, unity_SpecCube0_BoxMin.w);
+		//o.Emission = lerp(blendTarget, o.Emission, unity_SpecCube0_BoxMin.w);
 
 
 		o.Metalic = tex2D(_MetalicMap, IN.uv_MainTex).rgb * _Metalic;
