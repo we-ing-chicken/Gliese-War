@@ -16,9 +16,18 @@ public class Item : ScriptableObject
 
     public enum ItemCategory
     {
+        Helmet,
+        Armor,
+        Shoes,
+        Weapon
+    }
+
+    public enum WeaponType
+    {
         Knife,
         Spear,
-        Hammer
+        Hammer,
+        Nothing
     }
 
     public struct Stat
@@ -32,6 +41,7 @@ public class Item : ScriptableObject
     public string itemName;
     public ItemRank itemRank;
     public ItemCategory itemCategory;
+    public WeaponType weaponType;
     public Sprite itemImage;
     public GameObject itemPrefab;
     public Stat stat;

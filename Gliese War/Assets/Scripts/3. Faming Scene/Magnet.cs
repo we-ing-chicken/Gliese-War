@@ -12,6 +12,7 @@ public class Magnet : MonoBehaviour
     private float distanceStretch = 50f;
     private bool isEat = false;
     public Item.ItemCategory itemCategory;
+    public Item.WeaponType weaponType;
     
     // Start is called before the first frame update
     void Start()
@@ -44,18 +45,38 @@ public class Magnet : MonoBehaviour
         if (other.transform.CompareTag("Player"))
         {
             Item.ItemRank rank = RandomManager.RandomBox(100000000);
+            Debug.Log(rank);
             switch(itemCategory)
             {
-                case Item.ItemCategory.Hammer:
-                    _inven.AcquireItem(_inven.hammer[(int)rank]);
+                case Item.ItemCategory.Helmet:
+                    _inven.AcquireItem(_inven.helmet[(int)rank]);
                     break;
                 
-                case Item.ItemCategory.Knife:
-                    _inven.AcquireItem(_inven.knife[(int)rank]);
+                case Item.ItemCategory.Armor:
+                    _inven.AcquireItem(_inven.armor[(int)rank]);
                     break;
                 
-                case Item.ItemCategory.Spear:
-                    _inven.AcquireItem(_inven.spear[(int)rank]);
+                case Item.ItemCategory.Shoes:
+                    _inven.AcquireItem(_inven.shoes[(int)rank]);
+                    break;
+
+                case Item.ItemCategory.Weapon:
+                {
+                    switch (weaponType)
+                    {
+                        case Item.WeaponType.Knife: 
+                            _inven.AcquireItem(_inven.knife[(int)rank]);
+                            break;
+                        
+                        case Item.WeaponType.Spear:
+                            _inven.AcquireItem(_inven.spear[(int)rank]);
+                            break;
+                        
+                        case Item.WeaponType.Hammer:
+                            _inven.AcquireItem(_inven.hammer[(int)rank]);
+                            break;
+                    }
+                } 
                     break;
                 
                 default:
