@@ -15,12 +15,12 @@ Shader "Custom/BlurShader"
         {
             GrabPass
             {
-                Tags{ "LightMode" = "Always" }
+                Tags{ "LightMode" = "SRPDefaultUnlit" }
             }
 
             Pass
             {
-                Tags{ "LightMode" = "Always" }
+                Tags{ "LightMode" = "SRPDefaultUnlit" }
 
                 CGPROGRAM
                 #pragma vertex vert
@@ -82,12 +82,12 @@ Shader "Custom/BlurShader"
             }
             GrabPass
             {
-                Tags{ "LightMode" = "Always" }
+                Tags{ "LightMode" = "SRPDefaultUnlit" }
             }
 
             Pass
             {
-                Tags{ "LightMode" = "Always" }
+                Tags{ "LightMode" = "SRPDefaultUnlit" }
 
                 CGPROGRAM
                 #pragma vertex vert
