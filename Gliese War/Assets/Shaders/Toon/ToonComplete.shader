@@ -20,7 +20,7 @@
 		{
 			Tags
 			{
-				"LightMode" = "ForwardBase"
+				"LightMode" = "UniversalForward"
 				"PassFlags" = "OnlyDirectional"
 			}
 
