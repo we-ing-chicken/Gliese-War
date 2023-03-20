@@ -10,6 +10,11 @@ public class Drop : MonoBehaviour
     [SerializeField] private Inventory _inven;
     private int itemCount;
 
+    private void Start()
+    {
+        _inven = FarmingManager.Instance.inventory;
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.L))
@@ -18,7 +23,7 @@ public class Drop : MonoBehaviour
         }
     }
 
-    private void DropItem()
+    public void DropItem()
     {
         int itemCount = Random.Range(1, 5);
         for (int i = 0; i < itemCount; ++i)

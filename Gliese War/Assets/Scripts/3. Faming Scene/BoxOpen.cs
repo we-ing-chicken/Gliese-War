@@ -8,6 +8,7 @@ public class BoxOpen : MonoBehaviour
     private GameObject keyButtonImage;
     private Camera mainCamera;
     private bool isLockOn;
+    private Drop drop;
     
     // Start is called before the first frame update
     void Start()
@@ -17,12 +18,12 @@ public class BoxOpen : MonoBehaviour
         isLockOn = false;
         //mainCamera = Player.instance.gameObject.transform.GetChild(0).GetComponent<Camera>();
         mainCamera = Camera.main;
+        drop = gameObject.GetComponent<Drop>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(mainCamera);
         Vector3 cameraDir = mainCamera.transform.position - gameObject.transform.position;
         Quaternion rot = Quaternion.LookRotation(cameraDir);
         keyButtonImage.transform.rotation = rot;
@@ -54,6 +55,7 @@ public class BoxOpen : MonoBehaviour
             {
                 other.GetComponent<Player>().isNear = false;
                 isLockOn = false;
+                drop.DropItem();
                 Destroy(gameObject);
             }
         }

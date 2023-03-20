@@ -26,7 +26,7 @@ public class FarmingManager : MonoBehaviour
     [Header("Light")] [SerializeField] private Light DirectionalLight; // 태양 오브젝트
     private float _timeOfInGame;
 
-    [Header("DayNight")] private bool _isNight;
+    [Header("DayNight")] public bool _isNight;
     [SerializeField] private Image DayNightImage; // 낮밤 이미지 오브젝트
     [SerializeField] private Sprite DayImage; // 낮 이미지
     [SerializeField] private Sprite NightImage; // 밤 이미지
@@ -35,7 +35,7 @@ public class FarmingManager : MonoBehaviour
     public Canvas pauseCanvas;
     public Canvas fadeCanvas;
 
-    [SerializeField] private Inventory inventory;
+    public Inventory inventory;
     public Player managed_player;
 
     public GameObject characterCam;
@@ -128,15 +128,15 @@ public class FarmingManager : MonoBehaviour
         }
         
         if(Input.GetKeyDown(KeyCode.Alpha1))
-            inventory.AcquireItem(inventory.knife[0]);
+            inventory.AcquireItem(inventory.helmet[0]);
         else if(Input.GetKeyDown(KeyCode.Alpha2))
-            inventory.AcquireItem(inventory.knife[1]);
+            inventory.AcquireItem(inventory.helmet[1]);
         else if(Input.GetKeyDown(KeyCode.Alpha3))
-            inventory.AcquireItem(inventory.knife[2]);
+            inventory.AcquireItem(inventory.helmet[2]);
         else if(Input.GetKeyDown(KeyCode.Alpha4))
-            inventory.AcquireItem(inventory.knife[3]);
+            inventory.AcquireItem(inventory.helmet[3]);
         else if(Input.GetKeyDown(KeyCode.Alpha5))
-            inventory.AcquireItem(inventory.knife[4]);
+            inventory.AcquireItem(inventory.helmet[4]);
         else if(Input.GetKeyDown(KeyCode.Alpha6))
             inventory.AcquireItem(inventory.hammer[0]);
         else if(Input.GetKeyDown(KeyCode.Alpha7))
