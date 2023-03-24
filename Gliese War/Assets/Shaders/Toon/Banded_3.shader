@@ -20,7 +20,7 @@ Shader "Custom/Banded_3"
 			{
 				Tags
 				{
-					"LightMode" = "ForwardBase"
+					"LightMode" = "UniversalForward"
 					"PassFlags" = "OnlyDirectional"
 				}
 
