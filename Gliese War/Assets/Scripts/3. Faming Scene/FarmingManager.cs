@@ -185,7 +185,7 @@ public class FarmingManager : MonoBehaviour
             fadeCanvas.transform.GetChild(0).GetComponent<Image>().color = new Vector4(0,0,0, alpha);
             fadeCanvas.transform.GetChild(0).GetComponent<Image>().material.color = new Vector4(mat_Rgb, mat_Rgb, mat_Rgb);
             //fadeCanvas.transform.GetChild(0).GetComponent<Image>().material.SetFloat("Radius", mat_Blur);
-            UnityEngine.Debug.Log(fadeCanvas.transform.GetChild(0).GetComponent<Image>().material.color);
+            //UnityEngine.Debug.Log(fadeCanvas.transform.GetChild(0).GetComponent<Image>().material.color);
             yield return new WaitForSeconds(0.01f);
             if (alpha <= 0 || mat_Rgb <= 0)
                 break;

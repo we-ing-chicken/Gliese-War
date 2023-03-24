@@ -23,6 +23,8 @@ public class Player : MonoBehaviour
     public float maxHealth;
     public float currHealth;
     public float playerSpeed;
+    [SerializeField]
+    private Animator animator;
 
     public List<Item> items;
 
@@ -33,7 +35,8 @@ public class Player : MonoBehaviour
     public Item weapon2;
     
     private CharacterController charactercontroller;
-    
+
+
     public float moveFB { get; private set; } // ������ �����̵� �Է°�
     public float moveLR { get; private set; } // ������ �¿��̵� �Է°�
     public float rot { get; private set; }    // ������ ȸ�� �Է°�
@@ -54,6 +57,7 @@ public class Player : MonoBehaviour
         moveDir = Vector3.zero;
         rot = 1.0f;
         isNear = false;
+        life = 10;
     }
 
     private void Update()
@@ -80,7 +84,7 @@ public class Player : MonoBehaviour
         Mgattack = Input.GetButton(magicAttackButtonName);
         p_Jump = Input.GetButton(JumpButtonName);
 
-
+        
     }
 
     private void FixedUpdate()
@@ -98,7 +102,7 @@ public class Player : MonoBehaviour
             Fall();
         }
         charactercontroller.Move(moveDir * Time.deltaTime);
-
+        animate();
     }
 
     private void Move()
@@ -117,5 +121,14 @@ public class Player : MonoBehaviour
     {
         MouseX += Input.GetAxis("Mouse X") * mouseSpeed;
         transform.rotation = Quaternion.Euler(0, MouseX, 0);
+    }
+    private void animate()
+    {
+        //if (moveDir.magnitude > 0) Debug.Log("무우빙" + moveDir.magnitude);
+        if (moveDir.magnitude > 0) 
+            animator.SetBool("isWalk", true);
+        else
+            animator.SetBool("isWalk", false);
+        Debug.Log(animator.GetBool("isWalk"));
     }
 }
