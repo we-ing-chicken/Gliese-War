@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
+using UnityEngine.EventSystems;
 
 public class Player : MonoBehaviour
 {
@@ -49,7 +50,9 @@ public class Player : MonoBehaviour
     public Vector3 moveDir;
 
     public bool isNear;
-    
+
+    private Vector3 moveDirection;
+
     private void Start()
     {
         instance = this;
@@ -83,8 +86,6 @@ public class Player : MonoBehaviour
         Mlattack = Input.GetButton(meleeAttackButtonName);
         Mgattack = Input.GetButton(magicAttackButtonName);
         p_Jump = Input.GetButton(JumpButtonName);
-
-        
     }
 
     private void FixedUpdate()
@@ -108,6 +109,8 @@ public class Player : MonoBehaviour
     private void Move()
     {
         moveDir = charactercontroller.transform.TransformDirection(new Vector3(moveLR, 0, moveFB)) * moveSpeed;
+        moveDirection = transform.right * moveDir.x + transform.forward * moveDir.z;
+
     }
     private void Jump()
     {
@@ -124,11 +127,7 @@ public class Player : MonoBehaviour
     }
     private void animate()
     {
-        //if (moveDir.magnitude > 0) Debug.Log("무우빙" + moveDir.magnitude);
-        if (moveDir.magnitude > 0) 
-            animator.SetBool("isWalk", true);
-        else
-            animator.SetBool("isWalk", false);
-        Debug.Log(animator.GetBool("isWalk"));
+        animator.SetBool("isWalk", moveDirection != Vector3.zero);
+        
     }
 }
