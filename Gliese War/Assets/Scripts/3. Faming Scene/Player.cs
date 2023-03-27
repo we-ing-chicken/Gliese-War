@@ -53,13 +53,6 @@ public class Player : MonoBehaviour
 
     private Vector3 moveDirection;
 
-    [SerializeField]
-    private float moveOffset;
-    [SerializeField]
-    private float moveOffset2;
-
-
-
     private void Start()
     {
         instance = this;
@@ -136,21 +129,8 @@ public class Player : MonoBehaviour
     }
     private void animate()
     {
-        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S))
-        {
-            animator.SetBool("isWalk", true);
-            Debug.Log("!!");
-        }
-        else if(Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.S))
-        {
-            animator.SetBool("isWalk", false);
-            Debug.Log("??");
-
-        }
-
-        //animator.SetBool("isWalk", Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S));
-
-
+        animator.SetBool("isWalk", moveDirection != Vector3.zero);
+        
     }
     private void Test()
     {

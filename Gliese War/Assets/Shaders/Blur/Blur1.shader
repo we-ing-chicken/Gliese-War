@@ -54,15 +54,17 @@ Shader "Custom/BlurShader"
                     return o;
                 }
 
-                sampler2D _GrabTexture;
-                float4 _GrabTexture_TexelSize;
+                //sampler2D _GrabTexture;
+                //float4 _GrabTexture_TexelSize;
                 float _Radius;
 
                 half4 frag(v2f i) : COLOR
                 {
                     half4 sum = half4(0,0,0,0);
 
-                    #define GRABXYPIXEL(kernelx, kernely) tex2Dproj( _GrabTexture, UNITY_PROJ_COORD(float4(i.uvgrab.x + _GrabTexture_TexelSize.x * kernelx, i.uvgrab.y + _GrabTexture_TexelSize.y * kernely, i.uvgrab.z, i.uvgrab.w)))
+                    //#define GRABXYPIXEL(kernelx, kernely) tex2Dproj( _GrabTexture, UNITY_PROJ_COORD(float4(i.uvgrab.x + _GrabTexture_TexelSize.x * kernelx, i.uvgrab.y + _GrabTexture_TexelSize.y * kernely, i.uvgrab.z, i.uvgrab.w)))
+//#define GRABXYPIXEL(kernelx, kernely) tex2Dproj( 1, UNITY_PROJ_COORD(float4(i.uvgrab.x + 1.0f * kernelx, i.uvgrab.y + 1.0f * kernely, i.uvgrab.z, i.uvgrab.w)))
+
 
                     sum += GRABXYPIXEL(0.0, 0.0);
                     int measurments = 1;
