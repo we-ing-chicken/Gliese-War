@@ -25,6 +25,7 @@ namespace TheKiwiCoder {
         public int speed = 5;
         public bool isFind = false;
         public bool isNight = false;
+        public Vector3 initPosition;
 
         // Add other game specific systems here
 
