@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4348804358085400447}
   - component: {fileID: 2542922539019515071}
   m_Layer: 0
-  m_Name: Wood001 (1)
+  m_Name: Wood001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26,8 +26,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2130530031454926913}
   m_LocalRotation: {x: 0.56317216, y: 0.42759463, z: 0.42759463, w: -0.56317216}
-  m_LocalPosition: {x: 17.588318, y: -4.7168083, z: 23.601875}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalPosition: {x: 11.3, y: -0, z: -10.9}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8346906653648643721}
@@ -107,7 +107,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4582804430054969943}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 408.60168, y: 52.286804, z: 92.51813}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 2629643004003239339}
   - component: {fileID: 3376396337656534473}
   m_Layer: 0
-  m_Name: Wood003 (1)
+  m_Name: Wood003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -145,8 +145,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4927516787908147847}
   m_LocalRotation: {x: -0.108473375, y: 0.69873714, z: 0.69873714, w: 0.108473375}
-  m_LocalPosition: {x: 12.648315, y: -4.7168045, z: 22.231873}
-  m_LocalScale: {x: 2.2000003, y: 2.2, z: 2.2}
+  m_LocalPosition: {x: -0.01, y: 0, z: -8.88}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8346906653648643721}
@@ -214,7 +214,7 @@ GameObject:
   - component: {fileID: 2370374315078833889}
   - component: {fileID: 2290442383669341032}
   m_Layer: 0
-  m_Name: Wood005 (1)
+  m_Name: Wood005
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -227,14 +227,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4962236159303779416}
-  m_LocalRotation: {x: 0.5187402, y: 0.48052952, z: 0.48052952, w: -0.5187402}
-  m_LocalPosition: {x: 17.2583, y: 0.55319595, z: 29.061874}
-  m_LocalScale: {x: 2.4000003, y: 2.4000003, z: 2.4}
+  m_LocalRotation: {x: 0.15127426, y: 0.69073594, z: 0.69073594, w: -0.15127425}
+  m_LocalPosition: {x: 10.5, y: 7.6, z: 4.4}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8346906653648643721}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 274.38}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 204.706}
 --- !u!33 &2370374315078833889
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -297,7 +297,7 @@ GameObject:
   - component: {fileID: 4464928697234515467}
   - component: {fileID: 1679188881431942853}
   m_Layer: 0
-  m_Name: Wood002 (1)
+  m_Name: Wood002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -311,8 +311,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5812280288878907523}
   m_LocalRotation: {x: -0.108473375, y: 0.69873714, z: 0.69873714, w: 0.108473375}
-  m_LocalPosition: {x: 12.758301, y: -4.7168045, z: 32.86187}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalPosition: {x: -3.5, y: -0, z: 4.6}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8346906653648643721}
@@ -380,7 +380,7 @@ GameObject:
   - component: {fileID: 4997389105310258041}
   - component: {fileID: 4314461309995850733}
   m_Layer: 0
-  m_Name: Wood004 (1)
+  m_Name: Wood004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -394,7 +394,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8891405151337451699}
   m_LocalRotation: {x: -0.108473375, y: 0.69873714, z: 0.69873714, w: 0.108473375}
-  m_LocalPosition: {x: 10.838318, y: -4.716812, z: 27.101875}
+  m_LocalPosition: {x: 5, y: 0, z: 15.1}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []

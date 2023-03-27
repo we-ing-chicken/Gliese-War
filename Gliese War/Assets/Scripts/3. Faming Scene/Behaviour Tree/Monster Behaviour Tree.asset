@@ -26,11 +26,13 @@ MonoBehaviour:
   - rid: 458450571252989960
   - rid: 458450571252989961
   - rid: 458450571252989962
+  - rid: 458450775185031168
+  - rid: 458450775185031171
   treeState: 0
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
-  viewPosition: {x: 201, y: 44, z: 0}
-  viewScale: {x: 0.43232757, y: 0.43232757, z: 1}
+  viewPosition: {x: 211, y: 129, z: 0}
+  viewScale: {x: 0.57175326, y: 0.57175326, z: 1}
   references:
     version: 2
     RefIds:
@@ -40,20 +42,20 @@ MonoBehaviour:
         state: 0
         started: 0
         guid: b17b5e77-4997-4584-b537-cff4c974b363
-        position: {x: 0, y: 0}
+        position: {x: -0.000024318695, y: -110.537094}
         blackboard:
           moveToPosition: {x: 0, y: 0, z: 0}
         description: 
         drawGizmos: 0
         child:
-          rid: 458450571252989953
+          rid: 458450775185031171
     - rid: 458450571252989953
       type: {class: Repeat, ns: TheKiwiCoder, asm: Assembly-CSharp}
       data:
         state: 0
         started: 0
         guid: 3d21303ead9e93d4bbd1e7b4ff268743
-        position: {x: 0.00004386902, y: 117.000015}
+        position: {x: -0.000024318695, y: 117.00001}
         blackboard:
           moveToPosition: {x: 0, y: 0, z: 0}
         description: 
@@ -68,7 +70,7 @@ MonoBehaviour:
         state: 0
         started: 0
         guid: a371edc6f4d01df4f972f6182d798a42
-        position: {x: 0.00004386902, y: 230.44366}
+        position: {x: 0.000017285347, y: 231.74902}
         blackboard:
           moveToPosition: {x: 0, y: 0, z: 0}
         description: 
@@ -183,3 +185,28 @@ MonoBehaviour:
         updateRotation: 1
         acceleration: 40
         tolerance: 1
+    - rid: 458450775185031168
+      type: {class: Initialize, ns: , asm: Assembly-CSharp}
+      data:
+        state: 0
+        started: 0
+        guid: d03887fdd4d81c740a4f65c52d03bffc
+        position: {x: -193.48251, y: 116.99999}
+        blackboard:
+          moveToPosition: {x: 0, y: 0, z: 0}
+        description: 
+        drawGizmos: 0
+    - rid: 458450775185031171
+      type: {class: Sequencer, ns: TheKiwiCoder, asm: Assembly-CSharp}
+      data:
+        state: 0
+        started: 0
+        guid: 6741d8aff48c21d4892a0207b3dd723e
+        position: {x: 0.000015258789, y: -12.47814}
+        blackboard:
+          moveToPosition: {x: 0, y: 0, z: 0}
+        description: 
+        drawGizmos: 0
+        children:
+        - rid: 458450775185031168
+        - rid: 458450571252989953

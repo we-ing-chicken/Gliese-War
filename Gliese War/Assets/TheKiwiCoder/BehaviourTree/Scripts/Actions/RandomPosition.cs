@@ -11,9 +11,9 @@ public class RandomPosition : ActionNode {
 
     protected override void OnStart()
     {
-        moveRange = 10;
-        min = new Vector2(context.transform.position.x - moveRange,context.transform.position.z - moveRange);
-        max = new Vector2(context.transform.position.x + moveRange,context.transform.position.z + moveRange);
+        moveRange = 5;
+        min = new Vector2(context.initPosition.x - moveRange,context.initPosition.z - moveRange);
+        max = new Vector2(context.initPosition.x + moveRange,context.initPosition.z + moveRange);
     }
 
     protected override void OnStop() {
