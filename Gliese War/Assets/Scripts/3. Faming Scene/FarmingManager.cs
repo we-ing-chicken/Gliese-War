@@ -30,6 +30,8 @@ public class FarmingManager : MonoBehaviour
     [SerializeField] private Image DayNightImage; // 낮밤 이미지 오브젝트
     [SerializeField] private Sprite DayImage; // 낮 이미지
     [SerializeField] private Sprite NightImage; // 밤 이미지
+    [SerializeField] private Material dayMaterial;
+    [SerializeField] private Material nightMaterial;
 
     [Header("Canvas")] public GameObject invenCanvas;
     public Canvas pauseCanvas;
@@ -256,11 +258,13 @@ public class FarmingManager : MonoBehaviour
         if (_timeOfInGame >= 6 && _timeOfInGame <= 18)
         {
             DayNightImage.sprite = DayImage;
+            RenderSettings.skybox = dayMaterial;
             _isNight = false;
         }
         else
         {
             DayNightImage.sprite = NightImage;
+            RenderSettings.skybox = nightMaterial;
             _isNight = true;
         }
     }

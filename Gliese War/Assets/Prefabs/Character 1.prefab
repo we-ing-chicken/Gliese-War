@@ -176,7 +176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0de10af01dd12724992da3b3b4fd3828, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 15
+  moveSpeed: 8
   life: 0
   MouseX: 0
   mouseSpeed: 5
@@ -192,7 +192,7 @@ MonoBehaviour:
   shoe: {fileID: 0}
   weapon1: {fileID: 0}
   weapon2: {fileID: 0}
-  JumpPower: 15
+  JumpPower: 5
   moveDir: {x: 0, y: 0, z: 0}
   isNear: 0
 --- !u!1001 &1172362744818311376
