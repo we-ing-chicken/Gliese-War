@@ -53,6 +53,13 @@ public class Player : MonoBehaviour
 
     private Vector3 moveDirection;
 
+    [SerializeField]
+    private float moveOffset;
+    [SerializeField]
+    private float moveOffset2;
+
+
+
     private void Start()
     {
         instance = this;
@@ -86,6 +93,8 @@ public class Player : MonoBehaviour
         Mlattack = Input.GetButton(meleeAttackButtonName);
         Mgattack = Input.GetButton(magicAttackButtonName);
         p_Jump = Input.GetButton(JumpButtonName);
+        animate();
+        Test();
     }
 
     private void FixedUpdate()
@@ -103,7 +112,7 @@ public class Player : MonoBehaviour
             Fall();
         }
         charactercontroller.Move(moveDir * Time.deltaTime);
-        animate();
+        
     }
 
     private void Move()
@@ -127,7 +136,43 @@ public class Player : MonoBehaviour
     }
     private void animate()
     {
-        animator.SetBool("isWalk", moveDirection != Vector3.zero);
-        
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S))
+        {
+            animator.SetBool("isWalk", true);
+            Debug.Log("!!");
+        }
+        else if(Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.S))
+        {
+            animator.SetBool("isWalk", false);
+            Debug.Log("??");
+
+        }
+
+        //animator.SetBool("isWalk", Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S));
+
+
+    }
+    private void Test()
+    {
+        if(Input.GetKeyDown(KeyCode.Comma))
+        {
+            Debug.Log("Die");
+
+            animator.SetTrigger("doDie");
+
+        }
+        if (Input.GetKeyDown(KeyCode.Period))
+        {
+            Debug.Log("Run-down");
+
+            animator.SetBool("isRun", true);
+
+        }
+        if (Input.GetKeyUp(KeyCode.Period))
+        {
+            Debug.Log("Run-up");
+            animator.SetBool("isRun", false);
+
+        }
     }
 }
