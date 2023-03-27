@@ -62,7 +62,7 @@ Shader "Custom/BlurShader"
                 {
                     half4 sum = half4(0,0,0,0);
 
-                    //#define GRABXYPIXEL(kernelx, kernely) tex2Dproj( _GrabTexture, UNITY_PROJ_COORD(float4(i.uvgrab.x + _GrabTexture_TexelSize.x * kernelx, i.uvgrab.y + _GrabTexture_TexelSize.y * kernely, i.uvgrab.z, i.uvgrab.w)))
+                    #define GRABXYPIXEL(kernelx, kernely) tex2Dproj( _GrabTexture, UNITY_PROJ_COORD(float4(i.uvgrab.x + _GrabTexture_TexelSize.x * kernelx, i.uvgrab.y + _GrabTexture_TexelSize.y * kernely, i.uvgrab.z, i.uvgrab.w)))
 //#define GRABXYPIXEL(kernelx, kernely) tex2Dproj( 1, UNITY_PROJ_COORD(float4(i.uvgrab.x + 1.0f * kernelx, i.uvgrab.y + 1.0f * kernely, i.uvgrab.z, i.uvgrab.w)))
 
 
