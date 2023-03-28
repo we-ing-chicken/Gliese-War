@@ -141,16 +141,19 @@ public class Player : MonoBehaviour
             animator.SetTrigger("doDie");
 
         }
-        if (Input.GetKeyDown(KeyCode.Period))
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             Debug.Log("Run-down");
+            moveSpeed *= 2.0f;
 
             animator.SetBool("isRun", true);
 
         }
-        if (Input.GetKeyUp(KeyCode.Period))
+        if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             Debug.Log("Run-up");
+            moveSpeed /= 2.0f;
+
             animator.SetBool("isRun", false);
 
         }
