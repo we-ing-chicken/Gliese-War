@@ -75,23 +75,23 @@ public static class RandomManager
         return result;
     }
 
-    public static Item.Stat RandomStat(Item.ItemRank ir)
-    {
-        Item.Stat result = new Item.Stat();
-        switch(ir)
-        {
-            case Item.ItemRank.Normal:
-                break;
-            case Item.ItemRank.Rare:
-                break;
-            case Item.ItemRank.Epic:
-                break;
-            case Item.ItemRank.Unique:
-                break;
-            case Item.ItemRank.Legendary:
-                break;
-
-        }
-        return result;
-    }
+    // public static Item.Stat RandomStat(Item.ItemRank ir)
+    // {
+    //     Item.Stat result = new Item.Stat();
+    //     switch(ir)
+    //     {
+    //         case Item.ItemRank.Normal:
+    //             break;
+    //         case Item.ItemRank.Rare:
+    //             break;
+    //         case Item.ItemRank.Epic:
+    //             break;
+    //         case Item.ItemRank.Unique:
+    //             break;
+    //         case Item.ItemRank.Legendary:
+    //             break;
+    //
+    //     }
+    //     return result;
+    // }
 }
