@@ -7,7 +7,6 @@ using UnityEngine.UI;
 
 public class Equip : MonoBehaviour
 {
-    public Item item;
     [SerializeField] private Image itemImage;
 
     private void Start()

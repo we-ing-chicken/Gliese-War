@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.EventSystems;
@@ -19,21 +20,22 @@ public class Player : MonoBehaviour
     private string magicAttackButtonName = "Fire2"; // �߻縦 ���� �Է� ��ư �̸�
     private string JumpButtonName = "Jump";
 
-    public float offensivePower;
-    public float defensivePower;
-    public float maxHealth;
-    public float currHealth;
-    public float playerSpeed;
+    public int offensivePower;
+    public int defensivePower;
+    public int maxHealth;
+    public int currHealth;
+    public int playerSpeed;
     [SerializeField]
     private Animator animator;
 
     public List<Item> items;
 
-    public Item helmet;
-    public Item armor;
-    public Item shoe;
-    public Item weapon1;
-    public Item weapon2;
+    public RealItem helmet;
+    public RealItem armor;
+    public RealItem shoe;
+    public RealItem weapon1;
+    public RealItem weapon2;
+    public int weaponNow = 1;
     
     private CharacterController charactercontroller;
 
@@ -61,6 +63,14 @@ public class Player : MonoBehaviour
         rot = 1.0f;
         isNear = false;
         life = 10;
+        
+        offensivePower = 10;
+        defensivePower = 10;
+        maxHealth = 100;
+        currHealth = 100;
+        playerSpeed = 5;
+        
+        RefreshStat();
     }
 
     private void Update()
@@ -88,6 +98,16 @@ public class Player : MonoBehaviour
         p_Jump = Input.GetButton(JumpButtonName);
         animate();
         Test();
+
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            if (weaponNow == 1)
+                weaponNow = 2;
+            else
+                weaponNow = 1;
+            
+            RefreshStat();
+        }
     }
 
     private void FixedUpdate()
@@ -157,5 +177,53 @@ public class Player : MonoBehaviour
             animator.SetBool("isRun", false);
 
         }
+    }
+
+    public void UnEquip(RealItem realItem)
+    {
+        offensivePower -= realItem.stat.attackPower;
+        defensivePower -= realItem.stat.defensePower;
+        maxHealth -= realItem.stat.health;
+        currHealth -= realItem.stat.health;
+        playerSpeed -= realItem.stat.moveSpeed;
+        RefreshStat();
+    }
+
+    public void Equip(RealItem realItem)
+    {
+        offensivePower += realItem.stat.attackPower;
+        defensivePower += realItem.stat.defensePower;
+        maxHealth += realItem.stat.health;
+        currHealth += realItem.stat.health;
+        playerSpeed += realItem.stat.moveSpeed;
+        RefreshStat();
+    }
+
+    private void RefreshStat()
+    {
+        Inventory.instance.statParent.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Health : " + currHealth + " / " + maxHealth;
+        Inventory.instance.statParent.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Attack : " + (offensivePower + GetWeaponStat());
+        Inventory.instance.statParent.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "Defense : " + defensivePower;
+        Inventory.instance.statParent.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = "Speed : " + playerSpeed;
+    }
+
+    private int GetWeaponStat()
+    {
+        if (weapon1 == null && weapon2 == null) return 0;
+
+        int power = 0;
+
+        if (weaponNow == 1)
+        {
+            if (weapon1 != null)
+                power = weapon1.stat.attackPower;
+        }
+        else if (weaponNow == 2)
+        {
+            if (weapon2 != null)
+                power = weapon2.stat.attackPower;
+        }
+
+        return power;
     }
 }
