@@ -6,12 +6,15 @@ using UnityEditor;
 using UnityEditor.Rendering;
 using UnityEngine;
 
+
 public class Inventory : MonoBehaviour
 {
     static public Inventory instance;
     [SerializeField] private GameObject inventoryBase;
     [SerializeField] private GameObject slotsParent;
     [SerializeField] private Slot slotPrefab;
+    public GameObject statParent;
+
     
     private List<Slot> slots;
     
@@ -31,8 +34,19 @@ public class Inventory : MonoBehaviour
     public void AcquireItem(Item _item)
     {
         Slot temp = Instantiate(slotPrefab, slotsParent.transform);
-        slots.Add(temp);
+        
         temp.AddItem(_item);
+        slots.Add(temp);
+        
+        ResizeSlotParent();
+    }
+    
+    public void ReAddItem(RealItem realItem)
+    {
+        Slot temp = Instantiate(slotPrefab, slotsParent.transform);
+        
+        temp.ReAddItem(realItem);
+        slots.Add(temp);
         
         ResizeSlotParent();
     }
@@ -49,12 +63,12 @@ public class Inventory : MonoBehaviour
         
         for (int i = 0; i < slots.Count; ++i)
         {
-            if (slots[i].item != null)
+            if (slots[i].realItem.item != null)
             {
-                if (itemCount.ContainsKey(slots[i].item))
-                    itemCount[slots[i].item]++;
+                if (itemCount.ContainsKey(slots[i].realItem.item))
+                    itemCount[slots[i].realItem.item]++;
                 else
-                    itemCount.Add(slots[i].item,1);
+                    itemCount.Add(slots[i].realItem.item,1);
             }
         }
         
@@ -74,7 +88,7 @@ public class Inventory : MonoBehaviour
         {
             foreach (Slot s in slots)
             {
-                if (s.item == item)
+                if (s.realItem.item == item)
                 {
                     slots.Remove(s);
                     break;
@@ -131,7 +145,7 @@ public class Inventory : MonoBehaviour
     {
         DeleteAllItemObject();
 
-        slots = slots.OrderBy(x => x.item.itemCategory).ThenBy(x => x.item.weaponType).ThenByDescending(x => x.item.itemRank).ToList();
+        slots = slots.OrderBy(x => x.realItem.item.itemCategory).ThenBy(x => x.realItem.item.weaponType).ThenByDescending(x => x.realItem.item.itemRank).ToList();
 
         MakeAllItemObject();
     }
@@ -155,7 +169,7 @@ public class Inventory : MonoBehaviour
         foreach (Slot s in slots)
         {
             Slot temp = Instantiate(slotPrefab, slotsParent.transform);
-            temp.AddItem(s.item);
+            temp.ReAddItem(s.realItem);
         }
         
         ResizeSlotParent();

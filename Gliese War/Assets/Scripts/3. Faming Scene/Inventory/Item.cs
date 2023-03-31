@@ -30,19 +30,10 @@ public class Item : ScriptableObject
         Nothing
     }
 
-    public struct Stat
-    {
-        public int attackPower;
-        public int defensePower;
-        public int health;
-        public int moveSpeed;
-    }
-
     public string itemName;
     public ItemRank itemRank;
     public ItemCategory itemCategory;
     public WeaponType weaponType;
     public Sprite itemImage;
     public GameObject itemPrefab;
-    public Stat stat;
 }

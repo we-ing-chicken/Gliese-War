@@ -7,7 +7,6 @@ public class DragSlot : MonoBehaviour
 {
     static public DragSlot instance;
     public Slot dragedSlot;
-    public Item item;
 
     [SerializeField] private Image itemImage;
     [SerializeField] private Text itemName;
@@ -17,12 +16,22 @@ public class DragSlot : MonoBehaviour
         instance = this;
     }
     
-    public void DragSetData(Image _itemImage, string _itemName, Item _item)
+    public void DragSetData(RealItem _realItem)
     {
-        item = _item;
-        itemImage.sprite = _itemImage.sprite;
-        itemName.text = _itemName;
+        if (_realItem != null)
+        {
+            dragedSlot.realItem.item = _realItem.item;
+            dragedSlot.realItem.stat = _realItem.stat;
 
+            itemImage.sprite = _realItem.item.itemImage;
+            itemName.text = _realItem.item.itemName;
+        }
+        else
+        {
+            itemImage.sprite = null;
+            itemName.text = "";
+        }
+        
         SetColor(1);
     }
 
