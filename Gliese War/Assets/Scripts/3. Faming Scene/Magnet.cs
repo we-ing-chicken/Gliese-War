@@ -25,7 +25,7 @@ public class Magnet : MonoBehaviour
     {
         float distance = Vector3.Distance(player.transform.position, gameObject.transform.position);
 
-        if (distance <= 5 || isEat )
+        if (distance <= 10 || isEat )
         {
             rigid.constraints = RigidbodyConstraints.None;
             
