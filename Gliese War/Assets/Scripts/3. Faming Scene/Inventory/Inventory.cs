@@ -40,6 +40,16 @@ public class Inventory : MonoBehaviour
         
         ResizeSlotParent();
     }
+
+    public void AcquireItemWithMagic(Item _item)
+    {
+        Slot temp = Instantiate(slotPrefab, slotsParent.transform);
+        
+        temp.AddItemWithMagic(_item);
+        slots.Add(temp);
+        
+        ResizeSlotParent();
+    }
     
     public void ReAddItem(RealItem realItem)
     {
@@ -107,15 +117,15 @@ public class Inventory : MonoBehaviour
         switch (item.itemCategory)
         {
             case Item.ItemCategory.Helmet:
-                AcquireItem(helmet[(int)item.itemRank + 1]);
+                AcquireItemWithMagic(helmet[(int)item.itemRank + 1]);
                 break;
             
             case Item.ItemCategory.Armor:
-                AcquireItem(armor[(int)item.itemRank + 1]);
+                AcquireItemWithMagic(armor[(int)item.itemRank + 1]);
                 break;
             
             case Item.ItemCategory.Shoes:
-                AcquireItem(shoes[(int)item.itemRank + 1]);
+                AcquireItemWithMagic(shoes[(int)item.itemRank + 1]);
                 break;
 
             case Item.ItemCategory.Weapon:
@@ -123,15 +133,15 @@ public class Inventory : MonoBehaviour
                 switch (item.weaponType)
                 {
                     case Item.WeaponType.Knife:
-                        AcquireItem(knife[(int)item.itemRank + 1]);
+                        AcquireItemWithMagic(knife[(int)item.itemRank + 1]);
                         break;
                     
                     case Item.WeaponType.Spear:
-                        AcquireItem(spear[(int)item.itemRank + 1]);
+                        AcquireItemWithMagic(spear[(int)item.itemRank + 1]);
                         break;
                     
                     case Item.WeaponType.Hammer:
-                        AcquireItem(hammer[(int)item.itemRank + 1]);
+                        AcquireItemWithMagic(hammer[(int)item.itemRank + 1]);
                         break;
                     
                 }

@@ -16,10 +16,19 @@ public struct Stat
     public int moveSpeed;
 }
 
+public enum Magic
+{
+    Nothing,
+    Ice,
+    Fire,
+    Toxic
+}
+
 public class RealItem
 {
     public Item item;
     public Stat stat;
+    public Magic magic;
 }
 
 public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
@@ -56,6 +65,20 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         realItem = new RealItem();
         realItem.item = _item;
         SetStat(realItem);
+        realItem.magic = Magic.Nothing;
+        
+        itemImage.sprite = realItem.item.itemImage;
+        itemName.text = realItem.item.itemName;
+        itemName.color = SetNameRankColor(realItem.item.itemRank);
+        ShowStat(realItem);
+    }
+    
+    public void AddItemWithMagic(Item _item)
+    {
+        realItem = new RealItem();
+        realItem.item = _item;
+        SetStat(realItem);
+        SetMagic(realItem);
         
         itemImage.sprite = realItem.item.itemImage;
         itemName.text = realItem.item.itemName;
@@ -68,11 +91,32 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         realItem = new RealItem();
         realItem.item = _realItem.item;
         realItem.stat = _realItem.stat;
+        realItem.magic = _realItem.magic;
         
         itemImage.sprite = realItem.item.itemImage;
         itemName.text = realItem.item.itemName;
         itemName.color = SetNameRankColor(realItem.item.itemRank);
         ShowStat(realItem);
+    }
+
+    private void SetMagic(RealItem realItem)
+    {
+        int magic = Random.Range(1, 4);
+
+        switch (magic)
+        {
+            case 1:
+                realItem.magic = Magic.Ice;
+                break;
+            
+            case 2:
+                realItem.magic = Magic.Fire;
+                break;
+            
+            case 3:
+                realItem.magic = Magic.Toxic;
+                break;
+        }
     }
     
     private void SetStat(RealItem realItem)
