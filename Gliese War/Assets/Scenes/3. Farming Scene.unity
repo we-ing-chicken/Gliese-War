@@ -37592,6 +37592,18 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1172362744909006169, guid: c5846e85683a393429e38a0e6e30e696, type: 3}
+      propertyPath: distance
+      value: 26
+      objectReference: {fileID: 0}
+    - target: {fileID: 1172362744909006169, guid: c5846e85683a393429e38a0e6e30e696, type: 3}
+      propertyPath: ymove_max
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 1172362744909006169, guid: c5846e85683a393429e38a0e6e30e696, type: 3}
+      propertyPath: ymove_min
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 1172362744909006175, guid: c5846e85683a393429e38a0e6e30e696, type: 3}
       propertyPath: m_TagString
       value: MainCamera
