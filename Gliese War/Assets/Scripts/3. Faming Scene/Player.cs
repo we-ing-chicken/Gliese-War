@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
@@ -25,8 +27,7 @@ public class Player : MonoBehaviour
     public int maxHealth;
     public int currHealth;
     public int playerSpeed;
-    [SerializeField]
-    private Animator animator;
+    [SerializeField] private Animator animator;
 
     public List<Item> items;
 
@@ -36,13 +37,15 @@ public class Player : MonoBehaviour
     public RealItem weapon1;
     public RealItem weapon2;
     public int weaponNow = 1;
-    
+
     private CharacterController charactercontroller;
+
+    public Material flashRed;
 
 
     public float moveFB { get; private set; } // ������ �����̵� �Է°�
     public float moveLR { get; private set; } // ������ �¿��̵� �Է°�
-    public float rot { get; private set; }    // ������ ȸ�� �Է°�
+    public float rot { get; private set; } // ������ ȸ�� �Է°�
     public bool Mlattack { get; private set; } // ������ �߻�1 �Է°�
     public bool Mgattack { get; private set; } // ������ �߻�2 �Է°�
     public bool p_Jump { get; private set; } // ������ ���� �Է°�
@@ -63,13 +66,15 @@ public class Player : MonoBehaviour
         rot = 1.0f;
         isNear = false;
         life = 10;
-        
+
         offensivePower = 10;
         defensivePower = 10;
         maxHealth = 100;
         currHealth = 100;
         playerSpeed = 5;
-        
+
+        //flashRed = GetComponent<MeshRenderer>().material;
+
         RefreshStat();
     }
 
@@ -105,7 +110,7 @@ public class Player : MonoBehaviour
                 weaponNow = 2;
             else
                 weaponNow = 1;
-            
+
             RefreshStat();
         }
     }
@@ -124,8 +129,9 @@ public class Player : MonoBehaviour
         {
             Fall();
         }
+
         charactercontroller.Move(moveDir * Time.deltaTime);
-        
+
     }
 
     private void Move()
@@ -134,33 +140,39 @@ public class Player : MonoBehaviour
         moveDirection = transform.right * moveDir.x + transform.forward * moveDir.z;
 
     }
+
     private void Jump()
     {
         moveDir.y = JumpPower;
     }
+
     private void Fall()
     {
         moveDir.y -= Gravity * Time.deltaTime;
     }
+
     private void Look()
     {
         MouseX += Input.GetAxis("Mouse X") * mouseSpeed;
         transform.rotation = Quaternion.Euler(0, MouseX, 0);
     }
+
     private void animate()
     {
         animator.SetBool("isWalk", moveDirection != Vector3.zero);
-        
+
     }
+
     private void Test()
     {
-        if(Input.GetKeyDown(KeyCode.Comma))
+        if (Input.GetKeyDown(KeyCode.Comma))
         {
             Debug.Log("Die");
 
             animator.SetTrigger("doDie");
 
         }
+
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             Debug.Log("Run-down");
@@ -169,6 +181,7 @@ public class Player : MonoBehaviour
             animator.SetBool("isRun", true);
 
         }
+
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             Debug.Log("Run-up");
@@ -181,7 +194,7 @@ public class Player : MonoBehaviour
 
     public void UnEquip(RealItem realItem)
     {
-        offensivePower -= realItem.stat.attackPower;
+        //offensivePower -= realItem.stat.attackPower;
         defensivePower -= realItem.stat.defensePower;
         maxHealth -= realItem.stat.health;
         currHealth -= realItem.stat.health;
@@ -191,7 +204,7 @@ public class Player : MonoBehaviour
 
     public void Equip(RealItem realItem)
     {
-        offensivePower += realItem.stat.attackPower;
+        //offensivePower += realItem.stat.attackPower;
         defensivePower += realItem.stat.defensePower;
         maxHealth += realItem.stat.health;
         currHealth += realItem.stat.health;
@@ -201,10 +214,14 @@ public class Player : MonoBehaviour
 
     private void RefreshStat()
     {
-        Inventory.instance.statParent.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Health : " + currHealth + " / " + maxHealth;
-        Inventory.instance.statParent.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Attack : " + (offensivePower + GetWeaponStat());
-        Inventory.instance.statParent.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "Defense : " + defensivePower;
-        Inventory.instance.statParent.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = "Speed : " + playerSpeed;
+        Inventory.instance.statParent.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text =
+            "Health : " + currHealth + " / " + maxHealth;
+        Inventory.instance.statParent.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text =
+            "Attack : " + (offensivePower + GetWeaponStat());
+        Inventory.instance.statParent.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text =
+            "Defense : " + defensivePower;
+        Inventory.instance.statParent.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text =
+            "Speed : " + playerSpeed;
     }
 
     private int GetWeaponStat()
@@ -225,5 +242,41 @@ public class Player : MonoBehaviour
         }
 
         return power;
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        if (collision.transform.CompareTag("Monster"))
+        {
+            Debug.Log("접촉");
+            if (Input.GetMouseButtonDown(0))
+            {
+                Debug.Log("클릭");
+                collision.transform.GetComponent<Monster>().KnockBack();
+            }
+        }
+    }
+
+    public void GetDamage(int damage)
+    {
+        currHealth -= damage;
+        RefreshStat();
+        FarmingManager.Instance.playerCurrentHPBar.value = (float)currHealth / maxHealth;
+
+        if (currHealth <= 0)
+        {
+            animator.SetTrigger("doDie");
+        }
+        
+        //StartCoroutine(Damaged());
+    }
+
+    IEnumerator Damaged()
+    {
+        //flashRed.color = Color.red;
+        yield return new WaitForSeconds(0.1f);
+
+        //if (currHealth > 0)
+        //    flashRed.color = Color.clear;
     }
 }
