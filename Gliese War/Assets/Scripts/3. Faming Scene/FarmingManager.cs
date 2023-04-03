@@ -41,6 +41,7 @@ public class FarmingManager : MonoBehaviour
     public Player managed_player;
 
     public GameObject characterCam;
+    public Slider playerCurrentHPBar;
 
     public static FarmingManager Instance
     {
@@ -72,11 +73,13 @@ public class FarmingManager : MonoBehaviour
 
     void Start()
     {
-        _timeOfInGame = 8.4f;
+        //_timeOfInGame = 8.4f;
+        _timeOfInGame = 6f;
         _timerTxtComp = timerTxt.GetComponent<TextMeshProUGUI>();
         _isNight = false;
         fadeCanvas.transform.GetChild(0).GetComponent<Image>().material.color = new Vector4(0f, 0f, 0f);
-
+        playerCurrentHPBar = playerCurrentHPBar.GetComponent<Slider>();
+        
         SetTimerText();
         UpdateLighting(_timeOfInGame / 24f);
         
@@ -92,10 +95,11 @@ public class FarmingManager : MonoBehaviour
         {
             TimeCheck();
 
-            if (_isNight)
-                _timeOfInGame += 0.1f * 1f * Time.deltaTime;
-            else
-                _timeOfInGame += 0.1f * 0.8f * Time.deltaTime;
+            // if (_isNight)
+            //     _timeOfInGame += 0.1f * 1f * Time.deltaTime;
+            // else
+            //     _timeOfInGame += 0.1f * 0.8f * Time.deltaTime;
+            _timeOfInGame += 0.1f  * 2f * Time.deltaTime;
 
             _timeOfInGame %= 24;
             UpdateLighting(_timeOfInGame / 24f);
@@ -225,7 +229,8 @@ public class FarmingManager : MonoBehaviour
         // RenderSettings.fogColor = Preset.FogoColor.Evaluate(timePercent);
         //
         //DirectionalLight.color = Preset.DirectionColor.Evaluate(timePercent);
-        DirectionalLight.transform.localRotation = Quaternion.Euler(new Vector3((timePercent * 360f) - 90f, -170, 0));
+        //DirectionalLight.transform.localRotation = Quaternion.Euler(new Vector3((timePercent * 360f) - 90f, -170, 0));
+        DirectionalLight.transform.localRotation = Quaternion.Euler(new Vector3((timePercent * 360f) - 80f, -170, 0));
     }
 
     // 낮 밤 이미지 교체 함수
