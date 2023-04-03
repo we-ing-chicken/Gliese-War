@@ -159,8 +159,8 @@ public class Player : MonoBehaviour
 
     private void animate()
     {
-        animator.SetBool("isWalk", moveDirection != Vector3.zero);
-
+        animator.SetBool("isRun", moveDirection != Vector3.zero);
+        
     }
 
     private void Test()
@@ -172,24 +172,22 @@ public class Player : MonoBehaviour
             animator.SetTrigger("doDie");
 
         }
+        //if (Input.GetKeyDown(KeyCode.LeftShift))
+        //{
+        //    Debug.Log("Run-down");
+        //    moveSpeed *= 2.0f;
 
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            Debug.Log("Run-down");
-            moveSpeed *= 2.0f;
+        //    animator.SetBool("isRun", true);
 
-            animator.SetBool("isRun", true);
+        //}
+        //if (Input.GetKeyUp(KeyCode.LeftShift))
+        //{
+        //    Debug.Log("Run-up");
+        //    moveSpeed /= 2.0f;
 
-        }
+        //    animator.SetBool("isRun", false);
 
-        if (Input.GetKeyUp(KeyCode.LeftShift))
-        {
-            Debug.Log("Run-up");
-            moveSpeed /= 2.0f;
-
-            animator.SetBool("isRun", false);
-
-        }
+        //}
     }
 
     public void UnEquip(RealItem realItem)
