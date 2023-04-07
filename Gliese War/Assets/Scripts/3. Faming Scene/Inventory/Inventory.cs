@@ -25,6 +25,8 @@ public class Inventory : MonoBehaviour
     public Item[] spear;
     public Item[] hammer;
 
+    public Sprite[] magicImages;
+
     void Start()
     {
         instance = this;

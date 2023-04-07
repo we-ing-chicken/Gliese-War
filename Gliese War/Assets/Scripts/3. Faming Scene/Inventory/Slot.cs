@@ -36,12 +36,12 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     [SerializeField] private Canvas invenCanvas;
     private GraphicRaycaster raycaster;
     public RealItem realItem;
-    public int itemCount;
-    public Image itemImage;
 
+    public Image itemImage;
     [SerializeField] private Text itemName;
     [SerializeField] private Text stat1Text;
     [SerializeField] private Text stat2Text;
+    [SerializeField] private Image magicImage;
     
     //[SerializeField] private Text textCount;
 
@@ -52,13 +52,6 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         raycaster = invenCanvas.GetComponent<GraphicRaycaster>();
     }
 
-    private void SetColor(float _alpha)
-    {
-        Color color = itemImage.color;
-        color.a = _alpha;
-        itemImage.color = color;
-    }
-
     // 인벤토리에 새로운 아이템 슬롯 추가
     public void AddItem(Item _item)
     {
@@ -67,9 +60,15 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         SetStat(realItem);
         realItem.magic = Magic.Nothing;
         
+        Color color = magicImage.color;
+        color.a = 0;
+        magicImage.color = color;
+        
         itemImage.sprite = realItem.item.itemImage;
         itemName.text = realItem.item.itemName;
         itemName.color = SetNameRankColor(realItem.item.itemRank);
+        magicImage.sprite = null;
+        
         ShowStat(realItem);
     }
     
@@ -79,10 +78,19 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         realItem.item = _item;
         SetStat(realItem);
         SetMagic(realItem);
-        
+
+        if (realItem.magic == Magic.Nothing)
+        {
+            Color color = magicImage.color;
+            color.a = 0;
+            magicImage.color = color;
+        }
+
         itemImage.sprite = realItem.item.itemImage;
         itemName.text = realItem.item.itemName;
         itemName.color = SetNameRankColor(realItem.item.itemRank);
+        magicImage.sprite = SetMagicImage(realItem);
+
         ShowStat(realItem);
     }
 
@@ -93,9 +101,17 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         realItem.stat = _realItem.stat;
         realItem.magic = _realItem.magic;
         
+        if (realItem.magic == Magic.Nothing)
+        {
+            Color color = magicImage.color;
+            color.a = 0;
+            magicImage.color = color;
+        }
+        
         itemImage.sprite = realItem.item.itemImage;
         itemName.text = realItem.item.itemName;
         itemName.color = SetNameRankColor(realItem.item.itemRank);
+        magicImage.sprite = SetMagicImage(realItem);
         ShowStat(realItem);
     }
 
@@ -225,6 +241,25 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         }
     }
 
+    private Sprite SetMagicImage(RealItem realItem)
+    {
+        switch (realItem.magic)
+        {
+            case Magic.Ice:
+                return Inventory.instance.magicImages[0];
+
+            case Magic.Fire:
+                return Inventory.instance.magicImages[1];
+            
+            case Magic.Toxic:
+                return Inventory.instance.magicImages[2];
+            
+            case Magic.Nothing:
+                return null;
+        }
+
+        return null;
+    }
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Right)
@@ -255,7 +290,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         {
             
             Equip temp = hitObject.GetComponent<Equip>();
-            temp.SetImage(DragSlot.instance.dragedSlot.realItem.item);
+            temp.SetImage(DragSlot.instance.dragedSlot.realItem);
             Inventory.instance.DeleteItem(DragSlot.instance.dragedSlot);
             
             switch (DragSlot.instance.dragedSlot.realItem.item.itemCategory)
