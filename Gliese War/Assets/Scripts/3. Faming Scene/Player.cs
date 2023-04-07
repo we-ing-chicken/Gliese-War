@@ -11,7 +11,6 @@ using UnityEngine.UIElements;
 public class Player : MonoBehaviour
 {
     static public Player instance;
-    public float moveSpeed = 5f; // �յ� �������� �ӵ�
     private float Gravity = 9.8f;
     public int life;
     public float MouseX;
@@ -27,7 +26,7 @@ public class Player : MonoBehaviour
     public int defensivePower;
     public int maxHealth;
     public int currHealth;
-    public int playerSpeed;
+    public int moveSpeed; // �յ� �������� �ӵ�
     [SerializeField] private Animator animator;
 
     public List<Item> items;
@@ -72,7 +71,7 @@ public class Player : MonoBehaviour
         defensivePower = 10;
         maxHealth = 100;
         currHealth = 100;
-        playerSpeed = 5;
+        moveSpeed = 8;
 
         //flashRed = GetComponent<MeshRenderer>().material;
 
@@ -197,7 +196,7 @@ public class Player : MonoBehaviour
         defensivePower -= realItem.stat.defensePower;
         maxHealth -= realItem.stat.health;
         currHealth -= realItem.stat.health;
-        playerSpeed -= realItem.stat.moveSpeed;
+        moveSpeed -= realItem.stat.moveSpeed;
         RefreshStat();
     }
 
@@ -207,7 +206,7 @@ public class Player : MonoBehaviour
         defensivePower += realItem.stat.defensePower;
         maxHealth += realItem.stat.health;
         currHealth += realItem.stat.health;
-        playerSpeed += realItem.stat.moveSpeed;
+        moveSpeed += realItem.stat.moveSpeed;
         RefreshStat();
     }
 
@@ -220,7 +219,7 @@ public class Player : MonoBehaviour
         Inventory.instance.statParent.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text =
             "Defense : " + defensivePower;
         Inventory.instance.statParent.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text =
-            "Speed : " + playerSpeed;
+            "Speed : " + moveSpeed;
     }
 
     private int GetWeaponStat()
