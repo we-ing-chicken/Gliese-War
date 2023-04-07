@@ -12,6 +12,7 @@ public class Monster : MonoBehaviour
 
     private int HP;
     private int damage;
+    private bool attackCoolTime;
     
     // Start is called before the first frame update
     void Start()
@@ -22,6 +23,7 @@ public class Monster : MonoBehaviour
 
         HP = 100;
         damage = 10;
+        attackCoolTime = false;
     }
 
     // Update is called once per frame
@@ -32,19 +34,22 @@ public class Monster : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.transform.CompareTag("Player"))
+        if (collision.transform.CompareTag("Player") && !attackCoolTime)
         {
+            attackCoolTime = true;
             agent.isStopped = true;
             Debug.Log("어택");
             collision.gameObject.GetComponent<Player>().GetDamage(damage);
-            StartCoroutine(Wait());
+            FarmingManager.Instance.HitScreen();
+            StartCoroutine(AttackWait());
         }
     }
 
-    IEnumerator Wait()
+    IEnumerator AttackWait()
     {
-        yield return new WaitForSeconds(1f);
-        agent.isStopped = false;
+        yield return new WaitForSeconds(2f);
+        attackCoolTime = false;
+        agent.velocity = Vector3.zero;
     }
 
     public void KnockBack()
@@ -53,6 +58,16 @@ public class Monster : MonoBehaviour
         Vector3 dir = transform.position - Player.instance.transform.position;
         dir = dir.normalized;
         dir += Vector3.up;
-        rigid.AddForce(dir,ForceMode.Impulse);
+        agent.enabled = false;
+        rigid.AddForce(dir * 2,ForceMode.VelocityChange);
+        StartCoroutine(KnockBackWait());
+    }
+
+    IEnumerator KnockBackWait()
+    {
+        yield return new WaitForSeconds(3f);
+        rigid.velocity = Vector3.zero;
+        agent.enabled = true;
+        agent.isStopped = false;
     }
 }
