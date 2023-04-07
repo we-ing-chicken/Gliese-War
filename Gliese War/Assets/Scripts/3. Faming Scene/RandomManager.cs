@@ -59,7 +59,7 @@ public static class RandomManager
         float epicTable = ra * (30 + 25 + 25);
         float uniqueTable = ra * (30 + 25 + 25 + 15);
 
-        int Rand = Random.Range(1, (int)ra + 1);
+        int Rand = Random.Range(1, (int)RandAccur + 1);
 
         if (Rand <= normalTable)
             result = Item.ItemRank.Normal;
@@ -71,7 +71,7 @@ public static class RandomManager
             result = Item.ItemRank.Unique;
         else if (uniqueTable < Rand && Rand <= ra)
             result = Item.ItemRank.Legendary;
-
+        
         return result;
     }
 
