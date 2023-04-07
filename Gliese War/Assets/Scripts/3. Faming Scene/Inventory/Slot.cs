@@ -77,7 +77,9 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         realItem = new RealItem();
         realItem.item = _item;
         SetStat(realItem);
-        SetMagic(realItem);
+        
+        if(_item.itemCategory == Item.ItemCategory.Weapon)
+            SetMagic(realItem);
 
         if (realItem.magic == Magic.Nothing)
         {
