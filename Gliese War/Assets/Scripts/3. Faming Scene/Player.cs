@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Animations;
 using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
@@ -250,7 +251,12 @@ public class Player : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 Debug.Log("클릭");
+
+                //Debug.Log(collision.transform.GetComponent<NavMeshAgent>().);
                 collision.transform.GetComponent<Monster>().KnockBack();
+                //Debug.Log(collision.transform.GetComponent<NavMeshAgent>().speed);
+                collision.transform.GetComponent<NavMeshAgent>().enabled = false;
+                collision.transform.GetComponent<NavMeshAgent>().enabled = true;
             }
         }
     }
@@ -264,9 +270,23 @@ public class Player : MonoBehaviour
         if (currHealth <= 0)
         {
             animator.SetTrigger("doDie");
+            StartCoroutine(StartRevive());
         }
         
         //StartCoroutine(Damaged());
+    }
+
+    IEnumerator StartRevive()
+    {
+        yield return new WaitForSeconds(1f);
+
+        currHealth = maxHealth;
+        FarmingManager.Instance.playerCurrentHPBar.value = (float)currHealth / maxHealth;
+        
+        charactercontroller.enabled = false;
+        FarmingManager.Instance.StartFadeOut();
+        instance.transform.position = FarmingManager.Instance.startPostion.transform.position;
+        charactercontroller.enabled = true;
     }
 
     IEnumerator Damaged()

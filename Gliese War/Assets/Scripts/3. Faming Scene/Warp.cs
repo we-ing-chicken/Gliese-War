@@ -43,6 +43,8 @@ public class Warp : MonoBehaviour
                 other.GetComponent<Player>().isNear = false;
                 isLockOn = false;
                 
+                FarmingManager.Instance.StartFadeOut();
+                
                 other.GetComponent<CharacterController>().enabled = false;
                 other.transform.position = warpTo.transform.position;
                 other.GetComponent<CharacterController>().enabled = true;

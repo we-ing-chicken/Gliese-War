@@ -36,12 +36,15 @@ public class FarmingManager : MonoBehaviour
     [Header("Canvas")] public GameObject invenCanvas;
     public Canvas pauseCanvas;
     public Canvas fadeCanvas;
+    public Canvas hitCanvas;
 
     public Inventory inventory;
     public Player managed_player;
 
     public GameObject characterCam;
     public Slider playerCurrentHPBar;
+
+    public GameObject startPostion;
 
     public static FarmingManager Instance
     {
@@ -139,6 +142,8 @@ public class FarmingManager : MonoBehaviour
             inventory.AcquireItem(inventory.hammer[1]);
         else if(Input.GetKeyDown(KeyCode.Alpha3))
             inventory.AcquireItem(inventory.knife[1]);
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+            HitScreen();
 
     }
 
@@ -175,6 +180,7 @@ public class FarmingManager : MonoBehaviour
         
         _isFading = false;
         SwitchCanvasActive(fadeCanvas);
+        
         yield return null;
     }
 
@@ -194,7 +200,8 @@ public class FarmingManager : MonoBehaviour
                 break;
         }
 
-        PlayBattlePhase();
+        if(_playTime >= FARMING_TIME)
+            PlayBattlePhase();
         
         yield return null;
     }
@@ -293,5 +300,34 @@ public class FarmingManager : MonoBehaviour
     public void PlayBattlePhase()
     {
         SceneManager.LoadScene(3);
+    }
+    
+
+    public void StartFadeOut()
+    {
+        StartCoroutine(FadeInOutCoroutine());
+    }
+
+    IEnumerator FadeInOutCoroutine()
+    {
+        StartCoroutine(FadeOut());
+        yield return new WaitForSeconds(3f);
+        StartCoroutine(FadeIn());
+    }
+
+    public void HitScreen()
+    {
+        StartCoroutine(HitCoroutine());
+    }
+
+    IEnumerator HitCoroutine()
+    {
+        for (int i = 0; i < 6; ++i)
+        {
+            SwitchCanvasActive(hitCanvas);
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        yield return null;
     }
 }
