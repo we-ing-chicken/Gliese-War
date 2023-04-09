@@ -28,6 +28,12 @@ public class Player : MonoBehaviour
     public int currHealth;
     public int moveSpeed; // �յ� �������� �ӵ�
     [SerializeField] private Animator animator;
+    [SerializeField] private Transform playertransform;
+    [SerializeField] private Transform leftTarget;
+    [SerializeField] private Transform rightTarget;
+    [SerializeField] private Transform fowardTarget;
+    [SerializeField] private Transform backwardTarget;
+
 
     public List<Item> items;
 
@@ -136,6 +142,28 @@ public class Player : MonoBehaviour
 
     private void Move()
     {
+        if (moveLR < 0)
+        {
+            Debug.Log("Left");
+            playertransform.LookAt(leftTarget);
+        }
+        if (moveLR > 0)
+        {
+            Debug.Log("Right");
+            playertransform.LookAt(rightTarget);
+        }
+        if (moveFB < 0)
+        {
+            Debug.Log("Back");
+            playertransform.LookAt(backwardTarget);
+        }
+        if (moveFB > 0)
+        {
+            Debug.Log("Foward");
+            playertransform.LookAt(fowardTarget);
+        }
+
+
         moveDir = charactercontroller.transform.TransformDirection(new Vector3(moveLR, 0, moveFB)) * moveSpeed;
         moveDirection = transform.right * moveDir.x + transform.forward * moveDir.z;
 
