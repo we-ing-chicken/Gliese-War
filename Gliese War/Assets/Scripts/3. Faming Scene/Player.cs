@@ -113,6 +113,7 @@ public class Player : MonoBehaviour
 
             RefreshStat();
         }
+
     }
 
     private void FixedUpdate()
@@ -172,6 +173,8 @@ public class Player : MonoBehaviour
             animator.SetTrigger("doDie");
 
         }
+        else if (Input.GetKeyDown(KeyCode.Alpha9))
+            StartCoroutine(StartRevive());
         //if (Input.GetKeyDown(KeyCode.LeftShift))
         //{
         //    Debug.Log("Run-down");
@@ -251,10 +254,8 @@ public class Player : MonoBehaviour
             {
                 Debug.Log("클릭");
 
-                //Debug.Log(collision.transform.GetComponent<NavMeshAgent>().);
-                collision.transform.GetComponent<Monster>().KnockBack();
-                //Debug.Log(collision.transform.GetComponent<NavMeshAgent>().speed);
                 collision.transform.GetComponent<NavMeshAgent>().enabled = false;
+                collision.transform.GetComponent<Monster>().KnockBack();
                 collision.transform.GetComponent<NavMeshAgent>().enabled = true;
             }
         }
@@ -286,14 +287,5 @@ public class Player : MonoBehaviour
         FarmingManager.Instance.StartFadeOut();
         instance.transform.position = FarmingManager.Instance.startPostion.transform.position;
         charactercontroller.enabled = true;
-    }
-
-    IEnumerator Damaged()
-    {
-        //flashRed.color = Color.red;
-        yield return new WaitForSeconds(0.1f);
-
-        //if (currHealth > 0)
-        //    flashRed.color = Color.clear;
     }
 }
