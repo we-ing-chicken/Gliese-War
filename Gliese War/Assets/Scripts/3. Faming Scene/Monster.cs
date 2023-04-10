@@ -9,6 +9,7 @@ public class Monster : MonoBehaviour
     private NavMeshAgent agent;
     private Drop drop;
     private Rigidbody rigid;
+    private Animator animator;
 
     private int HP;
     private int damage;
@@ -20,6 +21,7 @@ public class Monster : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         drop = GetComponent<Drop>();
         rigid = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
 
         HP = 100;
         damage = 10;
@@ -37,8 +39,7 @@ public class Monster : MonoBehaviour
         if (collision.transform.CompareTag("Player") && !attackCoolTime)
         {
             attackCoolTime = true;
-            agent.isStopped = true;
-            Debug.Log("어택");
+            agent.enabled = true;
             collision.gameObject.GetComponent<Player>().GetDamage(damage);
             FarmingManager.Instance.HitScreen();
             StartCoroutine(AttackWait());
@@ -69,5 +70,14 @@ public class Monster : MonoBehaviour
         rigid.velocity = Vector3.zero;
         agent.enabled = true;
         agent.isStopped = false;
+    }
+
+    public void EndAttack()
+    {
+        animator.SetBool("isAttack", false);
+        Debug.Log("전 " + agent.isStopped);
+        agent.isStopped = false;
+        Debug.Log("후 " + agent.isStopped);
+        Debug.Log("공격 종료");
     }
 }

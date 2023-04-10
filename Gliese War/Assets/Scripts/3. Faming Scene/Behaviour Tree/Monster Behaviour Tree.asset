@@ -28,10 +28,11 @@ MonoBehaviour:
   - rid: 458450571252989962
   - rid: 458450775185031168
   - rid: 458450775185031171
+  - rid: 5426142890683793408
   treeState: 0
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
-  viewPosition: {x: 196, y: -101, z: 0}
+  viewPosition: {x: 196, y: -196, z: 0}
   viewScale: {x: 0.57175326, y: 0.57175326, z: 1}
   references:
     version: 2
@@ -131,6 +132,7 @@ MonoBehaviour:
         children:
         - rid: 458450571252989959
         - rid: 458450571252989960
+        - rid: 5426142890683793408
     - rid: 458450571252989959
       type: {class: PlayerPosition, ns: , asm: Assembly-CSharp}
       data:
@@ -210,3 +212,14 @@ MonoBehaviour:
         children:
         - rid: 458450775185031168
         - rid: 458450571252989953
+    - rid: 5426142890683793408
+      type: {class: AttackPlayer, ns: , asm: Assembly-CSharp}
+      data:
+        state: 0
+        started: 0
+        guid: ce37195d74caebe4c8dd567321db3cda
+        position: {x: 31.999931, y: 668}
+        blackboard:
+          moveToPosition: {x: 0, y: 0, z: 0}
+        description: 
+        drawGizmos: 0
