@@ -196,9 +196,9 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Comma))
         {
-            Debug.Log("Die");
+            Debug.Log("Jump");
 
-            animator.SetTrigger("doDie");
+            animator.SetTrigger("doJump");
 
         }
         else if (Input.GetKeyDown(KeyCode.Alpha9))

@@ -85,9 +85,10 @@ public class FarmingManager : MonoBehaviour
         
         SetTimerText();
         UpdateLighting(_timeOfInGame / 24f);
-        
-        SwitchCanvasActive(fadeCanvas);
-        StartCoroutine(FadeIn());
+
+        _isFading = false;
+        //SwitchCanvasActive(fadeCanvas);
+        //StartCoroutine(FadeIn());
     }
 
     private void Update()
