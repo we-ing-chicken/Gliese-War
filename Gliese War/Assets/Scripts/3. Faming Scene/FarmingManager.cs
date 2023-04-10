@@ -137,13 +137,13 @@ public class FarmingManager : MonoBehaviour
         }
         
         if(Input.GetKeyDown(KeyCode.Alpha1))
-            inventory.AcquireItem(inventory.spear[1]);
+            inventory.AcquireItem(inventory.shoes[1]);
         else if(Input.GetKeyDown(KeyCode.Alpha2))
             inventory.AcquireItem(inventory.hammer[1]);
         else if(Input.GetKeyDown(KeyCode.Alpha3))
             inventory.AcquireItem(inventory.knife[1]);
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
-            HitScreen();
+        //else 
+            //HitScreen();
 
     }
 
