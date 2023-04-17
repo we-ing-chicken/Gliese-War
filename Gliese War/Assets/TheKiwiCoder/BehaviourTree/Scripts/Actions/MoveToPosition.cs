@@ -30,6 +30,10 @@ public class MoveToPosition : ActionNode {
             context.isFind = true;
             return State.Success;
         }
+        else
+        {
+            context.isFind = false;
+        }
 
         if (context.agent.pathPending) {
             return State.Running;

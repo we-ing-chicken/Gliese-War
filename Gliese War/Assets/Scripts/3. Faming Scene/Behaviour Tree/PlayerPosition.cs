@@ -15,6 +15,7 @@ public class PlayerPosition : ActionNode
     protected override State OnUpdate()
     {
         context.checkDayNight();
+        
         Vector3 pos = context.player.transform.position;
         blackboard.moveToPosition = pos;
         

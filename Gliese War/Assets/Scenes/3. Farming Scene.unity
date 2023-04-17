@@ -7365,6 +7365,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6742727417619552543, guid: f23a7bbfb439bf44082012479e9dfbf2, type: 3}
+      propertyPath: m_CastShadows
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6742727417619552543, guid: f23a7bbfb439bf44082012479e9dfbf2, type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7465083529051144062, guid: f23a7bbfb439bf44082012479e9dfbf2, type: 3}
       propertyPath: m_Name
       value: Woodes001 (2)
@@ -36815,12 +36823,12 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 1
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
     m_Bias: 0.05
-    m_NormalBias: 0.4
+    m_NormalBias: 0
     m_NearPlane: 0.2
     m_CullingMatrixOverride:
       e00: 1
@@ -38781,6 +38789,10 @@ PrefabInstance:
     - target: {fileID: 1172362744909006168, guid: c5846e85683a393429e38a0e6e30e696, type: 3}
       propertyPath: field of view
       value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1172362744909006168, guid: c5846e85683a393429e38a0e6e30e696, type: 3}
+      propertyPath: near clip plane
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1172362744909006168, guid: c5846e85683a393429e38a0e6e30e696, type: 3}
       propertyPath: m_CullingMask.m_Bits
@@ -49996,6 +50008,10 @@ PrefabInstance:
     - target: {fileID: 8509331743778351806, guid: 26b7676588479b5408a7efd1b5ea3af3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8925169942374756045, guid: 26b7676588479b5408a7efd1b5ea3af3, type: 3}
+      propertyPath: m_Mass
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 9033350651017261060, guid: 26b7676588479b5408a7efd1b5ea3af3, type: 3}
       propertyPath: m_Name

@@ -55,13 +55,13 @@ namespace TheKiwiCoder {
             {
                 // 낮
                 findRange = 10;
-                agent.speed = 5;
+                agent.speed = 3;
             }
             else
             {
                 // 밤
                 findRange = 15;
-                agent.speed = 7;
+                agent.speed = 5;
             }
         }
     }
