@@ -31,7 +31,8 @@ public class Monster : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(Input.GetKeyDown(KeyCode.Alpha7))
+            Debug.Log("후 "+agent.isStopped);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -39,7 +40,6 @@ public class Monster : MonoBehaviour
         if (collision.transform.CompareTag("Player") && !attackCoolTime)
         {
             attackCoolTime = true;
-            agent.enabled = true;
             collision.gameObject.GetComponent<Player>().GetDamage(damage);
             FarmingManager.Instance.HitScreen();
             StartCoroutine(AttackWait());
@@ -59,7 +59,6 @@ public class Monster : MonoBehaviour
         Vector3 dir = transform.position - Player.instance.transform.position;
         dir = dir.normalized;
         dir += Vector3.up;
-        agent.enabled = false;
         rigid.AddForce(dir * 2,ForceMode.VelocityChange);
         StartCoroutine(KnockBackWait());
     }
@@ -68,16 +67,21 @@ public class Monster : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
         rigid.velocity = Vector3.zero;
-        agent.enabled = true;
         agent.isStopped = false;
+    }
+
+    public void StartAttack()
+    {
+        Debug.Log("공격 시작");
+        agent.isStopped = true;
+        rigid.constraints = RigidbodyConstraints.FreezePosition;
     }
 
     public void EndAttack()
     {
-        animator.SetBool("isAttack", false);
-        Debug.Log("전 " + agent.isStopped);
         agent.isStopped = false;
-        Debug.Log("후 " + agent.isStopped);
+        rigid.constraints = RigidbodyConstraints.None;
+        animator.SetBool("isAttack", false);
         Debug.Log("공격 종료");
     }
 }
