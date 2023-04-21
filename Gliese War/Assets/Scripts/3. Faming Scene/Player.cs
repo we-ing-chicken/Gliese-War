@@ -33,6 +33,10 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform rightTarget;
     [SerializeField] private Transform fowardTarget;
     [SerializeField] private Transform backwardTarget;
+    [SerializeField] private Transform lbTarget;
+    [SerializeField] private Transform lfTarget;
+    [SerializeField] private Transform rbTarget;
+    [SerializeField] private Transform rfTarget;
 
 
     public List<Item> items;
@@ -143,28 +147,7 @@ public class Player : MonoBehaviour
 
     private void Move()
     {
-        if (moveLR < 0)
-        {
-            Debug.Log("Left");
-            player_Rotate(leftTarget.position);
-        }
-        if (moveLR > 0)
-        {
-            Debug.Log("Right");
-            player_Rotate(rightTarget.position);
-
-        }
-        if (moveFB < 0)
-        {
-            Debug.Log("Back");
-            player_Rotate(backwardTarget.position);
-
-        }
-        if (moveFB > 0)
-        {
-            Debug.Log("Foward");
-            player_Rotate(fowardTarget.position);
-        }
+        player_lookTarget();
 
 
         moveDir = charactercontroller.transform.TransformDirection(new Vector3(moveLR, 0, moveFB)) * moveSpeed;
@@ -187,13 +170,64 @@ public class Player : MonoBehaviour
         MouseX += Input.GetAxis("Mouse X") * mouseSpeed;
         transform.rotation = Quaternion.Euler(0, MouseX, 0);
     }
+    private void player_lookTarget()
+    {
+        if(charactercontroller == null) return;
+        Vector3 target = new Vector3();
+
+        if(moveLR < 0 && moveFB < 0)    // left + back
+        {
+            Debug.Log("Left-Back");
+            player_Rotate(lbTarget.position);
+        }
+        else if (moveLR < 0 && moveFB > 0)    // left + forward
+        {
+            Debug.Log("Left-Foward");
+            player_Rotate(lfTarget.position);
+
+        }
+        else if (moveLR > 0 && moveFB < 0)    // right + back
+        {
+            Debug.Log("Right-Back");
+            player_Rotate(rbTarget.position);
+
+        }
+        else if (moveLR > 0 && moveFB > 0)    // right + forward
+        {
+            Debug.Log("Right-Foward");
+            player_Rotate(rfTarget.position);
+
+        }
+        else if (moveLR < 0)
+        {
+            Debug.Log("Left");
+            player_Rotate(leftTarget.position);
+        }
+        else if (moveLR > 0)
+        {
+            Debug.Log("Right");
+            player_Rotate(rightTarget.position);
+
+        }
+        else if (moveFB < 0)
+        {
+            Debug.Log("Back");
+            player_Rotate(backwardTarget.position);
+
+        }
+        else if (moveFB > 0)
+        {
+            Debug.Log("Foward");
+            player_Rotate(fowardTarget.position);
+        }
+    }
     private void player_Rotate(Vector3 movePoint)
     {
         Vector3 relativePosition = movePoint - transform.position;
 
         Quaternion rotation = Quaternion.LookRotation(relativePosition, Vector3.up);
 
-        playertransform.rotation = rotation;
+        playertransform.rotation = Quaternion.Lerp(playertransform.rotation, rotation, Time.deltaTime * 10);
     }
 
     private void animate()
@@ -204,7 +238,7 @@ public class Player : MonoBehaviour
 
     private void Test()
     {
-        if (Input.GetKeyDown(KeyCode.Comma))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             Debug.Log("Jump");
 
