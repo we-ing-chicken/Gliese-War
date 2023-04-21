@@ -146,22 +146,24 @@ public class Player : MonoBehaviour
         if (moveLR < 0)
         {
             Debug.Log("Left");
-            playertransform.LookAt(leftTarget);
+            player_Rotate(leftTarget.position);
         }
         if (moveLR > 0)
         {
             Debug.Log("Right");
-            playertransform.LookAt(rightTarget);
+            player_Rotate(rightTarget.position);
+
         }
         if (moveFB < 0)
         {
             Debug.Log("Back");
-            playertransform.LookAt(backwardTarget);
+            player_Rotate(backwardTarget.position);
+
         }
         if (moveFB > 0)
         {
             Debug.Log("Foward");
-            playertransform.LookAt(fowardTarget);
+            player_Rotate(fowardTarget.position);
         }
 
 
@@ -184,6 +186,14 @@ public class Player : MonoBehaviour
     {
         MouseX += Input.GetAxis("Mouse X") * mouseSpeed;
         transform.rotation = Quaternion.Euler(0, MouseX, 0);
+    }
+    private void player_Rotate(Vector3 movePoint)
+    {
+        Vector3 relativePosition = movePoint - transform.position;
+
+        Quaternion rotation = Quaternion.LookRotation(relativePosition, Vector3.up);
+
+        playertransform.rotation = rotation;
     }
 
     private void animate()
