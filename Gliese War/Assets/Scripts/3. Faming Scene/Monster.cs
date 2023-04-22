@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -31,18 +32,38 @@ public class Monster : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha7))
-            Debug.Log("후 "+agent.isStopped);
+ 
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.transform.CompareTag("Player") && !attackCoolTime)
+        
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Weapon"))
+        {
+            GetDamage();
+            Debug.Log("맞음");
+        }
+        
+        if (other.transform.CompareTag("Player") && !attackCoolTime)
         {
             attackCoolTime = true;
-            collision.gameObject.GetComponent<Player>().GetDamage(damage);
+            other.gameObject.GetComponent<Player>().GetDamage(damage);
             FarmingManager.Instance.HitScreen();
             StartCoroutine(AttackWait());
+        }
+    }
+
+    private void GetDamage()
+    {
+        HP -= Player.instance.GetAttackPower();
+
+        if (HP <= 0)
+        {
+            Destroy(gameObject);
         }
     }
 

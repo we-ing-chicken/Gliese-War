@@ -13,8 +13,9 @@ public class FarmingManager : MonoBehaviour
     private static FarmingManager _instance;
 
     private bool _isEnd = false;
-    private bool _isPause = false;
-    private bool _isFading = true;
+    public bool _isPause = false;
+    public bool _isFading = true;
+    public bool _isInven = false;
     
     [Header("Timer")]
     [SerializeField] private float fadeTime = 2f;
@@ -116,6 +117,11 @@ public class FarmingManager : MonoBehaviour
                     SwitchCanvasActive(invenCanvas);
                     SwitchGameObjectActive(characterCam);
                 }
+
+                if (_isInven)
+                    _isInven = false;
+                else
+                    _isInven = true;
             }
         }
 
@@ -137,11 +143,17 @@ public class FarmingManager : MonoBehaviour
             }
         }
         
-        if(Input.GetKeyDown(KeyCode.Alpha1))
+        if(Input.GetKeyDown(KeyCode.Alpha3))
+            inventory.AcquireItem(inventory.helmet[1]);
+        else if(Input.GetKeyDown(KeyCode.Alpha4))
+            inventory.AcquireItem(inventory.armor[1]);
+        else if(Input.GetKeyDown(KeyCode.Alpha5))
             inventory.AcquireItem(inventory.shoes[1]);
-        else if(Input.GetKeyDown(KeyCode.Alpha2))
+        else if(Input.GetKeyDown(KeyCode.Alpha6))
             inventory.AcquireItem(inventory.hammer[1]);
-        else if(Input.GetKeyDown(KeyCode.Alpha3))
+        else if(Input.GetKeyDown(KeyCode.Alpha7))
+            inventory.AcquireItem(inventory.spear[1]);
+        else if(Input.GetKeyDown(KeyCode.Alpha8))
             inventory.AcquireItem(inventory.knife[1]);
         //else 
             //HitScreen();
