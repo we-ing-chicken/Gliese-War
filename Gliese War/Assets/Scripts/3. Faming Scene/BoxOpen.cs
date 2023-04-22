@@ -9,6 +9,9 @@ public class BoxOpen : MonoBehaviour
     private Camera mainCamera;
     private bool isLockOn;
     private Drop drop;
+
+    [SerializeField] private GameObject effectPosition;
+    [SerializeField] private GameObject starEffect;
     
     // Start is called before the first frame update
     void Start()
@@ -55,6 +58,7 @@ public class BoxOpen : MonoBehaviour
             {
                 other.GetComponent<Player>().isNear = false;
                 isLockOn = false;
+                Instantiate(starEffect, effectPosition.transform.position, Quaternion.identity);
                 drop.DropItem();
                 Destroy(gameObject);
             }

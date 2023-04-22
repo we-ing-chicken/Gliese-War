@@ -17,10 +17,10 @@ public class Drop : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            DropItem();
-        }
+        // if (Input.GetKeyDown(KeyCode.L))
+        // {
+        //     DropItem();
+        // }
     }
 
     public void DropItem()
@@ -77,8 +77,11 @@ public class Drop : MonoBehaviour
             }
 
             temp.transform.position = transform.position;
-            temp.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+            temp.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
 
+            MeshCollider col = temp.GetComponent<MeshCollider>();
+            col.enabled = true;
+            
             Magnet mag = temp.AddComponent<Magnet>();
             mag.itemCategory = itemCategory;
             
