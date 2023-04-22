@@ -39156,6 +39156,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1120497959, guid: c5846e85683a393429e38a0e6e30e696, type: 3}
+      propertyPath: m_CameraType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1120497959, guid: c5846e85683a393429e38a0e6e30e696, type: 3}
+      propertyPath: m_RendererIndex
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 14390455896828429, guid: c5846e85683a393429e38a0e6e30e696, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -39265,8 +39273,16 @@ PrefabInstance:
       value: 0.31
       objectReference: {fileID: 0}
     - target: {fileID: 1172362744909006168, guid: c5846e85683a393429e38a0e6e30e696, type: 3}
+      propertyPath: m_ClearFlags
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1172362744909006168, guid: c5846e85683a393429e38a0e6e30e696, type: 3}
       propertyPath: field of view
       value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1172362744909006168, guid: c5846e85683a393429e38a0e6e30e696, type: 3}
+      propertyPath: m_TargetDisplay
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1172362744909006168, guid: c5846e85683a393429e38a0e6e30e696, type: 3}
       propertyPath: near clip plane
@@ -39275,6 +39291,10 @@ PrefabInstance:
     - target: {fileID: 1172362744909006168, guid: c5846e85683a393429e38a0e6e30e696, type: 3}
       propertyPath: m_CullingMask.m_Bits
       value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: 1172362744909006168, guid: c5846e85683a393429e38a0e6e30e696, type: 3}
+      propertyPath: m_AllowDynamicResolution
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1172362744909006169, guid: c5846e85683a393429e38a0e6e30e696, type: 3}
       propertyPath: distance
@@ -39314,7 +39334,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2666388670586555565, guid: c5846e85683a393429e38a0e6e30e696, type: 3}
       propertyPath: m_RootOrder
-      value: 13
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2666388670586555565, guid: c5846e85683a393429e38a0e6e30e696, type: 3}
       propertyPath: m_LocalPosition.y
@@ -39358,7 +39378,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4113905645314562067, guid: c5846e85683a393429e38a0e6e30e696, type: 3}
       propertyPath: m_RootOrder
-      value: 14
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 4113905645314562067, guid: c5846e85683a393429e38a0e6e30e696, type: 3}
       propertyPath: m_LocalPosition.y
@@ -39482,7 +39502,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8126428843260526594, guid: c5846e85683a393429e38a0e6e30e696, type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 8126428843260526594, guid: c5846e85683a393429e38a0e6e30e696, type: 3}
       propertyPath: m_LocalPosition.y
@@ -39546,7 +39566,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8423574705613894597, guid: c5846e85683a393429e38a0e6e30e696, type: 3}
       propertyPath: m_RootOrder
-      value: 15
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8423574705613894597, guid: c5846e85683a393429e38a0e6e30e696, type: 3}
       propertyPath: m_LocalPosition.y
@@ -39586,6 +39606,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1172362743485236770, guid: c5846e85683a393429e38a0e6e30e696, type: 3}
+    - {fileID: 1120497959, guid: c5846e85683a393429e38a0e6e30e696, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c5846e85683a393429e38a0e6e30e696, type: 3}
 --- !u!114 &1078860028 stripped
 MonoBehaviour:
@@ -78774,7 +78795,7 @@ Camera:
   m_FOVAxisMode: 0
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
-  m_FocalLength: 50
+  m_FocalLength: 20.78461
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -78783,7 +78804,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 60.000004
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
