@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8849241033247127492}
   - component: {fileID: 6713220647961592590}
   - component: {fileID: -4590056182119552377}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Helmat
   m_TagString: Untagged
   m_Icon: {fileID: 0}

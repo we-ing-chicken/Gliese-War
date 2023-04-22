@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1218223703941408871}
   - component: {fileID: 1196242704178419858}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sword_bone001
   m_TagString: Weapon
   m_Icon: {fileID: 0}

@@ -125,7 +125,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6533025462815641042}
   - component: {fileID: 4245360809149687866}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Hammer_bone001
   m_TagString: Weapon
   m_Icon: {fileID: 0}
