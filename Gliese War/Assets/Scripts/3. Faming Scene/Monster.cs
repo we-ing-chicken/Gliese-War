@@ -122,13 +122,19 @@ public class Monster : MonoBehaviour
         Debug.Log("몬스터 공격 시작");
         agent.isStopped = true;
         rigid.constraints = RigidbodyConstraints.FreezePosition;
+
+        StartCoroutine(EndAttack());
     }
 
-    public void EndAttack()
+    IEnumerator EndAttack()
     {
+        yield return new WaitForSeconds(1.05f);
+        
         agent.isStopped = false;
         rigid.constraints = RigidbodyConstraints.None;
         animator.SetBool("isAttack", false);
         Debug.Log("몬스터 공격 종료");
+        
+        yield return null;
     }
 }
