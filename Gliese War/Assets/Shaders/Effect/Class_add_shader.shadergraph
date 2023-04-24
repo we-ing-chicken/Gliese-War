@@ -8,6 +8,9 @@
         },
         {
             "m_Id": "3798c5c304514350b79e850c1d44d7bc"
+        },
+        {
+            "m_Id": "4d6ebf088c9a4d6dba1aab574eb560aa"
         }
     ],
     "m_Keywords": [],
@@ -475,6 +478,9 @@
         },
         {
             "m_Id": "3798c5c304514350b79e850c1d44d7bc"
+        },
+        {
+            "m_Id": "4d6ebf088c9a4d6dba1aab574eb560aa"
         }
     ]
 }
@@ -605,6 +611,33 @@
         "e31": 0.0,
         "e32": 0.0,
         "e33": 1.0
+    }
+}
+
+{
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector2ShaderProperty",
+    "m_ObjectId": "4d6ebf088c9a4d6dba1aab574eb560aa",
+    "m_Guid": {
+        "m_GuidSerialized": "c554f17d-9456-47dc-97f8-2d87e2ff3596"
+    },
+    "m_Name": "Tiling_offset",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "Tiling_offset",
+    "m_DefaultReferenceName": "_Tiling_offset",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
     }
 }
 
