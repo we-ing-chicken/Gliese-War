@@ -38,6 +38,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform lfTarget;
     [SerializeField] private Transform rbTarget;
     [SerializeField] private Transform rfTarget;
+    [SerializeField] private bool ignoreGravity = false;
 
 
     public List<Item> items;
@@ -78,6 +79,8 @@ public class Player : MonoBehaviour
     {
         instance = this;
         charactercontroller = GetComponent<CharacterController>();
+        //if (ignoreGravity)
+        //    charactercontroller.
         moveDir = Vector3.zero;
         rot = 1.0f;
         isNear = false;
@@ -153,14 +156,15 @@ public class Player : MonoBehaviour
         if (charactercontroller == null) return;
         Look();
 
-        if (charactercontroller.isGrounded)
+        if (!charactercontroller.isGrounded)
         {
-            Move();
-            if (p_Jump) Jump();
+            if(!ignoreGravity)
+                Fall();
         }
         else
         {
-            Fall();
+            Move();
+            if (p_Jump) Jump();
         }
 
         charactercontroller.Move(moveDir * Time.deltaTime);
