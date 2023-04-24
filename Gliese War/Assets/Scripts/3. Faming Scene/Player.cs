@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Animations;
@@ -33,6 +34,10 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform rightTarget;
     [SerializeField] private Transform fowardTarget;
     [SerializeField] private Transform backwardTarget;
+    [SerializeField] private Transform lbTarget;
+    [SerializeField] private Transform lfTarget;
+    [SerializeField] private Transform rbTarget;
+    [SerializeField] private Transform rfTarget;
 
 
     public List<Item> items;
@@ -44,10 +49,15 @@ public class Player : MonoBehaviour
     public RealItem weapon2;
     public int weaponNow = 1;
 
+    [SerializeField] private GameObject head;
+    [SerializeField] private GameObject body;
+    [SerializeField] private GameObject footL;
+    [SerializeField] private GameObject footR;
+    public GameObject handR;
+
+    public bool isAttack = false;
+
     private CharacterController charactercontroller;
-
-    public Material flashRed;
-
 
     public float moveFB { get; private set; } // ������ �����̵� �Է°�
     public float moveLR { get; private set; } // ������ �¿��̵� �Է°�
@@ -110,18 +120,34 @@ public class Player : MonoBehaviour
         animate();
         Test();
 
-        if (Input.GetKeyDown(KeyCode.O))
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            if (weaponNow == 1)
-                weaponNow = 2;
-            else
-                weaponNow = 1;
-
+            weaponNow = 1;
+            
+            if(weapon1 != null)
+                EquipWeapon();
+            
+            RefreshStat();
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            weaponNow = 2;
+            if(weapon2 != null)
+                EquipWeapon();
+            
             RefreshStat();
         }
 
-    }
+        if (!FarmingManager.Instance._isInven && !isAttack)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                AttackAnimation();
+            }
+        }
 
+    }
+    
     private void FixedUpdate()
     {
         if (charactercontroller == null) return;
@@ -143,26 +169,7 @@ public class Player : MonoBehaviour
 
     private void Move()
     {
-        if (moveLR < 0)
-        {
-            Debug.Log("Left");
-            playertransform.LookAt(leftTarget);
-        }
-        if (moveLR > 0)
-        {
-            Debug.Log("Right");
-            playertransform.LookAt(rightTarget);
-        }
-        if (moveFB < 0)
-        {
-            Debug.Log("Back");
-            playertransform.LookAt(backwardTarget);
-        }
-        if (moveFB > 0)
-        {
-            Debug.Log("Foward");
-            playertransform.LookAt(fowardTarget);
-        }
+        player_lookTarget();
 
 
         moveDir = charactercontroller.transform.TransformDirection(new Vector3(moveLR, 0, moveFB)) * moveSpeed;
@@ -185,6 +192,65 @@ public class Player : MonoBehaviour
         MouseX += Input.GetAxis("Mouse X") * mouseSpeed;
         transform.rotation = Quaternion.Euler(0, MouseX, 0);
     }
+    private void player_lookTarget()
+    {
+        if(charactercontroller == null) return;
+        Vector3 target = new Vector3();
+
+        if(moveLR < 0 && moveFB < 0)    // left + back
+        {
+            Debug.Log("Left-Back");
+            player_Rotate(lbTarget.position);
+        }
+        else if (moveLR < 0 && moveFB > 0)    // left + forward
+        {
+            Debug.Log("Left-Foward");
+            player_Rotate(lfTarget.position);
+
+        }
+        else if (moveLR > 0 && moveFB < 0)    // right + back
+        {
+            Debug.Log("Right-Back");
+            player_Rotate(rbTarget.position);
+
+        }
+        else if (moveLR > 0 && moveFB > 0)    // right + forward
+        {
+            Debug.Log("Right-Foward");
+            player_Rotate(rfTarget.position);
+
+        }
+        else if (moveLR < 0)
+        {
+            Debug.Log("Left");
+            player_Rotate(leftTarget.position);
+        }
+        else if (moveLR > 0)
+        {
+            Debug.Log("Right");
+            player_Rotate(rightTarget.position);
+
+        }
+        else if (moveFB < 0)
+        {
+            Debug.Log("Back");
+            player_Rotate(backwardTarget.position);
+
+        }
+        else if (moveFB > 0)
+        {
+            Debug.Log("Foward");
+            player_Rotate(fowardTarget.position);
+        }
+    }
+    private void player_Rotate(Vector3 movePoint)
+    {
+        Vector3 relativePosition = movePoint - transform.position;
+
+        Quaternion rotation = Quaternion.LookRotation(relativePosition, Vector3.up);
+
+        playertransform.rotation = Quaternion.Lerp(playertransform.rotation, rotation, Time.deltaTime * 10);
+    }
 
     private void animate()
     {
@@ -192,9 +258,53 @@ public class Player : MonoBehaviour
         
     }
 
+    private void AttackAnimation()
+    {
+        if (weaponNow == 1)
+        {
+            if (weapon1 == null)
+                return;
+            
+            switch (weapon1.item.weaponType)
+            {
+                case Item.WeaponType.Hammer:
+                    animator.SetTrigger("attackHammer");
+                    break;
+                
+                case Item.WeaponType.Knife:
+                    animator.SetTrigger("attackSword");
+                    break;
+                
+                case Item.WeaponType.Spear:
+                    animator.SetTrigger("attackSpear");
+                    break;
+            }
+        }
+        else if (weaponNow == 2)
+        {
+            if (weapon2 == null)
+                return;
+            
+            switch (weapon2.item.weaponType)
+            {
+                case Item.WeaponType.Hammer:
+                    animator.SetTrigger("attackHammer");
+                    break;
+                
+                case Item.WeaponType.Knife:
+                    animator.SetTrigger("attackSword");
+                    break;
+                
+                case Item.WeaponType.Spear:
+                    animator.SetTrigger("attackSpear");
+                    break;
+            }
+        }
+    }
+
     private void Test()
     {
-        if (Input.GetKeyDown(KeyCode.Comma))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             Debug.Log("Jump");
 
@@ -273,6 +383,133 @@ public class Player : MonoBehaviour
         return power;
     }
 
+    public void WearHelmet()
+    {
+        if (head.transform.childCount == 1)
+            Destroy(head.transform.GetChild(0).gameObject);
+        
+        GameObject temp = Instantiate(Inventory.instance.helmet[0].itemPrefab, head.transform);
+        //temp.transform.position = new Vector3(-0.15f, 0.65f, 0f);
+        temp.transform.localEulerAngles = new Vector3(0f,-90f,180f);
+        temp.transform.localScale = new Vector3(0.16f, 0.16f, 0.16f);
+    }
+
+    public void WearArmor()
+    {
+        if (body.transform.childCount == 1)
+            Destroy(body.transform.GetChild(0).gameObject);
+
+        GameObject temp = Instantiate(Inventory.instance.armor[0].itemPrefab, body.transform);
+        //temp.transform.position = new Vector3(0f, 0.15f, 0f);
+        temp.transform.localEulerAngles = new Vector3(0,-90f,180f);
+        temp.transform.localScale = new Vector3(0.15f, 0.18f, 0.17f);
+    }
+
+    public void WearShoe()
+    {
+        if (footL.transform.childCount == 1)
+        {
+            Destroy(footL.transform.GetChild(0).gameObject);
+            Destroy(footL.transform.GetChild(0).gameObject);
+        }
+
+        GameObject temp = Instantiate(Inventory.instance.shoes[0].itemPrefab, footL.transform);
+        //temp.transform.position += new Vector3(0f, 0.2f, -0.05f);
+        temp.transform.localEulerAngles = new Vector3(0,90f,180f);
+        temp.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
+        
+        GameObject temp2 = Instantiate(Inventory.instance.shoes[0].itemPrefab, footR.transform);
+        //temp2.transform.position += new Vector3(0.05f, 0f, 0.05f);
+        temp2.transform.localEulerAngles = new Vector3(0,90f,180f);
+        temp2.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
+    }
+
+    public void EquipWeapon()
+    {
+        
+        if (handR.transform.childCount == 1)
+            Destroy(handR.transform.GetChild(0).gameObject);
+        
+        if (weaponNow == 1)
+        {
+            if (weapon1 == null)
+                return;
+            
+            switch (weapon1.item.weaponType)
+            {
+                case Item.WeaponType.Hammer:
+                    EquipHammer();
+                    break;
+                
+                case Item.WeaponType.Knife:
+                    EquipKnife();
+                    break;
+                
+                case Item.WeaponType.Spear:
+                    EquipSpear();
+                    break;
+            }
+        }
+        else if (weaponNow == 2)
+        {
+            if (weapon2 == null)
+                return;
+            
+            switch (weapon2.item.weaponType)
+            {
+                case Item.WeaponType.Hammer:
+                    EquipHammer();
+                    break;
+                
+                case Item.WeaponType.Knife:
+                    EquipKnife();
+                    break;
+                
+                case Item.WeaponType.Spear:
+                    EquipSpear();
+                    break;
+            }
+        }
+    }
+
+    private void EquipHammer()
+    {
+        GameObject temp = Instantiate(Inventory.instance.hammer[0].itemPrefab, handR.transform);
+        //temp.transform.localEulerAngles = new Vector3(90,45f,90f);
+        //temp.transform.localScale = new Vector3(0f, 0f, 0f);
+    }
+
+    private void EquipKnife()
+    {
+        GameObject temp = Instantiate(Inventory.instance.knife[0].itemPrefab, handR.transform);
+        //temp.transform.localEulerAngles = new Vector3(100,120f,90f);
+        //temp.transform.localScale = new Vector3(0f, 0f, 0f);
+    }
+
+    private void EquipSpear()
+    {
+        GameObject temp = Instantiate(Inventory.instance.spear[0].itemPrefab, handR.transform);
+        //temp.transform.localEulerAngles = new Vector3(100f,120f,90f);
+        //temp.transform.localScale = new Vector3(0f, 0f, 0f);
+    }
+    
+    public void UnwearHelmet()
+    {
+        Destroy(head.transform.GetChild(1).gameObject);
+    }
+    
+    public void UnwearArmor()
+    {
+        Destroy(body.transform.GetChild(1).gameObject);
+    }
+    
+    public void UnwearShoes()
+    {
+        Destroy(footL.transform.GetChild(1).gameObject);
+        Destroy(footR.transform.GetChild(1).gameObject);
+    }
+    
+
     private void OnCollisionStay(Collision collision)
     {
         if (collision.transform.CompareTag("Monster"))
@@ -302,6 +539,11 @@ public class Player : MonoBehaviour
         }
         
         //StartCoroutine(Damaged());
+    }
+
+    public int GetAttackPower()
+    {
+        return (offensivePower + GetWeaponStat());
     }
 
     IEnumerator StartRevive()

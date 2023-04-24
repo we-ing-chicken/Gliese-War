@@ -306,6 +306,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
                     }
                     Player.instance.helmet = DragSlot.instance.dragedSlot.realItem;
                     Player.instance.Equip(DragSlot.instance.dragedSlot.realItem);
+                    Player.instance.WearHelmet();
                 }
                     break;
 
@@ -318,6 +319,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
                     }
                     Player.instance.armor = DragSlot.instance.dragedSlot.realItem;
                     Player.instance.Equip(DragSlot.instance.dragedSlot.realItem);
+                    Player.instance.WearArmor();
                 }
                     break;
 
@@ -330,6 +332,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
                     }
                     Player.instance.shoe = DragSlot.instance.dragedSlot.realItem;
                     Player.instance.Equip(DragSlot.instance.dragedSlot.realItem);
+                    Player.instance.WearShoe();
                 }
                     break;
 
@@ -344,6 +347,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
                         }
                         Player.instance.weapon1 = DragSlot.instance.dragedSlot.realItem;
                         Player.instance.Equip(DragSlot.instance.dragedSlot.realItem);
+                        Player.instance.EquipWeapon();
                     }
                     else if (hitObject.name == "Weapon2")
                     {
@@ -354,6 +358,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
                         }
                         Player.instance.weapon2 = DragSlot.instance.dragedSlot.realItem;
                         Player.instance.Equip(DragSlot.instance.dragedSlot.realItem);
+                        Player.instance.EquipWeapon();
                     }
                     
                     

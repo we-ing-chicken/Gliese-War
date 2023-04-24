@@ -17,4 +17,4 @@ MonoBehaviour:
   itemCategory: 1
   weaponType: 3
   itemImage: {fileID: 21300000, guid: 8913dc83c6d1e4a4ba29d558f179ae8b, type: 3}
-  itemPrefab: {fileID: 4825459710859797779, guid: 0d8db60590ef315409e8d2b169a5e137, type: 3}
+  itemPrefab: {fileID: 6716196244006299172, guid: eb8aa5b1a4c8c9040b363a33958a094a, type: 3}
