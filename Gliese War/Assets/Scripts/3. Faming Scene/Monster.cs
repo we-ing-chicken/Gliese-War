@@ -32,7 +32,7 @@ public class Monster : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
- 
+        
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -45,7 +45,7 @@ public class Monster : MonoBehaviour
         if (other.CompareTag("Weapon"))
         {
             GetDamage();
-            Debug.Log("맞음");
+            KnockBack();
         }
         
         if (other.transform.CompareTag("Player") && !attackCoolTime)
@@ -60,11 +60,35 @@ public class Monster : MonoBehaviour
     private void GetDamage()
     {
         HP -= Player.instance.GetAttackPower();
-
+        StartCoroutine(HitColor());
         if (HP <= 0)
         {
             Destroy(gameObject);
         }
+    }
+
+    IEnumerator HitColor()
+    {
+        Material mat = transform.GetChild(1).GetComponent<SkinnedMeshRenderer>().material;
+        Color before = mat.color;
+        bool flag = true;
+        
+        for (int i = 0; i < 6; ++i)
+        {
+            if (flag)
+            {
+                mat.color = Color.red;
+                flag = false;
+            }
+            else
+            {
+                mat.color = before;
+                flag = true;
+            }
+            yield return new WaitForSeconds(0.1f);
+        }
+        
+        yield return null;
     }
 
     IEnumerator AttackWait()
@@ -77,10 +101,12 @@ public class Monster : MonoBehaviour
     public void KnockBack()
     {
         Debug.Log("넛백");
+        if(agent != null)
+            agent.isStopped = true;
         Vector3 dir = transform.position - Player.instance.transform.position;
         dir = dir.normalized;
         dir += Vector3.up;
-        rigid.AddForce(dir * 2,ForceMode.VelocityChange);
+        rigid.AddForce(dir * 10,ForceMode.VelocityChange);
         StartCoroutine(KnockBackWait());
     }
 
@@ -93,7 +119,7 @@ public class Monster : MonoBehaviour
 
     public void StartAttack()
     {
-        Debug.Log("공격 시작");
+        Debug.Log("몬스터 공격 시작");
         agent.isStopped = true;
         rigid.constraints = RigidbodyConstraints.FreezePosition;
     }
@@ -103,6 +129,6 @@ public class Monster : MonoBehaviour
         agent.isStopped = false;
         rigid.constraints = RigidbodyConstraints.None;
         animator.SetBool("isAttack", false);
-        Debug.Log("공격 종료");
+        Debug.Log("몬스터 공격 종료");
     }
 }

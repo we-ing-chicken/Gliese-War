@@ -1,24 +1,122 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class WeaponAttack : MonoBehaviour
 {
+    private MeshCollider col;
+    
     public void AttackStart()
-    { 
-        MeshCollider col= Player.instance.handR.transform.GetChild(0).GetComponent<MeshCollider>();
-        col.enabled = true;
+    {
+        if (Player.instance.weaponNow == 1)
+        {
+            switch (Player.instance.weapon1.item.weaponType)
+            {
+                case Item.WeaponType.Hammer:
+                    TurnOnHandHammer();
+                    StartCoroutine(TurnOffHandHammer());
+                    break;
+                
+                case Item.WeaponType.Knife:
+                    TurnOnHandKnife();
+                    StartCoroutine(TurnOffHandKnife());
+                    break;
+                
+                case Item.WeaponType.Spear:
+                    TurnOnHandSpear();
+                    StartCoroutine(TurnOffHandSpear());
+                    break;
+            }
+        }
+        else if (Player.instance.weaponNow == 2)
+        {
+
+            switch (Player.instance.weapon2.item.weaponType)
+            {
+                case Item.WeaponType.Hammer:
+                    TurnOnHandHammer();
+                    StartCoroutine(TurnOffHandHammer());
+                    break;
+                
+                case Item.WeaponType.Knife:
+                    TurnOnHandKnife();
+                    StartCoroutine(TurnOffHandKnife());
+                    break;
+                
+                case Item.WeaponType.Spear:
+                    TurnOnHandSpear();
+                    StartCoroutine(TurnOffHandSpear());
+                    break;
+            }
+        }
 
         Player.instance.isAttack = true;
-        Debug.Log("공격 시작");
     }
 
-    public void AttackEnd()
+    public void TurnOnHandHammer()
     {
-        MeshCollider col= Player.instance.handR.transform.GetChild(0).GetComponent<MeshCollider>();
+        Player.instance.handR.transform.GetChild(0).gameObject.SetActive(true);
+        Player.instance.back.transform.GetChild(0).gameObject.SetActive(false);
+        
+        col = Player.instance.handR.transform.GetChild(0).GetComponent<MeshCollider>();
+        col.enabled = true;
+    }
+    
+    public void TurnOnHandSpear()
+    {
+        Player.instance.handR.transform.GetChild(1).gameObject.SetActive(true);
+        Player.instance.back.transform.GetChild(1).gameObject.SetActive(false);
+        
+        col = Player.instance.handR.transform.GetChild(1).GetComponent<MeshCollider>();
+        col.enabled = true;
+    }
+    
+    public void TurnOnHandKnife()
+    {
+        Player.instance.handR.transform.GetChild(2).gameObject.SetActive(true);
+        Player.instance.back.transform.GetChild(2).gameObject.SetActive(false);
+        
+        col = Player.instance.handR.transform.GetChild(2).GetComponent<MeshCollider>();
+        col.enabled = true;
+    }
+
+    IEnumerator TurnOffHandHammer()
+    {
+        yield return new WaitForSeconds(1f);
+        
+        col = Player.instance.handR.transform.GetChild(0).GetComponent<MeshCollider>();
         col.enabled = false;
         
+        Player.instance.handR.transform.GetChild(0).gameObject.SetActive(false);
+        Player.instance.back.transform.GetChild(0).gameObject.SetActive(true);
+        
         Player.instance.isAttack = false;
-        Debug.Log("공격 끝");
+    }
+    
+    IEnumerator TurnOffHandSpear()
+    {
+        yield return new WaitForSeconds(1f);
+        
+        col = Player.instance.handR.transform.GetChild(1).GetComponent<MeshCollider>();
+        col.enabled = false;
+        
+        Player.instance.handR.transform.GetChild(1).gameObject.SetActive(false);
+        Player.instance.back.transform.GetChild(1).gameObject.SetActive(true);
+        
+        Player.instance.isAttack = false;
+    }
+    
+    IEnumerator TurnOffHandKnife()
+    {
+        yield return new WaitForSeconds(1f);
+        
+        col = Player.instance.handR.transform.GetChild(2).GetComponent<MeshCollider>();
+        col.enabled = false;
+        
+        Player.instance.handR.transform.GetChild(2).gameObject.SetActive(false);
+        Player.instance.back.transform.GetChild(2).gameObject.SetActive(true);
+        
+        Player.instance.isAttack = false;
     }
 }
