@@ -12,6 +12,8 @@ public class BoxOpen : MonoBehaviour
 
     [SerializeField] private GameObject effectPosition;
     [SerializeField] private GameObject starEffect;
+
+    private Animator anim;
     
     // Start is called before the first frame update
     void Start()
@@ -22,6 +24,8 @@ public class BoxOpen : MonoBehaviour
         //mainCamera = Player.instance.gameObject.transform.GetChild(0).GetComponent<Camera>();
         mainCamera = Camera.main;
         drop = gameObject.GetComponent<Drop>();
+
+        anim = transform.GetChild(1).GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -59,8 +63,9 @@ public class BoxOpen : MonoBehaviour
                 other.GetComponent<Player>().isNear = false;
                 isLockOn = false;
                 Instantiate(starEffect, effectPosition.transform.position, Quaternion.identity);
-                drop.DropItem();
-                Destroy(gameObject);
+                anim.SetTrigger("Open");
+                
+                StartCoroutine(AfterOpen());
             }
         }
     }
@@ -73,5 +78,12 @@ public class BoxOpen : MonoBehaviour
             isLockOn = false;
             keyButtonImage.SetActive(false);
         }
+    }
+
+    IEnumerator AfterOpen()
+    {
+        yield return new WaitForSeconds(1.01f);
+        drop.DropItem();
+        Destroy(gameObject);
     }
 }
