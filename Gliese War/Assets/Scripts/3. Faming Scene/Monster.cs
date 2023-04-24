@@ -63,7 +63,8 @@ public class Monster : MonoBehaviour
         StartCoroutine(HitColor());
         if (HP <= 0)
         {
-            Destroy(gameObject);
+            //Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 
