@@ -38,6 +38,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform lfTarget;
     [SerializeField] private Transform rbTarget;
     [SerializeField] private Transform rfTarget;
+    [SerializeField] private bool ignoreGravity = false;
 
 
     public List<Item> items;
@@ -54,6 +55,10 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject footL;
     [SerializeField] private GameObject footR;
     public GameObject handR;
+    public GameObject back;
+    
+    [SerializeField] private GameObject attackEffectPos;
+    [SerializeField] private GameObject[] attackEffect;
 
     public bool isAttack = false;
 
@@ -78,6 +83,8 @@ public class Player : MonoBehaviour
     {
         instance = this;
         charactercontroller = GetComponent<CharacterController>();
+        //if (ignoreGravity)
+        //    charactercontroller.
         moveDir = Vector3.zero;
         rot = 1.0f;
         isNear = false;
@@ -143,9 +150,9 @@ public class Player : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 AttackAnimation();
+                AttackEffect();
             }
         }
-
     }
     
     private void FixedUpdate()
@@ -153,14 +160,15 @@ public class Player : MonoBehaviour
         if (charactercontroller == null) return;
         Look();
 
-        if (charactercontroller.isGrounded)
+        if (!charactercontroller.isGrounded)
         {
-            Move();
-            if (p_Jump) Jump();
+            if(!ignoreGravity)
+                Fall();
         }
         else
         {
-            Fall();
+            Move();
+            if (p_Jump) Jump();
         }
 
         charactercontroller.Move(moveDir * Time.deltaTime);
@@ -302,12 +310,68 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void AttackEffect()
+    {
+        if (weaponNow == 1)
+        {
+            if (weapon1 == null)
+                return;
+            
+            switch (weapon1.item.weaponType)
+            {
+                case Item.WeaponType.Hammer:
+                    //Instantiate(attackEffect[0], attackEffectPos.transform);
+                    break;
+                
+                case Item.WeaponType.Knife:
+                    attackEffectPos.transform.GetChild(0).gameObject.SetActive(true);
+                    StartCoroutine(QuitAttackEffect(0));
+                    
+                    break;
+                
+                case Item.WeaponType.Spear:
+                    
+                    break;
+            }
+        }
+        else if (weaponNow == 2)
+        {
+            if (weapon2 == null)
+                return;
+            
+            switch (weapon2.item.weaponType)
+            {
+                case Item.WeaponType.Hammer:
+                    //Instantiate(attackEffect[0], attackEffectPos.transform);
+                    break;
+                
+                case Item.WeaponType.Knife:
+                    attackEffectPos.transform.GetChild(0).gameObject.SetActive(true);
+                    QuitAttackEffect(0);
+                    
+                    break;
+                
+                case Item.WeaponType.Spear:
+                    
+                    break;
+            }
+        }
+    }
+
+    IEnumerator QuitAttackEffect(int pos)
+    {
+        yield return new WaitForSeconds(0.5f);
+        attackEffectPos.transform.GetChild(pos).gameObject.SetActive(false);
+        yield return null;
+    }
+
     private void Test()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Debug.Log("Jump");
-
+            isAttack = false;
+           
             animator.SetTrigger("doJump");
 
         }
@@ -474,23 +538,23 @@ public class Player : MonoBehaviour
 
     private void EquipHammer()
     {
-        GameObject temp = Instantiate(Inventory.instance.hammer[0].itemPrefab, handR.transform);
-        //temp.transform.localEulerAngles = new Vector3(90,45f,90f);
-        //temp.transform.localScale = new Vector3(0f, 0f, 0f);
-    }
-
-    private void EquipKnife()
-    {
-        GameObject temp = Instantiate(Inventory.instance.knife[0].itemPrefab, handR.transform);
-        //temp.transform.localEulerAngles = new Vector3(100,120f,90f);
-        //temp.transform.localScale = new Vector3(0f, 0f, 0f);
+        back.transform.GetChild(0).gameObject.SetActive(true);
+        back.transform.GetChild(1).gameObject.SetActive(false);
+        back.transform.GetChild(2).gameObject.SetActive(false);
     }
 
     private void EquipSpear()
     {
-        GameObject temp = Instantiate(Inventory.instance.spear[0].itemPrefab, handR.transform);
-        //temp.transform.localEulerAngles = new Vector3(100f,120f,90f);
-        //temp.transform.localScale = new Vector3(0f, 0f, 0f);
+        back.transform.GetChild(1).gameObject.SetActive(true);
+        back.transform.GetChild(0).gameObject.SetActive(false);
+        back.transform.GetChild(2).gameObject.SetActive(false);
+    }
+    
+    private void EquipKnife()
+    {
+        back.transform.GetChild(2).gameObject.SetActive(true);
+        back.transform.GetChild(0).gameObject.SetActive(false);
+        back.transform.GetChild(1).gameObject.SetActive(false);
     }
     
     public void UnwearHelmet()
@@ -512,18 +576,18 @@ public class Player : MonoBehaviour
 
     private void OnCollisionStay(Collision collision)
     {
-        if (collision.transform.CompareTag("Monster"))
-        {
-            Debug.Log("접촉");
-            if (Input.GetMouseButtonDown(0))
-            {
-                Debug.Log("클릭");
-
-                collision.transform.GetComponent<NavMeshAgent>().enabled = false;
-                collision.transform.GetComponent<Monster>().KnockBack();
-                collision.transform.GetComponent<NavMeshAgent>().enabled = true;
-            }
-        }
+        // if (collision.transform.CompareTag("Monster"))
+        // {
+        //     Debug.Log("접촉");
+        //     if (Input.GetMouseButtonDown(0))
+        //     {
+        //         Debug.Log("클릭");
+        //
+        //         collision.transform.GetComponent<NavMeshAgent>().enabled = false;
+        //         collision.transform.GetComponent<Monster>().KnockBack();
+        //         collision.transform.GetComponent<NavMeshAgent>().enabled = true;
+        //     }
+        // }
     }
 
     public void GetDamage(int damage)

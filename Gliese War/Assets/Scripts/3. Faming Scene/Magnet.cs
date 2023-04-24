@@ -45,7 +45,7 @@ public class Magnet : MonoBehaviour
         if (other.transform.CompareTag("Player"))
         {
             Item.ItemRank rank = RandomManager.RandomBox(100000000);
-            Debug.Log(rank);
+            
             switch(itemCategory)
             {
                 case Item.ItemCategory.Helmet:
