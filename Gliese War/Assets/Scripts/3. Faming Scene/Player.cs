@@ -208,47 +208,39 @@ public class Player : MonoBehaviour
 
         if(moveLR < 0 && moveFB < 0)    // left + back
         {
-            Debug.Log("Left-Back");
             player_Rotate(lbTarget.position);
         }
         else if (moveLR < 0 && moveFB > 0)    // left + forward
         {
-            Debug.Log("Left-Foward");
             player_Rotate(lfTarget.position);
 
         }
         else if (moveLR > 0 && moveFB < 0)    // right + back
         {
-            Debug.Log("Right-Back");
             player_Rotate(rbTarget.position);
 
         }
         else if (moveLR > 0 && moveFB > 0)    // right + forward
         {
-            Debug.Log("Right-Foward");
             player_Rotate(rfTarget.position);
 
         }
         else if (moveLR < 0)
         {
-            Debug.Log("Left");
             player_Rotate(leftTarget.position);
         }
         else if (moveLR > 0)
         {
-            Debug.Log("Right");
             player_Rotate(rightTarget.position);
 
         }
         else if (moveFB < 0)
         {
-            Debug.Log("Back");
             player_Rotate(backwardTarget.position);
 
         }
         else if (moveFB > 0)
         {
-            Debug.Log("Foward");
             player_Rotate(fowardTarget.position);
         }
     }
