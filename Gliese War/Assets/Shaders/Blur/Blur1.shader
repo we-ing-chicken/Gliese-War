@@ -13,10 +13,10 @@ Shader "Custom/BlurShader"
 
         SubShader
         {
-
+            Tags{ "LightMode" = "UniversalForward" }
             Pass
             {
-                Tags{ "LightMode" = "Always" }
+                
 
                 CGPROGRAM
                 #pragma vertex vert
