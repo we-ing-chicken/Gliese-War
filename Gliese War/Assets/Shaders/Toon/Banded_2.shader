@@ -16,13 +16,16 @@ Shader "Custom/Banded_2"
 	}
 		SubShader
 		{
+			Tags
+				{
+					"LightMode" = "UniversalForward"
+					"PassFlags" = "OnlyDirectional"
+					"Queue" = "transparent"
+
+				}
 			Pass
 			{
-				Tags
-				{
-					"LightMode" = "ForwardBase"
-					"PassFlags" = "OnlyDirectional"
-				}
+				
 
 				CGPROGRAM
 				#pragma vertex vert
