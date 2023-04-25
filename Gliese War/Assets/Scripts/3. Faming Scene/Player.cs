@@ -150,9 +150,10 @@ public class Player : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 AttackAnimation();
-                AttackEffect();
+                StartCoroutine(AttackEffect());
             }
         }
+        
     }
     
     private void FixedUpdate()
@@ -310,12 +311,12 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void AttackEffect()
+    IEnumerator AttackEffect()
     {
         if (weaponNow == 1)
         {
             if (weapon1 == null)
-                return;
+                yield return null;
             
             switch (weapon1.item.weaponType)
             {
@@ -324,6 +325,7 @@ public class Player : MonoBehaviour
                     break;
                 
                 case Item.WeaponType.Knife:
+                    yield return new WaitForSeconds(0.2f);
                     attackEffectPos.transform.GetChild(0).gameObject.SetActive(true);
                     StartCoroutine(QuitAttackEffect(0));
                     
@@ -337,7 +339,7 @@ public class Player : MonoBehaviour
         else if (weaponNow == 2)
         {
             if (weapon2 == null)
-                return;
+                yield return null;
             
             switch (weapon2.item.weaponType)
             {
@@ -346,6 +348,7 @@ public class Player : MonoBehaviour
                     break;
                 
                 case Item.WeaponType.Knife:
+                    yield return new WaitForSeconds(0.2f);
                     attackEffectPos.transform.GetChild(0).gameObject.SetActive(true);
                     QuitAttackEffect(0);
                     
@@ -356,6 +359,7 @@ public class Player : MonoBehaviour
                     break;
             }
         }
+        yield return null;
     }
 
     IEnumerator QuitAttackEffect(int pos)

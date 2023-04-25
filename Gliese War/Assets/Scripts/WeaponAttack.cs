@@ -83,7 +83,7 @@ public class WeaponAttack : MonoBehaviour
 
     IEnumerator TurnOffHandHammer()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         
         col = Player.instance.handR.transform.GetChild(0).GetComponent<MeshCollider>();
         col.enabled = false;
@@ -96,7 +96,7 @@ public class WeaponAttack : MonoBehaviour
     
     IEnumerator TurnOffHandSpear()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.6f);
         
         col = Player.instance.handR.transform.GetChild(1).GetComponent<MeshCollider>();
         col.enabled = false;
@@ -109,7 +109,7 @@ public class WeaponAttack : MonoBehaviour
     
     IEnumerator TurnOffHandKnife()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.9f);
         
         col = Player.instance.handR.transform.GetChild(2).GetComponent<MeshCollider>();
         col.enabled = false;
