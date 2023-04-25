@@ -51,8 +51,6 @@ public class Monster : MonoBehaviour
         if (other.transform.CompareTag("Player") && !attackCoolTime)
         {
             attackCoolTime = true;
-            other.gameObject.GetComponent<Player>().GetDamage(damage);
-            FarmingManager.Instance.HitScreen();
             StartCoroutine(AttackWait());
         }
     }
@@ -63,7 +61,7 @@ public class Monster : MonoBehaviour
         StartCoroutine(HitColor());
         if (HP <= 0)
         {
-            //Destroy(gameObject);
+            drop.DropItem();
             gameObject.SetActive(false);
         }
     }
@@ -88,7 +86,7 @@ public class Monster : MonoBehaviour
             }
             yield return new WaitForSeconds(0.1f);
         }
-        
+        mat.color = before;
         yield return null;
     }
 
@@ -101,13 +99,15 @@ public class Monster : MonoBehaviour
 
     public void KnockBack()
     {
+        if (gameObject == null)
+            return;
+        
         Debug.Log("넛백");
         if(agent != null)
             agent.isStopped = true;
         Vector3 dir = transform.position - Player.instance.transform.position;
         dir = dir.normalized;
-        dir += Vector3.up;
-        rigid.AddForce(dir * 10,ForceMode.VelocityChange);
+        rigid.AddForce(dir * 50,ForceMode.Impulse);
         StartCoroutine(KnockBackWait());
     }
 

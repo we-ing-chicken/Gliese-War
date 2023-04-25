@@ -150,9 +150,10 @@ public class Player : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 AttackAnimation();
-                AttackEffect();
+                StartCoroutine(AttackEffect());
             }
         }
+        
     }
     
     private void FixedUpdate()
@@ -207,47 +208,39 @@ public class Player : MonoBehaviour
 
         if(moveLR < 0 && moveFB < 0)    // left + back
         {
-            Debug.Log("Left-Back");
             player_Rotate(lbTarget.position);
         }
         else if (moveLR < 0 && moveFB > 0)    // left + forward
         {
-            Debug.Log("Left-Foward");
             player_Rotate(lfTarget.position);
 
         }
         else if (moveLR > 0 && moveFB < 0)    // right + back
         {
-            Debug.Log("Right-Back");
             player_Rotate(rbTarget.position);
 
         }
         else if (moveLR > 0 && moveFB > 0)    // right + forward
         {
-            Debug.Log("Right-Foward");
             player_Rotate(rfTarget.position);
 
         }
         else if (moveLR < 0)
         {
-            Debug.Log("Left");
             player_Rotate(leftTarget.position);
         }
         else if (moveLR > 0)
         {
-            Debug.Log("Right");
             player_Rotate(rightTarget.position);
 
         }
         else if (moveFB < 0)
         {
-            Debug.Log("Back");
             player_Rotate(backwardTarget.position);
 
         }
         else if (moveFB > 0)
         {
-            Debug.Log("Foward");
             player_Rotate(fowardTarget.position);
         }
     }
@@ -310,12 +303,12 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void AttackEffect()
+    IEnumerator AttackEffect()
     {
         if (weaponNow == 1)
         {
             if (weapon1 == null)
-                return;
+                yield return null;
             
             switch (weapon1.item.weaponType)
             {
@@ -324,6 +317,7 @@ public class Player : MonoBehaviour
                     break;
                 
                 case Item.WeaponType.Knife:
+                    yield return new WaitForSeconds(0.2f);
                     attackEffectPos.transform.GetChild(0).gameObject.SetActive(true);
                     StartCoroutine(QuitAttackEffect(0));
                     
@@ -337,7 +331,7 @@ public class Player : MonoBehaviour
         else if (weaponNow == 2)
         {
             if (weapon2 == null)
-                return;
+                yield return null;
             
             switch (weapon2.item.weaponType)
             {
@@ -346,6 +340,7 @@ public class Player : MonoBehaviour
                     break;
                 
                 case Item.WeaponType.Knife:
+                    yield return new WaitForSeconds(0.2f);
                     attackEffectPos.transform.GetChild(0).gameObject.SetActive(true);
                     QuitAttackEffect(0);
                     
@@ -356,6 +351,7 @@ public class Player : MonoBehaviour
                     break;
             }
         }
+        yield return null;
     }
 
     IEnumerator QuitAttackEffect(int pos)
@@ -572,22 +568,14 @@ public class Player : MonoBehaviour
         Destroy(footL.transform.GetChild(1).gameObject);
         Destroy(footR.transform.GetChild(1).gameObject);
     }
-    
 
-    private void OnCollisionStay(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        // if (collision.transform.CompareTag("Monster"))
-        // {
-        //     Debug.Log("접촉");
-        //     if (Input.GetMouseButtonDown(0))
-        //     {
-        //         Debug.Log("클릭");
-        //
-        //         collision.transform.GetComponent<NavMeshAgent>().enabled = false;
-        //         collision.transform.GetComponent<Monster>().KnockBack();
-        //         collision.transform.GetComponent<NavMeshAgent>().enabled = true;
-        //     }
-        // }
+        if (other.CompareTag("MonsterAttack"))
+        {
+            GetDamage(10);
+            FarmingManager.Instance.HitScreen();
+        }
     }
 
     public void GetDamage(int damage)
@@ -601,8 +589,7 @@ public class Player : MonoBehaviour
             animator.SetTrigger("doDie");
             StartCoroutine(StartRevive());
         }
-        
-        //StartCoroutine(Damaged());
+
     }
 
     public int GetAttackPower()

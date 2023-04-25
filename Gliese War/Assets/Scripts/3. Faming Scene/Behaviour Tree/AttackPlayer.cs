@@ -21,11 +21,13 @@ public class AttackPlayer : ActionNode
     {
         if (context.isFind)
         {
-            if (Vector3.Distance(context.transform.position, context.player.transform.position) < 4f )
+            if (Vector3.Distance(context.transform.position, context.player.transform.position) < 6f )
             {
                 if (!context.agent.isStopped && !context.animator.GetBool("isAttack"))
                 {
                     context.animator.SetBool("isAttack", true);
+                    context.agent.isStopped = true;
+                    context.agent.velocity = Vector3.zero;
                     return State.Running;
                 }
             }
