@@ -4051,7 +4051,7 @@
     "m_Hidden": false,
     "m_ShaderOutputName": "CellDensity",
     "m_StageCapability": 3,
-    "m_Value": 50.0,
+    "m_Value": 150.0,
     "m_DefaultValue": 5.0,
     "m_Labels": []
 }
@@ -5572,10 +5572,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -1303.0,
-            "y": 1098.0001220703125,
-            "width": 207.9998779296875,
-            "height": 126.9998779296875
+            "x": -1349.0001220703125,
+            "y": 1017.0,
+            "width": 208.0,
+            "height": 127.0
         }
     },
     "m_Slots": [
