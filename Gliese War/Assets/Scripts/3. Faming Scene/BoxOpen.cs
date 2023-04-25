@@ -7,6 +7,7 @@ public class BoxOpen : MonoBehaviour
 {
     private GameObject keyButtonImage;
     private Camera mainCamera;
+    private BoxCollider boxCollider;
     private bool isLockOn;
     private Drop drop;
 
@@ -18,6 +19,8 @@ public class BoxOpen : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        boxCollider = GetComponent<BoxCollider>();
+        
         keyButtonImage = gameObject.transform.GetChild(0).gameObject;
         keyButtonImage.SetActive(false);
         isLockOn = false;
@@ -60,6 +63,7 @@ public class BoxOpen : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.G))
             {
+                boxCollider.enabled = false;
                 other.GetComponent<Player>().isNear = false;
                 isLockOn = false;
                 Instantiate(starEffect, effectPosition.transform.position, Quaternion.identity);
@@ -84,6 +88,6 @@ public class BoxOpen : MonoBehaviour
     {
         yield return new WaitForSeconds(1.01f);
         drop.DropItem();
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }
