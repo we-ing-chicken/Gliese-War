@@ -568,22 +568,14 @@ public class Player : MonoBehaviour
         Destroy(footL.transform.GetChild(1).gameObject);
         Destroy(footR.transform.GetChild(1).gameObject);
     }
-    
 
-    private void OnCollisionStay(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        // if (collision.transform.CompareTag("Monster"))
-        // {
-        //     Debug.Log("접촉");
-        //     if (Input.GetMouseButtonDown(0))
-        //     {
-        //         Debug.Log("클릭");
-        //
-        //         collision.transform.GetComponent<NavMeshAgent>().enabled = false;
-        //         collision.transform.GetComponent<Monster>().KnockBack();
-        //         collision.transform.GetComponent<NavMeshAgent>().enabled = true;
-        //     }
-        // }
+        if (other.CompareTag("MonsterAttack"))
+        {
+            GetDamage(10);
+            FarmingManager.Instance.HitScreen();
+        }
     }
 
     public void GetDamage(int damage)
@@ -597,8 +589,7 @@ public class Player : MonoBehaviour
             animator.SetTrigger("doDie");
             StartCoroutine(StartRevive());
         }
-        
-        //StartCoroutine(Damaged());
+
     }
 
     public int GetAttackPower()
