@@ -324,7 +324,9 @@ public class Player : MonoBehaviour
                     break;
                 
                 case Item.WeaponType.Spear:
-                    
+                    yield return new WaitForSeconds(0.2f);
+                    attackEffectPos.transform.GetChild(1).gameObject.SetActive(true);
+                    StartCoroutine(QuitAttackEffect(1));
                     break;
             }
         }
