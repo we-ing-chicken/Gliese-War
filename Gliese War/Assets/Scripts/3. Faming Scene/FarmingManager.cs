@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Debug = UnityEngine.Debug;
 
 public class FarmingManager : MonoBehaviour
 {
@@ -38,6 +39,8 @@ public class FarmingManager : MonoBehaviour
     public Canvas pauseCanvas;
     public Canvas fadeCanvas;
     public Canvas hitCanvas;
+    public Canvas worldUICanvas;
+    private Coroutine GCoroutine;
 
     public Inventory inventory;
     public Player managed_player;
@@ -87,9 +90,9 @@ public class FarmingManager : MonoBehaviour
         SetTimerText();
         UpdateLighting(_timeOfInGame / 24f);
 
-        _isFading = false;
-        //SwitchCanvasActive(fadeCanvas);
-        //StartCoroutine(FadeIn());
+        _isFading = true;
+        SwitchCanvasActive(fadeCanvas);
+        StartCoroutine(FadeIn());
     }
 
     private void Update()
@@ -163,11 +166,11 @@ public class FarmingManager : MonoBehaviour
     IEnumerator FadeIn()
     {
         float alpha = fadeCanvas.transform.GetChild(0).GetComponent<Image>().color.a;
-        float mat_Rgb = fadeCanvas.transform.GetChild(0).GetComponent<Image>().material.color.r;
+        fadeCanvas.transform.GetChild(0).GetComponent<Image>().material.color = new Vector4(1f, 1f, 1f,1f);
+        //float mat_Rgb = fadeCanvas.transform.GetChild(0).GetComponent<Image>().material.color.r;
         //float mat_Blur = fadeCanvas.transform.GetChild(0).GetComponent<Image>().material.GetFloat("Radius");
         //UnityEngine.Debug.Log("mat_Blur : " + mat_Blur);
-
-
+        
         GameObject loadingText = fadeCanvas.transform.GetChild(0).GetChild(0).gameObject;
 
         yield return new WaitForSeconds(fadeTime);
@@ -176,18 +179,19 @@ public class FarmingManager : MonoBehaviour
         
         while (true)
         {
-            float t = 2f / 255;
+            float t = 20f / 255;
             //float blur = 2f / 7;
-            mat_Rgb += t;
+            //mat_Rgb += t;
             //mat_Blur -= blur;
 
             alpha -= t;
             fadeCanvas.transform.GetChild(0).GetComponent<Image>().color = new Vector4(0,0,0, alpha);
-            fadeCanvas.transform.GetChild(0).GetComponent<Image>().material.color = new Vector4(mat_Rgb, mat_Rgb, mat_Rgb);
+            //fadeCanvas.transform.GetChild(0).GetComponent<Image>().material.color = new Vector4(mat_Rgb, mat_Rgb, mat_Rgb);
             //fadeCanvas.transform.GetChild(0).GetComponent<Image>().material.SetFloat("Radius", mat_Blur);
             //UnityEngine.Debug.Log(fadeCanvas.transform.GetChild(0).GetComponent<Image>().material.color);
             yield return new WaitForSeconds(0.01f);
-            if (alpha <= 0 || mat_Rgb <= 0)
+            //if (alpha <= 0 || mat_Rgb <= 0)
+            if (alpha <= 0)
                 break;
         }
         
@@ -342,5 +346,28 @@ public class FarmingManager : MonoBehaviour
         }
 
         yield return null;
+    }
+    
+    public void ActiveG(GameObject obj)
+    {
+        GCoroutine = StartCoroutine(FollowG(obj));
+    }
+
+    public void UnActiveG()
+    {
+        GameObject GImage = worldUICanvas.gameObject.transform.GetChild(0).gameObject;
+        GImage.SetActive(false);
+        StopCoroutine(GCoroutine);
+    }
+
+    IEnumerator FollowG(GameObject obj)
+    {
+        GameObject GImage = worldUICanvas.gameObject.transform.GetChild(0).gameObject;
+        GImage.SetActive(true);
+        while (true)
+        {
+            GImage.transform.position = Camera.main.WorldToScreenPoint(obj.transform.position + new Vector3(0,4f,0));
+            yield return null;
+        }
     }
 }

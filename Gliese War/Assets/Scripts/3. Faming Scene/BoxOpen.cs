@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class BoxOpen : MonoBehaviour
 {
-    private GameObject keyButtonImage;
     private Camera mainCamera;
     private BoxCollider boxCollider;
     private bool isLockOn;
@@ -21,14 +20,12 @@ public class BoxOpen : MonoBehaviour
     {
         boxCollider = GetComponent<BoxCollider>();
         
-        keyButtonImage = gameObject.transform.GetChild(0).gameObject;
-        keyButtonImage.SetActive(false);
         isLockOn = false;
         //mainCamera = Player.instance.gameObject.transform.GetChild(0).GetComponent<Camera>();
         mainCamera = Camera.main;
         drop = gameObject.GetComponent<Drop>();
 
-        anim = transform.GetChild(1).GetComponent<Animator>();
+        anim = transform.GetChild(0).GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -36,7 +33,6 @@ public class BoxOpen : MonoBehaviour
     {
         Vector3 cameraDir = mainCamera.transform.position - gameObject.transform.position;
         Quaternion rot = Quaternion.LookRotation(cameraDir);
-        keyButtonImage.transform.rotation = rot;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -45,7 +41,7 @@ public class BoxOpen : MonoBehaviour
         {
             other.GetComponent<Player>().isNear = true;
             isLockOn = true;
-            keyButtonImage.SetActive(true);
+            FarmingManager.Instance.ActiveG(gameObject);
         }
     }
     
@@ -55,7 +51,7 @@ public class BoxOpen : MonoBehaviour
         {
             other.GetComponent<Player>().isNear = true;
             isLockOn = true;
-            keyButtonImage.SetActive(true);
+            FarmingManager.Instance.ActiveG(gameObject);
             return;
         }
         
@@ -68,7 +64,7 @@ public class BoxOpen : MonoBehaviour
                 isLockOn = false;
                 Instantiate(starEffect, effectPosition.transform.position, Quaternion.identity);
                 anim.SetTrigger("Open");
-                
+                FarmingManager.Instance.UnActiveG();
                 StartCoroutine(AfterOpen());
             }
         }
@@ -80,7 +76,7 @@ public class BoxOpen : MonoBehaviour
         {
             other.GetComponent<Player>().isNear = false;
             isLockOn = false;
-            keyButtonImage.SetActive(false);
+            FarmingManager.Instance.UnActiveG();
         }
     }
 

@@ -23,6 +23,7 @@ public class Warp : MonoBehaviour
             Debug.Log("Enter");
             other.GetComponent<Player>().isNear = true;
             isLockOn = true;
+            FarmingManager.Instance.ActiveG(gameObject);
         }
     }
 
@@ -32,6 +33,7 @@ public class Warp : MonoBehaviour
         {
             other.GetComponent<Player>().isNear = true;
             isLockOn = true;
+            FarmingManager.Instance.ActiveG(gameObject);
             return;
         }
         
@@ -42,6 +44,7 @@ public class Warp : MonoBehaviour
                 Debug.Log("Move");
                 other.GetComponent<Player>().isNear = false;
                 isLockOn = false;
+                FarmingManager.Instance.UnActiveG();
                 
                 FarmingManager.Instance.StartFadeOut();
                 
@@ -59,6 +62,7 @@ public class Warp : MonoBehaviour
             Debug.Log("Exit");
             other.GetComponent<Player>().isNear = false;
             isLockOn = false;
+            FarmingManager.Instance.UnActiveG();
         }
     }
 }
