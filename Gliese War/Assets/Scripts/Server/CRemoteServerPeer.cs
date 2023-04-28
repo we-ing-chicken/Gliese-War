@@ -1,55 +1,59 @@
-using FreeNet;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Linq;
+using System.Text;
+using GameServer;
+using Server_Unity;
 
-public class CRemoteServerPeer : IPeer
+namespace Server_Unity
 {
-    public CUserToken token { get; private set; }
-    WeakReference freenet_eventmanager;
-
-    public CRemoteServerPeer(CUserToken token)
+    public class CRemoteServerPeer : IPeer
     {
-        this.token = token;
-        this.token.set_peer(this);
-    }
+        public CUserToken token { get; private set; }
+        WeakReference freenet_eventmanager;
 
-    public void set_eventmanager(CServerEventManager event_manager)
-    {
-        this.freenet_eventmanager = new WeakReference(event_manager);
-    }
+        public CRemoteServerPeer(CUserToken token)
+        {
+            this.token = token;
+            this.token.set_peer(this);
+        }
 
-    /// <summary>
-    /// 메시지를 수신했을 때 호출된다.
-    /// 파라미터로 넘어온 버퍼는 워커 스레드에서 재사용 되므로 복사한 뒤 어플리케이션으로 넘겨준다.
-    /// </summary>
-    /// <param name="buffer"></param>
-    void IPeer.on_message(Const<byte[]> buffer)
-    {
-        // 버퍼를 복사한 뒤 CPacket클래스로 감싼 뒤 넘겨준다.
-        // CPacket클래스 내부에서는 참조로만 들고 있는다.
-        byte[] app_buffer = new byte[buffer.Value.Length];
-        Array.Copy(buffer.Value, app_buffer, buffer.Value.Length);
-        CPacket msg = new CPacket(app_buffer, this);
-        (this.freenet_eventmanager.Target as CServerEventManager).enqueue_network_message(msg);
-    }
+        public void set_eventmanager(CServerEventManager event_manager)
+        {
+            this.freenet_eventmanager = new WeakReference(event_manager);
+        }
 
-    void IPeer.on_removed()
-    {
-        (this.freenet_eventmanager.Target as CServerEventManager).enqueue_network_event(NETWORK_EVENT.disconnected);
-    }
+        /// <summary>
+        /// 메시지를 수신했을 때 호출된다.
+        /// 파라미터로 넘어온 버퍼는 워커 스레드에서 재사용 되므로 복사한 뒤 어플리케이션으로 넘겨준다.
+        /// </summary>
+        /// <param name="buffer"></param>
+        void IPeer.on_message(Const<byte[]> buffer)
+        {
+            // 버퍼를 복사한 뒤 CPacket클래스로 감싼 뒤 넘겨준다.
+            // CPacket클래스 내부에서는 참조로만 들고 있는다.
+            byte[] app_buffer = new byte[buffer.Value.Length];
+            Array.Copy(buffer.Value, app_buffer, buffer.Value.Length);
+            CPacket msg = new CPacket(app_buffer, this);
+            (this.freenet_eventmanager.Target as CServerEventManager).enqueue_network_message(msg);
+        }
 
-    void IPeer.send(CPacket msg)
-    {
-        this.token.send(msg);
-    }
+        void IPeer.on_removed()
+        {
+            (this.freenet_eventmanager.Target as CServerEventManager).enqueue_network_event(NETWORK_EVENT.disconnected);
+        }
 
-    void IPeer.disconnect()
-    {
-    }
+        void IPeer.send(CPacket msg)
+        {
+            this.token.send(msg);
+        }
 
-    void IPeer.process_user_operation(CPacket msg)
-    {
+        void IPeer.disconnect()
+        {
+        }
+
+        void IPeer.process_user_operation(CPacket msg)
+        {
+        }
     }
 }
