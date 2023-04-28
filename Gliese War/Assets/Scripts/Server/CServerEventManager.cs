@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using FreeNet;
+using GameServer;
 
 public enum NETWORK_EVENT : byte
 {
