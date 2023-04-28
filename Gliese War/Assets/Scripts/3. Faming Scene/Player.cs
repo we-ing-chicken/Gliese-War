@@ -532,6 +532,8 @@ public class Player : MonoBehaviour
                     break;
             }
         }
+
+        FarmingManager.Instance.SetEquipWeaponImage();
     }
 
     private void EquipHammer()

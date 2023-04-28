@@ -17,9 +17,8 @@ public class FarmingManager : MonoBehaviour
     public bool _isPause = false;
     public bool _isFading = true;
     public bool _isInven = false;
-    
-    [Header("Timer")]
-    [SerializeField] private float fadeTime = 2f;
+
+    [Header("Timer")] [SerializeField] private float fadeTime = 2f;
     private float _playTime = 0.0f; // 플레이한 시간
     private float FARMING_TIME = 360; // 게임 길이
     [SerializeField] private GameObject timerTxt; //타이머 텍스트
@@ -50,7 +49,15 @@ public class FarmingManager : MonoBehaviour
 
     public GameObject startPostion;
 
-    public static FarmingManager Instance
+    [SerializeField] private Sprite[] weaponImage;
+
+    [SerializeField] private Image weaponNum1Image;
+    [SerializeField] private Image weaponNum2Image;
+    
+    [SerializeField] private Image weapon1Image;
+    [SerializeField] private Image weapon2Image;
+
+public static FarmingManager Instance
     {
         get
         {
@@ -369,5 +376,107 @@ public class FarmingManager : MonoBehaviour
             GImage.transform.position = Camera.main.WorldToScreenPoint(obj.transform.position + new Vector3(0,4f,0));
             yield return null;
         }
+    }
+
+    public void SetEquipWeaponImage()
+    {
+        if (Player.instance.weapon1 == null)
+        {
+            Color color = weapon1Image.color;
+            color.a = 0f;
+            weapon1Image.color = color;
+            
+            color = weaponNum1Image.color;
+            color.a = 0.5f;
+            weaponNum1Image.color = color;
+        }
+        else
+        {
+            switch (Player.instance.weapon1.item.weaponType)
+            {
+                case Item.WeaponType.Hammer:
+                    weapon1Image.sprite = weaponImage[0];
+                    break;
+                
+                case Item.WeaponType.Spear:
+                    weapon1Image.sprite = weaponImage[1];
+                    break;
+                
+                case Item.WeaponType.Knife:
+                    weapon1Image.sprite = weaponImage[2];
+                    break;
+            }
+            
+            if (Player.instance.weaponNow == 1)
+            {
+                Color color = weapon1Image.color;
+                color.a = 1f;
+                weapon1Image.color = color;
+
+                color = weaponNum1Image.color;
+                color.a = 1f;
+                weaponNum1Image.color = color;
+            }
+            else
+            {
+                Color color = weapon1Image.color;
+                color.a = 0.5f;
+                weapon1Image.color = color;
+
+                color = weaponNum1Image.color;
+                color.a = 0.5f;
+                weaponNum1Image.color = color;
+            }
+        }
+
+        if (Player.instance.weapon2 == null)
+        {
+            Color color = weapon2Image.color;
+            color.a = 0f;
+            weapon2Image.color = color;
+            
+            color = weaponNum2Image.color;
+            color.a = 0.5f;
+            weaponNum2Image.color = color;
+        }
+        else
+        {
+            switch (Player.instance.weapon2.item.weaponType)
+            {
+                case Item.WeaponType.Hammer:
+                    weapon2Image.sprite = weaponImage[0];
+                    break;
+                
+                case Item.WeaponType.Spear:
+                    weapon2Image.sprite = weaponImage[1];
+                    break;
+                
+                case Item.WeaponType.Knife:
+                    weapon2Image.sprite = weaponImage[2];
+                    break;
+            }
+            
+            if (Player.instance.weaponNow == 2)
+            {
+                Color color = weapon2Image.color;
+                color.a = 1f;
+                weapon2Image.color = color;
+            
+                color = weaponNum2Image.color;
+                color.a = 1f;
+                weaponNum2Image.color = color;
+            }
+            else
+            {
+                Color color = weapon2Image.color;
+                color.a = 0.5f;
+                weapon2Image.color = color;
+            
+                color = weaponNum2Image.color;
+                color.a = 0.5f;
+                weaponNum2Image.color = color;
+            }
+        }
+        
     }
 }
