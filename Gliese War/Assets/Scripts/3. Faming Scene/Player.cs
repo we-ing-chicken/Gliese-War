@@ -59,6 +59,8 @@ public class Player : MonoBehaviour
     
     [SerializeField] private GameObject attackEffectPos;
     [SerializeField] private GameObject[] attackEffect;
+    
+    [SerializeField] private GameObject shoesEffectPos;
 
     public bool isAttack = false;
 
@@ -313,7 +315,9 @@ public class Player : MonoBehaviour
             switch (weapon1.item.weaponType)
             {
                 case Item.WeaponType.Hammer:
-                    //Instantiate(attackEffect[0], attackEffectPos.transform);
+                    yield return new WaitForSeconds(0.3f);
+                    attackEffectPos.transform.GetChild(2).gameObject.SetActive(true);
+                    StartCoroutine(QuitAttackEffect(2));
                     break;
                 
                 case Item.WeaponType.Knife:
@@ -338,18 +342,22 @@ public class Player : MonoBehaviour
             switch (weapon2.item.weaponType)
             {
                 case Item.WeaponType.Hammer:
-                    //Instantiate(attackEffect[0], attackEffectPos.transform);
+                    yield return new WaitForSeconds(0.3f);
+                    attackEffectPos.transform.GetChild(2).gameObject.SetActive(true);
+                    StartCoroutine(QuitAttackEffect(2));
                     break;
                 
                 case Item.WeaponType.Knife:
                     yield return new WaitForSeconds(0.2f);
                     attackEffectPos.transform.GetChild(0).gameObject.SetActive(true);
-                    QuitAttackEffect(0);
+                    StartCoroutine(QuitAttackEffect(0));
                     
                     break;
                 
                 case Item.WeaponType.Spear:
-                    
+                    yield return new WaitForSeconds(0.2f);
+                    attackEffectPos.transform.GetChild(1).gameObject.SetActive(true);
+                    StartCoroutine(QuitAttackEffect(1));
                     break;
             }
         }
@@ -411,6 +419,7 @@ public class Player : MonoBehaviour
         currHealth += realItem.stat.health;
         moveSpeed += realItem.stat.moveSpeed;
         RefreshStat();
+        SetShoesEffect();
     }
 
     private void RefreshStat()
@@ -612,5 +621,38 @@ public class Player : MonoBehaviour
         FarmingManager.Instance.StartFadeOut();
         instance.transform.position = FarmingManager.Instance.startPostion.transform.position;
         charactercontroller.enabled = true;
+    }
+
+    public void SetShoesEffect()
+    {
+        if (shoe == null)
+            return;
+        
+        for (int i = 0; i < 5; ++i)
+            shoesEffectPos.transform.GetChild(i).gameObject.SetActive(false);
+
+        switch (shoe.item.itemRank)
+        {
+            case Item.ItemRank.Normal:
+                shoesEffectPos.transform.GetChild(0).gameObject.SetActive(true);
+                break;
+            
+            case Item.ItemRank.Rare:
+                shoesEffectPos.transform.GetChild(1).gameObject.SetActive(true);
+                break;
+            
+            case Item.ItemRank.Epic:
+                shoesEffectPos.transform.GetChild(2).gameObject.SetActive(true);
+                break;
+            
+            case Item.ItemRank.Unique:
+                shoesEffectPos.transform.GetChild(3).gameObject.SetActive(true);
+                break;
+            
+            case Item.ItemRank.Legendary:
+                shoesEffectPos.transform.GetChild(4).gameObject.SetActive(true);
+                break;
+            
+        }
     }
 }
