@@ -169,23 +169,23 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         switch (item.itemRank)
         {
             case Item.ItemRank.Normal:
-                power = Random.Range(1, 5);
+                power = Random.Range(1, 3);
                 break;
 
             case Item.ItemRank.Rare:
-                power = Random.Range(5, 10);
+                power = Random.Range(3, 6);
                 break;
             
             case Item.ItemRank.Epic:
-                power = Random.Range(10, 15);
+                power = Random.Range(6, 9);
                 break;
             
             case Item.ItemRank.Unique:
-                power = Random.Range(15, 20);
+                power = Random.Range(9, 12);
                 break;
             
             case Item.ItemRank.Legendary:
-                power = Random.Range(20, 25);
+                power = Random.Range(12, 15);
                 break;
         }
 
