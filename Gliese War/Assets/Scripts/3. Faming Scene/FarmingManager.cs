@@ -18,7 +18,8 @@ public class FarmingManager : MonoBehaviour
     public bool _isFading = true;
     public bool _isInven = false;
 
-    [Header("Timer")] [SerializeField] private float fadeTime = 2f;
+    [Header("Timer")]
+    //[SerializeField] private float fadeTime = 2f;
     private float _playTime = 0.0f; // 플레이한 시간
     private float FARMING_TIME = 360; // 게임 길이
     [SerializeField] private GameObject timerTxt; //타이머 텍스트
@@ -99,7 +100,7 @@ public static FarmingManager Instance
 
         _isFading = true;
         SwitchCanvasActive(fadeCanvas);
-        StartCoroutine(FadeIn());
+        StartCoroutine(FadeIn(2f));
     }
 
     private void Update()
@@ -170,7 +171,7 @@ public static FarmingManager Instance
 
     }
 
-    IEnumerator FadeIn()
+    IEnumerator FadeIn(float fadeTime)
     {
         float alpha = fadeCanvas.transform.GetChild(0).GetComponent<Image>().color.a;
         fadeCanvas.transform.GetChild(0).GetComponent<Image>().material.color = new Vector4(1f, 1f, 1f,1f);
@@ -211,12 +212,12 @@ public static FarmingManager Instance
     IEnumerator FadeOut()
     {
         SwitchCanvasActive(fadeCanvas);
-        
+        _isFading = true;
         float alpha = fadeCanvas.transform.GetChild(0).GetComponent<Image>().color.a;
         
         while (true)
         {
-            float t = 2f / 255;
+            float t = 20f / 255;
             alpha += t;
             fadeCanvas.transform.GetChild(0).GetComponent<Image>().color = new Vector4(0,0,0, alpha);
             yield return new WaitForSeconds(0.01f);
@@ -336,7 +337,7 @@ public static FarmingManager Instance
     {
         StartCoroutine(FadeOut());
         yield return new WaitForSeconds(3f);
-        StartCoroutine(FadeIn());
+        StartCoroutine(FadeIn(0f));
     }
 
     public void HitScreen()

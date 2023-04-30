@@ -160,6 +160,7 @@ public class Player : MonoBehaviour
     
     private void FixedUpdate()
     {
+        if (FarmingManager.Instance._isFading) return;
         if (charactercontroller == null) return;
         Look();
 
