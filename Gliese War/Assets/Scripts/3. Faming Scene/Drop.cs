@@ -5,10 +5,18 @@ using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+public enum DropLevel
+{
+    Low,
+    Medium,
+    High
+}
+
 public class Drop : MonoBehaviour
 {
     [SerializeField] private Inventory _inven;
     private int itemCount;
+    [SerializeField] private DropLevel dropLevel;
 
     private void Start()
     {
@@ -25,7 +33,7 @@ public class Drop : MonoBehaviour
 
     public void DropItem()
     {
-        int itemCount = Random.Range(1, 5);
+        int itemCount = GetItemCount();
         for (int i = 0; i < itemCount; ++i)
         {
             Item.ItemCategory itemCategory = (Item.ItemCategory)Random.Range(0, 4);
@@ -98,5 +106,22 @@ public class Drop : MonoBehaviour
             Rigidbody comp = temp.AddComponent<Rigidbody>();
             comp.AddExplosionForce(200f, transform.position, 200f, 10f);
         }
+    }
+
+    private int GetItemCount()
+    {
+        switch (dropLevel)
+        {
+            case DropLevel.Low:
+                return 1;
+            
+            case DropLevel.Medium:
+                return Random.Range(2, 4);
+            
+            case DropLevel.High:
+                return Random.Range(4, 6);
+        }
+
+        return 1;
     }
 }
