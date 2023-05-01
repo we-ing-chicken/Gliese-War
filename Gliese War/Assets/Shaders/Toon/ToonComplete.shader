@@ -22,7 +22,7 @@
 				"PassFlags" = "OnlyDirectional"
 				"Queue" = "transparent"
 			}
-			LOD 100
+			LOD 100			
 
 			Pass
 			{
@@ -105,8 +105,9 @@
 
 					return (light + _AmbientColor + specular + rim) * _Color * sample;
 				}
-				ENDCG
+					ENDCG
 			}
+
 
 			UsePass "Legacy Shaders/VertexLit/SHADOWCASTER"
 		}

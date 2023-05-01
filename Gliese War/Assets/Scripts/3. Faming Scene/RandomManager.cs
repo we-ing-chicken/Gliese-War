@@ -54,10 +54,10 @@ public static class RandomManager
     {
         Item.ItemRank result = new Item.ItemRank();
         float ra = RandAccur / 100;
-        float normalTable = ra * 30;
-        float rareTable = ra * (30 + 25);
-        float epicTable = ra * (30 + 25 + 25);
-        float uniqueTable = ra * (30 + 25 + 25 + 15);
+        float normalTable = ra * 30;            //30퍼
+        float rareTable = ra * (30 + 25);       //25퍼
+        float epicTable = ra * (30 + 25 + 25);  //25퍼
+        float uniqueTable = ra * (30 + 25 + 25 + 15);   //15퍼   //레전더리 : 5퍼
 
         int Rand = Random.Range(1, (int)RandAccur + 1);
 
