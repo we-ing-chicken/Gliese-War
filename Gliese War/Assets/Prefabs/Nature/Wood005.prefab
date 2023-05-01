@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7361573972020253080}
   - component: {fileID: 5874465310807449149}
   - component: {fileID: 8530587741511527159}
+  - component: {fileID: 3056230872641851698}
   - component: {fileID: 8073882300502273201}
   m_Layer: 0
   m_Name: Wood005
@@ -84,6 +85,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3056230872641851698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7881932849882270498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ce3b0b27fa721244a44a0790bf4480f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!64 &8073882300502273201
 MeshCollider:
   m_ObjectHideFlags: 0

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 9208545055165698716}
   - component: {fileID: 5216445335443594553}
   - component: {fileID: 8034560466485979635}
+  - component: {fileID: -8644566360727757779}
   - component: {fileID: -8342985964423280239}
   m_Layer: 0
   m_Name: Trunk003
@@ -84,6 +85,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &-8644566360727757779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8394853040655730726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ce3b0b27fa721244a44a0790bf4480f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!64 &-8342985964423280239
 MeshCollider:
   m_ObjectHideFlags: 0
