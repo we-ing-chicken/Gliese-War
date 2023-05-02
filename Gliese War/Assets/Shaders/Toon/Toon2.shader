@@ -1,4 +1,4 @@
-﻿Shader "Custom/Banded_4"
+﻿Shader "Custom/Banded_5"
 {
 	Properties
 	{
@@ -103,7 +103,7 @@
 
 					float4 sample = tex2D(_MainTex, i.uv);
 
-					return (light + _AmbientColor) * _Color * sample;
+					return (light + _AmbientColor + specular + rim) * _Color * sample;
 				}
 					ENDCG
 			}
