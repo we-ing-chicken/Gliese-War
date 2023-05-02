@@ -13,11 +13,13 @@ public class Magnet : MonoBehaviour
     private bool isEat = false;
     public Item.ItemCategory itemCategory;
     public Item.WeaponType weaponType;
+
+    public bool onTree = false;
     
     // Start is called before the first frame update
     void Start()
     {
-        player = GameObject.FindWithTag("Player");
+        player = Player.instance.gameObject;
         rigid = gameObject.GetComponent<Rigidbody>();
     }
 
@@ -34,9 +36,15 @@ public class Magnet : MonoBehaviour
             rigid.AddForce(magnetDistanceStr*direction,ForceMode.Force );
             isEat = true;
         }
-        else if (transform.position.y <= 49)
+        else if (onTree)
         {
-            rigid.constraints = RigidbodyConstraints.FreezePosition;
+            if(transform.position.y <= 51.5f)
+                rigid.constraints = RigidbodyConstraints.FreezePosition;
+        }
+        else if (!onTree)
+        {
+            if(transform.position.y <= 49)
+                rigid.constraints = RigidbodyConstraints.FreezePosition;
         }
     }
 
