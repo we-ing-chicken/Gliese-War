@@ -69,7 +69,7 @@ public class Monster : MonoBehaviour
     IEnumerator HitColor()
     {
         Material mat = transform.GetChild(1).GetComponent<SkinnedMeshRenderer>().material;
-        Color before = mat.color;
+        
         bool flag = true;
         
         for (int i = 0; i < 6; ++i)
@@ -81,12 +81,14 @@ public class Monster : MonoBehaviour
             }
             else
             {
-                mat.color = before;
+                mat.color = Color.white;
                 flag = true;
             }
             yield return new WaitForSeconds(0.1f);
+            mat.color = Color.white;
         }
-        mat.color = before;
+        mat.color = Color.white;
+        
         yield return null;
     }
 
