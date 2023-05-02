@@ -7,9 +7,11 @@ using Random = UnityEngine.Random;
 
 public enum DropLevel
 {
+    VeryLow,
     Low,
     Medium,
-    High
+    High,
+    VeryHigh
 }
 
 public class Drop : MonoBehaviour
@@ -17,6 +19,8 @@ public class Drop : MonoBehaviour
     [SerializeField] private Inventory _inven;
     private int itemCount;
     [SerializeField] private DropLevel dropLevel;
+    [SerializeField] private bool isFirst = false;
+    [SerializeField] private bool onTree = false;
 
     private void Start()
     {
@@ -34,10 +38,18 @@ public class Drop : MonoBehaviour
     public void DropItem()
     {
         int itemCount = GetItemCount();
+
         for (int i = 0; i < itemCount; ++i)
         {
             Item.ItemCategory itemCategory = (Item.ItemCategory)Random.Range(0, 4);
             Item.WeaponType weaponType = Item.WeaponType.Nothing;
+
+            if (isFirst)
+            {
+                itemCategory = Item.ItemCategory.Weapon;
+                weaponType = Item.WeaponType.Knife;
+            }
+            
             GameObject temp;
 
             switch (itemCategory)
@@ -85,13 +97,23 @@ public class Drop : MonoBehaviour
             }
 
             temp.transform.position = transform.position;
-            temp.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+            if(itemCategory == Item.ItemCategory.Weapon)
+                temp.transform.localScale = new Vector3(1f, 1f, 1f);
+            else
+                temp.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+            
+                
 
             MeshCollider col = temp.GetComponent<MeshCollider>();
             col.enabled = true;
             
             Magnet mag = temp.AddComponent<Magnet>();
             mag.itemCategory = itemCategory;
+            if (onTree)
+                mag.onTree = true;
+            else
+                mag.onTree = false;
+            
             
             if (itemCategory == Item.ItemCategory.Weapon)
             {
@@ -112,14 +134,20 @@ public class Drop : MonoBehaviour
     {
         switch (dropLevel)
         {
-            case DropLevel.Low:
+            case DropLevel.VeryLow:
                 return 1;
+            
+            case DropLevel.Low:
+                return 2;
             
             case DropLevel.Medium:
                 return Random.Range(2, 4);
             
             case DropLevel.High:
                 return Random.Range(4, 6);
+            
+            case DropLevel.VeryHigh:
+                return Random.Range(6, 8);
         }
 
         return 1;
