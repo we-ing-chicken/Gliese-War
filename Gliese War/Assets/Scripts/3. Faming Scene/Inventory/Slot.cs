@@ -274,12 +274,12 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     {
         DragSlot.instance.dragedSlot = this;
         DragSlot.instance.DragSetData(realItem);
-        DragSlot.instance.transform.position = eventData.position;
+        DragSlot.instance.transform.position = eventData.position + new Vector2(175f, 0f);
     }
     
     public void OnDrag(PointerEventData eventData)
     {
-        DragSlot.instance.transform.position = eventData.position;
+        DragSlot.instance.transform.position = eventData.position + new Vector2(175f, 0f);
     }
     
     public void OnEndDrag(PointerEventData eventData)
