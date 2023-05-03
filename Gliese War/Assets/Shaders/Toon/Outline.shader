@@ -1,67 +1,116 @@
 Shader "Custom/Outline"
 {
-    Properties
-    {
-        _Color("Main Color", Color) = (1,1,1,1)
-        _MainTex("Main Texture", 2D) = "white" {}
+	Properties // Variables
+	{
+		_MainTex("Main Texture (RBG)", 2D) = "white" {} // Allows for a texture property
+		_Color("Color", Color) = (1,1,1,1) // Allows for a color property
 
-        _OutlineTex("Outline Texture", 2D) = "white" {}
-        _OutlineColor("Outline Color", Color) = (1,1,1,1) //¿Ü°û¼± »ö±ò ÁöÁ¤
-        _OutlineWidth("Outline Width", Range(1.0,10.0)) = 1.1 // ¿Ü°û¼± µÎ²²
-    }
-    SubShader
-    {
-        Tags { "Queue" = "transparent"  } //"RenderType"="Opaque"
-        LOD 100
+		_OutlineTex("Outline Texture", 2D) = "white" {}
+		_OutlineColor("Outline Color", Color) = (1,1,1,1)
+		_OutlineWidth("Outline Width", Range(1.0,10.0)) = 1.1
+	}
 
-        cull front
+		SubShader
+		{
+			Tags
+			{
+				"Queue" = "transparent"
+			}
 
-        Pass
-        {
-            Name "OUTLINE"
+			Pass
+			{
+				Name "OUTLINE"
 
-            ZWrite Off
+				ZWrite Off
 
-            CGPROGRAM
-            #pragma vertex vert
-            #pragma fragment frag
+				CGPROGRAM
 
-            #include "UnityCG.cginc"
+				#pragma vertex vert
+				#pragma fragment frag
 
-            struct appdata
-            {
-                float4 vertex : POSITION;
-                float2 uv : TEXCOORD0;
-            };
+				#include "UnityCG.cginc"
 
-            struct v2f
-            {
-                float2 uv : TEXCOORD0;
-                float4 vertex : SV_POSITION;
-            };
+				struct appdata
+				{
+					float4 vertex : POSITION;
+					float2 uv : TEXCOORD0;
+				};
 
-            float _OutlineWidth;
-            float4 _OutlineColor;
-            sampler2D _OutlineTex;
+				struct v2f
+				{
+					float4 pos : SV_POSITION;
+					float2 uv : TEXCOORD0;
+				};
 
-            v2f vert (appdata IN)
-            {
-                IN.vertex.xyz *= _OutlineWidth;
-                v2f OUT;
+				float _OutlineWidth;
+				float4 _OutlineColor;
+				sampler2D _OutlineTex;
 
-                OUT.vertex = UnityObjectToClipPos(IN.vertex);
-                OUT.uv = IN.uv;
+				v2f vert(appdata IN)
+				{
+					IN.vertex.xyz *= _OutlineWidth;
+					v2f OUT;
 
-                return OUT;
-            }
+					OUT.pos = UnityObjectToClipPos(IN.vertex);
+					OUT.uv = IN.uv;
 
-            fixed4 frag (v2f IN) : SV_Target
-            {
-                float4 texColor = tex2D(_OutlineTex, IN.uv);
-                return texColor * _OutlineColor;
-            }
-            ENDCG
-        }
-        
-    }
+					return OUT;
+				}
+
+				fixed4 frag(v2f IN) : SV_Target
+				{
+					float4 texColor = tex2D(_OutlineTex, IN.uv);
+
+					return texColor * _OutlineColor;
+				}
+
+				ENDCG
+			}
+
+			Pass
+			{
+				Name "OBJECT"
+
+				CGPROGRAM
+
+				#pragma vertex vert
+				#pragma fragment frag
+
+				#include "UnityCG.cginc"
+
+				struct appdata
+				{
+					float4 vertex : POSITION;
+					float2 uv : TEXCOORD0;
+				};
+
+				struct v2f
+				{
+					float4 pos : SV_POSITION;
+					float2 uv : TEXCOORD0;
+				};
+
+				float4 _Color;
+				sampler2D _MainTex;
+
+				v2f vert(appdata IN)
+				{
+					v2f OUT;
+
+					OUT.pos = UnityObjectToClipPos(IN.vertex);
+					OUT.uv = IN.uv;
+
+					return OUT;
+				}
+
+				fixed4 frag(v2f IN) : SV_Target
+				{
+					float4 texColor = tex2D(_MainTex, IN.uv);
+
+					return texColor * _Color;
+				}
+
+				ENDCG
+			}
+		}
 }
