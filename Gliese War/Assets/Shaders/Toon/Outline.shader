@@ -23,12 +23,12 @@ Shader "Custom/Outline"
 
 				ZWrite Off
 
-				CGPROGRAM // Allows talk between two languages : shader lab and nvidia C for graphics
+				CGPROGRAM
 
-				#pragma vertex vert // Define for the building function
-				#pragma fragment frag // Define for coloring function
+				#pragma vertex vert
+				#pragma fragment frag
 
-				#include "UnityCG.cginc" // Built in shader functions
+				#include "UnityCG.cginc"
 
 				struct appdata
 				{
@@ -71,12 +71,12 @@ Shader "Custom/Outline"
 			{
 				Name "OBJECT"
 
-				CGPROGRAM // Allows talk between two languages : shader lab and nvidia C for graphics
+				CGPROGRAM
 
-				#pragma vertex vert // Define for the building function
-				#pragma fragment frag // Define for coloring function
+				#pragma vertex vert
+				#pragma fragment frag
 
-				#include "UnityCG.cginc" // Built in shader functions
+				#include "UnityCG.cginc"
 
 				struct appdata
 				{
