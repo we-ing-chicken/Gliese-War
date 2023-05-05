@@ -44,5 +44,18 @@ public class Equip : MonoBehaviour
             }
             
         }
+
+        if (realitem.magic == Magic.Nothing)
+        {
+            Color color = magicImage.color;
+            color.a = 0f;
+            magicImage.color = color;
+        }
+        else
+        {            
+            Color color = magicImage.color;
+            color.a = 0f;
+            magicImage.color = color;
+        }
     }
 }

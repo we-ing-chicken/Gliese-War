@@ -290,7 +290,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         if (hitObject == null)
         {
             DragSlot.instance.DragSetData(null);
-            DragSlot.instance.SetColor(0);
+            DragSlot.instance.SetColor(0,0);
             DragSlot.instance.dragedSlot = null;
             DragSlot.instance.transform.position = new Vector2(0, 0);
             return;
@@ -376,7 +376,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         }
 
         DragSlot.instance.DragSetData(null);
-        DragSlot.instance.SetColor(0);
+        DragSlot.instance.SetColor(0,0);
         DragSlot.instance.dragedSlot = null;
         DragSlot.instance.transform.position = new Vector2(0, 0);
     }
