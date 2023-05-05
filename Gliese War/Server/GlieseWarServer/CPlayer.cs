@@ -27,5 +27,10 @@ namespace GlieseWarServer
             this.owner.send(msg);
             CPacket.destroy(msg);
         }
+
+        public void send_for_broadcast(CPacket msg)
+        {
+            this.owner.send(msg);
+        }
     }
 }

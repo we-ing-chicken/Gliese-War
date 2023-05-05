@@ -47,7 +47,34 @@ namespace GlieseWarServer
         void IPeer.process_user_operation(CPacket msg)
         {
             PROTOCOL protocol = (PROTOCOL)msg.pop_protocol_id();
+            Console.WriteLine("protocol id " + protocol);
+            switch (protocol)
+            {
+                case PROTOCOL.ENTER_GAME_ROOM_REQ:
+                    Program.game_main.matching_req(this);
+                    break;
 
+                case PROTOCOL.LOADING_COMPLETED:
+                    this.battle_room.loading_complete(player);
+                    break;
+
+                case PROTOCOL.MOVING_REQ:
+                    {
+                        short begin_pos = msg.pop_int16();
+                        short target_pos = msg.pop_int16();
+                        this.battle_room.moving_req(this.player, begin_pos, target_pos);
+                    }
+                    break;
+
+                case PROTOCOL.TURN_FINISHED_REQ:
+                    break;
+            }
+        }
+
+        public void enter_room(CPlayer player, CGameRoom room)
+        {
+            this.player = player;
+            this.battle_room = room;
         }
     }
 }
