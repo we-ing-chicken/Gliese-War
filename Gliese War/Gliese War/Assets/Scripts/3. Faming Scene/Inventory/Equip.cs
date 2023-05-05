@@ -45,6 +45,9 @@ public class Equip : MonoBehaviour
             
         }
 
+        if (magicImage == null)
+            return;
+        
         if (realitem.magic == Magic.Nothing)
         {
             Color color = magicImage.color;
@@ -54,7 +57,7 @@ public class Equip : MonoBehaviour
         else
         {            
             Color color = magicImage.color;
-            color.a = 0f;
+            color.a = 1f;
             magicImage.color = color;
         }
     }
