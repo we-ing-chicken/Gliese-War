@@ -85797,7 +85797,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7769974985057487051, guid: e6308ce1533191a49b3107a180922817, type: 3}
       propertyPath: m_RaycastTarget
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4438518601032980941, guid: e6308ce1533191a49b3107a180922817, type: 3}

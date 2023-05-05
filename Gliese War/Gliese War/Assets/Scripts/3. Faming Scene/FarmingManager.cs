@@ -99,6 +99,9 @@ public static FarmingManager Instance
         SetTimerText();
         UpdateLighting(_timeOfInGame / 24f);
 
+        SwitchCanvasActive(invenCanvas);
+        SwitchCanvasActive(invenCanvas);
+        
         _isFading = true;
         SwitchCanvasActive(fadeCanvas);
         StartCoroutine(FadeIn(2f));
