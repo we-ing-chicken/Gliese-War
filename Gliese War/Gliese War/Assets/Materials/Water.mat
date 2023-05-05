@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Water
-  m_Shader: {fileID: -6465566751694194690, guid: 1f7cdb446b8d607468261a8f230d7127, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 2c07797698bc7d844b50f0a51778e277, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -82,12 +82,12 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SurfaceDistortion:
-        m_Texture: {fileID: 2800000, guid: 4e9b1d015a0caaa40b65138f05a7f8f1, type: 3}
+        m_Texture: {fileID: 2800000, guid: 64cdeca0e03b56a42ae147cfc4265364, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SurfaceNoise:
-        m_Texture: {fileID: 2800000, guid: b9b9324179179464dbb5939a16690829, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: 72fb87c0cc45da246a3a03e306a8a689, type: 3}
+        m_Scale: {x: 3, y: 3}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
@@ -138,8 +138,8 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
-    - _SurfaceDistortionAmount: 0.523
-    - _SurfaceNoiseCutoff: 0.777
+    - _SurfaceDistortionAmount: 0.061
+    - _SurfaceNoiseCutoff: 0.195
     - _Time_Power: 0.1
     - _Transparency: 1
     - _UVSec: 0
@@ -150,12 +150,12 @@ Material:
     - _Base_Offset: {r: 0.1, g: 0, b: 0, a: 0}
     - _Base_Tiling: {r: 1, g: 1, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _DepthGradientDeep: {r: 0.086, g: 0.407, b: 1, a: 0.749}
-    - _DepthGradientShallow: {r: 0.325, g: 0.807, b: 0.971, a: 0.7176471}
+    - _DepthGradientDeep: {r: 0.086, g: 0.407, b: 1, a: 0.972549}
+    - _DepthGradientShallow: {r: 0.3160377, g: 0.8242331, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FormColor: {r: 1, g: 1, b: 1, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-    - _SurfaceNoiseScroll: {r: 0.03, g: 0.03, b: 0, a: 0}
+    - _SurfaceNoiseScroll: {r: 0.03, g: 0.03, b: 54.1, a: 268.89}
     - _Tiling: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &5045713755307089292
