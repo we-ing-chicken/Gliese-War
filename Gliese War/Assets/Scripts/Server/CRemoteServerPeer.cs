@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using GameServer;
-using Server_Unity;
+using Client_Unity;
 
-namespace Server_Unity
+namespace Client_Unity
 {
     public class CRemoteServerPeer : IPeer
     {

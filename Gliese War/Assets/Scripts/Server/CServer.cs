@@ -6,7 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using GameServer;
 
-namespace Server_Unity
+namespace Client_Unity
 {
     public class CServer : MonoBehaviour
     {

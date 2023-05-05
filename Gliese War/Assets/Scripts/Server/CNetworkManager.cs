@@ -4,7 +4,7 @@ using System.Collections;
 using GameServer;
 using System.Net.Sockets;
 
-namespace Server_Unity
+namespace Client_Unity
 {
     public class CNetworkManager : MonoBehaviour
     {
