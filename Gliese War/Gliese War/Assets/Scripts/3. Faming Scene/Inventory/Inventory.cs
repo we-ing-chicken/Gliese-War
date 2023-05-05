@@ -191,7 +191,7 @@ public class Inventory : MonoBehaviour
     {
         RectTransform slotsParentComponent = slotsParent.GetComponent<RectTransform>();
         if(slots.Count >= 4)
-            slotsParentComponent.sizeDelta = new Vector2(slotsParentComponent.sizeDelta.x, 200 * slots.Count);
+            slotsParentComponent.sizeDelta = new Vector2(slotsParentComponent.sizeDelta.x, 150 * slots.Count);
         else
             slotsParentComponent.sizeDelta = new Vector2(slotsParentComponent.sizeDelta.x, 800);
         
