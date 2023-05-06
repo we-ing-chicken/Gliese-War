@@ -112,7 +112,7 @@ public class Monster : MonoBehaviour
             agent.isStopped = true;
         Vector3 dir = transform.position - Player.instance.transform.position;
         dir = dir.normalized;
-        rigid.AddForce(dir * 50,ForceMode.Impulse);
+        rigid.AddForce(dir * 20,ForceMode.Impulse);
         StartCoroutine(KnockBackWait());
     }
 
