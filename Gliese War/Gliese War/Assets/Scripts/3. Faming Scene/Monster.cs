@@ -155,7 +155,7 @@ public class Monster : MonoBehaviour
         {
             child.AddComponent<Rigidbody>();
             
-            Material mat = child.GetComponent<SkinnedMeshRenderer>().material;
+            Material mat = child.GetComponent<MeshRenderer>().material;
             mat.color = before;
             
             Rigidbody comp = child.GetComponent<Rigidbody>();
