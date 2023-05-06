@@ -263,7 +263,8 @@ public class Player : MonoBehaviour
 
     private void animate()
     {
-        animator.SetBool("isRun", ismove);
+        if(!isUI)
+            animator.SetBool("isRun", ismove);
         
     }
 
@@ -383,8 +384,8 @@ public class Player : MonoBehaviour
         {
             Debug.Log("Jump");
             isAttack = false;
-           
-            animator.SetTrigger("doJump");
+           if(!isUI)
+                animator.SetTrigger("doJump");
 
         }
         //if (Input.GetKeyDown(KeyCode.LeftShift))
