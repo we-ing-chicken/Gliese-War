@@ -15,6 +15,9 @@ public class Monster : MonoBehaviour
     private int HP;
     private int damage;
     private bool attackCoolTime;
+
+    private Material mat;
+    private Color before;
     
     [SerializeField] private Transform pfBoxBroken;
     private Transform broken;
@@ -26,7 +29,10 @@ public class Monster : MonoBehaviour
         drop = GetComponent<Drop>();
         rigid = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
-
+        
+        mat = transform.GetChild(1).GetComponent<SkinnedMeshRenderer>().material;
+        before = mat.color;
+        
         HP = 100;
         damage = 10;
         attackCoolTime = false;
@@ -71,8 +77,6 @@ public class Monster : MonoBehaviour
 
     IEnumerator HitColor()
     {
-        Material mat = transform.GetChild(1).GetComponent<SkinnedMeshRenderer>().material;
-        
         bool flag = true;
         
         for (int i = 0; i < 6; ++i)
@@ -84,13 +88,13 @@ public class Monster : MonoBehaviour
             }
             else
             {
-                mat.color = Color.white;
+                mat.color = before;
                 flag = true;
             }
             yield return new WaitForSeconds(0.1f);
-            mat.color = Color.white;
+            mat.color = before;
         }
-        mat.color = Color.white;
+        mat.color = before;
         
         yield return null;
     }
@@ -112,7 +116,7 @@ public class Monster : MonoBehaviour
             agent.isStopped = true;
         Vector3 dir = transform.position - Player.instance.transform.position;
         dir = dir.normalized;
-        rigid.AddForce(dir * 50,ForceMode.Impulse);
+        rigid.AddForce(dir * 20,ForceMode.Impulse);
         StartCoroutine(KnockBackWait());
     }
 
@@ -150,6 +154,9 @@ public class Monster : MonoBehaviour
         foreach (Transform child in broken)
         {
             child.AddComponent<Rigidbody>();
+            
+            Material mat = child.GetComponent<MeshRenderer>().material;
+            mat.color = before;
             
             Rigidbody comp = child.GetComponent<Rigidbody>();
             comp.AddExplosionForce(50000f, Vector3.up, 120f);
