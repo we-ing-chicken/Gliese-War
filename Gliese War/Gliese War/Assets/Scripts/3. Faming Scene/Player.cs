@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     public int life;
     public float MouseX;
     public float mouseSpeed;
+    public bool isUI = false;
 
     private string moveFBAxisName = "Vertical"; // �յ� �������� ���� �Է��� �̸�
     private string moveLRAxisName = "Horizontal"; // �¿� �������� ���� �Է��� �̸�
@@ -49,6 +50,7 @@ public class Player : MonoBehaviour
     public RealItem weapon1;
     public RealItem weapon2;
     public int weaponNow = 1;
+    bool ismove = false;
 
     [SerializeField] private GameObject head;
     [SerializeField] private GameObject body;
@@ -121,6 +123,8 @@ public class Player : MonoBehaviour
 
         // rotate�� ���� �Է� ����
         moveLR = Input.GetAxis(moveLRAxisName);
+
+        ismove = (Input.GetButton(moveFBAxisName) || Input.GetButton(moveLRAxisName));
 
         // fire�� ���� �Է� ����
         Mlattack = Input.GetButton(meleeAttackButtonName);
@@ -202,7 +206,8 @@ public class Player : MonoBehaviour
     private void Look()
     {
         MouseX += Input.GetAxis("Mouse X") * mouseSpeed;
-        transform.rotation = Quaternion.Euler(0, MouseX, 0);
+        if(!isUI)
+            transform.rotation = Quaternion.Euler(0, MouseX, 0);
     }
     private void player_lookTarget()
     {
@@ -258,7 +263,7 @@ public class Player : MonoBehaviour
 
     private void animate()
     {
-        animator.SetBool("isRun", moveDirection != Vector3.zero);
+        animator.SetBool("isRun", ismove);
         
     }
 
