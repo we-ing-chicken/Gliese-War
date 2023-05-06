@@ -1204,6 +1204,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4a7e1424cff60043b86721a904e1edf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pfBoxBroken: {fileID: 4217696261086818334, guid: d88de197e086a524eb3c4684082d0084, type: 3}
 --- !u!54 &8925169942374756045
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1266,3 +1267,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inven: {fileID: 0}
+  dropLevel: 0
+  isFirst: 0
+  onTree: 0

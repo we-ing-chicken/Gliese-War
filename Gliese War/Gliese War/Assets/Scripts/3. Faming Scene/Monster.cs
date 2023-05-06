@@ -16,6 +16,9 @@ public class Monster : MonoBehaviour
     private int damage;
     private bool attackCoolTime;
     
+    [SerializeField] private Transform pfBoxBroken;
+    private Transform broken;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -62,7 +65,7 @@ public class Monster : MonoBehaviour
         if (HP <= 0)
         {
             drop.DropItem();
-            gameObject.SetActive(false);
+            DestructObject();
         }
     }
 
@@ -139,5 +142,19 @@ public class Monster : MonoBehaviour
         Debug.Log("몬스터 공격 종료");
         
         yield return null;
+    }
+    
+    public void DestructObject()
+    {
+        broken = Instantiate(pfBoxBroken, transform.position + new Vector3(0,4f,0), transform.rotation);
+        foreach (Transform child in broken)
+        {
+            child.AddComponent<Rigidbody>();
+            
+            Rigidbody comp = child.GetComponent<Rigidbody>();
+            comp.AddExplosionForce(50000f, Vector3.up, 120f);
+        }
+
+        Destroy(gameObject);
     }
 }
