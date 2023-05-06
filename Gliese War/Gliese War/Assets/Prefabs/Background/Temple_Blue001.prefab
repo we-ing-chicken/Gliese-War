@@ -4941,6 +4941,7 @@ GameObject:
   - component: {fileID: 3299866585156224881}
   - component: {fileID: 733959630047933371}
   - component: {fileID: 6576805639687804424}
+  - component: {fileID: 5263591161766063010}
   m_Layer: 0
   m_Name: Temple_Blue001
   m_TagString: Untagged
@@ -5032,6 +5033,18 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 2705642026550097862, guid: 07ff9db603b93e44ab4f22dd24147a36, type: 3}
+--- !u!114 &5263591161766063010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1238331658631139950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ce3b0b27fa721244a44a0790bf4480f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1291911669733263041
 GameObject:
   m_ObjectHideFlags: 0

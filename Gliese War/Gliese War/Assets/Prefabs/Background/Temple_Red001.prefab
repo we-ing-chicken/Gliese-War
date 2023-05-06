@@ -629,6 +629,7 @@ GameObject:
   - component: {fileID: 1749326874492779454}
   - component: {fileID: 4585276641613139828}
   - component: {fileID: 6180912682542591925}
+  - component: {fileID: 2948895531722020493}
   m_Layer: 0
   m_Name: Temple_Red001
   m_TagString: Untagged
@@ -720,6 +721,18 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 2705642026550097862, guid: 07ff9db603b93e44ab4f22dd24147a36, type: 3}
+--- !u!114 &2948895531722020493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2639901854553665185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ce3b0b27fa721244a44a0790bf4480f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2743413648199150095
 GameObject:
   m_ObjectHideFlags: 0
