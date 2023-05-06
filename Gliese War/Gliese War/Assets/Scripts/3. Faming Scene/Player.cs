@@ -382,8 +382,6 @@ public class Player : MonoBehaviour
             animator.SetTrigger("doJump");
 
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha9))
-            StartCoroutine(StartRevive());
         //if (Input.GetKeyDown(KeyCode.LeftShift))
         //{
         //    Debug.Log("Run-down");
@@ -613,15 +611,18 @@ public class Player : MonoBehaviour
 
     IEnumerator StartRevive()
     {
-        yield return new WaitForSeconds(1f);
+        FarmingManager.Instance.StartFadeOut();
+        yield return new WaitForSeconds(2f);
 
         currHealth = maxHealth;
         FarmingManager.Instance.playerCurrentHPBar.value = (float)currHealth / maxHealth;
         
         charactercontroller.enabled = false;
-        FarmingManager.Instance.StartFadeOut();
+        yield return new WaitForSeconds(0.1f);
         instance.transform.position = FarmingManager.Instance.startPostion.transform.position;
+        yield return new WaitForSeconds(0.1f);
         charactercontroller.enabled = true;
+        yield return null;
     }
 
     public void SetShoesEffect()
