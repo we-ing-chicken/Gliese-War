@@ -15,6 +15,9 @@ public class Monster : MonoBehaviour
     private int HP;
     private int damage;
     private bool attackCoolTime;
+
+    private Material mat;
+    private Color before;
     
     [SerializeField] private Transform pfBoxBroken;
     private Transform broken;
@@ -26,7 +29,10 @@ public class Monster : MonoBehaviour
         drop = GetComponent<Drop>();
         rigid = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
-
+        
+        mat = transform.GetChild(1).GetComponent<SkinnedMeshRenderer>().material;
+        before = mat.color;
+        
         HP = 100;
         damage = 10;
         attackCoolTime = false;
@@ -71,9 +77,6 @@ public class Monster : MonoBehaviour
 
     IEnumerator HitColor()
     {
-        Material mat = transform.GetChild(1).GetComponent<SkinnedMeshRenderer>().material;
-        Color before = mat.color;
-        
         bool flag = true;
         
         for (int i = 0; i < 6; ++i)
@@ -151,6 +154,9 @@ public class Monster : MonoBehaviour
         foreach (Transform child in broken)
         {
             child.AddComponent<Rigidbody>();
+            
+            Material mat = child.GetComponent<SkinnedMeshRenderer>().material;
+            mat.color = before;
             
             Rigidbody comp = child.GetComponent<Rigidbody>();
             comp.AddExplosionForce(50000f, Vector3.up, 120f);
