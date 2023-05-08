@@ -7,45 +7,57 @@ using UnityEngine;
 public class TransparentObject : MonoBehaviour
 {
     Renderer ObstacleRenderer;
+    private Coroutine cor;
 
-    void Update()
+    public void StartTransparent()
     {
-        float distance = Vector3.Distance(Camera.main.transform.position, Player.instance.transform.position);
-        Vector3 direction = (Player.instance.transform.position - Camera.main.transform.position).normalized;
-        RaycastHit[] hit;
+        cor = StartCoroutine(TransParent());
+    }
 
-        hit = (Physics.RaycastAll(Camera.main.transform.position, direction, distance));
-        bool flag = false;
-        
-        for (int i = 0; i < hit.Length; ++i)
+    IEnumerator TransParent()
+    {
+        while(true)
         {
-            if (hit[i].transform.gameObject == gameObject)
+            float distance = Vector3.Distance(Camera.main.transform.position, Player.instance.transform.position);
+            Vector3 direction = (Player.instance.transform.position - Camera.main.transform.position).normalized;
+            RaycastHit[] hit;
+
+            hit = (Physics.RaycastAll(Camera.main.transform.position, direction, distance));
+            bool flag = false;
+        
+            for (int i = 0; i < hit.Length; ++i)
             {
-                ObstacleRenderer = transform.gameObject.GetComponentInChildren<Renderer>();
-                
-                if (ObstacleRenderer != null)
+                if (hit[i].transform.gameObject == gameObject)
                 {
-                    // Material material = ObstacleRenderer.material;
-                    // Color color = material.color;
-                    // color.a = 0.1f;
-                    // material.color = color;
-                    gameObject.layer = 7;
-                    flag = true;
-                    break;
+                    ObstacleRenderer = transform.gameObject.GetComponentInChildren<Renderer>();
+                
+                    if (ObstacleRenderer != null)
+                    {
+                        // Material material = ObstacleRenderer.material;
+                        // Color color = material.color;
+                        // color.a = 0.1f;
+                        // material.color = color;
+                        gameObject.layer = 7;
+                        flag = true;
+                        break;
+                    }
                 }
+
             }
 
-        }
+            if (!flag)
+            {
+                ObstacleRenderer = transform.gameObject.GetComponentInChildren<Renderer>();
 
-        if (!flag)
-        {
-            ObstacleRenderer = transform.gameObject.GetComponentInChildren<Renderer>();
-            
-            // Material material = ObstacleRenderer.material;
-            // Color color = material.color;
-            // color.a = 1f;
-            //material.color = color;
-            gameObject.layer = 0;
+                // Material material = ObstacleRenderer.material;
+                // Color color = material.color;
+                // color.a = 1f;
+                //material.color = color;
+                gameObject.layer = 0;
+                StopCoroutine(cor);
+            }
+
+            yield return null;
         }
     }
 }
