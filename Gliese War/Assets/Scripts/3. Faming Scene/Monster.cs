@@ -15,6 +15,14 @@ public class Monster : MonoBehaviour
     private int HP;
     private int damage;
     private bool attackCoolTime;
+
+    private Material mat;
+    private Color before;
+
+    private bool isDead;
+    
+    [SerializeField] private Transform pfBoxBroken;
+    private Transform broken;
     
     // Start is called before the first frame update
     void Start()
@@ -23,10 +31,15 @@ public class Monster : MonoBehaviour
         drop = GetComponent<Drop>();
         rigid = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
-
+        
+        mat = transform.GetChild(1).GetComponent<SkinnedMeshRenderer>().material;
+        before = mat.color;
+        
         HP = 100;
         damage = 10;
         attackCoolTime = false;
+
+        isDead = false;
     }
 
     // Update is called once per frame
@@ -59,17 +72,16 @@ public class Monster : MonoBehaviour
     {
         HP -= Player.instance.GetAttackPower();
         StartCoroutine(HitColor());
-        if (HP <= 0)
+        if (HP <= 0 && !isDead)
         {
+            isDead = true;
             drop.DropItem();
-            gameObject.SetActive(false);
+            DestructObject();
         }
     }
 
     IEnumerator HitColor()
     {
-        Material mat = transform.GetChild(1).GetComponent<SkinnedMeshRenderer>().material;
-        
         bool flag = true;
         
         for (int i = 0; i < 6; ++i)
@@ -81,13 +93,13 @@ public class Monster : MonoBehaviour
             }
             else
             {
-                mat.color = Color.white;
+                mat.color = before;
                 flag = true;
             }
             yield return new WaitForSeconds(0.1f);
-            mat.color = Color.white;
+            mat.color = before;
         }
-        mat.color = Color.white;
+        mat.color = before;
         
         yield return null;
     }
@@ -109,7 +121,7 @@ public class Monster : MonoBehaviour
             agent.isStopped = true;
         Vector3 dir = transform.position - Player.instance.transform.position;
         dir = dir.normalized;
-        rigid.AddForce(dir * 50,ForceMode.Impulse);
+        rigid.AddForce(dir * 20,ForceMode.Impulse);
         StartCoroutine(KnockBackWait());
     }
 
@@ -139,5 +151,22 @@ public class Monster : MonoBehaviour
         Debug.Log("몬스터 공격 종료");
         
         yield return null;
+    }
+    
+    public void DestructObject()
+    {
+        broken = Instantiate(pfBoxBroken, transform.position + new Vector3(0,4f,0), transform.rotation);
+        foreach (Transform child in broken)
+        {
+            child.AddComponent<Rigidbody>();
+            
+            Material mat = child.GetComponent<MeshRenderer>().material;
+            mat.color = before;
+            
+            Rigidbody comp = child.GetComponent<Rigidbody>();
+            comp.AddExplosionForce(50000f, Vector3.up, 120f);
+        }
+
+        Destroy(gameObject);
     }
 }

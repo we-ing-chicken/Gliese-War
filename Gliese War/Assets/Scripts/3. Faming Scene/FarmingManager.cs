@@ -89,6 +89,7 @@ public static FarmingManager Instance
 
     void Start()
     {
+        SwitchCanvasActive(invenCanvas);
         //_timeOfInGame = 8.4f;
         _timeOfInGame = 6f;
         _timerTxtComp = timerTxt.GetComponent<TextMeshProUGUI>();
@@ -99,9 +100,12 @@ public static FarmingManager Instance
         SetTimerText();
         UpdateLighting(_timeOfInGame / 24f);
 
+        
+        
         _isFading = true;
         SwitchCanvasActive(fadeCanvas);
         StartCoroutine(FadeIn(2f));
+        SwitchCanvasActive(invenCanvas);
     }
 
     private void Update()
@@ -174,6 +178,7 @@ public static FarmingManager Instance
 
     IEnumerator FadeIn(float fadeTime)
     {
+        //Debug.Log("E");
         float alpha = fadeCanvas.transform.GetChild(0).GetComponent<Image>().color.a;
         fadeCanvas.transform.GetChild(0).GetComponent<Image>().material.color = new Vector4(1f, 1f, 1f,1f);
         //float mat_Rgb = fadeCanvas.transform.GetChild(0).GetComponent<Image>().material.color.r;
@@ -212,6 +217,7 @@ public static FarmingManager Instance
 
     IEnumerator FadeOut()
     {
+        //Debug.Log("C");
         SwitchCanvasActive(fadeCanvas);
         _isFading = true;
         float alpha = fadeCanvas.transform.GetChild(0).GetComponent<Image>().color.a;
@@ -331,13 +337,16 @@ public static FarmingManager Instance
 
     public void StartFadeOut()
     {
+        //Debug.Log("A");
         StartCoroutine(FadeInOutCoroutine());
     }
 
     IEnumerator FadeInOutCoroutine()
     {
+        //Debug.Log("B");
         StartCoroutine(FadeOut());
         yield return new WaitForSeconds(3f);
+        //Debug.Log("D");
         StartCoroutine(FadeIn(0f));
     }
 

@@ -21,5 +21,19 @@ public class Playercam : MonoBehaviour
         transform.rotation = Quaternion.Euler(ymove, xmove, 0);
         Vector3 reverseDistance = new Vector3(0.0f, 0.0f, distance);
         transform.position = player.transform.position - transform.rotation * reverseDistance;
+        
+        float dis = Vector3.Distance(Camera.main.transform.position, Player.instance.transform.position);
+        Vector3 direction = (Player.instance.transform.position - Camera.main.transform.position).normalized;
+        RaycastHit[] hit;
+
+        hit = (Physics.RaycastAll(Camera.main.transform.position, direction, dis));
+
+        for (int i = 0; i < hit.Length; ++i)
+        {
+            if (hit[i].transform.GetComponent<TransparentObject>() != null)
+            {
+                hit[i].transform.GetComponent<TransparentObject>().StartTransparent();
+            }
+        }
     }
 }

@@ -226,6 +226,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inven: {fileID: 0}
+  dropLevel: 0
+  isFirst: 0
+  onTree: 0
 --- !u!1 &6179281673232620659
 GameObject:
   m_ObjectHideFlags: 0
@@ -314,6 +317,25 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7fb32dd11c639974c974d47eb0db2464, type: 3}
+--- !u!1 &2603741164768340665 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8662639109502465569, guid: 7fb32dd11c639974c974d47eb0db2464, type: 3}
+  m_PrefabInstance: {fileID: 6635412575391112344}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &5521785806164027502
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2603741164768340665}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 91718672904789045, guid: 2d7e0423fef770c4db62741b67f72ce6, type: 3}
 --- !u!4 &3416411771918118915 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8321580031742356635, guid: 7fb32dd11c639974c974d47eb0db2464, type: 3}

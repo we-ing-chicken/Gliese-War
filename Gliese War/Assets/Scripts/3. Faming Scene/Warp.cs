@@ -37,7 +37,7 @@ public class Warp : MonoBehaviour
             return;
         }
         
-        if ((other.CompareTag("Player") && isLockOn))
+        if (other.CompareTag("Player") && isLockOn && !FarmingManager.Instance._isFading)
         {
             if (Input.GetKeyDown(KeyCode.G))
             {
@@ -47,10 +47,8 @@ public class Warp : MonoBehaviour
                 FarmingManager.Instance.UnActiveG();
                 
                 FarmingManager.Instance.StartFadeOut();
-                
-                other.GetComponent<CharacterController>().enabled = false;
-                other.transform.position = warpTo.transform.position;
-                other.GetComponent<CharacterController>().enabled = true;
+                StartCoroutine(Move());
+
             }
         }
     }
@@ -64,5 +62,19 @@ public class Warp : MonoBehaviour
             isLockOn = false;
             FarmingManager.Instance.UnActiveG();
         }
+    }
+
+    IEnumerator Move()
+    {
+        yield return new WaitForSeconds(2f);
+        Player.instance.GetComponent<CharacterController>().enabled = false;
+        yield return new WaitForSeconds(0.1f);
+        Player.instance.transform.position = warpTo.transform.position;
+        yield return new WaitForSeconds(0.1f);
+        Player.instance.GetComponent<CharacterController>().enabled = true;
+        isLockOn= false;
+        Player.instance.isNear = false;
+        FarmingManager.Instance.UnActiveG();
+        yield return null;
     }
 }

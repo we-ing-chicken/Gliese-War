@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     public int life;
     public float MouseX;
     public float mouseSpeed;
+    public bool isUI = false;
 
     private string moveFBAxisName = "Vertical"; // �յ� �������� ���� �Է��� �̸�
     private string moveLRAxisName = "Horizontal"; // �¿� �������� ���� �Է��� �̸�
@@ -49,6 +50,7 @@ public class Player : MonoBehaviour
     public RealItem weapon1;
     public RealItem weapon2;
     public int weaponNow = 1;
+    bool ismove = false;
 
     [SerializeField] private GameObject head;
     [SerializeField] private GameObject body;
@@ -121,6 +123,8 @@ public class Player : MonoBehaviour
 
         // rotate�� ���� �Է� ����
         moveLR = Input.GetAxis(moveLRAxisName);
+
+        ismove = (Input.GetButton(moveFBAxisName) || Input.GetButton(moveLRAxisName));
 
         // fire�� ���� �Է� ����
         Mlattack = Input.GetButton(meleeAttackButtonName);
@@ -202,7 +206,8 @@ public class Player : MonoBehaviour
     private void Look()
     {
         MouseX += Input.GetAxis("Mouse X") * mouseSpeed;
-        transform.rotation = Quaternion.Euler(0, MouseX, 0);
+        if(!isUI)
+            transform.rotation = Quaternion.Euler(0, MouseX, 0);
     }
     private void player_lookTarget()
     {
@@ -258,7 +263,8 @@ public class Player : MonoBehaviour
 
     private void animate()
     {
-        animator.SetBool("isRun", moveDirection != Vector3.zero);
+        if(!isUI)
+            animator.SetBool("isRun", ismove);
         
     }
 
@@ -378,12 +384,10 @@ public class Player : MonoBehaviour
         {
             Debug.Log("Jump");
             isAttack = false;
-           
-            animator.SetTrigger("doJump");
+           if(!isUI)
+                animator.SetTrigger("doJump");
 
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha9))
-            StartCoroutine(StartRevive());
         //if (Input.GetKeyDown(KeyCode.LeftShift))
         //{
         //    Debug.Log("Run-down");
@@ -587,7 +591,7 @@ public class Player : MonoBehaviour
     {
         if (other.CompareTag("MonsterAttack"))
         {
-            GetDamage(10);
+            GetDamage(5);
             FarmingManager.Instance.HitScreen();
         }
     }
@@ -613,15 +617,18 @@ public class Player : MonoBehaviour
 
     IEnumerator StartRevive()
     {
-        yield return new WaitForSeconds(1f);
+        FarmingManager.Instance.StartFadeOut();
+        yield return new WaitForSeconds(2f);
 
         currHealth = maxHealth;
         FarmingManager.Instance.playerCurrentHPBar.value = (float)currHealth / maxHealth;
         
         charactercontroller.enabled = false;
-        FarmingManager.Instance.StartFadeOut();
+        yield return new WaitForSeconds(0.1f);
         instance.transform.position = FarmingManager.Instance.startPostion.transform.position;
+        yield return new WaitForSeconds(0.1f);
         charactercontroller.enabled = true;
+        yield return null;
     }
 
     public void SetShoesEffect()
