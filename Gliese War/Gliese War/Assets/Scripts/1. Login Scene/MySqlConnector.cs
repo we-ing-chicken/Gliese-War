@@ -40,8 +40,8 @@ public class MySqlConnector
     // Connect to database
     private static void openSqlConnection()
     {
-
-        string connectionString = "Server=gliese-war.c6e5pb45mftu.us-east-1.rds.amazonaws.com;" +
+        
+        string connectionString = "Server=gliesewar.cdj2pfnkbmf4.ap-northeast-2.rds.amazonaws.com;" +
 
             "Database=sys;" +
 

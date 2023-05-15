@@ -217,9 +217,8 @@ namespace Team
             string id = joinIDInput.text;
             string pw = joinPwInput.text;
             string nick = joinNickInput.text;
-            int hash = 32231;
-        
-            MySqlConnector.Instance.doNonQuery("insert into User values ('" + hash + "','" + id + "','" + pw +"','" + nick + "','0','0','2022-08-09')");
+
+            MySqlConnector.Instance.doNonQuery("insert into User values ('" + id + "','" + pw +"','" + nick + "','0','0','2022-08-09')");
             // 아이디, 닉네임,현재 돈, 누적 돈, 현재 캐쉬, 누적 캐쉬, 현재 포인트, 최고 포인트, 레벨,경험치, 캐릭터, 비밀번호
             
 

@@ -18,6 +18,8 @@ public class Monster : MonoBehaviour
 
     private Material mat;
     private Color before;
+
+    private bool isDead;
     
     [SerializeField] private Transform pfBoxBroken;
     private Transform broken;
@@ -36,6 +38,8 @@ public class Monster : MonoBehaviour
         HP = 100;
         damage = 10;
         attackCoolTime = false;
+
+        isDead = false;
     }
 
     // Update is called once per frame
@@ -68,8 +72,9 @@ public class Monster : MonoBehaviour
     {
         HP -= Player.instance.GetAttackPower();
         StartCoroutine(HitColor());
-        if (HP <= 0)
+        if (HP <= 0 && !isDead)
         {
+            isDead = true;
             drop.DropItem();
             DestructObject();
         }

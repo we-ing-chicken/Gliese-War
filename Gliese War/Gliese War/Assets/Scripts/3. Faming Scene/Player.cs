@@ -591,7 +591,7 @@ public class Player : MonoBehaviour
     {
         if (other.CompareTag("MonsterAttack"))
         {
-            GetDamage(10);
+            GetDamage(5);
             FarmingManager.Instance.HitScreen();
         }
     }

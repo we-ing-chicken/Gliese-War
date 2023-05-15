@@ -89,7 +89,7 @@ public static FarmingManager Instance
 
     void Start()
     {
-        SwitchCanvasActive(invenCanvas);
+        SwitchGameObjectActive(characterCam);
         //_timeOfInGame = 8.4f;
         _timeOfInGame = 6f;
         _timerTxtComp = timerTxt.GetComponent<TextMeshProUGUI>();
@@ -105,7 +105,7 @@ public static FarmingManager Instance
         _isFading = true;
         SwitchCanvasActive(fadeCanvas);
         StartCoroutine(FadeIn(2f));
-        SwitchCanvasActive(invenCanvas);
+        SwitchGameObjectActive(characterCam);
     }
 
     private void Update()
