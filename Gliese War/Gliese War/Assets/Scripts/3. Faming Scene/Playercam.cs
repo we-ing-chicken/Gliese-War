@@ -19,7 +19,7 @@ public class Playercam : MonoBehaviour
         ymove = Mathf.Clamp(ymove, ymove_min, ymove_max);
 
         transform.rotation = Quaternion.Euler(ymove, xmove, 0);
-        Vector3 reverseDistance = new Vector3(0.0f, 0.0f, distance);
+        Vector3 reverseDistance = new Vector3(0.0f, -5.0f, distance);
         transform.position = player.transform.position - transform.rotation * reverseDistance;
         
         float dis = Vector3.Distance(Camera.main.transform.position, Player.instance.transform.position);
