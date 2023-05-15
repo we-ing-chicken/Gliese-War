@@ -13,6 +13,14 @@ public class FarmingManager : MonoBehaviour
 {
     private static FarmingManager _instance;
 
+    enum Scene
+    {
+        LoginScene = 0,
+        LobbyScene = 1,
+        FarmingScene = 2,
+        BattleScene = 3,
+        END
+    }
     private bool _isEnd = false;
     public bool _isPause = false;
     public bool _isFading = true;
@@ -178,7 +186,6 @@ public static FarmingManager Instance
 
     IEnumerator FadeIn(float fadeTime)
     {
-        //Debug.Log("E");
         float alpha = fadeCanvas.transform.GetChild(0).GetComponent<Image>().color.a;
         fadeCanvas.transform.GetChild(0).GetComponent<Image>().material.color = new Vector4(1f, 1f, 1f,1f);
         //float mat_Rgb = fadeCanvas.transform.GetChild(0).GetComponent<Image>().material.color.r;
@@ -217,7 +224,6 @@ public static FarmingManager Instance
 
     IEnumerator FadeOut()
     {
-        //Debug.Log("C");
         SwitchCanvasActive(fadeCanvas);
         _isFading = true;
         float alpha = fadeCanvas.transform.GetChild(0).GetComponent<Image>().color.a;
@@ -315,12 +321,12 @@ public static FarmingManager Instance
 
     public void Restart()
     {
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene((int)(Scene.FarmingScene));
     }
 
     public void Exit()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene((int)(Scene.LobbyScene));
     }
 
     public void Resume()
@@ -331,22 +337,19 @@ public static FarmingManager Instance
 
     public void PlayBattlePhase()
     {
-        SceneManager.LoadScene(3);
+        SceneManager.LoadScene((int)(Scene.BattleScene));
     }
     
 
     public void StartFadeOut()
     {
-        //Debug.Log("A");
         StartCoroutine(FadeInOutCoroutine());
     }
 
     IEnumerator FadeInOutCoroutine()
     {
-        //Debug.Log("B");
         StartCoroutine(FadeOut());
         yield return new WaitForSeconds(3f);
-        //Debug.Log("D");
         StartCoroutine(FadeIn(0f));
     }
 
