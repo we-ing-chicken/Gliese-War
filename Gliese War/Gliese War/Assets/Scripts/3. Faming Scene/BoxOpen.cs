@@ -25,7 +25,7 @@ public class BoxOpen : MonoBehaviour
         mainCamera = Camera.main;
         drop = gameObject.GetComponent<Drop>();
 
-        anim = transform.GetChild(0).GetComponent<Animator>();
+        anim = transform.GetChild(2).GetComponent<Animator>();
     }
 
     // Update is called once per frame
