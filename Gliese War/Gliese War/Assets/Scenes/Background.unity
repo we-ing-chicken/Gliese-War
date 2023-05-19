@@ -413,6 +413,71 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
+--- !u!1001 &1845991698
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 112759604358576883, guid: 8d8c889e59d82c14eba4f612576265a2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 6.61
+      objectReference: {fileID: 0}
+    - target: {fileID: 112759604358576883, guid: 8d8c889e59d82c14eba4f612576265a2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -15.54
+      objectReference: {fileID: 0}
+    - target: {fileID: 4898739441189842432, guid: 8d8c889e59d82c14eba4f612576265a2, type: 3}
+      propertyPath: m_RootOrder
+      value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 4898739441189842432, guid: 8d8c889e59d82c14eba4f612576265a2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3.065
+      objectReference: {fileID: 0}
+    - target: {fileID: 4898739441189842432, guid: 8d8c889e59d82c14eba4f612576265a2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.123
+      objectReference: {fileID: 0}
+    - target: {fileID: 4898739441189842432, guid: 8d8c889e59d82c14eba4f612576265a2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -4.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4898739441189842432, guid: 8d8c889e59d82c14eba4f612576265a2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4898739441189842432, guid: 8d8c889e59d82c14eba4f612576265a2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4898739441189842432, guid: 8d8c889e59d82c14eba4f612576265a2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4898739441189842432, guid: 8d8c889e59d82c14eba4f612576265a2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4898739441189842432, guid: 8d8c889e59d82c14eba4f612576265a2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4898739441189842432, guid: 8d8c889e59d82c14eba4f612576265a2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4898739441189842432, guid: 8d8c889e59d82c14eba4f612576265a2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5237687731187922106, guid: 8d8c889e59d82c14eba4f612576265a2, type: 3}
+      propertyPath: m_Name
+      value: Cactus_Ani
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8d8c889e59d82c14eba4f612576265a2, type: 3}
 --- !u!1 &1965057980
 GameObject:
   m_ObjectHideFlags: 0
@@ -2175,6 +2240,7 @@ MonoBehaviour:
   MouseX: 0
   mouseSpeed: 5
   isUI: 0
+  isFarming: 1
   offensivePower: 0
   defensivePower: 0
   maxHealth: 0
