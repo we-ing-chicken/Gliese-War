@@ -11,12 +11,13 @@ GameObject:
   - component: {fileID: 5522382407523247791}
   - component: {fileID: 1129567289482229833}
   - component: {fileID: 7390648078146553811}
+  - component: {fileID: 7075703646764805463}
   m_Layer: 0
   m_Name: D_Cactus3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &5522382407523247791
 Transform:
@@ -27,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 5772675269912415176}
   m_LocalRotation: {x: -0.5, y: 0.5, z: 0.5, w: 0.5}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.139369, y: 0.139369, z: 0.139369}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -83,3 +84,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &7075703646764805463
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5772675269912415176}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.8541099, y: 4.171955, z: 6.1501813}
+  m_Center: {x: 0, y: -0.00000023841858, z: 0}

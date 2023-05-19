@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TheKiwiCoder;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public class Monster : MonoBehaviour
 {
@@ -21,7 +23,7 @@ public class Monster : MonoBehaviour
 
     private bool isDead;
     
-    [SerializeField] private Transform pfBoxBroken;
+    //[SerializeField] private Transform pfBoxBroken;
     private Transform broken;
     
     // Start is called before the first frame update
@@ -40,6 +42,8 @@ public class Monster : MonoBehaviour
         attackCoolTime = false;
 
         isDead = false;
+
+        StartCoroutine(AnimationStop());
     }
 
     // Update is called once per frame
@@ -51,6 +55,17 @@ public class Monster : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         
+    }
+
+    IEnumerator AnimationStop()
+    {
+        animator.StartPlayback();
+        
+        float sec = Random.Range(0, 5f);
+        yield return new WaitForSeconds(sec);
+        
+        animator.StopPlayback();
+        yield return null;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -143,7 +158,7 @@ public class Monster : MonoBehaviour
 
     IEnumerator EndAttack()
     {
-        yield return new WaitForSeconds(1.05f);
+        yield return new WaitForSeconds(0.55f);
         
         agent.isStopped = false;
         rigid.constraints = RigidbodyConstraints.None;
@@ -155,7 +170,17 @@ public class Monster : MonoBehaviour
     
     public void DestructObject()
     {
-        broken = Instantiate(pfBoxBroken, transform.position + new Vector3(0,4f,0), transform.rotation);
+        //broken = Instantiate(pfBoxBroken, transform.position + new Vector3(0,4f,0), transform.rotation);
+        broken = transform.GetChild(3);
+        broken.gameObject.SetActive(true);
+        
+        Destroy(transform.GetComponent<BehaviourTreeRunner>());
+        //Destroy(agent);
+        agent.enabled = false;
+        
+        transform.GetChild(0).gameObject.SetActive(false);
+        transform.GetChild(1).gameObject.SetActive(false);
+        
         foreach (Transform child in broken)
         {
             child.AddComponent<Rigidbody>();
@@ -167,6 +192,6 @@ public class Monster : MonoBehaviour
             comp.AddExplosionForce(50000f, Vector3.up, 120f);
         }
 
-        Destroy(gameObject);
+        //Destroy(gameObject);
     }
 }
