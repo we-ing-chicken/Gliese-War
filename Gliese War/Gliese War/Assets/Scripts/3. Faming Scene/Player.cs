@@ -82,8 +82,6 @@ public class Player : MonoBehaviour
 
     public bool isNear;
 
-    private Vector3 moveDirection;
-
     private void Start()
     {
         instance = this;
@@ -132,7 +130,6 @@ public class Player : MonoBehaviour
         Mgattack = Input.GetButton(magicAttackButtonName);
         p_Jump = Input.GetButton(JumpButtonName);
         animate();
-        Test();
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -194,7 +191,16 @@ public class Player : MonoBehaviour
         else
         {
             Move();
-            if (p_Jump) Jump();
+            if (p_Jump)
+            {
+                isAttack = false;
+                if (!isUI)
+                {
+                    animator.SetTrigger("doJump");
+                    Jump();
+                }
+
+            }
         }
 
         charactercontroller.Move(moveDir * Time.deltaTime);
@@ -207,8 +213,6 @@ public class Player : MonoBehaviour
 
 
         moveDir = charactercontroller.transform.TransformDirection(new Vector3(moveLR, 0, moveFB)) * moveSpeed;
-        moveDirection = transform.right * moveDir.x + transform.forward * moveDir.z;
-
     }
 
     private void Jump()
@@ -283,7 +287,6 @@ public class Player : MonoBehaviour
     {
         if(!isUI)
             animator.SetBool("isRun", ismove);
-        
     }
 
     private void AttackAnimation()
@@ -394,34 +397,6 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         attackEffectPos.transform.GetChild(pos).gameObject.SetActive(false);
         yield return null;
-    }
-
-    private void Test()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Debug.Log("Jump");
-            isAttack = false;
-           if(!isUI)
-                animator.SetTrigger("doJump");
-
-        }
-        //if (Input.GetKeyDown(KeyCode.LeftShift))
-        //{
-        //    Debug.Log("Run-down");
-        //    moveSpeed *= 2.0f;
-
-        //    animator.SetBool("isRun", true);
-
-        //}
-        //if (Input.GetKeyUp(KeyCode.LeftShift))
-        //{
-        //    Debug.Log("Run-up");
-        //    moveSpeed /= 2.0f;
-
-        //    animator.SetBool("isRun", false);
-
-        //}
     }
 
     public void UnEquip(RealItem realItem)
