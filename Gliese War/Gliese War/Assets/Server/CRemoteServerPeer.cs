@@ -1,59 +1,59 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using GameServer;
-using Client_Unity;
+using Server_Unity;
 
-namespace Client_Unity
+namespace Server_Unity
 {
-    public class CRemoteServerPeer : IPeer
-    {
-        public CUserToken token { get; private set; }
-        WeakReference freenet_eventmanager;
+	public class CRemoteServerPeer : IPeer
+	{
+		public CUserToken token { get; private set; }
+		WeakReference UnityServer_eventmanager;
 
-        public CRemoteServerPeer(CUserToken token)
-        {
-            this.token = token;
-            this.token.set_peer(this);
-        }
+		public CRemoteServerPeer(CUserToken token)
+		{
+			this.token = token;
+			this.token.set_peer(this);
+		}
 
-        public void set_eventmanager(CServerEventManager event_manager)
-        {
-            this.freenet_eventmanager = new WeakReference(event_manager);
-        }
+		public void set_eventmanager(CServerEventManager event_manager)
+		{
+			this.UnityServer_eventmanager = new WeakReference(event_manager);
+		}
 
-        /// <summary>
-        /// ¸Ş½ÃÁö¸¦ ¼ö½ÅÇßÀ» ¶§ È£ÃâµÈ´Ù.
-        /// ÆÄ¶ó¹ÌÅÍ·Î ³Ñ¾î¿Â ¹öÆÛ´Â ¿öÄ¿ ½º·¹µå¿¡¼­ Àç»ç¿ë µÇ¹Ç·Î º¹»çÇÑ µÚ ¾îÇÃ¸®ÄÉÀÌ¼ÇÀ¸·Î ³Ñ°ÜÁØ´Ù.
-        /// </summary>
-        /// <param name="buffer"></param>
-        void IPeer.on_message(Const<byte[]> buffer)
-        {
-            // ¹öÆÛ¸¦ º¹»çÇÑ µÚ CPacketÅ¬·¡½º·Î °¨½Ñ µÚ ³Ñ°ÜÁØ´Ù.
-            // CPacketÅ¬·¡½º ³»ºÎ¿¡¼­´Â ÂüÁ¶·Î¸¸ µé°í ÀÖ´Â´Ù.
-            byte[] app_buffer = new byte[buffer.Value.Length];
-            Array.Copy(buffer.Value, app_buffer, buffer.Value.Length);
-            CPacket msg = new CPacket(app_buffer, this);
-            (this.freenet_eventmanager.Target as CServerEventManager).enqueue_network_message(msg);
-        }
+		/// <summary>
+		/// ë©”ì‹œì§€ë¥¼ ìˆ˜ì‹ í–ˆì„ ë•Œ í˜¸ì¶œëœë‹¤.
+		/// íŒŒë¼ë¯¸í„°ë¡œ ë„˜ì–´ì˜¨ ë²„í¼ëŠ” ì›Œì»¤ ìŠ¤ë ˆë“œì—ì„œ ì¬ì‚¬ìš© ë˜ë¯€ë¡œ ë³µì‚¬í•œ ë’¤ ì–´í”Œë¦¬ì¼€ì´ì…˜ìœ¼ë¡œ ë„˜ê²¨ì¤€ë‹¤.
+		/// </summary>
+		/// <param name="buffer"></param>
+		void IPeer.on_message(Const<byte[]> buffer)
+		{
+			// ë²„í¼ë¥¼ ë³µì‚¬í•œ ë’¤ CPacketí´ë˜ìŠ¤ë¡œ ê°ì‹¼ ë’¤ ë„˜ê²¨ì¤€ë‹¤.
+			// CPacketí´ë˜ìŠ¤ ë‚´ë¶€ì—ì„œëŠ” ì°¸ì¡°ë¡œë§Œ ë“¤ê³  ìˆëŠ”ë‹¤.
+			byte[] app_buffer = new byte[buffer.Value.Length];
+			Array.Copy(buffer.Value, app_buffer, buffer.Value.Length);
+			CPacket msg = new CPacket(app_buffer, this);
+			(this.UnityServer_eventmanager.Target as CServerEventManager).enqueue_network_message(msg);
+		}
 
-        void IPeer.on_removed()
-        {
-            (this.freenet_eventmanager.Target as CServerEventManager).enqueue_network_event(NETWORK_EVENT.disconnected);
-        }
+		void IPeer.on_removed()
+		{
+			(this.UnityServer_eventmanager.Target as CServerEventManager).enqueue_network_event(NETWORK_EVENT.disconnected);
+		}
 
-        void IPeer.send(CPacket msg)
-        {
-            this.token.send(msg);
-        }
+		void IPeer.send(CPacket msg)
+		{
+			this.token.send(msg);
+		}
 
-        void IPeer.disconnect()
-        {
-        }
+		void IPeer.disconnect()
+		{
+		}
 
-        void IPeer.process_user_operation(CPacket msg)
-        {
-        }
-    }
+		void IPeer.process_user_operation(CPacket msg)
+		{
+		}
+	}
 }

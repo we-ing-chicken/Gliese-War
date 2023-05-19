@@ -509,6 +509,7 @@ MonoBehaviour:
   life: 0
   MouseX: 0
   mouseSpeed: 5
+  isUI: 0
   offensivePower: 0
   defensivePower: 0
   maxHealth: 0
@@ -520,10 +521,10 @@ MonoBehaviour:
   rightTarget: {fileID: 8220393501718015581}
   fowardTarget: {fileID: 6957553723997986421}
   backwardTarget: {fileID: 821319224224556372}
-  lbTarget: {fileID: 0}
-  lfTarget: {fileID: 0}
-  rbTarget: {fileID: 0}
-  rfTarget: {fileID: 0}
+  lbTarget: {fileID: 8126428843260526594}
+  lfTarget: {fileID: 2666388670586555565}
+  rbTarget: {fileID: 4113905645314562067}
+  rfTarget: {fileID: 8423574705613894597}
   ignoreGravity: 0
   items: []
   weaponNow: 1
