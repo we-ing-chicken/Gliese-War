@@ -1134,7 +1134,7 @@ GameObject:
   - component: {fileID: 2607432947811780064}
   m_Layer: 0
   m_Name: Golam_Main
-  m_TagString: Monster
+  m_TagString: Golam
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1205,7 +1205,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4a7e1424cff60043b86721a904e1edf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pfBoxBroken: {fileID: 8676747673587056845, guid: d88de197e086a524eb3c4684082d0084, type: 3}
 --- !u!54 &8925169942374756045
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -152,13 +152,22 @@ public class Monster : MonoBehaviour
         Debug.Log("몬스터 공격 시작");
         agent.isStopped = true;
         rigid.constraints = RigidbodyConstraints.FreezePosition;
-
+        
         StartCoroutine(EndAttack());
+        
+        // for (int i = 0; i < 5; ++i)
+        // {
+        //     transform.rotation = Quaternion.Slerp(transform.rotation, Player.instance.transform.rotation, Time.deltaTime);
+        // }
     }
 
     IEnumerator EndAttack()
     {
-        yield return new WaitForSeconds(0.55f);
+        if(transform.CompareTag("Golam"))
+            yield return new WaitForSeconds(0.55f);
+        else if( transform.CompareTag("Bee"))
+            yield return new WaitForSeconds(0.5f);
+        
         
         agent.isStopped = false;
         rigid.constraints = RigidbodyConstraints.None;
@@ -167,7 +176,7 @@ public class Monster : MonoBehaviour
         
         yield return null;
     }
-    
+
     public void DestructObject()
     {
         //broken = Instantiate(pfBoxBroken, transform.position + new Vector3(0,4f,0), transform.rotation);

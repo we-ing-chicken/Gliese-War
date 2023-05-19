@@ -21,7 +21,14 @@ public class AttackPlayer : ActionNode
     {
         if (context.isFind)
         {
-            if (Vector3.Distance(context.transform.position, context.player.transform.position) < 6f )
+            float dis = 0f;
+
+            if (context.transform.CompareTag("Golam"))
+                dis = 6f;
+            else if (context.transform.CompareTag("Bee"))
+                dis = 2f;
+            
+            if (Vector3.Distance(context.transform.position, context.player.transform.position) < dis )
             {
                 if (!context.agent.isStopped && !context.animator.GetBool("isAttack"))
                 {
