@@ -16,6 +16,6 @@ public class Destruct : MonoBehaviour
     IEnumerator Erase()
     {
         yield return new WaitForSeconds(4f);
-        Destroy(gameObject);
+        Destroy(transform.parent.gameObject);
     }
 }
