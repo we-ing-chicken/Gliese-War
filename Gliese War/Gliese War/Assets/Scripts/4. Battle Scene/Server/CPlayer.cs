@@ -10,11 +10,9 @@ public enum PLAYER_STATE
 public class CPlayer : MonoBehaviour {
 	public byte player_index { get; private set; }
 	public PLAYER_STATE state { get; private set; }
-	CPlayerAgent agent;
 	
 	void Awake()
 	{
-		agent = new CPlayerAgent();
 	}
 	
 	
