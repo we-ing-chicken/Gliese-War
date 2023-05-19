@@ -17,11 +17,13 @@ public class CBattleRoom : MonoBehaviour {
 
     List<CPlayer> players;
 
-	// 게임 종료 후 메인으로 돌아갈 때 사용하기 위한 MainTitle객체의 레퍼런스.
-	CMainTitle main_title;
+    // 게임 종료 후 메인으로 돌아갈 때 사용하기 위한 MainTitle객체의 레퍼런스.
+    [SerializeField]
+	BattleManager main_title;
 
-	// 네트워크 데이터 송,수신을 위한 네트워크 매니저 레퍼런스.
-	CNetworkManager network_manager;
+    // 네트워크 데이터 송,수신을 위한 네트워크 매니저 레퍼런스.
+    [SerializeField]
+    CNetworkManager network_manager;
 
 	// 게임 상태에 따라 각각 다른 GUI모습을 구현하기 위해 필요한 상태 변수.
 	GAME_STATE game_state;
@@ -36,14 +38,9 @@ public class CBattleRoom : MonoBehaviour {
 
 	void Awake()
 	{
+		game_state = GAME_STATE.READY;
 
-		this.network_manager = GameObject.Find("NetworkManager").GetComponent<CNetworkManager>();
-
-		this.game_state = GAME_STATE.READY;
-
-		this.main_title = GameObject.Find("MainTitle").GetComponent<CMainTitle>();
-
-		this.win_player_index = byte.MaxValue;
+		win_player_index = byte.MaxValue;
 	}
 	
 	void reset()
@@ -53,7 +50,7 @@ public class CBattleRoom : MonoBehaviour {
 
 	void clear()
 	{
-		this.is_game_finished = false;
+		is_game_finished = false;
 	}
 
 	/// <summary>
@@ -63,12 +60,12 @@ public class CBattleRoom : MonoBehaviour {
 	{
 		clear();
 
-		this.network_manager.message_receiver = this;
+		network_manager.message_receiver = this;
 
         StartCoroutine(Loading());
         CPacket msg = CPacket.create((short)PROTOCOL.LOADING_COMPLETED);
 
-		this.network_manager.send(msg);
+		network_manager.send(msg);
 	}
 
 	IEnumerator Loading()
@@ -119,8 +116,8 @@ public class CBattleRoom : MonoBehaviour {
 
 	void back_to_main()
 	{
-		this.main_title.gameObject.SetActive(true);
-		this.main_title.enter();
+		main_title.gameObject.SetActive(true);
+		main_title.enter();
 
 		gameObject.SetActive(false);
 	}
@@ -128,15 +125,15 @@ public class CBattleRoom : MonoBehaviour {
 
 	void on_game_over(CPacket msg)
 	{
-		this.is_game_finished = true;
-		this.win_player_index = msg.pop_byte();
+		is_game_finished = true;
+		win_player_index = msg.pop_byte();
 		// 게임 결과 출력
 	}
 
 
 	void Update()
 	{
-		if (this.is_game_finished)
+		if (is_game_finished)
 		{
 			if (Input.GetMouseButtonDown(0))
 			{
@@ -147,7 +144,7 @@ public class CBattleRoom : MonoBehaviour {
 
 	void on_game_start(CPacket msg)
 	{
-		this.players = new List<CPlayer>();
+		players = new List<CPlayer>();
 
 		byte count = msg.pop_byte();
 		for (byte i = 0; i < count; ++i)
@@ -159,12 +156,12 @@ public class CBattleRoom : MonoBehaviour {
 			player.initialize(player_index);
 			player.clear();
 
-			this.players.Add(player);
+			players.Add(player);
 		}
 
 		reset();
 
-		this.game_state = GAME_STATE.STARTED;
+		game_state = GAME_STATE.STARTED;
 	}
 
 
@@ -189,7 +186,7 @@ public class CBattleRoom : MonoBehaviour {
 	/// </summary>
 	void on_playing()
 	{
-		if (this.game_state != GAME_STATE.STARTED)
+		if (game_state != GAME_STATE.STARTED)
 		{
 			return;
 		}
@@ -219,8 +216,8 @@ public class CBattleRoom : MonoBehaviour {
 	{
 		// 기존 - 다른 플레이어의 세균에서 현재 플레이어의 세균으로 옮기기.
 
-		CPlayer current_player = this.players[this.current_player_index];
-		CPlayer other_player = this.players.Find(obj => obj.player_index != this.current_player_index);
+		CPlayer current_player = players[current_player_index];
+		CPlayer other_player = players.Find(obj => obj.player_index != current_player_index);
 
 		//yield return new WaitForSeconds(0.5f);
 

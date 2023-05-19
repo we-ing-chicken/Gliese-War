@@ -16,8 +16,7 @@ public class CPlayer : MonoBehaviour {
 	
 	void Awake()
 	{
-		this.cell_indexes = new List<short>();
-		this.agent = new CPlayerAgent();
+		agent = new CPlayerAgent();
 	}
 	
 	
@@ -27,11 +26,9 @@ public class CPlayer : MonoBehaviour {
 	
 	public void initialize(byte player_index)
 	{
-		this.player_index = player_index;
 	}
 	
 	public void remove(short cell)
 	{
-		this.cell_indexes.Remove(cell);
 	}
 }

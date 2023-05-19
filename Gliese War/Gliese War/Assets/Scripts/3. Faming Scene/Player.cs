@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     public float MouseX;
     public float mouseSpeed;
     public bool isUI = false;
+    public bool isFarming = true;
 
     private string moveFBAxisName = "Vertical"; // �յ� �������� ���� �Է��� �̸�
     private string moveLRAxisName = "Horizontal"; // �¿� �������� ���� �Է��� �̸�
@@ -151,12 +152,26 @@ public class Player : MonoBehaviour
             RefreshStat();
         }
 
-        if (!FarmingManager.Instance._isInven && !isAttack)
+        if (isFarming)
         {
-            if (Input.GetMouseButtonDown(0))
+            if (!FarmingManager.Instance._isInven && !isAttack)
             {
-                AttackAnimation();
-                StartCoroutine(AttackEffect());
+                if (Input.GetMouseButtonDown(0))
+                {
+                    AttackAnimation();
+                    StartCoroutine(AttackEffect());
+                }
+            }
+        }
+        else
+        {
+            if (!isAttack)
+            {
+                //if (Input.GetMouseButtonDown(0))
+                //{
+                //    AttackAnimation();
+                //    StartCoroutine(AttackEffect());
+                //}
             }
         }
         
@@ -164,7 +179,10 @@ public class Player : MonoBehaviour
     
     private void FixedUpdate()
     {
-        if (FarmingManager.Instance._isFading) return;
+        if(isFarming)
+            if (FarmingManager.Instance._isFading) return;
+        //else
+            //if (BattleManager.Instance._isFading) return;
         if (charactercontroller == null) return;
         Look();
 
@@ -429,14 +447,17 @@ public class Player : MonoBehaviour
 
     private void RefreshStat()
     {
-        Inventory.instance.statParent.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text =
-            "Health : " + currHealth + " / " + maxHealth;
-        Inventory.instance.statParent.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text =
-            "Attack : " + (offensivePower + GetWeaponStat());
-        Inventory.instance.statParent.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text =
-            "Defense : " + defensivePower;
-        Inventory.instance.statParent.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text =
-            "Speed : " + moveSpeed;
+        if (isFarming)
+        {
+            Inventory.instance.statParent.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text =
+                "Health : " + currHealth + " / " + maxHealth;
+            Inventory.instance.statParent.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text =
+                "Attack : " + (offensivePower + GetWeaponStat());
+            Inventory.instance.statParent.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text =
+                "Defense : " + defensivePower;
+            Inventory.instance.statParent.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text =
+                "Speed : " + moveSpeed;
+        }
     }
 
     private int GetWeaponStat()
