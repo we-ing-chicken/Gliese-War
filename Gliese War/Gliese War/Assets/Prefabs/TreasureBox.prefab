@@ -31,7 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 864932068981819152}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!212 &6936132981665866883
 SpriteRenderer:
@@ -130,9 +130,9 @@ Transform:
   m_LocalScale: {x: 2.25, y: 2.226528, z: 2.25}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3416411771918118915}
   - {fileID: 901783710448255385}
   - {fileID: 2918650773600199352}
+  - {fileID: 3416411771918118915}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -258,7 +258,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 864932068981819152}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &6635412575391112344
 PrefabInstance:
@@ -269,7 +269,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8321580031742356635, guid: 7fb32dd11c639974c974d47eb0db2464, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8321580031742356635, guid: 7fb32dd11c639974c974d47eb0db2464, type: 3}
       propertyPath: m_LocalPosition.x

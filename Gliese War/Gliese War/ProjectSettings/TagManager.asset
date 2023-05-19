@@ -12,6 +12,7 @@ TagManager:
   - Weapon
   - Monster
   - MonsterAttack
+  - Terrain
   layers:
   - Default
   - TransparentFX
@@ -22,7 +23,7 @@ TagManager:
   - Player
   - minimap
   - PlayerUI
-  - 
+  - Terrain
   - 
   - 
   - 

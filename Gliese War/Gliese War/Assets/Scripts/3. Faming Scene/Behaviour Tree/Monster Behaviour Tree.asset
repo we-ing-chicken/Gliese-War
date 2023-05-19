@@ -30,11 +30,12 @@ MonoBehaviour:
   - rid: 458450775185031171
   - rid: 5426142890683793408
   - rid: 5426143037075488769
+  - rid: 4759616886770237442
   treeState: 0
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
-  viewPosition: {x: 222, y: -100, z: 0}
-  viewScale: {x: 0.49717674, y: 0.49717674, z: 1}
+  viewPosition: {x: 243, y: 41, z: 0}
+  viewScale: {x: 0.375937, y: 0.375937, z: 1}
   references:
     version: 2
     RefIds:
@@ -78,6 +79,7 @@ MonoBehaviour:
         description: 
         drawGizmos: 0
         children:
+        - rid: 4759616886770237442
         - rid: 458450571252989955
         - rid: 458450571252989956
     - rid: 458450571252989955
@@ -86,7 +88,7 @@ MonoBehaviour:
         state: 0
         started: 0
         guid: 807f23b0185f70949954478aedd2efb2
-        position: {x: -149.99986, y: 365}
+        position: {x: -150, y: 385.00006}
         blackboard:
           moveToPosition: {x: 0, y: 0, z: 0}
         description: 
@@ -100,7 +102,7 @@ MonoBehaviour:
         state: 0
         started: 0
         guid: b595440b0a672de41950318090caac24
-        position: {x: 150.00008, y: 364.99997}
+        position: {x: 418.6293, y: 365}
         blackboard:
           moveToPosition: {x: 0, y: 0, z: 0}
         description: 
@@ -125,7 +127,7 @@ MonoBehaviour:
         state: 0
         started: 0
         guid: b115178cd87811f4b9834b3df4e57443
-        position: {x: -118.32198, y: 522}
+        position: {x: -106.09751, y: 522}
         blackboard:
           moveToPosition: {x: 0, y: 0, z: 0}
         description: 
@@ -134,6 +136,7 @@ MonoBehaviour:
         - rid: 458450571252989959
         - rid: 458450571252989960
         - rid: 5426142890683793408
+        - rid: 5426143037075488769
     - rid: 458450571252989959
       type: {class: PlayerPosition, ns: , asm: Assembly-CSharp}
       data:
@@ -166,7 +169,7 @@ MonoBehaviour:
         state: 0
         started: 0
         guid: f61b50d36f6fc8f418aebb16c9d0f0b0
-        position: {x: 107, y: 514}
+        position: {x: 284.62918, y: 513.99994}
         blackboard:
           moveToPosition: {x: 0, y: 0, z: 0}
         description: 
@@ -179,7 +182,7 @@ MonoBehaviour:
         state: 0
         started: 0
         guid: 593c836fc1ff1be43b89ec09250c86e3
-        position: {x: 299.99997, y: 522}
+        position: {x: 568.62915, y: 522}
         blackboard:
           moveToPosition: {x: 0, y: 0, z: 0}
         description: 
@@ -213,6 +216,17 @@ MonoBehaviour:
         children:
         - rid: 458450775185031168
         - rid: 458450571252989953
+    - rid: 4759616886770237442
+      type: {class: checkDayNight, ns: , asm: Assembly-CSharp}
+      data:
+        state: 0
+        started: 0
+        guid: b326f7d391bf1874e94445a18797f5cb
+        position: {x: -509.00003, y: 365}
+        blackboard:
+          moveToPosition: {x: 0, y: 0, z: 0}
+        description: 
+        drawGizmos: 0
     - rid: 5426142890683793408
       type: {class: AttackPlayer, ns: , asm: Assembly-CSharp}
       data:

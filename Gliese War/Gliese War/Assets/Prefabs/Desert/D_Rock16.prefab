@@ -11,12 +11,13 @@ GameObject:
   - component: {fileID: 3200873754304256768}
   - component: {fileID: 2000744119984592037}
   - component: {fileID: 4332715062750011503}
+  - component: {fileID: -3759882964182006713}
   m_Layer: 0
   m_Name: D_Rock16
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &3200873754304256768
 Transform:
@@ -27,8 +28,8 @@ Transform:
   m_GameObject: {fileID: 2819280944225927610}
   m_LocalRotation: {x: -0.5110342, y: -0.4887168, z: -0.4887168, w: 0.5110342}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.40355802, y: 0.99986404, z: 4.922854}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 15, y: 15, z: 15}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -83,3 +84,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &-3759882964182006713
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2819280944225927610}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.25824094, y: 0.2617115, z: 0.034008868}
+  m_Center: {x: -1.7763568e-15, y: 0.000000014901165, z: -1.6970896e-15}
