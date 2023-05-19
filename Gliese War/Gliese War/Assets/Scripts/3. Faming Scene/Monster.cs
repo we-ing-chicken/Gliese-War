@@ -25,6 +25,8 @@ public class Monster : MonoBehaviour
     
     //[SerializeField] private Transform pfBoxBroken;
     private Transform broken;
+
+    [SerializeField] GameObject attackPart; 
     
     // Start is called before the first frame update
     void Start()
@@ -152,13 +154,8 @@ public class Monster : MonoBehaviour
         Debug.Log("몬스터 공격 시작");
         agent.isStopped = true;
         rigid.constraints = RigidbodyConstraints.FreezePosition;
-        
+        attackPart.GetComponent<BoxCollider>().enabled = true;
         StartCoroutine(EndAttack());
-        
-        // for (int i = 0; i < 5; ++i)
-        // {
-        //     transform.rotation = Quaternion.Slerp(transform.rotation, Player.instance.transform.rotation, Time.deltaTime);
-        // }
     }
 
     IEnumerator EndAttack()
@@ -168,7 +165,7 @@ public class Monster : MonoBehaviour
         else if( transform.CompareTag("Bee"))
             yield return new WaitForSeconds(0.5f);
         
-        
+        attackPart.GetComponent<BoxCollider>().enabled = false;
         agent.isStopped = false;
         rigid.constraints = RigidbodyConstraints.None;
         animator.SetBool("isAttack", false);

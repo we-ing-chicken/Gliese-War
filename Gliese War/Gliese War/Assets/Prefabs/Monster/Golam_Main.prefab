@@ -1016,7 +1016,7 @@ BoxCollider:
   m_GameObject: {fileID: 6550258391645656339}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1.1, y: 4.414802, z: 2.2799997}
   m_Center: {x: 0.000000029151701, y: 1.7525989, z: -0.000000053502195}
@@ -1205,6 +1205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4a7e1424cff60043b86721a904e1edf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackPart: {fileID: 6550258391645656339}
 --- !u!54 &8925169942374756045
 Rigidbody:
   m_ObjectHideFlags: 0
