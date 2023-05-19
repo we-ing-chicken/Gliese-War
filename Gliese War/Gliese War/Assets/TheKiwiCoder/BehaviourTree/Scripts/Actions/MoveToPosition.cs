@@ -22,9 +22,7 @@ public class MoveToPosition : ActionNode {
     }
 
     protected override State OnUpdate() {
-        
-        context.checkDayNight();
-        
+
         if (Vector3.Distance(context.transform.position, context.player.transform.position) < context.findRange)
         {
             context.isFind = true;
