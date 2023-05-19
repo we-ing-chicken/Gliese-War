@@ -156,6 +156,19 @@ public class Monster : MonoBehaviour
         rigid.constraints = RigidbodyConstraints.FreezePosition;
         attackPart.GetComponent<BoxCollider>().enabled = true;
         StartCoroutine(EndAttack());
+        StartCoroutine(RotateToPlayer());
+    }
+
+    IEnumerator RotateToPlayer()
+    {
+        while (true)
+        {
+            Vector3 dir = Player.instance.transform.position - transform.position;
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime);
+            if (Quaternion.Angle(transform.rotation, Quaternion.Euler(dir)) < 5f)
+                break;
+            yield return null;
+        }
     }
 
     IEnumerator EndAttack()
