@@ -126,19 +126,7 @@ public class BattleManager : MonoBehaviour {
 
         while (true)
         {
-            //if (user_state == USER_STATE.CONNECTED)
-            //{
-            //    if (Input.GetMouseButtonDown(0))
-            //    {
-            //        user_state = USER_STATE.WAITING_MATCHING;
-
-            //        CPacket msg = CPacket.create((short)PROTOCOL.ENTER_GAME_ROOM_REQ);
-            //        network_manager.send(msg);
-
-            //        StopCoroutine("after_connected");
-            //    }
-            //}
-
+            Debug.Log("after_connected");
             yield return 0;
         }
     }

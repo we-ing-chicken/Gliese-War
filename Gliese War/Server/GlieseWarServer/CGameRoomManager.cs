@@ -31,6 +31,16 @@ namespace GlieseWarServer
             this.rooms.Add(battleroom);
         }
 
+        public void create_room(CGameUser user1)
+        {
+            // 게임 방을 생성하여 입장 시킴.
+            CGameRoom battleroom = new CGameRoom();
+            battleroom.enter_gameroom(user1);
+
+            // 방 리스트에 추가 하여 관리한다.
+            this.rooms.Add(battleroom);
+        }
+
         public void remove_room(CGameRoom room)
         {
             room.destroy();

@@ -11,7 +11,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/2. Lobby Scene.unity
     guid: aeb8f449aa8225d4cbcf3c231b3de035
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/3. Farming Scene.unity
     guid: 9dbca1cdcd3985d42a5090de387c2341
   - enabled: 1

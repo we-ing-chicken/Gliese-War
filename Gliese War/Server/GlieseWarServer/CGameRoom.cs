@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 namespace GlieseWarServer
 {
     using GameServer;
+    using System.Diagnostics;
+
     public class CGameRoom
     {
         enum PLAYER_STATE : byte
@@ -30,8 +32,8 @@ namespace GlieseWarServer
 
         public CGameRoom()
         {
-            this.players = new List<CPlayer>();
-            this.player_state = new Dictionary<byte, PLAYER_STATE>();
+            players = new List<CPlayer>();
+            player_state = new Dictionary<byte, PLAYER_STATE>();
         }
 
 
@@ -41,7 +43,7 @@ namespace GlieseWarServer
         /// <param name="msg"></param>
         void broadcast(CPacket msg)
         {
-            this.players.ForEach(player => player.send_for_broadcast(msg));
+            players.ForEach(player => player.send_for_broadcast(msg));
             CPacket.destroy(msg);
         }
 
@@ -53,13 +55,13 @@ namespace GlieseWarServer
         /// <param name="state"></param>
         void change_playerstate(CPlayer player, PLAYER_STATE state)
         {
-            if (this.player_state.ContainsKey(player.player_index))
+            if (player_state.ContainsKey(player.player_index))
             {
-                this.player_state[player.player_index] = state;
+                player_state[player.player_index] = state;
             }
             else
             {
-                this.player_state.Add(player.player_index, state);
+                player_state.Add(player.player_index, state);
             }
         }
 
@@ -72,7 +74,7 @@ namespace GlieseWarServer
         /// <returns></returns>
         bool allplayers_ready(PLAYER_STATE state)
         {
-            foreach (KeyValuePair<byte, PLAYER_STATE> kvp in this.player_state)
+            foreach (KeyValuePair<byte, PLAYER_STATE> kvp in player_state)
             {
                 if (kvp.Value != state)
                 {
@@ -94,17 +96,17 @@ namespace GlieseWarServer
             // 플레이어들을 생성하고 각각 0번, 1번 인덱스를 부여해 준다.
             CPlayer player1 = new CPlayer(user1, 0);        // 1P
             CPlayer player2 = new CPlayer(user2, 1);        // 2P
-            this.players.Clear();
-            this.players.Add(player1);
-            this.players.Add(player2);
+            players.Clear();
+            players.Add(player1);
+            players.Add(player2);
 
             // 플레이어들의 초기 상태를 지정해 준다.
-            this.player_state.Clear();
+            player_state.Clear();
             change_playerstate(player1, PLAYER_STATE.ENTERED_ROOM);
             change_playerstate(player2, PLAYER_STATE.ENTERED_ROOM);
 
             // 로딩 시작메시지 전송.
-            this.players.ForEach(player =>
+            players.ForEach(player =>
             {
                 CPacket msg = CPacket.create((Int16)PROTOCOL.START_LOADING);
                 msg.push(player.player_index);  // 본인의 플레이어 인덱스를 알려준다.
@@ -113,6 +115,28 @@ namespace GlieseWarServer
 
             user1.enter_room(player1, this);
             user2.enter_room(player2, this);
+        }
+
+        public void enter_gameroom(CGameUser user1)
+        {
+            // 플레이어들을 생성하고 각각 0번, 1번 인덱스를 부여해 준다.
+            CPlayer player1 = new CPlayer(user1, 0);        // 1P
+            players.Clear();
+            players.Add(player1);
+
+            // 플레이어들의 초기 상태를 지정해 준다.
+            player_state.Clear();
+            change_playerstate(player1, PLAYER_STATE.ENTERED_ROOM);
+
+            // 로딩 시작메시지 전송.
+            players.ForEach(player =>
+            {
+                CPacket msg = CPacket.create((Int16)PROTOCOL.START_LOADING);
+                msg.push(player.player_index);  // 본인의 플레이어 인덱스를 알려준다.
+                player.send(msg);
+            });
+
+            user1.enter_room(player1, this);
         }
 
 
@@ -129,6 +153,7 @@ namespace GlieseWarServer
             // 모든 유저가 준비 상태인지 체크한다.
             if (!allplayers_ready(PLAYER_STATE.LOADING_COMPLETE))
             {
+                Console.WriteLine("!allplayers_ready");
                 // 아직 준비가 안된 유저가 있다면 대기한다.
                 return;
             }
@@ -145,28 +170,14 @@ namespace GlieseWarServer
         {
             // 게임을 새로 시작할 때 마다 초기화해줘야 할 것들.
             reset_gamedata();
-
             // 게임 시작 메시지 전송.
             CPacket msg = CPacket.create((short)PROTOCOL.GAME_START);
             // 플레이어들의 세균 위치 전송.
-            msg.push((byte)this.players.Count);
-            this.players.ForEach(player =>
+            msg.push((byte)players.Count);
+            players.ForEach(player =>
             {
                 msg.push(player.player_index);      // 누구인지 구분하기 위한 플레이어 인덱스.
             });
-            broadcast(msg);
-        }
-
-
-        /// <summary>
-        /// 턴을 시작하라고 클라이언트들에게 알려 준다.
-        /// </summary>
-        void start_turn()
-        {
-            // 턴을 진행할 수 있도록 준비 상태로 만든다.
-            this.players.ForEach(player => change_playerstate(player, PLAYER_STATE.READY_TO_TURN));
-
-            CPacket msg = CPacket.create((short)PROTOCOL.START_PLAYER_TURN);
             broadcast(msg);
         }
 
@@ -181,7 +192,7 @@ namespace GlieseWarServer
 
         CPlayer get_player(byte player_index)
         {
-            return this.players.Find(obj => obj.player_index == player_index);
+            return players.Find(obj => obj.player_index == player_index);
         }
 
 
@@ -227,7 +238,7 @@ namespace GlieseWarServer
             CPacket msg = CPacket.create((short)PROTOCOL.ROOM_REMOVED);
             broadcast(msg);
 
-            this.players.Clear();
+            players.Clear();
         }
     }
 

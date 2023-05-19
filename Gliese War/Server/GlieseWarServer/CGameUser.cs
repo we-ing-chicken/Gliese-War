@@ -43,7 +43,7 @@ namespace GlieseWarServer
         {
             this.token.socket.Disconnect(false);
         }
-
+        // 리시브 처리.
         void IPeer.process_user_operation(CPacket msg)
         {
             PROTOCOL protocol = (PROTOCOL)msg.pop_protocol_id();
@@ -60,9 +60,10 @@ namespace GlieseWarServer
 
                 case PROTOCOL.MOVING_REQ:
                     {
-                        short begin_pos = msg.pop_int16();
-                        short target_pos = msg.pop_int16();
-                        this.battle_room.moving_req(this.player, begin_pos, target_pos);
+                        Console.WriteLine("MOVING_REQ" + protocol);
+                        //short begin_pos = msg.pop_int16();
+                        //short target_pos = msg.pop_int16();
+                        //this.battle_room.moving_req(this.player, begin_pos, target_pos);
                     }
                     break;
 
