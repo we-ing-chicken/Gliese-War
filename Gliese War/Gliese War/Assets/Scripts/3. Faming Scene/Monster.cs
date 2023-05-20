@@ -165,7 +165,7 @@ public class Monster : MonoBehaviour
         {
             Vector3 dir = Player.instance.transform.position - transform.position;
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime);
-            if (Quaternion.Angle(transform.rotation, Quaternion.Euler(dir)) < 5f)
+            if (Quaternion.Angle(transform.rotation, Quaternion.Euler(dir)) < 2f)
                 break;
             yield return null;
         }
@@ -177,6 +177,9 @@ public class Monster : MonoBehaviour
             yield return new WaitForSeconds(0.55f);
         else if( transform.CompareTag("Bee"))
             yield return new WaitForSeconds(0.5f);
+        else if(transform.CompareTag("Cactus"))
+            yield return new WaitForSeconds(0.5f);
+            
         
         attackPart.GetComponent<BoxCollider>().enabled = false;
         agent.isStopped = false;
