@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using GameServer;
 using GlieseWarGameServer;
+using TMPro;
 
-public class CBattleRoom : MonoBehaviour {
+public class CBattleRoom : MonoBehaviour 
+{
 
 	enum GAME_STATE
 	{
@@ -14,6 +16,7 @@ public class CBattleRoom : MonoBehaviour {
 
     // 현재 턴을 진행중인 플레이어 인덱스.
     byte current_player_index;
+	public byte my_player_index;
 
     List<CPlayer> players;
 
@@ -24,9 +27,11 @@ public class CBattleRoom : MonoBehaviour {
     // 네트워크 데이터 송,수신을 위한 네트워크 매니저 레퍼런스.
     [SerializeField]
     CNetworkManager network_manager;
+    [SerializeField]
+     TMP_Text txt;
 
-	// 게임 상태에 따라 각각 다른 GUI모습을 구현하기 위해 필요한 상태 변수.
-	GAME_STATE game_state;
+    // 게임 상태에 따라 각각 다른 GUI모습을 구현하기 위해 필요한 상태 변수.
+    GAME_STATE game_state;
 
 	// 승리한 플레이어 인덱스.
 	// 무승부일때는 byte.MaxValue가 들어간다.
@@ -59,8 +64,9 @@ public class CBattleRoom : MonoBehaviour {
 	public void start_loading(byte player_me_index)
 	{
 		clear();
+		my_player_index = player_me_index;
 
-		network_manager.message_receiver = this;
+        network_manager.message_receiver = this;
 
         StartCoroutine(Loading());
         CPacket msg = CPacket.create((short)PROTOCOL.LOADING_COMPLETED);
@@ -140,7 +146,8 @@ public class CBattleRoom : MonoBehaviour {
 				back_to_main();
 			}
 		}
-	}
+		txt.text = game_state.ToString();
+    }
 
 	void on_game_start(CPacket msg)
 	{
@@ -152,7 +159,8 @@ public class CBattleRoom : MonoBehaviour {
 			byte player_index = msg.pop_byte();
 
 			GameObject obj = new GameObject(string.Format("player{0}", i));
-			CPlayer player = obj.AddComponent<CPlayer>();
+
+            CPlayer player = obj.AddComponent<CPlayer>();
 			player.initialize(player_index);
 			player.clear();
 

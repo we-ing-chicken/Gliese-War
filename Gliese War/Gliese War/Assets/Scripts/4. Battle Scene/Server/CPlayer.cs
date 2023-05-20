@@ -1,15 +1,19 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using GameServer;
+using GlieseWarGameServer;
+using Server_Unity;
 
 public enum PLAYER_STATE
 {
 	None = 0,
+
+	ImLocal = 1,
+	END
 }
 
 public class CPlayer : MonoBehaviour {
-	
-	public List<short> cell_indexes { get; private set; }
 	public byte player_index { get; private set; }
 	public PLAYER_STATE state { get; private set; }
 	
@@ -29,4 +33,13 @@ public class CPlayer : MonoBehaviour {
 	public void remove(short cell)
 	{
 	}
+
+    private void Update()
+    {
+        if(Input.anyKeyDown)
+		{
+			CPacket msg = CPacket.create((short)PROTOCOL.MOVING_REQ);
+			
+		}
+    }
 }

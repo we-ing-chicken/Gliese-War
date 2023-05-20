@@ -67,7 +67,10 @@ public class FarmingManager : MonoBehaviour
     [SerializeField] private Image weapon1Image;
     [SerializeField] private Image weapon2Image;
 
-public static FarmingManager Instance
+    [Header("Debug")][SerializeField] private Playercam playercam;
+
+
+    public static FarmingManager Instance
     {
         get
         {
@@ -179,6 +182,8 @@ public static FarmingManager Instance
             inventory.AcquireItem(inventory.spear[1]);
         else if(Input.GetKeyDown(KeyCode.Alpha8))
             inventory.AcquireItem(inventory.knife[1]);
+        //else if(Input.GetKeyDown(KeyCode.F9))
+            //playercam.isDebug = true;
         //else 
             //HitScreen();
 
