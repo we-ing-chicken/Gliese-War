@@ -93,7 +93,15 @@ public class Monster : MonoBehaviour
         {
             isDead = true;
             drop.DropItem();
-            DestructObject();
+            
+            if(transform.CompareTag("Golam"))
+                DestructObject();
+            else
+            {
+                Debug.Log("AAA");
+                Destroy(gameObject);
+            }
+            
         }
     }
 
