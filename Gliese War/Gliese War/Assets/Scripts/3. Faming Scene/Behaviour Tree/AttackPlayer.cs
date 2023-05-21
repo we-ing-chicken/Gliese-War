@@ -27,6 +27,8 @@ public class AttackPlayer : ActionNode
                 dis = 6f;
             else if (context.transform.CompareTag("Bee"))
                 dis = 2f;
+            else if (context.transform.CompareTag("Cactus"))
+                dis = 3f;
             
             if (Vector3.Distance(context.transform.position, context.player.transform.position) < dis )
             {

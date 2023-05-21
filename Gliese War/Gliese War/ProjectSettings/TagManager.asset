@@ -15,6 +15,7 @@ TagManager:
   - Terrain
   - Golam
   - Bee
+  - Cactus
   layers:
   - Default
   - TransparentFX
