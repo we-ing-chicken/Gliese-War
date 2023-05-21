@@ -204,7 +204,7 @@ public class Player : MonoBehaviour
         }
 
         charactercontroller.Move(moveDir * Time.deltaTime);
-
+        //tranform.position 전송
     }
 
     private void Move()

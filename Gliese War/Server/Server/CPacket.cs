@@ -74,7 +74,8 @@ namespace GameServer
 		{
 			Int16 data = BitConverter.ToInt16(this.buffer, this.position);
 			this.position += sizeof(Int16);
-			return data;
+
+            return data;
 		}
 
 		public Int32 pop_int32()
@@ -84,7 +85,14 @@ namespace GameServer
 			return data;
 		}
 
-		public string pop_string()
+        public float pop_float()
+        {
+            float data = BitConverter.ToSingle(this.buffer, this.position);
+            this.position += sizeof(float);
+            return data;
+        }
+
+        public string pop_string()
 		{
 			// 문자열 길이는 최대 2바이트 까지. 0 ~ 32767
 			Int16 len = BitConverter.ToInt16(this.buffer, this.position);
@@ -124,7 +132,7 @@ namespace GameServer
 			this.position += temp_buffer.Length;
 		}
 
-		public void push(byte data)
+        public void push(byte data)
 		{
 			byte[] temp_buffer = BitConverter.GetBytes(data);
 			temp_buffer.CopyTo(this.buffer, this.position);
@@ -144,8 +152,14 @@ namespace GameServer
 			temp_buffer.CopyTo(this.buffer, this.position);
 			this.position += temp_buffer.Length;
 		}
+        public void push(float data)
+        {
+            byte[] temp_buffer = BitConverter.GetBytes(data);
+            temp_buffer.CopyTo(this.buffer, this.position);
+            this.position += temp_buffer.Length;
+        }
 
-		public void push(string data)
+        public void push(string data)
 		{
 			byte[] temp_buffer = Encoding.UTF8.GetBytes(data);
 

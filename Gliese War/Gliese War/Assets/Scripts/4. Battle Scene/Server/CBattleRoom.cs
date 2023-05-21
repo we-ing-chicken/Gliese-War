@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using GameServer;
 using GlieseWarGameServer;
 using TMPro;
+using System;
 
 public class CBattleRoom : MonoBehaviour 
 {
-
 	enum GAME_STATE
 	{
 		READY = 0,
@@ -20,9 +20,9 @@ public class CBattleRoom : MonoBehaviour
 
     List<CPlayer> players;
 
-    // 게임 종료 후 메인으로 돌아갈 때 사용하기 위한 MainTitle객체의 레퍼런스.
-    [SerializeField]
-	BattleManager main_title;
+	public GameObject prefab;
+
+	public GameObject spawn;
 
     // 네트워크 데이터 송,수신을 위한 네트워크 매니저 레퍼런스.
     [SerializeField]
@@ -61,17 +61,22 @@ public class CBattleRoom : MonoBehaviour
 	/// <summary>
 	/// 게임방에 입장할 때 호출된다. 리소스 로딩을 시작한다.
 	/// </summary>
-	public void start_loading(byte player_me_index)
+	public void start_loading(byte player_index)
 	{
 		clear();
-		my_player_index = player_me_index;
+		my_player_index = player_index;
 
         network_manager.message_receiver = this;
 
         StartCoroutine(Loading());
         CPacket msg = CPacket.create((short)PROTOCOL.LOADING_COMPLETED);
+		GameObject s = spawn.transform.GetChild(my_player_index+1).gameObject;
+		Debug.Log("LOADING_COMPLETED : " + s.transform.position);
+		msg.push(s.transform.position.x);
+        msg.push(s.transform.position.y);
+        msg.push(s.transform.position.z);
 
-		network_manager.send(msg);
+        network_manager.send(msg);
 	}
 
 	IEnumerator Loading()
@@ -122,8 +127,8 @@ public class CBattleRoom : MonoBehaviour
 
 	void back_to_main()
 	{
-		main_title.gameObject.SetActive(true);
-		main_title.enter();
+		BattleManager.Instance.gameObject.SetActive(true);
+        BattleManager.Instance.enter();
 
 		gameObject.SetActive(false);
 	}
@@ -157,11 +162,17 @@ public class CBattleRoom : MonoBehaviour
 		for (byte i = 0; i < count; ++i)
 		{
 			byte player_index = msg.pop_byte();
+			float player_x = msg.pop_float();
+            float player_y = msg.pop_float();
+            float player_z = msg.pop_float();
 
-			GameObject obj = new GameObject(string.Format("player{0}", i));
+            //GameObject obj = new GameObject(string.Format("player{0}", i));
+            GameObject obj1 = Instantiate(prefab);
+			obj1.transform.position = new Vector3(player_x, player_y, player_z);
+			Debug.Log("obj1 : " + obj1.transform.position);
 
-            CPlayer player = obj.AddComponent<CPlayer>();
-			player.initialize(player_index);
+            CPlayer player = obj1.AddComponent<CPlayer>();
+			player.initialize(player_index, this);
 			player.clear();
 
 			players.Add(player);
@@ -176,23 +187,17 @@ public class CBattleRoom : MonoBehaviour
 	void on_player_moved(CPacket msg)
 	{
 		byte player_index = msg.pop_byte();
-		short from = msg.pop_int16();
-		short to = msg.pop_int16();
+		float x = msg.pop_int32();
+        float y = msg.pop_int32();
+        float z = msg.pop_int32();
 
-		//플레이어 이동 처리
-	}
+        //플레이어 이동 처리
+    }
 
-
-
-
-
-	float ratio = 1.0f;
-
-
-	/// <summary>
-	/// 게임 진행 화면 그리기.
-	/// </summary>
-	void on_playing()
+    /// <summary>
+    /// 게임 진행 화면 그리기.
+    /// </summary>
+    void on_playing()
 	{
 		if (game_state != GAME_STATE.STARTED)
 		{

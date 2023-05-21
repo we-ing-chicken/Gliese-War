@@ -65,6 +65,23 @@ namespace GlieseWarServer
             }
         }
 
+        void change_playerstate(CPlayer player, PLAYER_STATE state, position p)
+        {
+            if (player_state.ContainsKey(player.player_index))
+            {
+                player_state[player.player_index] = state;
+                CPlayer cp = get_player(player.player_index);
+                cp.player_position = p;
+                Console.WriteLine("cp.player_position : " + +cp.player_position.x + ", " + cp.player_position.y + ", " + cp.player_position.z);
+                players.Remove(get_player(player.player_index));
+                players.Add(cp);
+            }
+            else
+            {
+                player_state.Add(player.player_index, state);
+            }
+        }
+
 
         /// <summary>
         /// 모든 플레이어가 특정 상태가 되었는지를 판단한다.
@@ -139,16 +156,54 @@ namespace GlieseWarServer
             user1.enter_room(player1, this);
         }
 
+        public void enter_gameroom(List<CGameUser> matching_waiting_users)
+        {
+            players.Clear();
+            player_state.Clear();
+            List<CGameUser> mwu = matching_waiting_users;
+            byte i = 0;
+            mwu.ForEach(cgameuser =>
+            {
+                CPlayer player = new CPlayer(cgameuser, i);
+                players.Add(player);
+                change_playerstate(player, PLAYER_STATE.ENTERED_ROOM);
+
+                CPacket msg = CPacket.create((Int16)PROTOCOL.START_LOADING);
+                msg.push(player.player_index);  // 본인의 플레이어 인덱스를 알려준다.
+                player.send(msg);
+                cgameuser.enter_room(player, this);
+                i++;
+            });            
+        }
+
 
         /// <summary>
         /// 클라이언트에서 로딩을 완료한 후 요청함.
         /// 이 요청이 들어오면 게임을 시작해도 좋다는 뜻이다.
         /// </summary>
         /// <param name="sender">요청한 유저</param>
+        /// LOADING_COMPLETED
         public void loading_complete(CPlayer player)
         {
             // 해당 플레이어를 로딩완료 상태로 변경한다.
             change_playerstate(player, PLAYER_STATE.LOADING_COMPLETE);
+
+            // 모든 유저가 준비 상태인지 체크한다.
+            if (!allplayers_ready(PLAYER_STATE.LOADING_COMPLETE))
+            {
+                Console.WriteLine("!allplayers_ready");
+                // 아직 준비가 안된 유저가 있다면 대기한다.
+                return;
+            }
+
+            // 모두 준비 되었다면 게임을 시작한다.
+            battle_start();
+        }
+        public void loading_complete(CPlayer player, position p)
+        {
+            // 해당 플레이어를 로딩완료 상태로 변경한다.
+            change_playerstate(player, PLAYER_STATE.LOADING_COMPLETE, p);
+
 
             // 모든 유저가 준비 상태인지 체크한다.
             if (!allplayers_ready(PLAYER_STATE.LOADING_COMPLETE))
@@ -172,11 +227,15 @@ namespace GlieseWarServer
             reset_gamedata();
             // 게임 시작 메시지 전송.
             CPacket msg = CPacket.create((short)PROTOCOL.GAME_START);
-            // 플레이어들의 세균 위치 전송.
+            // 플레이어들의 위치 전송.
             msg.push((byte)players.Count);
             players.ForEach(player =>
             {
                 msg.push(player.player_index);      // 누구인지 구분하기 위한 플레이어 인덱스.
+                msg.push(player.player_position.x);
+                msg.push(player.player_position.y);
+                msg.push(player.player_position.z);
+                Console.WriteLine("GAME_START" + player.player_position.x + ", " + player.player_position.y + ", " + player.player_position.z);
             });
             broadcast(msg);
         }

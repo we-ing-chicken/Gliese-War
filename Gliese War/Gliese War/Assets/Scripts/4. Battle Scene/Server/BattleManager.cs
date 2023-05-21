@@ -17,8 +17,6 @@ public class BattleManager : MonoBehaviour {
 	}
 	[SerializeField]
 	CBattleRoom battle_room;
-    [SerializeField]
-	CNetworkManager network_manager;
 	USER_STATE user_state;
 
 	public Button match_Button;
@@ -68,12 +66,12 @@ public class BattleManager : MonoBehaviour {
 	{
 		StopCoroutine("after_connected");
 
-		network_manager.message_receiver = this;
+        CNetworkManager.Instance.message_receiver = this;
 
-		if (!network_manager.is_connected())
+		if (!CNetworkManager.Instance.is_connected())
 		{
 			user_state = USER_STATE.CONNECTED;
-			network_manager.connect();
+            CNetworkManager.Instance.connect();
 		}
 		else
 		{
@@ -138,7 +136,7 @@ public class BattleManager : MonoBehaviour {
                 user_state = USER_STATE.WAITING_MATCHING;
 
                 CPacket msg = CPacket.create((short)PROTOCOL.ENTER_GAME_ROOM_REQ);
-                network_manager.send(msg);
+            CNetworkManager.Instance.send(msg);
 
                 StopCoroutine("after_connected");
         }
