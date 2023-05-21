@@ -8,27 +8,40 @@ using System;
 
 public class CBattleRoom : MonoBehaviour 
 {
-	enum GAME_STATE
+    private static CBattleRoom _instance;
+    enum GAME_STATE
 	{
 		READY = 0,
 		STARTED
 	}
 
+    public static CBattleRoom Instance
+    {
+        get
+        {
+            if (!_instance)
+            {
+                if (_instance == null)
+                    return null;
+
+                _instance = FindObjectOfType(typeof(CBattleRoom)) as CBattleRoom;
+            }
+
+            return _instance;
+        }
+    }
+
     // 현재 턴을 진행중인 플레이어 인덱스.
     byte current_player_index;
 	public byte my_player_index;
 
-    List<CPlayer> players;
+    public List<CPlayer> players;
 
 	public GameObject prefab;
 
 	public GameObject spawn;
-
-    // 네트워크 데이터 송,수신을 위한 네트워크 매니저 레퍼런스.
     [SerializeField]
-    CNetworkManager network_manager;
-    [SerializeField]
-     TMP_Text txt;
+    TMP_Text txt;
 
     // 게임 상태에 따라 각각 다른 GUI모습을 구현하기 위해 필요한 상태 변수.
     GAME_STATE game_state;
@@ -43,7 +56,16 @@ public class CBattleRoom : MonoBehaviour
 
 	void Awake()
 	{
-		game_state = GAME_STATE.READY;
+        if (_instance == null)
+        {
+            _instance = this;
+        }
+        else if (_instance != this)
+        {
+            Destroy(gameObject);
+        }
+
+        game_state = GAME_STATE.READY;
 
 		win_player_index = byte.MaxValue;
 	}
@@ -66,17 +88,16 @@ public class CBattleRoom : MonoBehaviour
 		clear();
 		my_player_index = player_index;
 
-        network_manager.message_receiver = this;
+        CNetworkManager.Instance.message_receiver = this;
 
         StartCoroutine(Loading());
         CPacket msg = CPacket.create((short)PROTOCOL.LOADING_COMPLETED);
-		GameObject s = spawn.transform.GetChild(my_player_index+1).gameObject;
-		Debug.Log("LOADING_COMPLETED : " + s.transform.position);
+		GameObject s = spawn.transform.GetChild(my_player_index).gameObject;
 		msg.push(s.transform.position.x);
         msg.push(s.transform.position.y);
         msg.push(s.transform.position.z);
 
-        network_manager.send(msg);
+        CNetworkManager.Instance.send(msg);
 	}
 
 	IEnumerator Loading()
@@ -156,8 +177,9 @@ public class CBattleRoom : MonoBehaviour
 
 	void on_game_start(CPacket msg)
 	{
+        SwitchCanvasActive(BattleManager.Instance.BattleCanvas);
 		players = new List<CPlayer>();
-
+		Debug.Log(my_player_index);
 		byte count = msg.pop_byte();
 		for (byte i = 0; i < count; ++i)
 		{
@@ -169,10 +191,16 @@ public class CBattleRoom : MonoBehaviour
             //GameObject obj = new GameObject(string.Format("player{0}", i));
             GameObject obj1 = Instantiate(prefab);
 			obj1.transform.position = new Vector3(player_x, player_y, player_z);
-			Debug.Log("obj1 : " + obj1.transform.position);
-
-            CPlayer player = obj1.AddComponent<CPlayer>();
-			player.initialize(player_index, this);
+			if (my_player_index == player_index)
+			{
+				obj1.GetComponent<CPlayer>().isMine = true;
+				//obj1.transform.GetChild(1).GetComponent<CServercam>().enabled = true;
+				//obj1.transform.GetComponentInChildren<CServercam>().enabled = true;
+			}
+            CPlayer player = obj1.GetComponent<CPlayer>();
+			obj1.GetComponent<CharacterController>().enabled = true;
+			player.initialize(player_index);
+			
 			player.clear();
 
 			players.Add(player);
@@ -183,15 +211,38 @@ public class CBattleRoom : MonoBehaviour
 		game_state = GAME_STATE.STARTED;
 	}
 
+    private void SwitchCanvasActive(Canvas temp)
+    {
+        if (temp.gameObject.activeSelf)
+            temp.gameObject.SetActive(false);
+        else
+            temp.gameObject.SetActive(true);
+    }
 
-	void on_player_moved(CPacket msg)
+
+    void on_player_moved(CPacket msg)
 	{
 		byte player_index = msg.pop_byte();
-		float x = msg.pop_int32();
-        float y = msg.pop_int32();
-        float z = msg.pop_int32();
+		float x = msg.pop_float();
+        float y = msg.pop_float();
+        float z = msg.pop_float();
+
+		Debug.Log((int)player_index);
+        Debug.Log(new Vector3(x,y,z));
+
 
         //플레이어 이동 처리
+        players.Find(player =>
+		{
+			return player.player_index == player_index;
+		}).transform.position = new Vector3(x, y, z);
+        Debug.Log("===========================");
+
+		//players.ForEach(player =>
+		//{
+		//	Debug.Log(player.player_index + ", " + player.transform.position);
+		//});
+
     }
 
     /// <summary>

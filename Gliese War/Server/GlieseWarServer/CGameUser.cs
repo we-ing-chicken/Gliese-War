@@ -60,16 +60,17 @@ namespace GlieseWarServer
                     p.x = msg.pop_float();
                     p.y = msg.pop_float();
                     p.z = msg.pop_float();
-                    Console.WriteLine("position : " + p.x + ", " + p.y + ", " + p.z);
                     battle_room.loading_complete(player, p);
                     break;
 
                 case PROTOCOL.MOVING_REQ:
                     {
-                        Console.WriteLine("MOVING_REQ" + protocol);
-                        //short begin_pos = msg.pop_int16();
-                        //short target_pos = msg.pop_int16();
-                        //this.battle_room.moving_req(this.player, begin_pos, target_pos);
+                        position po = new position();
+                        po.x = msg.pop_float();
+                        po.y = msg.pop_float();
+                        po.z = msg.pop_float();
+
+                        battle_room.moving_req(this.player, po);
                     }
                     break;
 
