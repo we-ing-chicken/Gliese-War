@@ -4,31 +4,44 @@ using System.Collections.Generic;
 using GameServer;
 using GlieseWarGameServer;
 using TMPro;
+using System;
 
 public class CBattleRoom : MonoBehaviour 
 {
-
-	enum GAME_STATE
+    private static CBattleRoom _instance;
+    enum GAME_STATE
 	{
 		READY = 0,
 		STARTED
 	}
 
+    public static CBattleRoom Instance
+    {
+        get
+        {
+            if (!_instance)
+            {
+                if (_instance == null)
+                    return null;
+
+                _instance = FindObjectOfType(typeof(CBattleRoom)) as CBattleRoom;
+            }
+
+            return _instance;
+        }
+    }
+
     // 현재 턴을 진행중인 플레이어 인덱스.
     byte current_player_index;
 	public byte my_player_index;
 
-    List<CPlayer> players;
+    public List<CPlayer> players;
 
-    // 게임 종료 후 메인으로 돌아갈 때 사용하기 위한 MainTitle객체의 레퍼런스.
-    [SerializeField]
-	BattleManager main_title;
+	public GameObject prefab;
 
-    // 네트워크 데이터 송,수신을 위한 네트워크 매니저 레퍼런스.
+	public GameObject spawn;
     [SerializeField]
-    CNetworkManager network_manager;
-    [SerializeField]
-     TMP_Text txt;
+    TMP_Text txt;
 
     // 게임 상태에 따라 각각 다른 GUI모습을 구현하기 위해 필요한 상태 변수.
     GAME_STATE game_state;
@@ -43,7 +56,16 @@ public class CBattleRoom : MonoBehaviour
 
 	void Awake()
 	{
-		game_state = GAME_STATE.READY;
+        if (_instance == null)
+        {
+            _instance = this;
+        }
+        else if (_instance != this)
+        {
+            Destroy(gameObject);
+        }
+
+        game_state = GAME_STATE.READY;
 
 		win_player_index = byte.MaxValue;
 	}
@@ -61,17 +83,21 @@ public class CBattleRoom : MonoBehaviour
 	/// <summary>
 	/// 게임방에 입장할 때 호출된다. 리소스 로딩을 시작한다.
 	/// </summary>
-	public void start_loading(byte player_me_index)
+	public void start_loading(byte player_index)
 	{
 		clear();
-		my_player_index = player_me_index;
+		my_player_index = player_index;
 
-        network_manager.message_receiver = this;
+        CNetworkManager.Instance.message_receiver = this;
 
         StartCoroutine(Loading());
         CPacket msg = CPacket.create((short)PROTOCOL.LOADING_COMPLETED);
+		GameObject s = spawn.transform.GetChild(my_player_index).gameObject;
+		msg.push(s.transform.position.x);
+        msg.push(s.transform.position.y);
+        msg.push(s.transform.position.z);
 
-		network_manager.send(msg);
+        CNetworkManager.Instance.send(msg);
 	}
 
 	IEnumerator Loading()
@@ -122,8 +148,8 @@ public class CBattleRoom : MonoBehaviour
 
 	void back_to_main()
 	{
-		main_title.gameObject.SetActive(true);
-		main_title.enter();
+		BattleManager.Instance.gameObject.SetActive(true);
+        BattleManager.Instance.enter();
 
 		gameObject.SetActive(false);
 	}
@@ -151,17 +177,30 @@ public class CBattleRoom : MonoBehaviour
 
 	void on_game_start(CPacket msg)
 	{
+        SwitchCanvasActive(BattleManager.Instance.BattleCanvas);
 		players = new List<CPlayer>();
-
+		Debug.Log(my_player_index);
 		byte count = msg.pop_byte();
 		for (byte i = 0; i < count; ++i)
 		{
 			byte player_index = msg.pop_byte();
+			float player_x = msg.pop_float();
+            float player_y = msg.pop_float();
+            float player_z = msg.pop_float();
 
-			GameObject obj = new GameObject(string.Format("player{0}", i));
-
-            CPlayer player = obj.AddComponent<CPlayer>();
+            //GameObject obj = new GameObject(string.Format("player{0}", i));
+            GameObject obj1 = Instantiate(prefab);
+			obj1.transform.position = new Vector3(player_x, player_y, player_z);
+			if (my_player_index == player_index)
+			{
+				obj1.GetComponent<CPlayer>().isMine = true;
+				//obj1.transform.GetChild(1).GetComponent<CServercam>().enabled = true;
+				//obj1.transform.GetComponentInChildren<CServercam>().enabled = true;
+			}
+            CPlayer player = obj1.GetComponent<CPlayer>();
+			//obj1.GetComponent<CharacterController>().enabled = true;
 			player.initialize(player_index);
+			
 			player.clear();
 
 			players.Add(player);
@@ -172,27 +211,45 @@ public class CBattleRoom : MonoBehaviour
 		game_state = GAME_STATE.STARTED;
 	}
 
+    private void SwitchCanvasActive(Canvas temp)
+    {
+        if (temp.gameObject.activeSelf)
+            temp.gameObject.SetActive(false);
+        else
+            temp.gameObject.SetActive(true);
+    }
 
-	void on_player_moved(CPacket msg)
+
+    void on_player_moved(CPacket msg)
 	{
 		byte player_index = msg.pop_byte();
-		short from = msg.pop_int16();
-		short to = msg.pop_int16();
+		float x = msg.pop_float();
+        float y = msg.pop_float();
+        float z = msg.pop_float();
 
-		//플레이어 이동 처리
-	}
+		//Debug.Log((int)player_index);
+        //Debug.Log(new Vector3(x,y,z));
+		if (my_player_index == player_index)
+			return;
 
+        //플레이어 이동 처리
+        players.Find(player =>
+		{
+			return player.player_index == player_index;
+		}).transform.position = new Vector3(x, y, z);
+        Debug.Log("===========================");
 
+		//players.ForEach(player =>
+		//{
+		//	Debug.Log(player.player_index + ", " + player.transform.position);
+		//});
 
+    }
 
-
-	float ratio = 1.0f;
-
-
-	/// <summary>
-	/// 게임 진행 화면 그리기.
-	/// </summary>
-	void on_playing()
+    /// <summary>
+    /// 게임 진행 화면 그리기.
+    /// </summary>
+    void on_playing()
 	{
 		if (game_state != GAME_STATE.STARTED)
 		{

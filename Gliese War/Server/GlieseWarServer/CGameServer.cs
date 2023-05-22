@@ -95,12 +95,13 @@ namespace GlieseWarServer
             // MATCHING_BATTLEROOM만큼 모이면 매칭 성공.
             if (matching_waiting_users.Count == Define.MATCHING_BATTLEROOM)
             {
-                if (Define.MATCHING_BATTLEROOM == 1)
-                    room_manager.create_room(matching_waiting_users[0]);
-                else if (Define.MATCHING_BATTLEROOM == 2)
-                    room_manager.create_room(matching_waiting_users[0], matching_waiting_users[1]);
-                //else if (Define.MATCHING_BATTLEROOM == 4)
-                    //room_manager.create_room(matching_waiting_users);
+                //if (Define.MATCHING_BATTLEROOM == 1)
+                //    room_manager.create_room(matching_waiting_users[0]);
+                //else if (Define.MATCHING_BATTLEROOM == 2)
+                //    room_manager.create_room(matching_waiting_users[0], matching_waiting_users[1]);
+
+                ////else if (Define.MATCHING_BATTLEROOM == 4)
+                room_manager.create_room(matching_waiting_users);
 
                 // 매칭 대기 리스트 삭제.
                 matching_waiting_users.Clear();

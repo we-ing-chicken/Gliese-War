@@ -6,16 +6,40 @@ using Server_Unity;
 using GlieseWarGameServer;
 
 public class CNetworkManager : MonoBehaviour {
+    private static CNetworkManager _instance;
 
     CServerUnityService gameserver;
 	string received_msg;
 
 	public MonoBehaviour message_receiver;
-	[SerializeField] BattleManager battleManager;
 
+    public static CNetworkManager Instance
+    {
+        get
+        {
+            if (!_instance)
+            {
+                if (_instance == null)
+                    return null;
+
+                _instance = FindObjectOfType(typeof(CNetworkManager)) as CNetworkManager;
+            }
+
+            return _instance;
+        }
+    }
     void Awake()
 	{
-		received_msg = "";
+        if (_instance == null)
+        {
+            _instance = this;
+        }
+        else if (_instance != this)
+        {
+            Destroy(gameObject);
+        }
+
+        received_msg = "";
 
         // 네트워크 통신을 위해 CServerUnityService객체를 추가합니다.
         gameserver = gameObject.AddComponent<CServerUnityService>();
@@ -30,10 +54,12 @@ public class CNetworkManager : MonoBehaviour {
 
 	public void connect()
 	{
-		gameserver.connect("127.0.0.1", 7979);
-	}
+		//gameserver.connect("127.0.0.1", 7979);
+        gameserver.connect("192.168.140.61", 7979);
 
-	public bool is_connected()
+    }
+
+    public bool is_connected()
 	{
 		return gameserver.is_connected();
 	}
@@ -52,7 +78,7 @@ public class CNetworkManager : MonoBehaviour {
 					CLogManager.log("on connected");
 					received_msg += "on connected\n";
 
-                    battleManager.on_connected();
+                    BattleManager.Instance.on_connected();
 				}
 				break;
 

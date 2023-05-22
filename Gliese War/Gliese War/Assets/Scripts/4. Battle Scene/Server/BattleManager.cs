@@ -9,6 +9,8 @@ using TMPro;
 public class BattleManager : MonoBehaviour {
 
     private static BattleManager _instance;
+
+
     enum USER_STATE
 	{
 		NOT_CONNECTED,
@@ -16,13 +18,12 @@ public class BattleManager : MonoBehaviour {
 		WAITING_MATCHING
 	}
 	[SerializeField]
-	CBattleRoom battle_room;
-    [SerializeField]
-	CNetworkManager network_manager;
 	USER_STATE user_state;
 
 	public Button match_Button;
     public TMP_Text waiting_txt;
+
+    [Header("Canvas")] public Canvas BattleCanvas;
 
     public static BattleManager Instance
     {
@@ -55,7 +56,7 @@ public class BattleManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
 		user_state = USER_STATE.NOT_CONNECTED;
-		battle_room.gameObject.SetActive(false);
+        CBattleRoom.Instance.gameObject.SetActive(false);
 
         waiting_txt.text = "Start";
 
@@ -68,12 +69,12 @@ public class BattleManager : MonoBehaviour {
 	{
 		StopCoroutine("after_connected");
 
-		network_manager.message_receiver = this;
+        CNetworkManager.Instance.message_receiver = this;
 
-		if (!network_manager.is_connected())
+		if (!CNetworkManager.Instance.is_connected())
 		{
 			user_state = USER_STATE.CONNECTED;
-			network_manager.connect();
+            CNetworkManager.Instance.connect();
 		}
 		else
 		{
@@ -138,7 +139,7 @@ public class BattleManager : MonoBehaviour {
                 user_state = USER_STATE.WAITING_MATCHING;
 
                 CPacket msg = CPacket.create((short)PROTOCOL.ENTER_GAME_ROOM_REQ);
-                network_manager.send(msg);
+            CNetworkManager.Instance.send(msg);
 
                 StopCoroutine("after_connected");
         }
@@ -160,8 +161,8 @@ public class BattleManager : MonoBehaviour {
 				{
 					byte player_index = msg.pop_byte();
 
-					battle_room.gameObject.SetActive(true);
-					battle_room.start_loading(player_index);
+                    CBattleRoom.Instance.gameObject.SetActive(true);
+                    CBattleRoom.Instance.start_loading(player_index);
 					gameObject.SetActive(false);
 				}
 				break;

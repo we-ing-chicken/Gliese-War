@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net.Sockets;
 using GameServer;
 
 namespace GlieseWarServer
@@ -13,10 +14,10 @@ namespace GlieseWarServer
         public CGameRoom battle_room { get; private set; }
 
         CPlayer player;
-        public CGameUser(CUserToken token)
+        public CGameUser(CUserToken cutoken)
         {
-            this.token = token;
-            this.token.set_peer(this);
+            token = cutoken;
+            token.set_peer(this);
         }
         void IPeer.on_message(Const<byte[]> buffer)
         {
@@ -36,12 +37,12 @@ namespace GlieseWarServer
 
         public void send(CPacket msg)
         {
-            this.token.send(msg);
+           token.send(msg);
         }
 
         void IPeer.disconnect()
         {
-            this.token.socket.Disconnect(false);
+            token.socket.Disconnect(false);
         }
         // 리시브 처리.
         void IPeer.process_user_operation(CPacket msg)
@@ -55,15 +56,21 @@ namespace GlieseWarServer
                     break;
 
                 case PROTOCOL.LOADING_COMPLETED:
-                    this.battle_room.loading_complete(player);
+                    position p = new position();
+                    p.x = msg.pop_float();
+                    p.y = msg.pop_float();
+                    p.z = msg.pop_float();
+                    battle_room.loading_complete(player, p);
                     break;
 
                 case PROTOCOL.MOVING_REQ:
                     {
-                        Console.WriteLine("MOVING_REQ" + protocol);
-                        //short begin_pos = msg.pop_int16();
-                        //short target_pos = msg.pop_int16();
-                        //this.battle_room.moving_req(this.player, begin_pos, target_pos);
+                        position po = new position();
+                        po.x = msg.pop_float();
+                        po.y = msg.pop_float();
+                        po.z = msg.pop_float();
+
+                        battle_room.moving_req(this.player, po);
                     }
                     break;
 
@@ -72,10 +79,10 @@ namespace GlieseWarServer
             }
         }
 
-        public void enter_room(CPlayer player, CGameRoom room)
+        public void enter_room(CPlayer cplayer, CGameRoom room)
         {
-            this.player = player;
-            this.battle_room = room;
+            player = cplayer;
+            battle_room = room;
         }
     }
 }
