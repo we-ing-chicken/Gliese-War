@@ -93,15 +93,8 @@ public class Monster : MonoBehaviour
         {
             isDead = true;
             drop.DropItem();
-            
-            if(transform.CompareTag("Golam"))
-                DestructObject();
-            else
-            {
-                Debug.Log("AAA");
-                Destroy(gameObject);
-            }
-            
+            DestructObject();
+
         }
     }
 
@@ -201,7 +194,7 @@ public class Monster : MonoBehaviour
     public void DestructObject()
     {
         //broken = Instantiate(pfBoxBroken, transform.position + new Vector3(0,4f,0), transform.rotation);
-        broken = transform.GetChild(3);
+        broken = transform.GetChild(2);
         broken.gameObject.SetActive(true);
         
         Destroy(transform.GetComponent<BehaviourTreeRunner>());

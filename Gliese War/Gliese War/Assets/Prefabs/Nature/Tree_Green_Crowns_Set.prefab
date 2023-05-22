@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2724162615207940749}
   - component: {fileID: 2724162615206940749}
   - component: {fileID: 6834925304999919158}
+  - component: {fileID: 3120280186609729851}
   m_Layer: 0
   m_Name: Tree_Green_Crowns_Set
   m_TagString: Untagged
@@ -99,6 +100,18 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: c04ce2c26ffd07c43a6eb1d065fa3a81, type: 3}
+--- !u!114 &3120280186609729851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2724162615208939149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ce3b0b27fa721244a44a0790bf4480f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7406611199215073997
 GameObject:
   m_ObjectHideFlags: 0
@@ -111,6 +124,7 @@ GameObject:
   - component: {fileID: 7406611199214167757}
   - component: {fileID: 7406611199213069325}
   - component: {fileID: 3494901315099825364}
+  - component: {fileID: 7263278796193100421}
   m_Layer: 0
   m_Name: Tree_Green_Crowns (2)
   m_TagString: Untagged
@@ -197,3 +211,15 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: c04ce2c26ffd07c43a6eb1d065fa3a81, type: 3}
+--- !u!114 &7263278796193100421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7406611199215073997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ce3b0b27fa721244a44a0790bf4480f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
