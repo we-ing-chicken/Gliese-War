@@ -261,6 +261,7 @@ namespace GlieseWarServer
         /// <param name="target_pos">이동하고자 하는 위치</param>
         public void moving_req(CPlayer sender, position p)
         {
+            Console.WriteLine("sender : " + sender.player_index + ", position : " + p.x + ", " + p.y + ", " + p.z);
             // 플레이어 이동 처리
             players.Find(player =>
             {

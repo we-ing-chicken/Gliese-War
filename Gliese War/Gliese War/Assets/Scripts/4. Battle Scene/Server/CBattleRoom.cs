@@ -198,7 +198,7 @@ public class CBattleRoom : MonoBehaviour
 				//obj1.transform.GetComponentInChildren<CServercam>().enabled = true;
 			}
             CPlayer player = obj1.GetComponent<CPlayer>();
-			obj1.GetComponent<CharacterController>().enabled = true;
+			//obj1.GetComponent<CharacterController>().enabled = true;
 			player.initialize(player_index);
 			
 			player.clear();
@@ -227,9 +227,10 @@ public class CBattleRoom : MonoBehaviour
         float y = msg.pop_float();
         float z = msg.pop_float();
 
-		Debug.Log((int)player_index);
-        Debug.Log(new Vector3(x,y,z));
-
+		//Debug.Log((int)player_index);
+        //Debug.Log(new Vector3(x,y,z));
+		if (my_player_index == player_index)
+			return;
 
         //플레이어 이동 처리
         players.Find(player =>

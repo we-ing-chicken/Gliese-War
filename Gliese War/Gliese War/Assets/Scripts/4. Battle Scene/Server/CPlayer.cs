@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using GameServer;
 using GlieseWarGameServer;
 using Server_Unity;
+//using UnityEngine.Windows;
 
 public enum PLAYER_STATE
 {
@@ -45,7 +46,8 @@ public class CPlayer : MonoBehaviour
     [SerializeField] private bool ismove = false;
     [SerializeField] private bool ignoreGravity = false;
 
-    private CharacterController charactercontroller;
+    //private CharacterController charactercontroller;
+    public Rigidbody rb;
 
     public float moveFB { get; private set; } // ������ �����̵� �Է°�
     public float moveLR { get; private set; } // ������ �¿��̵� �Է°�
@@ -70,7 +72,8 @@ public class CPlayer : MonoBehaviour
 
     private void Start()
     {
-        charactercontroller = GetComponent<CharacterController>();
+        //charactercontroller = GetComponent<CharacterController>();
+        rb = GetComponent<Rigidbody>();
 
         moveDir = Vector3.zero;
         rot = 1.0f;
@@ -101,7 +104,7 @@ public class CPlayer : MonoBehaviour
     {
         preposition = transform.position;
 
-        if (charactercontroller == null) return;
+        //if (charactercontroller == null) return;
 
         if (isMine)
         {
@@ -112,6 +115,7 @@ public class CPlayer : MonoBehaviour
             ismove = (Input.GetButton(moveFBAxisName) || Input.GetButton(moveLRAxisName));
 
             p_Jump = Input.GetButton(JumpButtonName);
+            Look();
         }
         animate();
 
@@ -119,29 +123,32 @@ public class CPlayer : MonoBehaviour
 
     private void FixedUpdate()
     {
-        
-        if (charactercontroller == null) return;
-        Look();
+        //if (charactercontroller == null) return;
 
-        if (!charactercontroller.isGrounded)
-        {
-            if (!ignoreGravity)
-                Fall();
-        }
-        else
-        {
-            Move();
-            if (p_Jump)
-            {
-                Debug.Log("Jump");
-                    animator.SetTrigger("doJump");
-                    Jump();
-            }
-        }
-        charactercontroller.Move(moveDir * Time.deltaTime);
+        //if (!charactercontroller.isGrounded)
+        //{
+        //    if (!ignoreGravity)
+        //        Fall();
+        //}
+        //else
+        //{
+        //    Move();
+        //    if (p_Jump)
+        //    {
+        //            animator.SetTrigger("doJump");
+        //            Jump();
+        //    }
+        //}
+        //charactercontroller.Move(moveDir * Time.deltaTime);
 
-        if (preposition != transform.position)
+        Vector3 movement = new Vector3(moveLR, 0.0f, moveFB);
+
+        transform.Translate(movement * moveSpeed * Time.deltaTime);
+        rb.useGravity = false;
+
+        if (movement != Vector3.zero)
         {
+            
             StartCoroutine(send_MOVING_REQ());
         }
         SendButton();
@@ -161,8 +168,8 @@ public class CPlayer : MonoBehaviour
     {
         player_lookTarget();
 
-
-        moveDir = charactercontroller.transform.TransformDirection(new Vector3(moveLR, 0, moveFB)) * moveSpeed;
+        
+        //moveDir = charactercontroller.transform.TransformDirection(new Vector3(moveLR, 0, moveFB)) * moveSpeed;
     }
 
     private void Jump()
@@ -177,7 +184,7 @@ public class CPlayer : MonoBehaviour
 
     private void player_lookTarget()
     {
-        if (charactercontroller == null) return;
+        //if (charactercontroller == null) return;
 
         if (moveLR < 0 && moveFB < 0)    // left + back
         {
@@ -222,6 +229,8 @@ public class CPlayer : MonoBehaviour
     {
         MouseX += Input.GetAxis("Mouse X") * mouseSpeed;
         transform.rotation = Quaternion.Euler(0, MouseX, 0);
+
+
     }
 
     private void player_Rotate(Vector3 movePoint)

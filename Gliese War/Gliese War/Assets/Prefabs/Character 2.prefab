@@ -49,7 +49,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1172362744909006174
 Transform:
   m_ObjectHideFlags: 0
@@ -359,6 +359,8 @@ GameObject:
   - component: {fileID: 8274484789571185862}
   - component: {fileID: 1172362743485236797}
   - component: {fileID: 2758805201353032708}
+  - component: {fileID: -5026474910118585267}
+  - component: {fileID: 6617151989451857297}
   m_Layer: 6
   m_Name: Character 2
   m_TagString: Player
@@ -442,8 +444,39 @@ MonoBehaviour:
   rfTarget: {fileID: 8423574705613894597}
   ismove: 0
   ignoreGravity: 0
+  rb: {fileID: 0}
   JumpPower: 0
   moveDir: {x: 0, y: 0, z: 0}
+--- !u!54 &-5026474910118585267
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4804161492713886577}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 1
+--- !u!136 &6617151989451857297
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4804161492713886577}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.6022071
+  m_Height: 2.7741218
+  m_Direction: 1
+  m_Center: {x: 0, y: -1.2719302, z: 0}
 --- !u!1 &5322719589162041763
 GameObject:
   m_ObjectHideFlags: 0
