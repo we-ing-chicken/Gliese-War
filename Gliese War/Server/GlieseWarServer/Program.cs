@@ -26,6 +26,7 @@ namespace GlieseWarServer
 
 
             Console.WriteLine("Started!");
+
             while (true)
             {
                 string input = Console.ReadLine();
