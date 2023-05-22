@@ -105,7 +105,12 @@ public class CBattleRoom : MonoBehaviour
 				on_player_moved(msg);
 				break;
 
-			case PROTOCOL.ROOM_REMOVED:
+			case PROTOCOL.PLAYER_ROTATE:
+				on_player_rotate(msg);
+                break;
+
+
+            case PROTOCOL.ROOM_REMOVED:
 				on_room_removed();
 				break;
 
@@ -188,16 +193,26 @@ public class CBattleRoom : MonoBehaviour
 	{
 		byte player_index = msg.pop_byte();
 		float x = msg.pop_int32();
-        float y = msg.pop_int32();
-        float z = msg.pop_int32();
+		float y = msg.pop_int32();
+		float z = msg.pop_int32();
 
-        //플레이어 이동 처리
-    }
+		//플레이어 이동 처리
+	}
 
-    /// <summary>
-    /// 게임 진행 화면 그리기.
-    /// </summary>
-    void on_playing()
+        void on_player_rotate(CPacket msg)
+        {
+            byte player_index = msg.pop_byte();
+            float x = msg.pop_int32();
+            float y = msg.pop_int32();
+            float z = msg.pop_int32();
+
+            //플레이어 이동 처리
+        }
+
+        /// <summary>
+        /// 게임 진행 화면 그리기.
+        /// </summary>
+        void on_playing()
 	{
 		if (game_state != GAME_STATE.STARTED)
 		{
