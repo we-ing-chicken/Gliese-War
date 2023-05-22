@@ -5,6 +5,7 @@ using GameServer;
 using GlieseWarGameServer;
 using TMPro;
 using System;
+using Cinemachine;
 
 public class CBattleRoom : MonoBehaviour 
 {
@@ -194,6 +195,8 @@ public class CBattleRoom : MonoBehaviour
 			if (my_player_index == player_index)
 			{
 				obj1.GetComponent<CPlayer>().isMine = true;
+				CMvcam.Instance.cmvc.Follow = obj1.transform;
+				CMvcam.Instance.cmvc.LookAt = obj1.transform;
 				//obj1.transform.GetChild(1).GetComponent<CServercam>().enabled = true;
 				//obj1.transform.GetComponentInChildren<CServercam>().enabled = true;
 			}
