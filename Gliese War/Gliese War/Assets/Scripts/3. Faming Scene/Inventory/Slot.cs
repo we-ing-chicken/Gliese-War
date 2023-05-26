@@ -301,6 +301,8 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
             
             Equip temp = hitObject.GetComponent<Equip>();
             temp.SetImage(DragSlot.instance.dragedSlot.realItem);
+            temp.SetAlpha(1f);
+            
             Inventory.instance.DeleteItem(DragSlot.instance.dragedSlot);
             
             switch (DragSlot.instance.dragedSlot.realItem.item.itemCategory)
