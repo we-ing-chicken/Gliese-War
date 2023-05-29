@@ -32,7 +32,7 @@ public class CBattleRoom : MonoBehaviour
         }
     }
 
-    // ÇöÀç ÅÏÀ» ÁøÇàÁßÀÎ ÇÃ·¹ÀÌ¾î ÀÎµ¦½º.
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½Îµï¿½ï¿½ï¿½.
     byte current_player_index;
 	public byte my_player_index;
 
@@ -44,15 +44,15 @@ public class CBattleRoom : MonoBehaviour
     [SerializeField]
     TMP_Text txt;
 
-    // °ÔÀÓ »óÅÂ¿¡ µû¶ó °¢°¢ ´Ù¸¥ GUI¸ð½ÀÀ» ±¸ÇöÇÏ±â À§ÇØ ÇÊ¿äÇÑ »óÅÂ º¯¼ö.
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¸ï¿½ GUIï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
     GAME_STATE game_state;
 
-	// ½Â¸®ÇÑ ÇÃ·¹ÀÌ¾î ÀÎµ¦½º.
-	// ¹«½ÂºÎÀÏ¶§´Â byte.MaxValue°¡ µé¾î°£´Ù.
+	// ï¿½Â¸ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½Îµï¿½ï¿½ï¿½.
+	// ï¿½ï¿½ï¿½Âºï¿½ï¿½Ï¶ï¿½ï¿½ï¿½ byte.MaxValueï¿½ï¿½ ï¿½ï¿½î°£ï¿½ï¿½.
 	byte win_player_index;
 
 
-	// °ÔÀÓÀÌ Á¾·áµÇ¾ú´ÂÁö¸¦ ³ªÅ¸³»´Â ÇÃ·¡±×.
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½ï¿½.
 	bool is_game_finished;
 
 	void Awake()
@@ -82,7 +82,7 @@ public class CBattleRoom : MonoBehaviour
 	}
 
 	/// <summary>
-	/// °ÔÀÓ¹æ¿¡ ÀÔÀåÇÒ ¶§ È£ÃâµÈ´Ù. ¸®¼Ò½º ·ÎµùÀ» ½ÃÀÛÇÑ´Ù.
+	/// ï¿½ï¿½ï¿½Ó¹æ¿¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ È£ï¿½ï¿½È´ï¿½. ï¿½ï¿½ï¿½Ò½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 	/// </summary>
 	public void start_loading(byte player_index)
 	{
@@ -109,7 +109,7 @@ public class CBattleRoom : MonoBehaviour
 
 
 	/// <summary>
-	/// ÆÐÅ¶À» ¼ö½Å ÇßÀ» ¶§ È£ÃâµÊ.
+	/// ï¿½ï¿½Å¶ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ È£ï¿½ï¿½ï¿½.
 	/// </summary>
 	/// <param name="protocol"></param>
 	/// <param name="msg"></param>
@@ -127,7 +127,12 @@ public class CBattleRoom : MonoBehaviour
 				on_player_moved(msg);
 				break;
 
-			case PROTOCOL.ROOM_REMOVED:
+			case PROTOCOL.PLAYER_ROTATE:
+				on_player_rotate(msg);
+                break;
+
+
+            case PROTOCOL.ROOM_REMOVED:
 				on_room_removed();
 				break;
 
@@ -160,7 +165,7 @@ public class CBattleRoom : MonoBehaviour
 	{
 		is_game_finished = true;
 		win_player_index = msg.pop_byte();
-		// °ÔÀÓ °á°ú Ãâ·Â
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 	}
 
 
@@ -223,36 +228,66 @@ public class CBattleRoom : MonoBehaviour
     }
 
 
+ //   void on_player_moved(CPacket msg)
+	//{
+	//	byte player_index = msg.pop_byte();
+	//	float x = msg.pop_float();
+ //       float y = msg.pop_float();
+ //       float z = msg.pop_float();
+
+	//	//Debug.Log((int)player_index);
+ //       //Debug.Log(new Vector3(x,y,z));
+	//	if (my_player_index == player_index)
+	//		return;
+
+ //       //ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½Ìµï¿½ Ã³ï¿½ï¿½
+ //       players.Find(player =>
+	//	{
+	//		return player.player_index == player_index;
+	//	}).transform.position = new Vector3(x, y, z);
+ //       Debug.Log("===========================");
+
+	//	//players.ForEach(player =>
+	//	//{
+	//	//	Debug.Log(player.player_index + ", " + player.transform.position);
+	//	//});
+
+ //   }
     void on_player_moved(CPacket msg)
+    {
+        byte player_index = msg.pop_byte();
+        float moveLR = msg.pop_float();
+        float moveFB = msg.pop_float();
+
+        if (my_player_index == player_index)
+            return;
+
+        //ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½Ìµï¿½ Ã³ï¿½ï¿½
+        players.Find(player =>
+        {
+            return player.player_index == player_index;
+        }).SetMoveVector(moveLR, moveFB);
+    }
+
+	void on_player_rotate(CPacket msg)
 	{
 		byte player_index = msg.pop_byte();
-		float x = msg.pop_float();
-        float y = msg.pop_float();
-        float z = msg.pop_float();
+		float MouseX = msg.pop_float();
 
-		//Debug.Log((int)player_index);
-        //Debug.Log(new Vector3(x,y,z));
 		if (my_player_index == player_index)
 			return;
 
-        //ÇÃ·¹ÀÌ¾î ÀÌµ¿ Ã³¸®
-        players.Find(player =>
+		//ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½Ìµï¿½ Ã³ï¿½ï¿½
+		players.Find(player =>
 		{
 			return player.player_index == player_index;
-		}).transform.position = new Vector3(x, y, z);
-        Debug.Log("===========================");
+		}).SetMouseVector(MouseX);
+	}
 
-		//players.ForEach(player =>
-		//{
-		//	Debug.Log(player.player_index + ", " + player.transform.position);
-		//});
-
-    }
-
-    /// <summary>
-    /// °ÔÀÓ ÁøÇà È­¸é ±×¸®±â.
-    /// </summary>
-    void on_playing()
+        /// <summary>
+        /// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È­ï¿½ï¿½ ï¿½×¸ï¿½ï¿½ï¿½.
+        /// </summary>
+        void on_playing()
 	{
 		if (game_state != GAME_STATE.STARTED)
 		{
@@ -262,7 +297,7 @@ public class CBattleRoom : MonoBehaviour
 
 
 	/// <summary>
-	/// °á°ú È­¸é ±×¸®±â.
+	/// ï¿½ï¿½ï¿½ È­ï¿½ï¿½ ï¿½×¸ï¿½ï¿½ï¿½.
 	/// </summary>
 	void on_game_result()
 	{
@@ -282,7 +317,7 @@ public class CBattleRoom : MonoBehaviour
 	
 	IEnumerator reproduce(short cell)
 	{
-		// ±âÁ¸ - ´Ù¸¥ ÇÃ·¹ÀÌ¾îÀÇ ¼¼±Õ¿¡¼­ ÇöÀç ÇÃ·¹ÀÌ¾îÀÇ ¼¼±ÕÀ¸·Î ¿Å±â±â.
+		// ï¿½ï¿½ï¿½ï¿½ - ï¿½Ù¸ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Õ¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Å±ï¿½ï¿½.
 
 		CPlayer current_player = players[current_player_index];
 		CPlayer other_player = players.Find(obj => obj.player_index != current_player_index);

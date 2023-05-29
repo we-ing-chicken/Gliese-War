@@ -54,8 +54,8 @@ public class CNetworkManager : MonoBehaviour {
 
 	public void connect()
 	{
-		//gameserver.connect("127.0.0.1", 7979);
-        gameserver.connect("192.168.140.61", 7979);
+		gameserver.connect("127.0.0.1", 7979);
+        //gameserver.connect("192.168.140.61", 7979);
 
     }
 

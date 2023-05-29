@@ -35,6 +35,10 @@ namespace GlieseWarServer
         // 게임 종료.
         GAME_OVER = 10,
 
+        PLAYER_ROTATE = 11,
+
+        ROTATE_REQ = 12,
+
         END
     }
 }
