@@ -21,8 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Tornado
-  m_Shader: {fileID: -6465566751694194690, guid: 8ee8bece143aff143925a3aebde7d6ff,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 8ee8bece143aff143925a3aebde7d6ff, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -155,7 +154,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Bottom_Color: {r: 0.1315093, g: 0, b: 1, a: 1}
+    - _Bottom_Color: {r: 0, g: 0.05977726, b: 1, a: 1}
     - _Color: {r: 1, g: 0, b: 0, a: 1}
     - _Color_1: {r: 0.066967964, g: 0, b: 1, a: 0}
     - _Color_A: {r: 0, g: 0.04240513, b: 1, a: 0}
