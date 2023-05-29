@@ -164,6 +164,9 @@ public class Monster : MonoBehaviour
     {
         while (true)
         {
+            if (isDead)
+                break;
+            
             Vector3 dir = Player.instance.transform.position - transform.position;
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime);
             if (Quaternion.Angle(transform.rotation, Quaternion.Euler(dir)) < 2f)
