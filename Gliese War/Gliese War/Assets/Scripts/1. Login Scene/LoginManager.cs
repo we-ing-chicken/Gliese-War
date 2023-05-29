@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -52,7 +53,7 @@ namespace Team
             }
         }
 
-        public void Start()
+        private void Start()
         {
             reader = MySqlConnector.Instance.doQuery("select count(*) from User");
             reader.Read();
@@ -62,6 +63,28 @@ namespace Team
             {
                 SceneManager.LoadScene(1);
             }
+        }
+
+        private void Update()
+        {
+            if(Input.GetKeyDown(KeyCode.Tab))
+            {
+                if (idInput.isFocused)
+                    pwInput.Select();
+                
+                if (pwInput.isFocused)
+                    idInput.Select();
+                
+                if(joinIDInput.isFocused)
+                    joinNickInput.Select();
+                
+                if(joinNickInput.isFocused)
+                    joinPwInput.Select();
+                
+                if(joinPwInput.isFocused)
+                    joinIDInput.Select();
+            }
+            
         }
 
         // 로그인 버튼
@@ -88,7 +111,6 @@ namespace Team
             if (int.Parse(reader[0].ToString()) == 1)
             {
                 //PlayerPrefs.SetString("ID", id);
-                //PlayerPrefs.SetString("NICK", nick);
                 SceneManager.LoadScene(1);
             }
             else
@@ -219,8 +241,8 @@ namespace Team
             string nick = joinNickInput.text;
 
             MySqlConnector.Instance.doNonQuery("insert into User values ('" + id + "','" + pw +"','" + nick + "','0','0','2022-08-09')");
-            // 아이디, 닉네임,현재 돈, 누적 돈, 현재 캐쉬, 누적 캐쉬, 현재 포인트, 최고 포인트, 레벨,경험치, 캐릭터, 비밀번호
-            
+            MySqlConnector.Instance.doNonQuery("insert into Career (id) values ('" + id + "'");
+
 
             JoinCancel();
         }

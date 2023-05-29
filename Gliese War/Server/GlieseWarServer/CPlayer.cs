@@ -48,5 +48,11 @@ namespace GlieseWarServer
             player_position.z = 0;
 
         }
+        public void SetPosition(position p)
+        {
+            player_position.x = p.x;
+            player_position.y = p.y;
+            player_position.z = p.z;
+        }
     }
 }

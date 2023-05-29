@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4204073112874902931}
   - component: {fileID: 5123960787590871748}
   - component: {fileID: 9190976643538541018}
+  - component: {fileID: -8070288431806345870}
   m_Layer: 0
   m_Name: D_Castle2
   m_TagString: Untagged
@@ -97,3 +98,15 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.27, y: 1.2699999, z: 3.188493}
   m_Center: {x: 0, y: 0, z: -0.000000119209275}
+--- !u!114 &-8070288431806345870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6676705799533237597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ce3b0b27fa721244a44a0790bf4480f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

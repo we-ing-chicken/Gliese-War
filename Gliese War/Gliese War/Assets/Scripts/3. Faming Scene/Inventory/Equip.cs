@@ -18,6 +18,13 @@ public class Equip : MonoBehaviour
             magicImage = gameObject.transform.GetChild(0).GetComponent<Image>();
     }
 
+    public void SetAlpha(float a)
+    {
+        Color color = itemImage.color;
+        color.a = a;
+        itemImage.color = color;
+    }
+
     public void SetImage(RealItem realitem)
     {
         itemImage.sprite = realitem.item.itemImage;

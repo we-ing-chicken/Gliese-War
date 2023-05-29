@@ -169,23 +169,23 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         switch (item.itemRank)
         {
             case Item.ItemRank.Normal:
-                power = Random.Range(1, 3);
+                power = Random.Range(1, 2);
                 break;
 
             case Item.ItemRank.Rare:
-                power = Random.Range(3, 6);
+                power = Random.Range(2, 4);
                 break;
             
             case Item.ItemRank.Epic:
-                power = Random.Range(6, 9);
+                power = Random.Range(4, 6);
                 break;
             
             case Item.ItemRank.Unique:
-                power = Random.Range(9, 12);
+                power = Random.Range(6, 8);
                 break;
             
             case Item.ItemRank.Legendary:
-                power = Random.Range(12, 15);
+                power = Random.Range(8, 10);
                 break;
         }
 
@@ -301,6 +301,8 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
             
             Equip temp = hitObject.GetComponent<Equip>();
             temp.SetImage(DragSlot.instance.dragedSlot.realItem);
+            temp.SetAlpha(1f);
+            
             Inventory.instance.DeleteItem(DragSlot.instance.dragedSlot);
             
             switch (DragSlot.instance.dragedSlot.realItem.item.itemCategory)

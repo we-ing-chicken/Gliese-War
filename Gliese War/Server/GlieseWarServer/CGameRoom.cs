@@ -72,7 +72,6 @@ namespace GlieseWarServer
                 player_state[player.player_index] = state;
                 CPlayer cp = get_player(player.player_index);
                 cp.player_position = p;
-                Console.WriteLine("cp.player_position : " + +cp.player_position.x + ", " + cp.player_position.y + ", " + cp.player_position.z);
                 players.Remove(get_player(player.player_index));
                 players.Add(cp);
             }
@@ -235,7 +234,6 @@ namespace GlieseWarServer
                 msg.push(player.player_position.x);
                 msg.push(player.player_position.y);
                 msg.push(player.player_position.z);
-                Console.WriteLine("GAME_START" + player.player_position.x + ", " + player.player_position.y + ", " + player.player_position.z);
             });
             broadcast(msg);
         }
@@ -261,15 +259,20 @@ namespace GlieseWarServer
         /// <param name="sender">요청한 유저</param>
         /// <param name="begin_pos">시작 위치</param>
         /// <param name="target_pos">이동하고자 하는 위치</param>
-        public void moving_req(CPlayer sender, short begin_pos, short target_pos)
+        public void moving_req(CPlayer sender, position p)
         {
+            Console.WriteLine("sender : " + sender.player_index + ", position : " + p.x + ", " + p.y + ", " + p.z);
             // 플레이어 이동 처리
-
+            players.Find(player =>
+            {
+                return player.player_index == sender.player_index;
+            }).SetPosition(p);
             // 최종 결과를 broadcast한다.
             CPacket msg = CPacket.create((short)PROTOCOL.PLAYER_MOVED);
             msg.push(sender.player_index);      // 누가
-            msg.push(begin_pos);                // 어디서
-            msg.push(target_pos);               // 어디로 이동 했는지
+            msg.push(sender.player_position.x);
+            msg.push(sender.player_position.y);
+            msg.push(sender.player_position.z);
             broadcast(msg);
         }
 

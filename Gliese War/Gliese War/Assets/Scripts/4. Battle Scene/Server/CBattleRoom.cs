@@ -5,45 +5,68 @@ using GameServer;
 using GlieseWarGameServer;
 using TMPro;
 using System;
+using Cinemachine;
 
 public class CBattleRoom : MonoBehaviour 
 {
-	enum GAME_STATE
+    private static CBattleRoom _instance;
+    enum GAME_STATE
 	{
 		READY = 0,
 		STARTED
 	}
 
-    // ÇöÀç ÅÏÀ» ÁøÇàÁßÀÎ ÇÃ·¹ÀÌ¾î ÀÎµ¦½º.
+    public static CBattleRoom Instance
+    {
+        get
+        {
+            if (!_instance)
+            {
+                if (_instance == null)
+                    return null;
+
+                _instance = FindObjectOfType(typeof(CBattleRoom)) as CBattleRoom;
+            }
+
+            return _instance;
+        }
+    }
+
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½Îµï¿½ï¿½ï¿½.
     byte current_player_index;
 	public byte my_player_index;
 
-    List<CPlayer> players;
+    public List<CPlayer> players;
 
 	public GameObject prefab;
 
 	public GameObject spawn;
-
-    // ³×Æ®¿öÅ© µ¥ÀÌÅÍ ¼Û,¼ö½ÅÀ» À§ÇÑ ³×Æ®¿öÅ© ¸Å´ÏÀú ·¹ÆÛ·±½º.
     [SerializeField]
-    CNetworkManager network_manager;
-    [SerializeField]
-     TMP_Text txt;
+    TMP_Text txt;
 
-    // °ÔÀÓ »óÅÂ¿¡ µû¶ó °¢°¢ ´Ù¸¥ GUI¸ð½ÀÀ» ±¸ÇöÇÏ±â À§ÇØ ÇÊ¿äÇÑ »óÅÂ º¯¼ö.
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¸ï¿½ GUIï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
     GAME_STATE game_state;
 
-	// ½Â¸®ÇÑ ÇÃ·¹ÀÌ¾î ÀÎµ¦½º.
-	// ¹«½ÂºÎÀÏ¶§´Â byte.MaxValue°¡ µé¾î°£´Ù.
+	// ï¿½Â¸ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½Îµï¿½ï¿½ï¿½.
+	// ï¿½ï¿½ï¿½Âºï¿½ï¿½Ï¶ï¿½ï¿½ï¿½ byte.MaxValueï¿½ï¿½ ï¿½ï¿½î°£ï¿½ï¿½.
 	byte win_player_index;
 
 
-	// °ÔÀÓÀÌ Á¾·áµÇ¾ú´ÂÁö¸¦ ³ªÅ¸³»´Â ÇÃ·¡±×.
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½ï¿½.
 	bool is_game_finished;
 
 	void Awake()
 	{
-		game_state = GAME_STATE.READY;
+        if (_instance == null)
+        {
+            _instance = this;
+        }
+        else if (_instance != this)
+        {
+            Destroy(gameObject);
+        }
+
+        game_state = GAME_STATE.READY;
 
 		win_player_index = byte.MaxValue;
 	}
@@ -59,24 +82,23 @@ public class CBattleRoom : MonoBehaviour
 	}
 
 	/// <summary>
-	/// °ÔÀÓ¹æ¿¡ ÀÔÀåÇÒ ¶§ È£ÃâµÈ´Ù. ¸®¼Ò½º ·ÎµùÀ» ½ÃÀÛÇÑ´Ù.
+	/// ï¿½ï¿½ï¿½Ó¹æ¿¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ È£ï¿½ï¿½È´ï¿½. ï¿½ï¿½ï¿½Ò½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 	/// </summary>
 	public void start_loading(byte player_index)
 	{
 		clear();
 		my_player_index = player_index;
 
-        network_manager.message_receiver = this;
+        CNetworkManager.Instance.message_receiver = this;
 
         StartCoroutine(Loading());
         CPacket msg = CPacket.create((short)PROTOCOL.LOADING_COMPLETED);
-		GameObject s = spawn.transform.GetChild(my_player_index+1).gameObject;
-		Debug.Log("LOADING_COMPLETED : " + s.transform.position);
+		GameObject s = spawn.transform.GetChild(my_player_index).gameObject;
 		msg.push(s.transform.position.x);
         msg.push(s.transform.position.y);
         msg.push(s.transform.position.z);
 
-        network_manager.send(msg);
+        CNetworkManager.Instance.send(msg);
 	}
 
 	IEnumerator Loading()
@@ -87,7 +109,7 @@ public class CBattleRoom : MonoBehaviour
 
 
 	/// <summary>
-	/// ÆÐÅ¶À» ¼ö½Å ÇßÀ» ¶§ È£ÃâµÊ.
+	/// ï¿½ï¿½Å¶ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ È£ï¿½ï¿½ï¿½.
 	/// </summary>
 	/// <param name="protocol"></param>
 	/// <param name="msg"></param>
@@ -143,7 +165,7 @@ public class CBattleRoom : MonoBehaviour
 	{
 		is_game_finished = true;
 		win_player_index = msg.pop_byte();
-		// °ÔÀÓ °á°ú Ãâ·Â
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 	}
 
 
@@ -161,8 +183,9 @@ public class CBattleRoom : MonoBehaviour
 
 	void on_game_start(CPacket msg)
 	{
+        SwitchCanvasActive(BattleManager.Instance.BattleCanvas);
 		players = new List<CPlayer>();
-
+		Debug.Log(my_player_index);
 		byte count = msg.pop_byte();
 		for (byte i = 0; i < count; ++i)
 		{
@@ -174,10 +197,18 @@ public class CBattleRoom : MonoBehaviour
             //GameObject obj = new GameObject(string.Format("player{0}", i));
             GameObject obj1 = Instantiate(prefab);
 			obj1.transform.position = new Vector3(player_x, player_y, player_z);
-			Debug.Log("obj1 : " + obj1.transform.position);
-
-            CPlayer player = obj1.AddComponent<CPlayer>();
-			player.initialize(player_index, this);
+			if (my_player_index == player_index)
+			{
+				obj1.GetComponent<CPlayer>().isMine = true;
+				CMvcam.Instance.cmvc.Follow = obj1.transform;
+				CMvcam.Instance.cmvc.LookAt = obj1.transform;
+				//obj1.transform.GetChild(1).GetComponent<CServercam>().enabled = true;
+				//obj1.transform.GetComponentInChildren<CServercam>().enabled = true;
+			}
+            CPlayer player = obj1.GetComponent<CPlayer>();
+			//obj1.GetComponent<CharacterController>().enabled = true;
+			player.initialize(player_index);
+			
 			player.clear();
 
 			players.Add(player);
@@ -188,16 +219,40 @@ public class CBattleRoom : MonoBehaviour
 		game_state = GAME_STATE.STARTED;
 	}
 
+    private void SwitchCanvasActive(Canvas temp)
+    {
+        if (temp.gameObject.activeSelf)
+            temp.gameObject.SetActive(false);
+        else
+            temp.gameObject.SetActive(true);
+    }
 
-	void on_player_moved(CPacket msg)
+
+    void on_player_moved(CPacket msg)
 	{
 		byte player_index = msg.pop_byte();
-		float x = msg.pop_int32();
-		float y = msg.pop_int32();
-		float z = msg.pop_int32();
+		float x = msg.pop_float();
+        float y = msg.pop_float();
+        float z = msg.pop_float();
 
-		//ÇÃ·¹ÀÌ¾î ÀÌµ¿ Ã³¸®
-	}
+		//Debug.Log((int)player_index);
+        //Debug.Log(new Vector3(x,y,z));
+		if (my_player_index == player_index)
+			return;
+
+        //ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½Ìµï¿½ Ã³ï¿½ï¿½
+        players.Find(player =>
+		{
+			return player.player_index == player_index;
+		}).transform.position = new Vector3(x, y, z);
+        Debug.Log("===========================");
+
+		//players.ForEach(player =>
+		//{
+		//	Debug.Log(player.player_index + ", " + player.transform.position);
+		//});
+
+    }
 
         void on_player_rotate(CPacket msg)
         {
@@ -206,11 +261,11 @@ public class CBattleRoom : MonoBehaviour
             float y = msg.pop_int32();
             float z = msg.pop_int32();
 
-            //ÇÃ·¹ÀÌ¾î ÀÌµ¿ Ã³¸®
+            //ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½Ìµï¿½ Ã³ï¿½ï¿½
         }
 
         /// <summary>
-        /// °ÔÀÓ ÁøÇà È­¸é ±×¸®±â.
+        /// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È­ï¿½ï¿½ ï¿½×¸ï¿½ï¿½ï¿½.
         /// </summary>
         void on_playing()
 	{
@@ -222,7 +277,7 @@ public class CBattleRoom : MonoBehaviour
 
 
 	/// <summary>
-	/// °á°ú È­¸é ±×¸®±â.
+	/// ï¿½ï¿½ï¿½ È­ï¿½ï¿½ ï¿½×¸ï¿½ï¿½ï¿½.
 	/// </summary>
 	void on_game_result()
 	{
@@ -242,7 +297,7 @@ public class CBattleRoom : MonoBehaviour
 	
 	IEnumerator reproduce(short cell)
 	{
-		// ±âÁ¸ - ´Ù¸¥ ÇÃ·¹ÀÌ¾îÀÇ ¼¼±Õ¿¡¼­ ÇöÀç ÇÃ·¹ÀÌ¾îÀÇ ¼¼±ÕÀ¸·Î ¿Å±â±â.
+		// ï¿½ï¿½ï¿½ï¿½ - ï¿½Ù¸ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Õ¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Å±ï¿½ï¿½.
 
 		CPlayer current_player = players[current_player_index];
 		CPlayer other_player = players.Find(obj => obj.player_index != current_player_index);
