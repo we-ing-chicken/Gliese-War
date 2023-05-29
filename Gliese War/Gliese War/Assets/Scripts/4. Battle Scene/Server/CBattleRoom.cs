@@ -228,41 +228,61 @@ public class CBattleRoom : MonoBehaviour
     }
 
 
-    void on_player_moved(CPacket msg)
-	{
-		byte player_index = msg.pop_byte();
-		float x = msg.pop_float();
-        float y = msg.pop_float();
-        float z = msg.pop_float();
+ //   void on_player_moved(CPacket msg)
+	//{
+	//	byte player_index = msg.pop_byte();
+	//	float x = msg.pop_float();
+ //       float y = msg.pop_float();
+ //       float z = msg.pop_float();
 
-		//Debug.Log((int)player_index);
-        //Debug.Log(new Vector3(x,y,z));
-		if (my_player_index == player_index)
-			return;
+	//	//Debug.Log((int)player_index);
+ //       //Debug.Log(new Vector3(x,y,z));
+	//	if (my_player_index == player_index)
+	//		return;
+
+ //       //�÷��̾� �̵� ó��
+ //       players.Find(player =>
+	//	{
+	//		return player.player_index == player_index;
+	//	}).transform.position = new Vector3(x, y, z);
+ //       Debug.Log("===========================");
+
+	//	//players.ForEach(player =>
+	//	//{
+	//	//	Debug.Log(player.player_index + ", " + player.transform.position);
+	//	//});
+
+ //   }
+    void on_player_moved(CPacket msg)
+    {
+        byte player_index = msg.pop_byte();
+        float moveLR = msg.pop_float();
+        float moveFB = msg.pop_float();
+
+        if (my_player_index == player_index)
+            return;
 
         //�÷��̾� �̵� ó��
         players.Find(player =>
-		{
-			return player.player_index == player_index;
-		}).transform.position = new Vector3(x, y, z);
-        Debug.Log("===========================");
-
-		//players.ForEach(player =>
-		//{
-		//	Debug.Log(player.player_index + ", " + player.transform.position);
-		//});
-
+        {
+            return player.player_index == player_index;
+        }).SetMoveVector(moveLR, moveFB);
     }
 
-        void on_player_rotate(CPacket msg)
-        {
-            byte player_index = msg.pop_byte();
-            float x = msg.pop_int32();
-            float y = msg.pop_int32();
-            float z = msg.pop_int32();
+	void on_player_rotate(CPacket msg)
+	{
+		byte player_index = msg.pop_byte();
+		float MouseX = msg.pop_float();
 
-            //�÷��̾� �̵� ó��
-        }
+		if (my_player_index == player_index)
+			return;
+
+		//�÷��̾� �̵� ó��
+		players.Find(player =>
+		{
+			return player.player_index == player_index;
+		}).SetMouseVector(MouseX);
+	}
 
         /// <summary>
         /// ���� ���� ȭ�� �׸���.

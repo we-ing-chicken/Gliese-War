@@ -37,6 +37,8 @@ namespace GlieseWarServer
 
         PLAYER_ROTATE = 11,
 
+        ROTATE_REQ = 12,
+
         END
     }
 }

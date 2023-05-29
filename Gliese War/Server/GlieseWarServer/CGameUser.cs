@@ -65,16 +65,24 @@ namespace GlieseWarServer
 
                 case PROTOCOL.MOVING_REQ:
                     {
-                        position po = new position();
-                        po.x = msg.pop_float();
-                        po.y = msg.pop_float();
-                        po.z = msg.pop_float();
+                        float moveLR = msg.pop_float();
+                        float moveFB = msg.pop_float();
 
-                        battle_room.moving_req(this.player, po);
+                        //position po = new position();
+                        //po.x = msg.pop_float();
+                        //po.y = msg.pop_float();
+                        //po.z = msg.pop_float();
+
+                        battle_room.moving_req(this.player, moveLR, moveFB);
                     }
                     break;
 
-                case PROTOCOL.TURN_FINISHED_REQ:
+                case PROTOCOL.ROTATE_REQ:
+                    {
+                        float mouseX = msg.pop_float();
+
+                        battle_room.rotate_req(this.player, mouseX);
+                    }
                     break;
             }
         }

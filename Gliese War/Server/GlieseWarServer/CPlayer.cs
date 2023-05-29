@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections;
+using UnityEngine;
 
 namespace GlieseWarServer
 {
     using GameServer;
+    using UnityEngine;
+
     public struct position
     {
         public float x, y, z;
@@ -19,6 +23,9 @@ namespace GlieseWarServer
         public byte player_index { get; private set; }
 
         public position player_position;
+        public float moveLR;
+        public float moveFB;
+        public float MouseX;
 
         public CPlayer(CGameUser user, byte my_player_index)
         {
@@ -50,9 +57,20 @@ namespace GlieseWarServer
         }
         public void SetPosition(position p)
         {
+            //transform.position = new Vector3(p.x, p.y, p.z);
             player_position.x = p.x;
             player_position.y = p.y;
             player_position.z = p.z;
+        }
+        public void SetPosition(float mymoveLR, float mymoveFB)
+        {
+            moveLR = mymoveLR;
+            moveFB = mymoveFB;
+        }
+
+        public void SetRotation(float myMouseX)
+        {
+            MouseX = myMouseX;
         }
     }
 }

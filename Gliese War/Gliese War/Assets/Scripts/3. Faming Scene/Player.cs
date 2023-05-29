@@ -234,7 +234,6 @@ public class Player : MonoBehaviour
     private void player_lookTarget()
     {
         if(charactercontroller == null) return;
-        Vector3 target = new Vector3();
 
         if(moveLR < 0 && moveFB < 0)    // left + back
         {

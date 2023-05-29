@@ -30,7 +30,10 @@ namespace GlieseWarGameServer
 		GAME_OVER = 10,
 
 		PLAYER_ROTATE = 11,
+        ROTATE_REQ = 12,
 
-		END
+
+
+        END
 	}
 }

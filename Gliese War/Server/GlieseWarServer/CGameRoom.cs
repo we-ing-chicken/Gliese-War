@@ -273,6 +273,43 @@ namespace GlieseWarServer
             msg.push(sender.player_position.x);
             msg.push(sender.player_position.y);
             msg.push(sender.player_position.z);
+            //msg.push(sender.transform.position.x);
+            //msg.push(sender.transform.position.y); 
+            //msg.push(sender.transform.position.z);
+            broadcast(msg);
+        }
+
+        public void moving_req(CPlayer sender, float moveLR, float moveFB)
+        {
+            Console.WriteLine("sender : " + sender.player_index + ", moveLR : " + moveLR + ",moveFB : " + moveFB);
+            // 플레이어 이동 처리
+            players.Find(player =>
+            {
+                return player.player_index == sender.player_index;
+            }).SetPosition(moveLR, moveFB);
+            // 최종 결과를 broadcast한다.
+            CPacket msg = CPacket.create((short)PROTOCOL.PLAYER_MOVED);
+            msg.push(sender.player_index);      // 누가
+            msg.push(sender.moveLR);
+            msg.push(sender.moveFB);
+            //msg.push(sender.transform.position.x);
+            //msg.push(sender.transform.position.y); 
+            //msg.push(sender.transform.position.z);
+            broadcast(msg);
+        }
+
+        public void rotate_req(CPlayer sender, float mX)
+        {
+            Console.WriteLine("sender : " + sender.player_index + ", MouseX : " + mX);
+            // 플레이어 이동 처리
+            players.Find(player =>
+            {
+                return player.player_index == sender.player_index;
+            }).SetRotation(mX);
+            // 최종 결과를 broadcast한다.
+            CPacket msg = CPacket.create((short)PROTOCOL.PLAYER_ROTATE);
+            msg.push(sender.player_index);      // 누가
+            msg.push(sender.MouseX);
             broadcast(msg);
         }
 

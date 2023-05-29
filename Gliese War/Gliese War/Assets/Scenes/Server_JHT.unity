@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.28895923, g: 0.5073843, b: 0.9632117, a: 1}
+  m_IndirectSpecularColor: {r: 0.28895894, g: 0.5073839, b: 0.96321183, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -894,7 +894,6 @@ MonoBehaviour:
   players: []
   prefab: {fileID: 4804161492713886577, guid: 20b9c45def0c0a14582612a119c16be6, type: 3}
   spawn: {fileID: 1262200711}
-  network_manager: {fileID: 1912720307}
   txt: {fileID: 1303127841}
 --- !u!4 &821509895
 Transform:
@@ -1268,8 +1267,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1046102776}
-  m_LocalRotation: {x: 0.0759836, y: 0.62711406, z: -0.061662886, w: 0.7727562}
-  m_LocalPosition: {x: 11.597351, y: 41.66, z: 163.268}
+  m_LocalRotation: {x: 0.16175792, y: 0.6163134, z: -0.13127124, w: 0.7594473}
+  m_LocalPosition: {x: -165.4, y: 149.9, z: 47.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2130,7 +2129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ymove: 0
-  ymove_max: 30
+  ymove_max: 60
   ymove_min: 20
   cmvc: {fileID: 0}
 --- !u!114 &1659520860
@@ -2178,15 +2177,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1659520858}
-  m_LocalRotation: {x: 0.0759836, y: 0.62711406, z: -0.061662886, w: 0.7727562}
-  m_LocalPosition: {x: 11.597351, y: 41.66, z: 163.268}
+  m_LocalRotation: {x: 0.16175792, y: 0.6163134, z: -0.13127124, w: 0.7594473}
+  m_LocalPosition: {x: -165.4, y: 149.9, z: 47.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2087522434}
   m_Father: {fileID: 0}
   m_RootOrder: 13
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 24.048, y: 78.121, z: 0}
 --- !u!1 &1829178706
 GameObject:
   m_ObjectHideFlags: 0
@@ -2548,7 +2547,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   user_state: 0
-  battle_room: {fileID: 821509894}
   match_Button: {fileID: 1532418890}
   waiting_txt: {fileID: 1934921332}
   BattleCanvas: {fileID: 2085105111}

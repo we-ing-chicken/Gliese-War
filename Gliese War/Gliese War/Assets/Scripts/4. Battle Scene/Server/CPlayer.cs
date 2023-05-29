@@ -16,7 +16,10 @@ public enum PLAYER_STATE
 
 public class CPlayer : MonoBehaviour 
 {
-    Vector3 preposition;
+    public float mymoveLR;
+    public float mymoveFB;
+    public float myMouseX;
+
     public bool isMine = false;
     public byte player_index { get; private set; }
 	public PLAYER_STATE state { get; private set; }
@@ -31,6 +34,8 @@ public class CPlayer : MonoBehaviour
     public int maxHealth;
     public int currHealth;
     public int moveSpeed;
+
+    Vector3 movement;
 
     [SerializeField] private Animator animator;
     [SerializeField] private Transform playertransform;
@@ -72,8 +77,10 @@ public class CPlayer : MonoBehaviour
 
     private void Start()
     {
+
         //charactercontroller = GetComponent<CharacterController>();
         rb = GetComponent<Rigidbody>();
+        rb.useGravity = false;
 
         moveDir = Vector3.zero;
         rot = 1.0f;
@@ -101,8 +108,7 @@ public class CPlayer : MonoBehaviour
 	}
 
     private void Update()
-    {
-        preposition = transform.position;
+    { 
 
         //if (charactercontroller == null) return;
 
@@ -115,7 +121,8 @@ public class CPlayer : MonoBehaviour
             ismove = (Input.GetButton(moveFBAxisName) || Input.GetButton(moveLRAxisName));
 
             p_Jump = Input.GetButton(JumpButtonName);
-            Look();
+
+            MouseX += Input.GetAxis("Mouse X") * mouseSpeed;
         }
         animate();
 
@@ -141,25 +148,31 @@ public class CPlayer : MonoBehaviour
         //}
         //charactercontroller.Move(moveDir * Time.deltaTime);
 
-        Vector3 movement = new Vector3(moveLR, 0.0f, moveFB);
-
-        transform.Translate(movement * moveSpeed * Time.deltaTime);
-        rb.useGravity = false;
-
-        if (movement != Vector3.zero)
+        Move();
+        if (isMine && MouseX != myMouseX)
         {
-            
+            StartCoroutine(send_ROTATE_REQ());
+        }
+        Look();
+        if (isMine && new Vector3(moveLR, 0.0f, moveFB) != Vector3.zero)
+        {
             StartCoroutine(send_MOVING_REQ());
         }
-        SendButton();
+        
     }
 
     IEnumerator send_MOVING_REQ()
     {
         CPacket msg = CPacket.create((short)PROTOCOL.MOVING_REQ);
-        msg.push(transform.position.x);
-        msg.push(transform.position.y);
-        msg.push(transform.position.z);
+        msg.push(moveLR);
+        msg.push(moveFB);
+        CNetworkManager.Instance.send(msg);
+        yield return new WaitForEndOfFrame();
+    }
+    IEnumerator send_ROTATE_REQ()
+    {
+        CPacket msg = CPacket.create((short)PROTOCOL.ROTATE_REQ);
+        msg.push(MouseX);
         CNetworkManager.Instance.send(msg);
         yield return new WaitForEndOfFrame();
     }
@@ -167,8 +180,15 @@ public class CPlayer : MonoBehaviour
     private void Move()
     {
         player_lookTarget();
+        if (isMine)
+        {
+            mymoveLR = moveLR;
+            mymoveFB = moveFB;
+        }
 
-        
+        movement = new Vector3(mymoveLR, 0.0f, mymoveFB);
+        transform.Translate(movement * moveSpeed * Time.deltaTime);
+
         //moveDir = charactercontroller.transform.TransformDirection(new Vector3(moveLR, 0, moveFB)) * moveSpeed;
     }
 
@@ -186,40 +206,40 @@ public class CPlayer : MonoBehaviour
     {
         //if (charactercontroller == null) return;
 
-        if (moveLR < 0 && moveFB < 0)    // left + back
+        if (mymoveLR < 0 && mymoveFB < 0)    // left + back
         {
             player_Rotate(lbTarget.position);
         }
-        else if (moveLR < 0 && moveFB > 0)    // left + forward
+        else if (mymoveLR < 0 && mymoveFB > 0)    // left + forward
         {
             player_Rotate(lfTarget.position);
 
         }
-        else if (moveLR > 0 && moveFB < 0)    // right + back
+        else if (mymoveLR > 0 && mymoveFB < 0)    // right + back
         {
             player_Rotate(rbTarget.position);
 
         }
-        else if (moveLR > 0 && moveFB > 0)    // right + forward
+        else if (mymoveLR > 0 && mymoveFB > 0)    // right + forward
         {
             player_Rotate(rfTarget.position);
 
         }
-        else if (moveLR < 0)
+        else if (mymoveLR < 0)
         {
             player_Rotate(leftTarget.position);
         }
-        else if (moveLR > 0)
+        else if (mymoveLR > 0)
         {
             player_Rotate(rightTarget.position);
 
         }
-        else if (moveFB < 0)
+        else if (mymoveFB < 0)
         {
             player_Rotate(backwardTarget.position);
 
         }
-        else if (moveFB > 0)
+        else if (mymoveFB > 0)
         {
             player_Rotate(fowardTarget.position);
         }
@@ -227,10 +247,11 @@ public class CPlayer : MonoBehaviour
 
     private void Look()
     {
-        MouseX += Input.GetAxis("Mouse X") * mouseSpeed;
-        transform.rotation = Quaternion.Euler(0, MouseX, 0);
-
-
+        if(isMine)
+        {
+            myMouseX = MouseX;
+        }
+        transform.rotation = Quaternion.Euler(0, myMouseX, 0);
     }
 
     private void player_Rotate(Vector3 movePoint)
@@ -242,11 +263,6 @@ public class CPlayer : MonoBehaviour
         playertransform.rotation = Quaternion.Lerp(playertransform.rotation, rotation, Time.deltaTime * 10);
     }
 
-    void SendButton()
-    {
-
-    }
-
     private void animate()
     {
         if(isMine) 
@@ -255,7 +271,16 @@ public class CPlayer : MonoBehaviour
         }
         else
         {
-            animator.SetBool("isRun", preposition != transform.position);
+            animator.SetBool("isRun", movement != Vector3.zero);
         }
+    }
+    public void SetMoveVector(float LR, float FB)
+    {
+        mymoveFB = LR;
+        mymoveLR = FB;
+    }
+    public void SetMouseVector(float mX)
+    {
+        myMouseX = mX;
     }
 }
