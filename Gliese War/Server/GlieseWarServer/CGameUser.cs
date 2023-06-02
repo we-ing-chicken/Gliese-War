@@ -84,6 +84,13 @@ namespace GlieseWarServer
                         battle_room.rotate_req(this.player, mouseX);
                     }
                     break;
+
+                case PROTOCOL.COLLISION_PLAYER_PLAYER:
+                    break;
+                case PROTOCOL.COLLISION_PLAYER_OBJECT:
+                    break;
+                case PROTOCOL.COLLISION_PLAYER_WEAPON:
+                    break;
             }
         }
 
