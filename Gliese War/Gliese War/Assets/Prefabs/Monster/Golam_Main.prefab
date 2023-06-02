@@ -1206,7 +1206,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackPart: {fileID: 6550258391645656339}
-  HPBarPrefab: {fileID: 4200884868908425963, guid: eec6510348aa8dc41bd21ec588ed606f, type: 3}
 --- !u!54 &8925169942374756045
 Rigidbody:
   m_ObjectHideFlags: 0
