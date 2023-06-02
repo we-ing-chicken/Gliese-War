@@ -43359,6 +43359,7 @@ GameObject:
   - component: {fileID: 1693392282565658189}
   - component: {fileID: 774671353888773209}
   - component: {fileID: 7258336998800489855}
+  - component: {fileID: 111573084}
   m_Layer: 0
   m_Name: Fog
   m_TagString: Untagged
@@ -47141,15 +47142,16 @@ ParticleSystem:
     collidesWithDynamic: 1
     interiorCollisions: 0
   TriggerModule:
-    enabled: 0
+    enabled: 1
     serializedVersion: 2
-    inside: 1
+    inside: 0
     outside: 0
-    enter: 0
+    enter: 2
     exit: 0
-    colliderQueryMode: 0
+    colliderQueryMode: 2
     radiusScale: 1
-    primitives: []
+    primitives:
+    - {fileID: 8274484789571185862, guid: c5846e85683a393429e38a0e6e30e696, type: 3}
   SubModule:
     serializedVersion: 2
     enabled: 0
@@ -48160,6 +48162,18 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &111573084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6902282974388843592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b463aa16400f213458ac56a5685733f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7580820277371169193
 GameObject:
   m_ObjectHideFlags: 0

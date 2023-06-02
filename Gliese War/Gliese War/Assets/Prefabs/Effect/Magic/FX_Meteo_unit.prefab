@@ -57173,7 +57173,7 @@ ParticleSystem:
     colliderQueryMode: 2
     radiusScale: 1
     primitives:
-    - {fileID: 0}
+    - {fileID: 8274484789571185862, guid: c5846e85683a393429e38a0e6e30e696, type: 3}
   SubModule:
     serializedVersion: 2
     enabled: 0
