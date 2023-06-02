@@ -5,6 +5,7 @@ using TheKiwiCoder;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class Monster : MonoBehaviour
@@ -14,6 +15,7 @@ public class Monster : MonoBehaviour
     private Rigidbody rigid;
     private Animator animator;
 
+    private int MaxHP;
     private int HP;
     private int damage;
     private bool attackCoolTime;
@@ -26,7 +28,14 @@ public class Monster : MonoBehaviour
     //[SerializeField] private Transform pfBoxBroken;
     private Transform broken;
 
-    [SerializeField] GameObject attackPart; 
+    [SerializeField] GameObject attackPart;
+
+    private GameObject worldUICanvas;
+    private Transform HPUIPos;
+    private GameObject HPUI;
+    [SerializeField] private GameObject HPBarPrefab;
+    private Slider hpSlider;
+    private Coroutine HPCor;
     
     // Start is called before the first frame update
     void Start()
@@ -39,24 +48,16 @@ public class Monster : MonoBehaviour
         mat = transform.GetChild(1).GetComponent<SkinnedMeshRenderer>().material;
         before = mat.color;
         
+        MaxHP = 100;
         HP = 100;
         damage = 10;
         attackCoolTime = false;
 
         isDead = false;
 
+        worldUICanvas = FarmingManager.Instance.worldUICanvas.gameObject;
+
         StartCoroutine(AnimationStop());
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        
     }
 
     IEnumerator AnimationStop()
@@ -89,12 +90,14 @@ public class Monster : MonoBehaviour
     {
         HP -= Player.instance.GetAttackPower();
         StartCoroutine(HitColor());
+        HPCor = StartCoroutine(FollowHPBar());
         if (HP <= 0 && !isDead)
         {
             isDead = true;
             drop.DropItem();
+            StopCoroutine(HPCor);
+            Destroy(HPUI.gameObject);
             DestructObject();
-
         }
     }
 
@@ -134,7 +137,7 @@ public class Monster : MonoBehaviour
         if (gameObject == null)
             return;
         
-        Debug.Log("넛백");
+        //Debug.Log("넛백");
         if(agent != null)
             agent.isStopped = true;
         Vector3 dir = transform.position - Player.instance.transform.position;
@@ -152,7 +155,7 @@ public class Monster : MonoBehaviour
 
     public void StartAttack()
     {
-        Debug.Log("몬스터 공격 시작");
+        //Debug.Log("몬스터 공격 시작");
         agent.isStopped = true;
         rigid.constraints = RigidbodyConstraints.FreezePosition;
         attackPart.GetComponent<BoxCollider>().enabled = true;
@@ -189,7 +192,7 @@ public class Monster : MonoBehaviour
         agent.isStopped = false;
         rigid.constraints = RigidbodyConstraints.None;
         animator.SetBool("isAttack", false);
-        Debug.Log("몬스터 공격 종료");
+        //Debug.Log("몬스터 공격 종료");
         
         yield return null;
     }
@@ -219,5 +222,24 @@ public class Monster : MonoBehaviour
         }
 
         //Destroy(gameObject);
+    }
+
+    IEnumerator FollowHPBar()
+    {
+        if (HPUI == null && !isDead)
+        {
+            HPUI = Instantiate(HPBarPrefab, worldUICanvas.transform);
+            hpSlider = HPUI.transform.GetChild(0).GetComponent<Slider>();
+        }
+
+        while (true)
+        {
+            hpSlider.value = (float)HP / MaxHP;
+            if (isDead)
+                break;
+            
+            HPUI.transform.position = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0,-1f,0));
+            yield return null;
+        }
     }
 }
