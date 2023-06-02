@@ -303,27 +303,4 @@ public class CBattleRoom : MonoBehaviour
 	{
 
 	}
-
-	
-	void on_click(short cell)
-	{
-
-	}
-
-	
-	//IEnumerator moving()
-	//{
-	//}
-	
-	IEnumerator reproduce(short cell)
-	{
-		// ���� - �ٸ� �÷��̾��� ���տ��� ���� �÷��̾��� �������� �ű��.
-
-		CPlayer current_player = players[current_player_index];
-		CPlayer other_player = players.Find(obj => obj.player_index != current_player_index);
-
-		//yield return new WaitForSeconds(0.5f);
-
-		yield return new WaitForSeconds(0.5f);
-	}
 }

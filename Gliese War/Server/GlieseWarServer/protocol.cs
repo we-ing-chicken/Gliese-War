@@ -39,6 +39,12 @@ namespace GlieseWarServer
 
         ROTATE_REQ = 12,
 
+        COLLISION_PLAYER_PLAYER = 13,
+
+        COLLISION_PLAYER_OBJECT = 14,
+        COLLISION_PLAYER_WEAPON = 15,       //플레이어 피격
+
+
         END
     }
 }
