@@ -587,12 +587,13 @@ public class Player : MonoBehaviour
         if (other.CompareTag("MonsterAttack"))
         {
             GetDamage(5);
-            FarmingManager.Instance.HitScreen();
+            
         }
     }
 
     public void GetDamage(int damage)
     {
+        FarmingManager.Instance.HitScreen();
         currHealth -= damage;
         RefreshStat();
         FarmingManager.Instance.playerCurrentHPBar.value = (float)currHealth / maxHealth;
