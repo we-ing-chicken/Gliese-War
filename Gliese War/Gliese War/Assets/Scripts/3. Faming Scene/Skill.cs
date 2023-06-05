@@ -9,6 +9,8 @@ public class Skill : MonoBehaviour
     void OnParticleTrigger()
     {
         ParticleSystem ps = GetComponent<ParticleSystem>();
+        
+        ps.trigger.SetCollider(1, Player.instance);
 
         // particles
         List<ParticleSystem.Particle> enter = new List<ParticleSystem.Particle>();
