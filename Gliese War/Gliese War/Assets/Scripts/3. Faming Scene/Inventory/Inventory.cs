@@ -17,6 +17,7 @@ public class Inventory : MonoBehaviour
 
     
     private List<Slot> slots;
+    private List<Slot> slotsTemp;
     
     public Item[] helmet;
     public Item[] armor;
@@ -31,6 +32,7 @@ public class Inventory : MonoBehaviour
     {
         instance = this;
         slots = new List<Slot>();
+        slotsTemp = new List<Slot>();
     }
 
     public void AcquireItem(Item _item)
@@ -49,7 +51,7 @@ public class Inventory : MonoBehaviour
         
         temp.AddItemWithMagic(_item);
         slots.Add(temp);
-        
+
         ResizeSlotParent();
     }
     
@@ -89,9 +91,8 @@ public class Inventory : MonoBehaviour
             if (d.Value >= 3 && d.Key.itemRank != Item.ItemRank.Legendary)
                 DeleteItemByUpgrade(d.Key, d.Value);
         }
-        
-        DeleteAllItemObject();
-        MakeAllItemObject();
+
+        ResizeSlotParent();
     }
 
     private void DeleteItemByUpgrade(Item item, int count)
@@ -102,12 +103,13 @@ public class Inventory : MonoBehaviour
             {
                 if (s.realItem.item == item)
                 {
+                    Destroy(s.gameObject);
                     slots.Remove(s);
                     break;
                 }
             }
         }
-
+        
         for (int i = 0; i < count / 3; ++i)
         {
             AddUpgradeItem(item);
@@ -116,6 +118,7 @@ public class Inventory : MonoBehaviour
 
     private void AddUpgradeItem(Item item)
     {
+
         switch (item.itemCategory)
         {
             case Item.ItemCategory.Helmet:
@@ -151,6 +154,7 @@ public class Inventory : MonoBehaviour
             }
                 break;
         }
+
     }
     
     public void SortButton()
@@ -165,7 +169,7 @@ public class Inventory : MonoBehaviour
     private void DeleteAllItemObject()
     {
         Transform[] childList = slotsParent.GetComponentsInChildren<Transform>();
-
+        
         if (childList != null)
         {
             for (int i = 1; i < childList.Length; i++)
@@ -182,8 +186,18 @@ public class Inventory : MonoBehaviour
         {
             Slot temp = Instantiate(slotPrefab, slotsParent.transform);
             temp.ReAddItem(s.realItem);
+            slotsTemp.Add(temp);
         }
-        
+
+        slots.Clear();
+
+        foreach (Slot s in slotsTemp)
+        {
+            slots.Add(s);
+        }
+
+        slotsTemp.Clear();
+
         ResizeSlotParent();
     }
 
@@ -195,6 +209,6 @@ public class Inventory : MonoBehaviour
         else
             slotsParentComponent.sizeDelta = new Vector2(slotsParentComponent.sizeDelta.x, 800);
         
-        slotsParent.transform.position = new Vector3(slotsParent.transform.position.x, 500 - 100 * slots.Count, 0);        
+        slotsParent.transform.position = new Vector3(slotsParent.transform.position.x, 500 - 100 * slots.Count, 0);
     }
 }

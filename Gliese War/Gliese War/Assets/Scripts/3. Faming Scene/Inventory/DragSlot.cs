@@ -21,6 +21,7 @@ public class DragSlot : MonoBehaviour
     {
         if (_realItem != null)
         {
+            dragedSlot.realItem = _realItem;
             dragedSlot.realItem.item = _realItem.item;
             dragedSlot.realItem.stat = _realItem.stat;
 
