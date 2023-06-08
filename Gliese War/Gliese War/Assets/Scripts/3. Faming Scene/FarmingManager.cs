@@ -498,4 +498,11 @@ public class FarmingManager : MonoBehaviour
         }
         
     }
+
+    public void InvenOff()
+    {
+        SwitchCanvasActive(invenCanvas);
+        SwitchGameObjectActive(characterCam);
+        _isInven = false;
+    }
 }
