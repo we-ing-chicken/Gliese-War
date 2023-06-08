@@ -43,7 +43,7 @@ public class Magnet : MonoBehaviour
         }
         else if (!onTree)
         {
-            if(transform.position.y <= 49)
+            if(transform.position.y <= 20f)
                 rigid.constraints = RigidbodyConstraints.FreezePosition;
         }
     }
