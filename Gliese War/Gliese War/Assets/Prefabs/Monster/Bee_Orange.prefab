@@ -251,7 +251,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1688492876911936559}
   m_LocalRotation: {x: 0, y: 0.9706347, z: 0, w: 0.24055843}
-  m_LocalPosition: {x: 256.1767, y: 20.187683, z: 328.6343}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.122099996, y: 0.122099996, z: 0.122099996}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -310,6 +310,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackPart: {fileID: 2189827698877108432}
   HPBarPrefab: {fileID: 4200884868908425963, guid: eec6510348aa8dc41bd21ec588ed606f, type: 3}
+  FindImagePrefab: {fileID: 2261589770899343619, guid: 4a10d0001642fa643847060de347480d, type: 3}
 --- !u!54 &3399615937251859762
 Rigidbody:
   m_ObjectHideFlags: 0

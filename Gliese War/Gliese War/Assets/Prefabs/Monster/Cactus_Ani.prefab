@@ -439,6 +439,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackPart: {fileID: 8627808601413582854}
   HPBarPrefab: {fileID: 4200884868908425963, guid: eec6510348aa8dc41bd21ec588ed606f, type: 3}
+  FindImagePrefab: {fileID: 2261589770899343619, guid: 4a10d0001642fa643847060de347480d, type: 3}
 --- !u!54 &-8865393584198713895
 Rigidbody:
   m_ObjectHideFlags: 0
