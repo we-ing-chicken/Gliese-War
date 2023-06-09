@@ -7,8 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Fire_ring
-  m_Shader: {fileID: -6465566751694194690, guid: 58d3e922317f44648bebba5a03c613f0, type: 3}
+  m_Name: Tornado_dust
+  m_Shader: {fileID: -6465566751694194690, guid: 43626e117e6750d41a05382c3bcaa883,
+    type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -20,12 +21,20 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _Add_Texure:
+        m_Texture: {fileID: 2800000, guid: a4850ab25e36e7941a4e8ecfbc4eebf7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BaseMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Base_Tex:
-        m_Texture: {fileID: 2800000, guid: 5184d8ae8942ffd46a735eb2b5c29a1d, type: 3}
+        m_Texture: {fileID: 2800000, guid: 64cdeca0e03b56a42ae147cfc4265364, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Base_Texture:
+        m_Texture: {fileID: 2800000, guid: 64cdeca0e03b56a42ae147cfc4265364, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -82,7 +91,9 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Add_Tex_Power: 2
     - _AlphaClip: 0
+    - _Base_Tex_Power: 2
     - _Blend: 0
     - _BumpScale: 1
     - _ClearCoatMask: 0
@@ -99,7 +110,7 @@ Material:
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
-    - _Power: 1
+    - _Power: 0.1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
@@ -111,14 +122,20 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
+    - _Add_Flow: {r: -0.25, g: 0.25, b: 0, a: 0}
+    - _Add_Offset: {r: 0, g: 0, b: 0, a: 0}
+    - _Add_Tiling: {r: 1, g: 1, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Base_Flow: {r: 1, g: 1, b: 0, a: 0}
+    - _Base_Offset: {r: 0, g: 0, b: 0, a: 0}
+    - _Base_Tiling: {r: 1, g: 1, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _Tiling: {r: 1, g: 1, b: 0, a: 0}
     - _Tiling_offset: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &5151912481199192988
+--- !u!114 &1646147131254115502
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
