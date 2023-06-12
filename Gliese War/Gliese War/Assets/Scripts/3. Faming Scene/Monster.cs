@@ -101,6 +101,7 @@ public class Monster : MonoBehaviour
             drop.DropItem();
             StopCoroutine(HPCor);
             Destroy(HPUI.gameObject);
+            StopFindImage();
             DestructObject();
         }
     }
