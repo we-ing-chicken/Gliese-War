@@ -96,9 +96,33 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         ShowStat(realItem);
     }
 
+    public Slot ReAddItem(Slot s)
+    {
+        
+        realItem = s.realItem;
+        realItem.item = s.realItem.item;
+        realItem.stat = s.realItem.stat;
+        realItem.magic = s.realItem.magic;
+        
+        if (realItem.magic == Magic.Nothing)
+        {
+            Color color = magicImage.color;
+            color.a = 0;
+            magicImage.color = color;
+        }
+        
+        itemImage.sprite = realItem.item.itemImage;
+        itemName.text = realItem.item.itemName;
+        itemName.color = SetNameRankColor(realItem.item.itemRank);
+        magicImage.sprite = SetMagicImage(realItem);
+        ShowStat(realItem);
+
+        return this;
+    }
+    
     public void ReAddItem(RealItem _realItem)
     {
-        realItem = new RealItem();
+        realItem = _realItem;
         realItem.item = _realItem.item;
         realItem.stat = _realItem.stat;
         realItem.magic = _realItem.magic;
@@ -298,7 +322,6 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         
         if(DragSlot.instance.dragedSlot.realItem.item.itemCategory.ToString() == hitObject.tag.ToString())
         {
-            
             Equip temp = hitObject.GetComponent<Equip>();
             temp.SetImage(DragSlot.instance.dragedSlot.realItem);
             temp.SetAlpha(1f);

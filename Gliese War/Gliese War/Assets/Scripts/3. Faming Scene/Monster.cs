@@ -37,6 +37,10 @@ public class Monster : MonoBehaviour
     private Slider hpSlider;
     private Coroutine HPCor;
     
+    [SerializeField] private GameObject FindImagePrefab;
+    private GameObject findImage;
+    private Coroutine FindImageCor;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -97,6 +101,7 @@ public class Monster : MonoBehaviour
             drop.DropItem();
             StopCoroutine(HPCor);
             Destroy(HPUI.gameObject);
+            StopFindImage();
             DestructObject();
         }
     }
@@ -239,6 +244,38 @@ public class Monster : MonoBehaviour
                 break;
             
             HPUI.transform.position = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0,-1f,0));
+            yield return null;
+        }
+    }
+    
+    public void StartFindImage()
+    {
+        if (findImage == null && !isDead)
+        {
+            findImage = Instantiate(FindImagePrefab, worldUICanvas.transform);
+        }
+        
+        FindImageCor = StartCoroutine(FindImage());
+    }
+
+    public void StopFindImage()
+    {
+        if (FindImageCor != null)
+        {
+            StopCoroutine(FindImageCor);
+            Destroy(findImage);
+        }
+    }
+
+    IEnumerator FindImage()
+    {
+        while (true)
+        {
+            if (isDead || findImage == null)
+                break;
+            
+            float height = GetComponent<BoxCollider>().bounds.size.y;
+            findImage.transform.position = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0,height+2f,0));
             yield return null;
         }
     }
