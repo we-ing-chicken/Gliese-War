@@ -13,6 +13,7 @@ public class Playercam : MonoBehaviour
     public float ymove_min = -5.0f;
     private Vector3 reverseDistance;
     private float camTerDis;
+    public bool isFarming = true;
 
     private void Start()
     {
@@ -30,9 +31,12 @@ public class Playercam : MonoBehaviour
 
     void Update()
     {
-        if (FarmingManager.Instance._isInven) return;
-        if (FarmingManager.Instance._isFading) return;
-        if (FarmingManager.Instance._isPause) return;
+        if (isFarming)
+        {
+            if (FarmingManager.Instance._isInven) return;
+            if (FarmingManager.Instance._isFading) return;
+            if (FarmingManager.Instance._isPause) return;
+        }
         
         RaycastHit[] hit;
 

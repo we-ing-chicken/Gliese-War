@@ -12,7 +12,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks //클래스 상속
     public TMP_InputField NickNameInput;
     public TMP_InputField roomNameInput;
     public GameObject uiPanel;
-    public byte userNum = 5;
+    public byte userNum = 4;
 
     private bool connect = false;
 

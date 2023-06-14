@@ -8,7 +8,7 @@ public class playerScript : MonoBehaviourPunCallbacks
 {
     public PhotonView PV;
     private bool isJump;
-    private Rigidbody rigidbody;
+    private new Rigidbody rigidbody;
 
     private void Start()
     {
