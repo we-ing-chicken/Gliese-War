@@ -52,7 +52,7 @@ public class FarmingManager : MonoBehaviour
     private Coroutine GCoroutine;
 
     public Inventory inventory;
-    public Player managed_player;
+    public CPlayer managed_player;
 
     public GameObject characterCam;
     public Slider playerCurrentHPBar;
@@ -399,7 +399,7 @@ public class FarmingManager : MonoBehaviour
 
     public void SetEquipWeaponImage()
     {
-        if (Player.instance.weapon1 == null)
+        if (CPlayer.instance.weapon1 == null)
         {
             Color color = weapon1Image.color;
             color.a = 0f;
@@ -411,7 +411,7 @@ public class FarmingManager : MonoBehaviour
         }
         else
         {
-            switch (Player.instance.weapon1.item.weaponType)
+            switch (CPlayer.instance.weapon1.item.weaponType)
             {
                 case Item.WeaponType.Hammer:
                     weapon1Image.sprite = weaponImage[0];
@@ -426,7 +426,7 @@ public class FarmingManager : MonoBehaviour
                     break;
             }
             
-            if (Player.instance.weaponNow == 1)
+            if (CPlayer.instance.weaponNow == 1)
             {
                 Color color = weapon1Image.color;
                 color.a = 1f;
@@ -448,7 +448,7 @@ public class FarmingManager : MonoBehaviour
             }
         }
 
-        if (Player.instance.weapon2 == null)
+        if (CPlayer.instance.weapon2 == null)
         {
             Color color = weapon2Image.color;
             color.a = 0f;
@@ -460,7 +460,7 @@ public class FarmingManager : MonoBehaviour
         }
         else
         {
-            switch (Player.instance.weapon2.item.weaponType)
+            switch (CPlayer.instance.weapon2.item.weaponType)
             {
                 case Item.WeaponType.Hammer:
                     weapon2Image.sprite = weaponImage[0];
@@ -475,7 +475,7 @@ public class FarmingManager : MonoBehaviour
                     break;
             }
             
-            if (Player.instance.weaponNow == 2)
+            if (CPlayer.instance.weaponNow == 2)
             {
                 Color color = weapon2Image.color;
                 color.a = 1f;

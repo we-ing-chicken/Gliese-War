@@ -18,10 +18,10 @@ public class Warp : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && !other.GetComponent<Player>().isNear && !isLockOn)
+        if (other.CompareTag("Player") && !other.GetComponent<CPlayer>().isNear && !isLockOn)
         {
             Debug.Log("Enter");
-            other.GetComponent<Player>().isNear = true;
+            other.GetComponent<CPlayer>().isNear = true;
             isLockOn = true;
             FarmingManager.Instance.ActiveG(gameObject);
         }
@@ -29,9 +29,9 @@ public class Warp : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Player") && !other.GetComponent<Player>().isNear && !isLockOn)
+        if (other.CompareTag("Player") && !other.GetComponent<CPlayer>().isNear && !isLockOn)
         {
-            other.GetComponent<Player>().isNear = true;
+            other.GetComponent<CPlayer>().isNear = true;
             isLockOn = true;
             FarmingManager.Instance.ActiveG(gameObject);
             return;
@@ -42,7 +42,7 @@ public class Warp : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.G))
             {
                 Debug.Log("Move");
-                other.GetComponent<Player>().isNear = false;
+                other.GetComponent<CPlayer>().isNear = false;
                 isLockOn = false;
                 FarmingManager.Instance.UnActiveG();
                 
@@ -55,10 +55,10 @@ public class Warp : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player") && other.GetComponent<Player>().isNear && isLockOn)
+        if (other.CompareTag("Player") && other.GetComponent<CPlayer>().isNear && isLockOn)
         {
             Debug.Log("Exit");
-            other.GetComponent<Player>().isNear = false;
+            other.GetComponent<CPlayer>().isNear = false;
             isLockOn = false;
             FarmingManager.Instance.UnActiveG();
         }
@@ -67,13 +67,13 @@ public class Warp : MonoBehaviour
     IEnumerator Move()
     {
         yield return new WaitForSeconds(2f);
-        Player.instance.GetComponent<CharacterController>().enabled = false;
+        CPlayer.instance.GetComponent<CharacterController>().enabled = false;
         yield return new WaitForSeconds(0.1f);
-        Player.instance.transform.position = warpTo.transform.position;
+        CPlayer.instance.transform.position = warpTo.transform.position;
         yield return new WaitForSeconds(0.1f);
-        Player.instance.GetComponent<CharacterController>().enabled = true;
+        CPlayer.instance.GetComponent<CharacterController>().enabled = true;
         isLockOn= false;
-        Player.instance.isNear = false;
+        CPlayer.instance.isNear = false;
         FarmingManager.Instance.UnActiveG();
         yield return null;
     }

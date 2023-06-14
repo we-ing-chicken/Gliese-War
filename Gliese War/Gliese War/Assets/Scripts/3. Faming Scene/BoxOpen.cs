@@ -37,9 +37,9 @@ public class BoxOpen : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && !other.GetComponent<Player>().isNear && !isLockOn)
+        if (other.CompareTag("Player") && !other.GetComponent<CPlayer>().isNear && !isLockOn)
         {
-            other.GetComponent<Player>().isNear = true;
+            other.GetComponent<CPlayer>().isNear = true;
             isLockOn = true;
             FarmingManager.Instance.ActiveG(gameObject);
         }
@@ -47,9 +47,9 @@ public class BoxOpen : MonoBehaviour
     
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Player") && !other.GetComponent<Player>().isNear && !isLockOn)
+        if (other.CompareTag("Player") && !other.GetComponent<CPlayer>().isNear && !isLockOn)
         {
-            other.GetComponent<Player>().isNear = true;
+            other.GetComponent<CPlayer>().isNear = true;
             isLockOn = true;
             FarmingManager.Instance.ActiveG(gameObject);
             return;
@@ -60,7 +60,7 @@ public class BoxOpen : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.G))
             {
                 boxCollider.enabled = false;
-                other.GetComponent<Player>().isNear = false;
+                other.GetComponent<CPlayer>().isNear = false;
                 isLockOn = false;
                 Instantiate(starEffect, effectPosition.transform.position, Quaternion.identity);
                 anim.SetTrigger("Open");
@@ -72,9 +72,9 @@ public class BoxOpen : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player") && other.GetComponent<Player>().isNear && isLockOn)
+        if (other.CompareTag("Player") && other.GetComponent<CPlayer>().isNear && isLockOn)
         {
-            other.GetComponent<Player>().isNear = false;
+            other.GetComponent<CPlayer>().isNear = false;
             isLockOn = false;
             FarmingManager.Instance.UnActiveG();
         }

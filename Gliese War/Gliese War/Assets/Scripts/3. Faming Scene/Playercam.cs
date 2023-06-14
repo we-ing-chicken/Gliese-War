@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Playercam : MonoBehaviour
 {
-    public Player player;
+    public CPlayer player;
     public float xmove = 0;
     public float ymove = 0;
     public float distance = 3;
@@ -37,8 +37,8 @@ public class Playercam : MonoBehaviour
         RaycastHit[] hit;
 
         //float dis = Vector3.Distance(Camera.main.transform.position, Player.instance.transform.position);
-        Vector3 direction = (Camera.main.transform.position - Player.instance.transform.position).normalized;
-        hit = (Physics.RaycastAll(Player.instance.transform.position, direction, distance));
+        Vector3 direction = (Camera.main.transform.position - CPlayer.instance.transform.position).normalized;
+        hit = (Physics.RaycastAll(CPlayer.instance.transform.position, direction, distance));
 
         
         // for (int i = 0; i < hit.Length; ++i)
