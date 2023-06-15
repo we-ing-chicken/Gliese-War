@@ -33,7 +33,7 @@ public class Equip : MonoBehaviour
         {
             switch (realitem.magic)
             {
-                case Magic.Ice:
+                case Magic.Water:
                     magicImage.sprite = Inventory.instance.magicImages[0];
                     break;
                 
@@ -41,7 +41,7 @@ public class Equip : MonoBehaviour
                     magicImage.sprite = Inventory.instance.magicImages[1];
                     break;
                 
-                case Magic.Toxic:
+                case Magic.Light:
                     magicImage.sprite = Inventory.instance.magicImages[2];
                     break;
                 

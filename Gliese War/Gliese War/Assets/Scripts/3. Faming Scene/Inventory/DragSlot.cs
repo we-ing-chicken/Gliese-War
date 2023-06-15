@@ -30,7 +30,7 @@ public class DragSlot : MonoBehaviour
 
             switch (_realItem.magic)
             {
-                case Magic.Ice:
+                case Magic.Water:
                     magicImage.sprite = Inventory.instance.magicImages[0];
                     SetColor(1,1);
 
@@ -42,7 +42,7 @@ public class DragSlot : MonoBehaviour
 
                     break;
                 
-                case Magic.Toxic:
+                case Magic.Light:
                     magicImage.sprite = Inventory.instance.magicImages[2];
                     SetColor(1,1);
                     break;

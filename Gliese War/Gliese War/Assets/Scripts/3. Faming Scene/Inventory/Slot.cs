@@ -19,9 +19,9 @@ public struct Stat
 public enum Magic
 {
     Nothing,
-    Ice,
+    Water,
     Fire,
-    Toxic
+    Light
 }
 
 public class RealItem
@@ -148,7 +148,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         switch (magic)
         {
             case 1:
-                realItem.magic = Magic.Ice;
+                realItem.magic = Magic.Water;
                 break;
             
             case 2:
@@ -156,7 +156,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
                 break;
             
             case 3:
-                realItem.magic = Magic.Toxic;
+                realItem.magic = Magic.Light;
                 break;
         }
     }
@@ -271,13 +271,13 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     {
         switch (realItem.magic)
         {
-            case Magic.Ice:
+            case Magic.Water:
                 return Inventory.instance.magicImages[0];
 
             case Magic.Fire:
                 return Inventory.instance.magicImages[1];
             
-            case Magic.Toxic:
+            case Magic.Light:
                 return Inventory.instance.magicImages[2];
             
             case Magic.Nothing:
