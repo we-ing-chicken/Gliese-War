@@ -35,9 +35,8 @@ public class playerScript : MonoBehaviourPunCallbacks
     [PunRPC]
     void Jump(float axis)
     {
-        if (!isJump)
-            return;
-        rigidbody.AddForce(Vector3.up * .5f, ForceMode.Impulse);
+        if (!isJump) return;
+        rigidbody.AddForce(Vector3.up * 0.05f * Time.deltaTime, ForceMode.Impulse);
         isJump = false;
     }
 }

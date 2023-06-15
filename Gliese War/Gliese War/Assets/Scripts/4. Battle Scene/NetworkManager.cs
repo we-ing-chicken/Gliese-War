@@ -5,6 +5,7 @@ using Photon.Pun; //선언
 using Photon.Realtime; //선언
 using UnityEngine.UI; //선언
 using TMPro;
+using UnityEngine.UIElements;
 
 public class NetworkManager : MonoBehaviourPunCallbacks //클래스 상속
 {
@@ -13,6 +14,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks //클래스 상속
     public TMP_InputField roomNameInput;
     public GameObject uiPanel;
     public byte userNum = 4;
+    //public List<Transform> spawnpoints = new List<Transform>();
+    public GameObject[] spawnpoints;
 
     private bool connect = false;
 
@@ -53,5 +56,5 @@ public class NetworkManager : MonoBehaviourPunCallbacks //클래스 상속
 
     //방에 입장 했을 때 호출 
     public override void OnJoinedRoom()
-    => PhotonNetwork.Instantiate("player", Vector3.zero, Quaternion.identity);
+    => PhotonNetwork.Instantiate("player", spawnpoints[0].transform.position, Quaternion.identity);
 }
