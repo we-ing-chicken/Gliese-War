@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CServercamTest : MonoBehaviour
 {
-    public Player player;
+    public CPlayer player;
     public float xmove = 0;
     public float ymove = 0;
     public float distance = 3;
