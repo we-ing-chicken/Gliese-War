@@ -92,7 +92,7 @@ public class Monster : MonoBehaviour
 
     private void GetDamage()
     {
-        HP -= Player.instance.GetAttackPower();
+        HP -= CPlayer.instance.GetAttackPower();
         StartCoroutine(HitColor());
         HPCor = StartCoroutine(FollowHPBar());
         if (HP <= 0 && !isDead)
@@ -145,7 +145,7 @@ public class Monster : MonoBehaviour
         //Debug.Log("넛백");
         if(agent != null)
             agent.isStopped = true;
-        Vector3 dir = transform.position - Player.instance.transform.position;
+        Vector3 dir = transform.position - CPlayer.instance.transform.position;
         dir = dir.normalized;
         rigid.AddForce(dir * 20,ForceMode.Impulse);
         StartCoroutine(KnockBackWait());
@@ -175,7 +175,7 @@ public class Monster : MonoBehaviour
             if (isDead)
                 break;
             
-            Vector3 dir = Player.instance.transform.position - transform.position;
+            Vector3 dir = CPlayer.instance.transform.position - transform.position;
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime);
             if (Quaternion.Angle(transform.rotation, Quaternion.Euler(dir)) < 2f)
                 break;

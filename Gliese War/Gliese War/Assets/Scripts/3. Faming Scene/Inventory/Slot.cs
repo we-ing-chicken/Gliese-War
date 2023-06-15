@@ -332,39 +332,39 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
             {
                 case Item.ItemCategory.Helmet:
                 {
-                    if (Player.instance.helmet != null)
+                    if (CPlayer.instance.helmet != null)
                     {
-                        Inventory.instance.ReAddItem(Player.instance.helmet);
-                        Player.instance.UnEquip(Player.instance.helmet);
+                        Inventory.instance.ReAddItem(CPlayer.instance.helmet);
+                        CPlayer.instance.UnEquip(CPlayer.instance.helmet);
                     }
-                    Player.instance.helmet = DragSlot.instance.dragedSlot.realItem;
-                    Player.instance.Equip(DragSlot.instance.dragedSlot.realItem);
+                    CPlayer.instance.helmet = DragSlot.instance.dragedSlot.realItem;
+                    CPlayer.instance.Equip(DragSlot.instance.dragedSlot.realItem);
                     //Player.instance.WearHelmet();
                 }
                     break;
 
                 case Item.ItemCategory.Armor:
                 {
-                    if(Player.instance.armor != null)
+                    if(CPlayer.instance.armor != null)
                     {
-                        Inventory.instance.ReAddItem(Player.instance.armor);
-                        Player.instance.UnEquip(Player.instance.armor);
+                        Inventory.instance.ReAddItem(CPlayer.instance.armor);
+                        CPlayer.instance.UnEquip(CPlayer.instance.armor);
                     }
-                    Player.instance.armor = DragSlot.instance.dragedSlot.realItem;
-                    Player.instance.Equip(DragSlot.instance.dragedSlot.realItem);
+                    CPlayer.instance.armor = DragSlot.instance.dragedSlot.realItem;
+                    CPlayer.instance.Equip(DragSlot.instance.dragedSlot.realItem);
                     //Player.instance.WearArmor();
                 }
                     break;
 
                 case Item.ItemCategory.Shoes:
                 {
-                    if(Player.instance.shoe != null)
+                    if(CPlayer.instance.shoe != null)
                     {
-                        Inventory.instance.ReAddItem(Player.instance.shoe);
-                        Player.instance.UnEquip(Player.instance.shoe);
+                        Inventory.instance.ReAddItem(CPlayer.instance.shoe);
+                        CPlayer.instance.UnEquip(CPlayer.instance.shoe);
                     }
-                    Player.instance.shoe = DragSlot.instance.dragedSlot.realItem;
-                    Player.instance.Equip(DragSlot.instance.dragedSlot.realItem);
+                    CPlayer.instance.shoe = DragSlot.instance.dragedSlot.realItem;
+                    CPlayer.instance.Equip(DragSlot.instance.dragedSlot.realItem);
                     //Player.instance.WearShoe();
                 }
                     break;
@@ -373,25 +373,25 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
                 {
                     if (hitObject.name == "Weapon1")
                     {
-                        if (Player.instance.weapon1 != null)
+                        if (CPlayer.instance.weapon1 != null)
                         {
-                            Inventory.instance.ReAddItem(Player.instance.weapon1);
-                            Player.instance.UnEquip(Player.instance.weapon1);
+                            Inventory.instance.ReAddItem(CPlayer.instance.weapon1);
+                            CPlayer.instance.UnEquip(CPlayer.instance.weapon1);
                         }
-                        Player.instance.weapon1 = DragSlot.instance.dragedSlot.realItem;
-                        Player.instance.Equip(DragSlot.instance.dragedSlot.realItem);
-                        Player.instance.EquipWeapon();
+                        CPlayer.instance.weapon1 = DragSlot.instance.dragedSlot.realItem;
+                        CPlayer.instance.Equip(DragSlot.instance.dragedSlot.realItem);
+                        CPlayer.instance.EquipWeapon();
                     }
                     else if (hitObject.name == "Weapon2")
                     {
-                        if (Player.instance.weapon2 != null)
+                        if (CPlayer.instance.weapon2 != null)
                         {
-                            Inventory.instance.ReAddItem(Player.instance.weapon2);
-                            Player.instance.UnEquip(Player.instance.weapon2);
+                            Inventory.instance.ReAddItem(CPlayer.instance.weapon2);
+                            CPlayer.instance.UnEquip(CPlayer.instance.weapon2);
                         }
-                        Player.instance.weapon2 = DragSlot.instance.dragedSlot.realItem;
-                        Player.instance.Equip(DragSlot.instance.dragedSlot.realItem);
-                        Player.instance.EquipWeapon();
+                        CPlayer.instance.weapon2 = DragSlot.instance.dragedSlot.realItem;
+                        CPlayer.instance.Equip(DragSlot.instance.dragedSlot.realItem);
+                        CPlayer.instance.EquipWeapon();
                     }
                     
                     

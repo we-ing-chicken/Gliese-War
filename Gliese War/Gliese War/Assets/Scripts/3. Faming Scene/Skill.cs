@@ -10,7 +10,7 @@ public class Skill : MonoBehaviour
     {
         ParticleSystem ps = GetComponent<ParticleSystem>();
         
-        ps.trigger.SetCollider(1, Player.instance);
+        ps.trigger.SetCollider(1, CPlayer.instance);
 
         // particles
         List<ParticleSystem.Particle> enter = new List<ParticleSystem.Particle>();
@@ -26,7 +26,7 @@ public class Skill : MonoBehaviour
 
         if (obj.CompareTag("Player"))
         {
-            obj.GetComponent<Player>().GetDamage(1);
+            obj.GetComponent<CPlayer>().GetDamage(1);
             return;
         }
 
