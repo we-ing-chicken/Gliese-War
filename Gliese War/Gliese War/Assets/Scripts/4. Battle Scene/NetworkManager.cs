@@ -22,6 +22,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks //클래스 상속
     //현재 상태 표시 
     private void Update() => StatusText.text = PhotonNetwork.NetworkClientState.ToString();
 
+    private void Start()
+    {
+        Connect();
+    }
     //서버에 접속
     public void Connect() => PhotonNetwork.ConnectUsingSettings();
     //연결 되면 호출
