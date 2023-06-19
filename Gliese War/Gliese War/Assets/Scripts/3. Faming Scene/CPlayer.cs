@@ -30,8 +30,8 @@ public class CPlayer : MonoBehaviour
     public int maxHealth;
     public int currHealth;
     public int moveSpeed; // �յ� �������� �ӵ�
-    [SerializeField] private Animator animator;
-    [SerializeField] private Transform playertransform;
+    public Animator animator;
+    public Transform playertransform;
     [SerializeField] private Transform leftTarget;
     [SerializeField] private Transform rightTarget;
     [SerializeField] private Transform fowardTarget;
@@ -60,14 +60,15 @@ public class CPlayer : MonoBehaviour
     public GameObject handR;
     public GameObject back;
     
-    [SerializeField] private GameObject attackEffectPos;
+    public GameObject attackEffectPos;
     [SerializeField] private GameObject[] attackEffect;
     
-    [SerializeField] private GameObject shoesEffectPos;
+    public GameObject shoesEffectPos;
 
     public bool isAttack = false;
 
     private CharacterController charactercontroller;
+
 
     public float moveFB { get; private set; } // ������ �����̵� �Է°�
     public float moveLR { get; private set; } // ������ �¿��̵� �Է°�
@@ -82,9 +83,14 @@ public class CPlayer : MonoBehaviour
 
     public bool isNear;
 
-    private void Start()
+
+    private void Awake()
     {
         instance = this;
+    }
+
+    private void Start()
+    {
         charactercontroller = GetComponent<CharacterController>();
         //if (ignoreGravity)
         //    charactercontroller.
@@ -173,7 +179,7 @@ public class CPlayer : MonoBehaviour
         }
         
     }
-    
+
     private void FixedUpdate()
     {
         if(isFarming)

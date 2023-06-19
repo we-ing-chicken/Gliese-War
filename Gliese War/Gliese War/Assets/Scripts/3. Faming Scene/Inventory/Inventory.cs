@@ -28,7 +28,7 @@ public class Inventory : MonoBehaviour
 
     public Sprite[] magicImages;
 
-    void Start()
+    void Awake()
     {
         instance = this;
         slots = new List<Slot>();

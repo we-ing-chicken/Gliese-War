@@ -6,7 +6,12 @@ using UnityEngine;
 public class WeaponAttack : MonoBehaviour
 {
     private MeshCollider col;
-    
+
+    public GameObject handR;
+    public GameObject back;
+    public GameObject attackEffectPos;
+    public GameObject shoesEffectPos;
+
     public void AttackStart()
     {
         if (CPlayer.instance.weaponNow == 1)

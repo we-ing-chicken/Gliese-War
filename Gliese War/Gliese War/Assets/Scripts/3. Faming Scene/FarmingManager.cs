@@ -69,6 +69,7 @@ public class FarmingManager : MonoBehaviour
 
     [Header("Debug")][SerializeField] private Playercam playercam;
 
+    //[SerializeField] private GameObject[] characters;
 
     public static FarmingManager Instance
     {
@@ -100,6 +101,18 @@ public class FarmingManager : MonoBehaviour
 
     void Start()
     {
+        GameObject temp = Instantiate(GameManager.Instance.characters[GameManager.Instance.charNum], CPlayer.instance.gameObject.transform);
+        CPlayer.instance.GetComponent<CPlayer>().animator = temp.GetComponent<Animator>();
+        CPlayer.instance.GetComponent<CPlayer>().playertransform = temp.transform;
+        CPlayer.instance.GetComponent<CPlayer>().handR = temp.GetComponent<WeaponAttack>().handR;
+        CPlayer.instance.GetComponent<CPlayer>().back = temp.GetComponent<WeaponAttack>().back;
+        CPlayer.instance.GetComponent<CPlayer>().attackEffectPos = temp.GetComponent<WeaponAttack>().attackEffectPos;
+        CPlayer.instance.GetComponent<CPlayer>().shoesEffectPos = temp.GetComponent<WeaponAttack>().shoesEffectPos;
+        
+        GameObject temp2 = Instantiate(GameManager.Instance.characters[GameManager.Instance.charNum], CPlayerUI.instance.gameObject.transform);
+        CPlayerUI.instance.GetComponent<CPlayerUI>().animator = temp2.GetComponent<Animator>();
+        CPlayerUI.instance.GetComponent<CPlayerUI>().playertransform = temp2.transform;
+
         SwitchGameObjectActive(characterCam);
         //_timeOfInGame = 8.4f;
         _timeOfInGame = 6f;
