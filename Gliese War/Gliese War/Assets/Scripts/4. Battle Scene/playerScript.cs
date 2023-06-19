@@ -4,7 +4,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using Photon.Pun.UtilityScripts;
 
-public class playerScript : MonoBehaviourPunCallbacks, IPunObservable
+public class playerScript : MonoBehaviourPunCallbacks//, IPunObservable
 {
     private PhotonView PV;
     private bool isJump;
@@ -42,13 +42,13 @@ public class playerScript : MonoBehaviourPunCallbacks, IPunObservable
 
     private void Update()
     {
-        if (!PV.IsMine)
-        {
-            transform.position = Vector3.Lerp(transform.position, remotePos, 10 * Time.deltaTime);
-            transform.rotation = Quaternion.Lerp(transform.rotation, remoteRot, 10 * Time.deltaTime);
-            return;
-        }
-        else
+        if (PV.IsMine)
+        //{
+        //    transform.position = Vector3.Lerp(transform.position, remotePos, 10 * Time.deltaTime);
+        //    transform.rotation = Quaternion.Lerp(transform.rotation, remoteRot, 10 * Time.deltaTime);
+        //    return;
+        //}
+        //else
         {
             moveLR = Input.GetAxisRaw("Horizontal");
             moveFB = Input.GetAxisRaw("Vertical");
@@ -83,18 +83,18 @@ public class playerScript : MonoBehaviourPunCallbacks, IPunObservable
         isJump = false;
     }
 
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (stream.IsWriting)
-        { 
-            stream.SendNext(transform.position);
-            stream.SendNext(transform.rotation);
-            //stream.SendNext(Jump);
-        }
-        else
-        {
-            remotePos = (Vector3)stream.ReceiveNext();
-            remoteRot = (Quaternion)stream.ReceiveNext();
-        }
-    }
+    //public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    //{
+    //    if (stream.IsWriting)
+    //    { 
+    //        stream.SendNext(transform.position);
+    //        stream.SendNext(transform.rotation);
+    //        //stream.SendNext(Jump);
+    //    }
+    //    else
+    //    {
+    //        remotePos = (Vector3)stream.ReceiveNext();
+    //        remoteRot = (Quaternion)stream.ReceiveNext();
+    //    }
+    //}
 }
