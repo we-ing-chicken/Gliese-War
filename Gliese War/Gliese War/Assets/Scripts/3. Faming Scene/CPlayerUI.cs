@@ -9,9 +9,9 @@ using UnityEngine.Animations;
 using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 
-public class CPlayer : MonoBehaviour
+public class CPlayerUI : MonoBehaviour
 {
-    static public CPlayer instance;
+    static public CPlayerUI instance;
     private float Gravity = 9.8f;
     public int life;
     public float MouseX;
@@ -60,14 +60,19 @@ public class CPlayer : MonoBehaviour
     public GameObject handR;
     public GameObject back;
     
-    public GameObject attackEffectPos;
+    [SerializeField] private GameObject attackEffectPos;
     [SerializeField] private GameObject[] attackEffect;
     
-    public GameObject shoesEffectPos;
+    [SerializeField] private GameObject shoesEffectPos;
 
     public bool isAttack = false;
 
     private CharacterController charactercontroller;
+    
+    private bool isMagic;
+    [SerializeField] private GameObject magicAreaPrefab;
+    private Coroutine magicCor;
+    [SerializeField] private GameObject[] magicEffect;
 
 
     public float moveFB { get; private set; } // ������ �����̵� �Է°�
@@ -83,12 +88,11 @@ public class CPlayer : MonoBehaviour
 
     public bool isNear;
 
-
     private void Awake()
     {
         instance = this;
     }
-
+    
     private void Start()
     {
         charactercontroller = GetComponent<CharacterController>();
@@ -107,7 +111,6 @@ public class CPlayer : MonoBehaviour
 
         //flashRed = GetComponent<MeshRenderer>().material;
 
-        RefreshStat();
     }
 
     private void Update()
@@ -143,16 +146,12 @@ public class CPlayer : MonoBehaviour
             
             if(weapon1 != null)
                 EquipWeapon();
-            
-            RefreshStat();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             weaponNow = 2;
             if(weapon2 != null)
                 EquipWeapon();
-            
-            RefreshStat();
         }
 
         if (isFarming)
@@ -161,8 +160,29 @@ public class CPlayer : MonoBehaviour
             {
                 if (Input.GetMouseButtonDown(0))
                 {
+                    if (isMagic)
+                    {
+                        GameObject magic = Instantiate(magicEffect[0]);
+                        magic.transform.position = magicAreaPrefab.transform.position;
+                        StopCoroutine(magicCor);
+                        magicAreaPrefab.SetActive(false);
+                        isMagic = false;
+                        return;
+                    }
+                    
                     AttackAnimation();
-                    StartCoroutine(AttackEffect());
+                }
+                else if (Input.GetMouseButtonDown(1))
+                {
+                    isMagic = true;
+                    magicCor = StartCoroutine(SetMagicArea());
+                    magicAreaPrefab.SetActive(true);
+                }
+                else if (Input.GetMouseButtonUp(1))
+                {
+                    isMagic = false;
+                    StopCoroutine(magicCor);
+                    magicAreaPrefab.SetActive(false);
                 }
             }
         }
@@ -179,7 +199,31 @@ public class CPlayer : MonoBehaviour
         }
         
     }
+    
+    IEnumerator SetMagicArea()
+    {
+        Debug.Log("On");
+        while (true)
+        {
+            float distance = Vector3.Distance(Camera.main.transform.position, transform.position);
+            Vector3 direction = ((transform.position + new Vector3(0, 2f ,0)) - Camera.main.transform.position).normalized;
+            RaycastHit[] hit;
 
+            hit = (Physics.RaycastAll(Camera.main.transform.position, direction, distance + 10f));
+
+            for (int i = 0; i < hit.Length; ++i)
+            {
+                if (hit[i].transform.CompareTag("Terrain"))
+                {
+                    magicAreaPrefab.transform.position = hit[i].point;
+                    break;
+                }
+            }
+
+            yield return null;
+        }
+    }
+    
     private void FixedUpdate()
     {
         if(isFarming)
@@ -338,65 +382,6 @@ public class CPlayer : MonoBehaviour
         }
     }
 
-    IEnumerator AttackEffect()
-    {
-        if (weaponNow == 1)
-        {
-            if (weapon1 == null)
-                yield return null;
-            
-            switch (weapon1.item.weaponType)
-            {
-                case Item.WeaponType.Hammer:
-                    yield return new WaitForSeconds(0.3f);
-                    attackEffectPos.transform.GetChild(2).gameObject.SetActive(true);
-                    StartCoroutine(QuitAttackEffect(2));
-                    break;
-                
-                case Item.WeaponType.Knife:
-                    yield return new WaitForSeconds(0.2f);
-                    attackEffectPos.transform.GetChild(0).gameObject.SetActive(true);
-                    StartCoroutine(QuitAttackEffect(0));
-                    
-                    break;
-                
-                case Item.WeaponType.Spear:
-                    yield return new WaitForSeconds(0.2f);
-                    attackEffectPos.transform.GetChild(1).gameObject.SetActive(true);
-                    StartCoroutine(QuitAttackEffect(1));
-                    break;
-            }
-        }
-        else if (weaponNow == 2)
-        {
-            if (weapon2 == null)
-                yield return null;
-            
-            switch (weapon2.item.weaponType)
-            {
-                case Item.WeaponType.Hammer:
-                    yield return new WaitForSeconds(0.3f);
-                    attackEffectPos.transform.GetChild(2).gameObject.SetActive(true);
-                    StartCoroutine(QuitAttackEffect(2));
-                    break;
-                
-                case Item.WeaponType.Knife:
-                    yield return new WaitForSeconds(0.2f);
-                    attackEffectPos.transform.GetChild(0).gameObject.SetActive(true);
-                    StartCoroutine(QuitAttackEffect(0));
-                    
-                    break;
-                
-                case Item.WeaponType.Spear:
-                    yield return new WaitForSeconds(0.2f);
-                    attackEffectPos.transform.GetChild(1).gameObject.SetActive(true);
-                    StartCoroutine(QuitAttackEffect(1));
-                    break;
-            }
-        }
-        yield return null;
-    }
-
     IEnumerator QuitAttackEffect(int pos)
     {
         yield return new WaitForSeconds(0.5f);
@@ -411,7 +396,6 @@ public class CPlayer : MonoBehaviour
         maxHealth -= realItem.stat.health;
         currHealth -= realItem.stat.health;
         moveSpeed -= realItem.stat.moveSpeed;
-        RefreshStat();
     }
 
     public void Equip(RealItem realItem)
@@ -421,23 +405,7 @@ public class CPlayer : MonoBehaviour
         maxHealth += realItem.stat.health;
         currHealth += realItem.stat.health;
         moveSpeed += realItem.stat.moveSpeed;
-        RefreshStat();
         SetShoesEffect();
-    }
-
-    private void RefreshStat()
-    {
-        if (isFarming)
-        {
-            Inventory.instance.statParent.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text =
-                "Health : " + currHealth + " / " + maxHealth;
-            Inventory.instance.statParent.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text =
-                "Attack : " + (offensivePower + GetWeaponStat());
-            Inventory.instance.statParent.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text =
-                "Defense : " + defensivePower;
-            Inventory.instance.statParent.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text =
-                "Speed : " + moveSpeed;
-        }
     }
 
     private int GetWeaponStat()
@@ -601,7 +569,7 @@ public class CPlayer : MonoBehaviour
     {
         FarmingManager.Instance.HitScreen();
         currHealth -= damage;
-        RefreshStat();
+ 
         FarmingManager.Instance.playerCurrentHPBar.value = (float)currHealth / maxHealth;
 
         if (currHealth <= 0)

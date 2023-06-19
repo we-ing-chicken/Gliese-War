@@ -24,8 +24,15 @@ public class LobbyManager : MonoBehaviour
     [SerializeField] private Canvas helpCanvas;
     [SerializeField] private Sprite[] helpImages;
     private Animation helpAnimation;
-    
-    
+
+    [Header("Character")]
+    public int charNum;
+    private bool isChanging;
+    [SerializeField] private GameObject[] characters;
+    [SerializeField] private GameObject originPosition;
+    [SerializeField] private GameObject leftPosition;
+    [SerializeField] private GameObject rightPosition;
+
     [Header("Option")]
     [SerializeField] private Canvas optionCanvas;
     
@@ -55,7 +62,10 @@ public class LobbyManager : MonoBehaviour
 
     private void Start()
     {
+        charNum = 0;
+        GameManager.Instance.charNum = charNum;
         
+        isChanging = false;
     }
 
     public void StartGame()
@@ -109,5 +119,69 @@ public class LobbyManager : MonoBehaviour
     public void CloseHelp()
     {
         helpAnimation.Play("ReturnHelpAnimation");
+    }
+
+    public void CharacterChangeLeftButton()
+    {
+        if (isChanging) return;
+        isChanging = true;
+        
+        int originNum = charNum;
+        
+        --charNum;
+        if (charNum < 0)
+            charNum = characters.Length-1;
+
+        GameManager.Instance.charNum = charNum;
+        
+        characters[charNum].gameObject.SetActive(true);
+        characters[charNum].transform.position = rightPosition.transform.position;
+        
+        StartCoroutine(MoveCharacter(characters[originNum], characters[charNum], leftPosition));
+    }
+    
+    public void CharacterChangeRightButton()
+    {
+        if (isChanging) return;
+        isChanging = true;
+        
+        int originNum = charNum;
+        
+        ++charNum;
+        if (charNum >= characters.Length)
+            charNum = 0;
+        
+        GameManager.Instance.charNum = charNum;
+
+        characters[charNum].gameObject.SetActive(true);
+        characters[charNum].transform.position = leftPosition.transform.position;
+        
+        StartCoroutine(MoveCharacter(characters[originNum], characters[charNum], rightPosition));
+    }
+
+    IEnumerator MoveCharacter(GameObject origin, GameObject newChar, GameObject to)
+    {
+        Vector3 velo = Vector3.zero;
+        float offset = 0.2f;
+        
+        while (true)
+        {
+            origin.transform.position = Vector3.SmoothDamp(origin.transform.position, to.transform.position, ref velo, offset);
+            newChar.transform.position = Vector3.SmoothDamp(newChar.transform.position, originPosition.transform.position, ref velo, offset);
+    
+            //target.y + offset <= this.transform.position.y
+            
+            if ((newChar.transform.position == originPosition.transform.position) || (origin.transform.position.x <= -11) || (origin.transform.position.x >= 11))
+            {
+                origin.SetActive(false);
+                newChar.transform.position = new Vector3(0f, -2.703704f, 80f);
+                isChanging = false;
+                break;
+            }
+
+            yield return null;
+        }
+        
+        yield return null;
     }
 }
