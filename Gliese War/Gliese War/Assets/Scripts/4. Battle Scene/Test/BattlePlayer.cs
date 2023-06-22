@@ -172,6 +172,7 @@ public class BattlePlayer : MonoBehaviour
                 GameObject magic = Instantiate(magicEffect[0]);
                 magic.transform.position = magicAreaPrefab.transform.position;
                 StopCoroutine(magicCor);
+                animator.SetTrigger("magicAttack");
                 magicAreaPrefab.SetActive(false);
                 isMagic = false;
                 return;
@@ -194,16 +195,16 @@ public class BattlePlayer : MonoBehaviour
         }
         
     }
-    
+
     IEnumerator SetMagicArea()
     {
         Debug.Log("On");
+        float distance = Vector3.Distance(Camera.main.transform.position, transform.position);
+        RaycastHit[] hit;
+        
         while (true)
         {
-            float distance = Vector3.Distance(Camera.main.transform.position, transform.position);
-            Vector3 direction = (transform.position - Camera.main.transform.position).normalized;
-            RaycastHit[] hit;
-
+            Vector3 direction = ((transform.position + new Vector3(0f, 1f, 0f)) - Camera.main.transform.position).normalized;
             hit = (Physics.RaycastAll(Camera.main.transform.position, direction, distance + 10f));
 
             for (int i = 0; i < hit.Length; ++i)
@@ -211,8 +212,6 @@ public class BattlePlayer : MonoBehaviour
                 if (hit[i].transform.CompareTag("Terrain"))
                 {
                     magicAreaPrefab.transform.position = hit[i].point;
-                    Debug.Log(transform.position);
-                    Debug.Log(hit[i].point);
                     break;
                 }
             }
