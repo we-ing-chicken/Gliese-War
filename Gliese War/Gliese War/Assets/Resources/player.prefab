@@ -91,7 +91,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2821369293841071617}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.913867, y: 10, z: -0.65444756}
+  m_LocalPosition: {x: 0, y: 10, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -128,9 +128,10 @@ MonoBehaviour:
   RFTarget: {fileID: 4360825395004712749}
   LBTarget: {fileID: 5197614078191703706}
   RBTarget: {fileID: 6061800591390851581}
+  playertransform: {fileID: 3626217897009492298}
   anim: {fileID: 6032933754992244331}
   move_speed: 8
-  jump_force: 5
+  jump_force: 1
 --- !u!114 &2821369293841071619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,7 +185,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!136 &3535517150771234596
 CapsuleCollider:
@@ -196,10 +197,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.56004477
-  m_Height: 2.7556496
+  m_Radius: 0.58290005
+  m_Height: 2.8216734
   m_Direction: 1
-  m_Center: {x: -0.000008106232, y: -0.10963631, z: 0.24264504}
+  m_Center: {x: -0.000008106232, y: 0.5081134, z: -0.105905294}
 --- !u!1 &2948214776661731705
 GameObject:
   m_ObjectHideFlags: 0
@@ -458,15 +459,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1074867024343927179, guid: 69261c6960d959c41a7b72761c7c1315, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 1074867024343927179, guid: 69261c6960d959c41a7b72761c7c1315, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.92
       objectReference: {fileID: 0}
     - target: {fileID: 1074867024343927179, guid: 69261c6960d959c41a7b72761c7c1315, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.09
       objectReference: {fileID: 0}
     - target: {fileID: 1074867024343927179, guid: 69261c6960d959c41a7b72761c7c1315, type: 3}
       propertyPath: m_LocalRotation.w
@@ -502,6 +503,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2982995426790283842, guid: 69261c6960d959c41a7b72761c7c1315, type: 3}
       propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5671689842162800884, guid: 69261c6960d959c41a7b72761c7c1315, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -592,20 +597,23 @@ MonoBehaviour:
   ShowParameterInspector: 1
   m_SynchronizeParameters:
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: isRun
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: doJump
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: attackSword
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: attackHammer
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: attackSpear
+  - Type: 9
+    SynchronizeType: 2
+    Name: magicAttack
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0

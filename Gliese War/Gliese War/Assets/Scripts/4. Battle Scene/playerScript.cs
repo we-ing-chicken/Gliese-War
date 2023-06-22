@@ -18,10 +18,12 @@ public class playerScript : MonoBehaviourPunCallbacks//, IPunObservable
     public Transform LBTarget;
     public Transform RBTarget;
 
+    public Transform playertransform;
+
     public Animator anim;
 
-    private Vector3 remotePos;
-    private Quaternion remoteRot;
+    //private Vector3 remotePos;
+    //private Quaternion remoteRot;
 
     private float moveLR;
     private float moveFB;
@@ -29,10 +31,11 @@ public class playerScript : MonoBehaviourPunCallbacks//, IPunObservable
 
     public float move_speed;
     public float jump_force;
-
+    private string JumpButtonName = "Jump";
 
     private void Start()
     {
+
         rigidbody = GetComponent<Rigidbody>();
         PV = GetComponent<PhotonView>();
 
@@ -57,16 +60,68 @@ public class playerScript : MonoBehaviourPunCallbacks//, IPunObservable
 
             anim.SetBool("isRun", ismove);
 
+            player_lookTarget();
+
             transform.Translate(new Vector3(Input.GetAxisRaw("Horizontal") * Time.deltaTime * move_speed,
                                             0,
                                             Input.GetAxisRaw("Vertical") * Time.deltaTime * move_speed));
-            if (Input.GetKey(KeyCode.Space))
+            if (Input.GetButton(JumpButtonName))
             {
                 isJump = true;
                 Jump();
-            
+                
             }
         }
+    }
+
+    private void player_lookTarget()
+    {
+
+        if (moveLR < 0 && moveFB < 0)    // left + back
+        {
+            player_Rotate(LBTarget.position);
+        }
+        else if (moveLR < 0 && moveFB > 0)    // left + forward
+        {
+            player_Rotate(LFTarget.position);
+
+        }
+        else if (moveLR > 0 && moveFB < 0)    // right + back
+        {
+            player_Rotate(RBTarget.position);
+
+        }
+        else if (moveLR > 0 && moveFB > 0)    // right + forward
+        {
+            player_Rotate(RFTarget.position);
+
+        }
+        else if (moveLR < 0)
+        {
+            player_Rotate(LeftTarget.position);
+        }
+        else if (moveLR > 0)
+        {
+            player_Rotate(RightTarget.position);
+
+        }
+        else if (moveFB < 0)
+        {
+            player_Rotate(BackWardTarget.position);
+
+        }
+        else if (moveFB > 0)
+        {
+            player_Rotate(ForwardTarget.position);
+        }
+    }
+    private void player_Rotate(Vector3 movePoint)
+    {
+        Vector3 relativePosition = movePoint - transform.position;
+
+        Quaternion rotation = Quaternion.LookRotation(relativePosition, Vector3.up);
+
+        playertransform.rotation = Quaternion.Lerp(playertransform.rotation, rotation, Time.deltaTime * 10);
     }
 
     ////RPC �Լ�
@@ -74,9 +129,9 @@ public class playerScript : MonoBehaviourPunCallbacks//, IPunObservable
     void Jump()
     {
         if (!isJump) return;
-        Debug.Log("Jump!");
+        //Debug.Log("Jump!");
 
-        anim.SetTrigger("jump");
+        anim.SetTrigger("doJump");
         rigidbody.velocity = Vector3.zero;
         rigidbody.angularVelocity = Vector3.zero;
         rigidbody.AddForce(Vector3.up * jump_force, ForceMode.Impulse);
