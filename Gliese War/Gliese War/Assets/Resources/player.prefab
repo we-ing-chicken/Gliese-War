@@ -131,7 +131,7 @@ MonoBehaviour:
   playertransform: {fileID: 3626217897009492298}
   anim: {fileID: 6032933754992244331}
   move_speed: 8
-  jump_force: 5
+  jump_force: 1
 --- !u!114 &2821369293841071619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -597,20 +597,23 @@ MonoBehaviour:
   ShowParameterInspector: 1
   m_SynchronizeParameters:
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: isRun
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: doJump
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: attackSword
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: attackHammer
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: attackSpear
+  - Type: 9
+    SynchronizeType: 2
+    Name: magicAttack
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0

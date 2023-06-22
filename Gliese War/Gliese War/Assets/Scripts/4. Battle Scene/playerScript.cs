@@ -31,10 +31,11 @@ public class playerScript : MonoBehaviourPunCallbacks//, IPunObservable
 
     public float move_speed;
     public float jump_force;
-
+    private string JumpButtonName = "Jump";
 
     private void Start()
     {
+
         rigidbody = GetComponent<Rigidbody>();
         PV = GetComponent<PhotonView>();
 
@@ -64,10 +65,11 @@ public class playerScript : MonoBehaviourPunCallbacks//, IPunObservable
             transform.Translate(new Vector3(Input.GetAxisRaw("Horizontal") * Time.deltaTime * move_speed,
                                             0,
                                             Input.GetAxisRaw("Vertical") * Time.deltaTime * move_speed));
-            if (Input.GetKey(KeyCode.Space))
+            if (Input.GetButton(JumpButtonName))
             {
-                Jump();
                 isJump = true;
+                Jump();
+                
             }
         }
     }
@@ -129,7 +131,7 @@ public class playerScript : MonoBehaviourPunCallbacks//, IPunObservable
         if (!isJump) return;
         //Debug.Log("Jump!");
 
-        anim.SetTrigger("jump");
+        anim.SetTrigger("doJump");
         rigidbody.velocity = Vector3.zero;
         rigidbody.angularVelocity = Vector3.zero;
         rigidbody.AddForce(Vector3.up * jump_force, ForceMode.Impulse);
