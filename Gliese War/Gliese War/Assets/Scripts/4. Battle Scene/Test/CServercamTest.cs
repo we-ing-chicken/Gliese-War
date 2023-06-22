@@ -31,13 +31,27 @@ public class CServercamTest : MonoBehaviour
     void Update()
     {
 
-        xmove = player.MouseX;
+        // xmove = player.MouseX;
+        //
+        // ymove -= Input.GetAxis("Mouse Y");
+        // ymove = Mathf.Clamp(ymove, ymove_min, ymove_max);
+        //
+        // transform.rotation = Quaternion.Euler(ymove, xmove, 0);
+        // Vector3 reverseDistance = new Vector3(0.0f, -5.0f, distance);
+        // transform.position = player.transform.position - transform.rotation * reverseDistance;
+        
+        RaycastHit[] hit;
 
-        ymove -= Input.GetAxis("Mouse Y");
-        ymove = Mathf.Clamp(ymove, ymove_min, ymove_max);
-
-        transform.rotation = Quaternion.Euler(ymove, xmove, 0);
-        Vector3 reverseDistance = new Vector3(0.0f, -5.0f, distance);
-        transform.position = player.transform.position - transform.rotation * reverseDistance;
+        //float dis = Vector3.Distance(Camera.main.transform.position, Player.instance.transform.position);
+        Vector3 direction = (Camera.main.transform.position - CPlayer.instance.transform.position).normalized;
+        hit = (Physics.RaycastAll(CPlayer.instance.transform.position, direction, distance));
+        
+        for (int i = 0; i < hit.Length; ++i)
+        {
+            if (hit[i].transform.GetComponent<TransparentObject>() != null)
+            {
+                hit[i].transform.GetComponent<TransparentObject>().StartTransparent();
+            }
+        }
     }
 }

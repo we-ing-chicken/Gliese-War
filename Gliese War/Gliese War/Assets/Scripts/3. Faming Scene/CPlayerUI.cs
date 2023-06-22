@@ -160,29 +160,7 @@ public class CPlayerUI : MonoBehaviour
             {
                 if (Input.GetMouseButtonDown(0))
                 {
-                    if (isMagic)
-                    {
-                        GameObject magic = Instantiate(magicEffect[0]);
-                        magic.transform.position = magicAreaPrefab.transform.position;
-                        StopCoroutine(magicCor);
-                        magicAreaPrefab.SetActive(false);
-                        isMagic = false;
-                        return;
-                    }
-                    
                     AttackAnimation();
-                }
-                else if (Input.GetMouseButtonDown(1))
-                {
-                    isMagic = true;
-                    magicCor = StartCoroutine(SetMagicArea());
-                    magicAreaPrefab.SetActive(true);
-                }
-                else if (Input.GetMouseButtonUp(1))
-                {
-                    isMagic = false;
-                    StopCoroutine(magicCor);
-                    magicAreaPrefab.SetActive(false);
                 }
             }
         }
@@ -199,31 +177,7 @@ public class CPlayerUI : MonoBehaviour
         }
         
     }
-    
-    IEnumerator SetMagicArea()
-    {
-        Debug.Log("On");
-        while (true)
-        {
-            float distance = Vector3.Distance(Camera.main.transform.position, transform.position);
-            Vector3 direction = ((transform.position + new Vector3(0, 2f ,0)) - Camera.main.transform.position).normalized;
-            RaycastHit[] hit;
 
-            hit = (Physics.RaycastAll(Camera.main.transform.position, direction, distance + 10f));
-
-            for (int i = 0; i < hit.Length; ++i)
-            {
-                if (hit[i].transform.CompareTag("Terrain"))
-                {
-                    magicAreaPrefab.transform.position = hit[i].point;
-                    break;
-                }
-            }
-
-            yield return null;
-        }
-    }
-    
     private void FixedUpdate()
     {
         if(isFarming)

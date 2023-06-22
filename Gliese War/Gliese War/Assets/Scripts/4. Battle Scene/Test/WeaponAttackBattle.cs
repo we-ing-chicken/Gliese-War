@@ -7,6 +7,11 @@ public class WeaponAttackBattle : MonoBehaviour
 {
     private MeshCollider col;
     
+    public GameObject handR;
+    public GameObject back;
+    public GameObject attackEffectPos;
+    public GameObject shoesEffectPos;
+    
     public void AttackStart()
     {
         if (BattlePlayer.instance.weaponNow == 1)
