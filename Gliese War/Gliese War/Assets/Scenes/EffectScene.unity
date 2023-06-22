@@ -1035,6 +1035,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FX_Shield (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2315385807920821504, guid: db5081c8464105246b23c6f0ceb9bf33, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3923068543238248543, guid: db5081c8464105246b23c6f0ceb9bf33, type: 3}
       propertyPath: m_RootOrder
       value: 15
@@ -1078,6 +1082,14 @@ PrefabInstance:
     - target: {fileID: 3923068543238248543, guid: db5081c8464105246b23c6f0ceb9bf33, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4076127060581098787, guid: db5081c8464105246b23c6f0ceb9bf33, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8379073814242100440, guid: db5081c8464105246b23c6f0ceb9bf33, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db5081c8464105246b23c6f0ceb9bf33, type: 3}
