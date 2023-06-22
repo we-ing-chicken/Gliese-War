@@ -169,7 +169,7 @@ public class BattlePlayer : MonoBehaviour
         {
             if (isMagic)
             {
-                GameObject magic = Instantiate(magicEffect[0]);
+                GameObject magic = Instantiate(magicEffect[2]); //1 Tornado , 2 Thunder  0 Fire
                 magic.transform.position = magicAreaPrefab.transform.position;
                 StopCoroutine(magicCor);
                 animator.SetTrigger("magicAttack");

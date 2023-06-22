@@ -575,6 +575,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 192682657741052207, guid: 69261c6960d959c41a7b72761c7c1315, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 405712581622059825, guid: 69261c6960d959c41a7b72761c7c1315, type: 3}
       propertyPath: m_Name
       value: Dolla_Ani001
@@ -638,6 +642,10 @@ PrefabInstance:
     - target: {fileID: 1074867024343927179, guid: 69261c6960d959c41a7b72761c7c1315, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7555536822716503392, guid: 69261c6960d959c41a7b72761c7c1315, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 69261c6960d959c41a7b72761c7c1315, type: 3}
