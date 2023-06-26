@@ -73,6 +73,8 @@ public class BattlePlayer : MonoBehaviour
     [SerializeField] private GameObject magicAreaPrefab;
     private Coroutine magicCor;
     [SerializeField] private GameObject[] magicEffect;
+    private float magicCooltime;
+    private bool isCool;
 
     public float moveFB { get; private set; } // ������ �����̵� �Է°�
     public float moveLR { get; private set; } // ������ �¿��̵� �Է°�
@@ -116,6 +118,9 @@ public class BattlePlayer : MonoBehaviour
         weapon2 = new RealItem();
         weapon2.item = TestManager.Instance.knife[1];
         weapon2.magic = Magic.Water;
+        
+        magicCooltime = 5f;
+        isCool = false;
         
         EquipWeapon();
     }
@@ -175,6 +180,10 @@ public class BattlePlayer : MonoBehaviour
                 animator.SetTrigger("magicAttack");
                 magicAreaPrefab.SetActive(false);
                 isMagic = false;
+                
+                isCool = true;
+                StartCoroutine(CheckCoolTime());
+                
                 return;
             }
                     
@@ -183,6 +192,12 @@ public class BattlePlayer : MonoBehaviour
         }
         else if (Input.GetMouseButtonDown(1))
         {
+            if (isCool)
+            {
+                Debug.Log("쿨타임");
+                return;
+            }
+            
             isMagic = true;
             magicCor = StartCoroutine(SetMagicArea());
             magicAreaPrefab.SetActive(true);
@@ -193,7 +208,7 @@ public class BattlePlayer : MonoBehaviour
             StopCoroutine(magicCor);
             magicAreaPrefab.SetActive(false);
         }
-        
+
     }
 
     IEnumerator SetMagicArea()
@@ -216,6 +231,24 @@ public class BattlePlayer : MonoBehaviour
                 }
             }
 
+            yield return null;
+        }
+    }
+    
+    IEnumerator CheckCoolTime()
+    {
+        float time = 0f;
+        
+        while (true)
+        {
+            time += Time.deltaTime;
+
+            if (time >= magicCooltime)
+            {
+                isCool = false;
+                break;
+            }
+            
             yield return null;
         }
     }
