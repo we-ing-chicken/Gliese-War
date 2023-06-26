@@ -19,18 +19,15 @@
 	}
 		SubShader
 		{
-				Tags
-			{
-				"Queue" = "transparent"
-			}
+				 Tags { "RenderType" = "Transparent" "Queue"="Transparent" "RenderPipeline" = "UniversalPipeline" } 
 
 			Pass
 			{
 				Tags
 			{
 				"LightMode" = "UniversalForward"
-				"PassFlags" = "OnlyDirectional"
 			}
+			ZWrite On
 
 				CGPROGRAM
 				#pragma vertex vert
@@ -110,17 +107,12 @@
 				}
 					ENDCG
 			}
-
+			
 			Pass {
 
 			Name "Outline"
-			Tags {
-				"RenderType" = "Opaque"
-				"RenderPipeline" = "UniversalPipeline"
-					//Do not add "LightMode" here, this way you can have an extra pass.
-				}
 				Cull Front
-
+            
 				CGPROGRAM
 
 				#pragma vertex vert
@@ -228,6 +220,6 @@
 					ENDHLSL
 				}
 
-			UsePass "Legacy Shaders/VertexLit/SHADOWCASTER"
+UsePass"Legacy Shaders/VertexLit/SHADOWCASTER"
 		}
 }

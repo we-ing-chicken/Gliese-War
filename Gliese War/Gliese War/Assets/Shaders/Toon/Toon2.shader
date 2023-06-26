@@ -115,6 +115,7 @@
 
 			Name "Outline"
 			Tags {
+"Queue" = "transparent"
 				"RenderType" = "Opaque"
 				"RenderPipeline" = "UniversalPipeline"
 					//Do not add "LightMode" here, this way you can have an extra pass.

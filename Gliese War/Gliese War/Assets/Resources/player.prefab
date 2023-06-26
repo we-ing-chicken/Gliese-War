@@ -120,6 +120,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1156e6129aa20b949b0c5236cfb760e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MouseX: 0
+  mouseSpeed: 5
   LeftTarget: {fileID: 5372331366693640768}
   RightTarget: {fileID: 5635367388102230439}
   ForwardTarget: {fileID: 3630092145162796001}
@@ -130,8 +132,21 @@ MonoBehaviour:
   RBTarget: {fileID: 6061800591390851581}
   playertransform: {fileID: 3626217897009492298}
   anim: {fileID: 6032933754992244331}
+  life: 0
+  offensivePower: 0
+  defensivePower: 0
+  maxHealth: 0
+  currHealth: 0
+  items: []
+  weaponNow: 1
+  handR: {fileID: 0}
+  back: {fileID: 0}
+  attackEffectPos: {fileID: 0}
+  attackEffect: []
+  shoesEffectPos: {fileID: 0}
+  isAttack: 0
   move_speed: 8
-  jump_force: 1
+  jump_force: 5
 --- !u!114 &2821369293841071619
 MonoBehaviour:
   m_ObjectHideFlags: 0
