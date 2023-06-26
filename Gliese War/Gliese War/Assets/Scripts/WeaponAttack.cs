@@ -14,9 +14,9 @@ public class WeaponAttack : MonoBehaviour
 
     public void AttackStart()
     {
-        if (CPlayer.instance.weaponNow == 1)
+        if (CPlayer.Instance.weaponNow == 1)
         {
-            switch (CPlayer.instance.weapon1.item.weaponType)
+            switch (CPlayer.Instance.weapon1.item.weaponType)
             {
                 case Item.WeaponType.Hammer:
                     TurnOnHandHammer();
@@ -34,10 +34,10 @@ public class WeaponAttack : MonoBehaviour
                     break;
             }
         }
-        else if (CPlayer.instance.weaponNow == 2)
+        else if (CPlayer.Instance.weaponNow == 2)
         {
 
-            switch (CPlayer.instance.weapon2.item.weaponType)
+            switch (CPlayer.Instance.weapon2.item.weaponType)
             {
                 case Item.WeaponType.Hammer:
                     TurnOnHandHammer();
@@ -56,33 +56,33 @@ public class WeaponAttack : MonoBehaviour
             }
         }
 
-        CPlayer.instance.isAttack = true;
+        CPlayer.Instance.isAttack = true;
     }
 
     public void TurnOnHandHammer()
     {
-        CPlayer.instance.handR.transform.GetChild(0).gameObject.SetActive(true);
-        CPlayer.instance.back.transform.GetChild(0).gameObject.SetActive(false);
+        CPlayer.Instance.handR.transform.GetChild(0).gameObject.SetActive(true);
+        CPlayer.Instance.back.transform.GetChild(0).gameObject.SetActive(false);
         
-        col = CPlayer.instance.handR.transform.GetChild(0).GetComponent<MeshCollider>();
+        col = CPlayer.Instance.handR.transform.GetChild(0).GetComponent<MeshCollider>();
         col.enabled = true;
     }
     
     public void TurnOnHandSpear()
     {
-        CPlayer.instance.handR.transform.GetChild(1).gameObject.SetActive(true);
-        CPlayer.instance.back.transform.GetChild(1).gameObject.SetActive(false);
+        CPlayer.Instance.handR.transform.GetChild(1).gameObject.SetActive(true);
+        CPlayer.Instance.back.transform.GetChild(1).gameObject.SetActive(false);
         
-        col = CPlayer.instance.handR.transform.GetChild(1).GetComponent<MeshCollider>();
+        col = CPlayer.Instance.handR.transform.GetChild(1).GetComponent<MeshCollider>();
         col.enabled = true;
     }
     
     public void TurnOnHandKnife()
     {
-        CPlayer.instance.handR.transform.GetChild(2).gameObject.SetActive(true);
-        CPlayer.instance.back.transform.GetChild(2).gameObject.SetActive(false);
+        CPlayer.Instance.handR.transform.GetChild(2).gameObject.SetActive(true);
+        CPlayer.Instance.back.transform.GetChild(2).gameObject.SetActive(false);
         
-        col = CPlayer.instance.handR.transform.GetChild(2).GetComponent<MeshCollider>();
+        col = CPlayer.Instance.handR.transform.GetChild(2).GetComponent<MeshCollider>();
         col.enabled = true;
     }
 
@@ -90,38 +90,38 @@ public class WeaponAttack : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         
-        col = CPlayer.instance.handR.transform.GetChild(0).GetComponent<MeshCollider>();
+        col = CPlayer.Instance.handR.transform.GetChild(0).GetComponent<MeshCollider>();
         col.enabled = false;
         
-        CPlayer.instance.handR.transform.GetChild(0).gameObject.SetActive(false);
-        CPlayer.instance.back.transform.GetChild(0).gameObject.SetActive(true);
+        CPlayer.Instance.handR.transform.GetChild(0).gameObject.SetActive(false);
+        CPlayer.Instance.back.transform.GetChild(0).gameObject.SetActive(true);
         
-        CPlayer.instance.isAttack = false;
+        CPlayer.Instance.isAttack = false;
     }
     
     IEnumerator TurnOffHandSpear()
     {
         yield return new WaitForSeconds(0.6f);
         
-        col = CPlayer.instance.handR.transform.GetChild(1).GetComponent<MeshCollider>();
+        col = CPlayer.Instance.handR.transform.GetChild(1).GetComponent<MeshCollider>();
         col.enabled = false;
         
-        CPlayer.instance.handR.transform.GetChild(1).gameObject.SetActive(false);
-        CPlayer.instance.back.transform.GetChild(1).gameObject.SetActive(true);
+        CPlayer.Instance.handR.transform.GetChild(1).gameObject.SetActive(false);
+        CPlayer.Instance.back.transform.GetChild(1).gameObject.SetActive(true);
         
-        CPlayer.instance.isAttack = false;
+        CPlayer.Instance.isAttack = false;
     }
     
     IEnumerator TurnOffHandKnife()
     {
         yield return new WaitForSeconds(0.9f);
         
-        col = CPlayer.instance.handR.transform.GetChild(2).GetComponent<MeshCollider>();
+        col = CPlayer.Instance.handR.transform.GetChild(2).GetComponent<MeshCollider>();
         col.enabled = false;
         
-        CPlayer.instance.handR.transform.GetChild(2).gameObject.SetActive(false);
-        CPlayer.instance.back.transform.GetChild(2).gameObject.SetActive(true);
+        CPlayer.Instance.handR.transform.GetChild(2).gameObject.SetActive(false);
+        CPlayer.Instance.back.transform.GetChild(2).gameObject.SetActive(true);
         
-        CPlayer.instance.isAttack = false;
+        CPlayer.Instance.isAttack = false;
     }
 }

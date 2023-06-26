@@ -11,7 +11,7 @@ using UnityEngine.UIElements;
 
 public class CPlayer : MonoBehaviour
 {
-    static public CPlayer instance;
+    static public CPlayer _instance;
     private float Gravity = 9.8f;
     public float MouseX;
     public float mouseSpeed;
@@ -40,7 +40,6 @@ public class CPlayer : MonoBehaviour
     [SerializeField] private Transform rbTarget;
     [SerializeField] private Transform rfTarget;
     [SerializeField] private bool ignoreGravity = false;
-
 
     public List<Item> items;
 
@@ -82,10 +81,26 @@ public class CPlayer : MonoBehaviour
 
     public bool isNear;
 
+    public static CPlayer Instance
+    {
+        get
+        {
+            if (!_instance)
+            {
+                if (_instance == null)
+                    return null;
+
+                _instance = FindObjectOfType(typeof(CPlayer)) as CPlayer;
+            }
+
+            return _instance;
+        }
+    }
+
 
     private void Awake()
     {
-        instance = this;
+        _instance = this;
     }
 
     private void Start()

@@ -101,14 +101,14 @@ public class FarmingManager : MonoBehaviour
 
     void Start()
     {
-        GameObject temp = Instantiate(GameManager.Instance.characters[GameManager.Instance.charNum], CPlayer.instance.gameObject.transform);
+        GameObject temp = Instantiate(GameManager.Instance.characters[GameManager.Instance.charNum], CPlayer.Instance.gameObject.transform);
         //temp.transform.position = new Vector3(116.67f, 19.52f, 185.36f);
-        CPlayer.instance.animator = temp.GetComponent<Animator>();
-        CPlayer.instance.playertransform = temp.transform;
-        CPlayer.instance.handR = temp.GetComponent<WeaponAttack>().handR;
-        CPlayer.instance.back = temp.GetComponent<WeaponAttack>().back;
-        CPlayer.instance.attackEffectPos = temp.GetComponent<WeaponAttack>().attackEffectPos;
-        CPlayer.instance.shoesEffectPos = temp.GetComponent<WeaponAttack>().shoesEffectPos;
+        CPlayer.Instance.animator = temp.GetComponent<Animator>();
+        CPlayer.Instance.playertransform = temp.transform;
+        CPlayer.Instance.handR = temp.GetComponent<WeaponAttack>().handR;
+        CPlayer.Instance.back = temp.GetComponent<WeaponAttack>().back;
+        CPlayer.Instance.attackEffectPos = temp.GetComponent<WeaponAttack>().attackEffectPos;
+        CPlayer.Instance.shoesEffectPos = temp.GetComponent<WeaponAttack>().shoesEffectPos;
 
 
         GameObject temp2 = Instantiate(GameManager.Instance.characters[GameManager.Instance.charNum], CPlayerUI.instance.gameObject.transform);
@@ -357,6 +357,7 @@ public class FarmingManager : MonoBehaviour
 
     public void PlayBattlePhase()
     {
+        GameManager.Instance.SaveItems();
         SceneManager.LoadScene((int)(Scene.BattleScene));
     }
     
@@ -414,7 +415,7 @@ public class FarmingManager : MonoBehaviour
 
     public void SetEquipWeaponImage()
     {
-        if (CPlayer.instance.weapon1 == null)
+        if (CPlayer.Instance.weapon1 == null)
         {
             Color color = weapon1Image.color;
             color.a = 0f;
@@ -426,7 +427,7 @@ public class FarmingManager : MonoBehaviour
         }
         else
         {
-            switch (CPlayer.instance.weapon1.item.weaponType)
+            switch (CPlayer.Instance.weapon1.item.weaponType)
             {
                 case Item.WeaponType.Hammer:
                     weapon1Image.sprite = weaponImage[0];
@@ -441,7 +442,7 @@ public class FarmingManager : MonoBehaviour
                     break;
             }
             
-            if (CPlayer.instance.weaponNow == 1)
+            if (CPlayer.Instance.weaponNow == 1)
             {
                 Color color = weapon1Image.color;
                 color.a = 1f;
@@ -463,7 +464,7 @@ public class FarmingManager : MonoBehaviour
             }
         }
 
-        if (CPlayer.instance.weapon2 == null)
+        if (CPlayer.Instance.weapon2 == null)
         {
             Color color = weapon2Image.color;
             color.a = 0f;
@@ -475,7 +476,7 @@ public class FarmingManager : MonoBehaviour
         }
         else
         {
-            switch (CPlayer.instance.weapon2.item.weaponType)
+            switch (CPlayer.Instance.weapon2.item.weaponType)
             {
                 case Item.WeaponType.Hammer:
                     weapon2Image.sprite = weaponImage[0];
@@ -490,7 +491,7 @@ public class FarmingManager : MonoBehaviour
                     break;
             }
             
-            if (CPlayer.instance.weaponNow == 2)
+            if (CPlayer.Instance.weaponNow == 2)
             {
                 Color color = weapon2Image.color;
                 color.a = 1f;

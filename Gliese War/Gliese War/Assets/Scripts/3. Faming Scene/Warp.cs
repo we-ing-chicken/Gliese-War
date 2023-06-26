@@ -67,13 +67,13 @@ public class Warp : MonoBehaviour
     IEnumerator Move()
     {
         yield return new WaitForSeconds(2f);
-        CPlayer.instance.GetComponent<CharacterController>().enabled = false;
+        CPlayer.Instance.GetComponent<CharacterController>().enabled = false;
         yield return new WaitForSeconds(0.1f);
-        CPlayer.instance.transform.position = warpTo.transform.position;
+        CPlayer.Instance.transform.position = warpTo.transform.position;
         yield return new WaitForSeconds(0.1f);
-        CPlayer.instance.GetComponent<CharacterController>().enabled = true;
+        CPlayer.Instance.GetComponent<CharacterController>().enabled = true;
         isLockOn= false;
-        CPlayer.instance.isNear = false;
+        CPlayer.Instance.isNear = false;
         FarmingManager.Instance.UnActiveG();
         yield return null;
     }
