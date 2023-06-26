@@ -75,6 +75,7 @@ public class BattlePlayer : MonoBehaviour
     [SerializeField] private GameObject[] magicEffect;
     private float magicCooltime;
     private bool isCool;
+    private int magicNum = 0;
 
     public float moveFB { get; private set; } // ������ �����̵� �Է°�
     public float moveLR { get; private set; } // ������ �¿��̵� �Է°�
@@ -169,12 +170,40 @@ public class BattlePlayer : MonoBehaviour
             
             RefreshStat();
         }
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            weapon1.item = TestManager.Instance.knife[1];
+            EquipWeapon();
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            weapon1.item = TestManager.Instance.spear[1];
+            EquipWeapon();
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            weapon1.item = TestManager.Instance.hammer[1];
+            EquipWeapon();
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha7))
+        {
+            magicNum = 0;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha8))
+        {
+            magicNum = 1;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            magicNum = 2;
+        }
+        
 
         if (Input.GetMouseButtonDown(0))
         {
             if (isMagic)
             {
-                GameObject magic = Instantiate(magicEffect[2]); //1 Tornado , 2 Thunder  0 Fire
+                GameObject magic = Instantiate(magicEffect[magicNum]); //1 Tornado , 2 Thunder  0 Fire
                 magic.transform.position = magicAreaPrefab.transform.position;
                 StopCoroutine(magicCor);
                 animator.SetTrigger("magicAttack");
