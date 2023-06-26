@@ -18,8 +18,8 @@ public class TransparentObject : MonoBehaviour
     {
         while(true)
         {
-            float distance = Vector3.Distance(Camera.main.transform.position, CPlayer.instance.transform.position);
-            Vector3 direction = (CPlayer.instance.transform.position - Camera.main.transform.position).normalized;
+            float distance = Vector3.Distance(Camera.main.transform.position, CPlayer.Instance.transform.position);
+            Vector3 direction = (CPlayer.Instance.transform.position - Camera.main.transform.position).normalized;
             RaycastHit[] hit;
 
             hit = (Physics.RaycastAll(Camera.main.transform.position, direction, distance));

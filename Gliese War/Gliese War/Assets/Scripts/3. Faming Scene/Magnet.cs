@@ -19,7 +19,7 @@ public class Magnet : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = CPlayer.instance.gameObject;
+        player = CPlayer.Instance.gameObject;
         rigid = gameObject.GetComponent<Rigidbody>();
     }
 

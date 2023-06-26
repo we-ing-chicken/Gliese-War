@@ -10,7 +10,7 @@ public class Skill : MonoBehaviour
     {
         ParticleSystem ps = GetComponent<ParticleSystem>();
         
-        ps.trigger.SetCollider(1, CPlayer.instance);
+        ps.trigger.SetCollider(1, CPlayer.Instance);
 
         // particles
         List<ParticleSystem.Particle> enter = new List<ParticleSystem.Particle>();

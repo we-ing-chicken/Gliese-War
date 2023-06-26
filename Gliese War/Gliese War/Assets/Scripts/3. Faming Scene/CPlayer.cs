@@ -640,7 +640,7 @@ public class CPlayer : MonoBehaviour
         
         charactercontroller.enabled = false;
         yield return new WaitForSeconds(0.1f);
-        instance.transform.position = FarmingManager.Instance.startPostion.transform.position;
+        Instance.transform.position = FarmingManager.Instance.startPostion.transform.position;
         yield return new WaitForSeconds(0.1f);
         charactercontroller.enabled = true;
         yield return null;

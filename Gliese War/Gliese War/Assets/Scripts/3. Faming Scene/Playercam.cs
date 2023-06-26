@@ -41,8 +41,8 @@ public class Playercam : MonoBehaviour
         RaycastHit[] hit;
 
         //float dis = Vector3.Distance(Camera.main.transform.position, Player.instance.transform.position);
-        Vector3 direction = (Camera.main.transform.position - CPlayer.instance.transform.position).normalized;
-        hit = (Physics.RaycastAll(CPlayer.instance.transform.position, direction, distance));
+        Vector3 direction = (Camera.main.transform.position - CPlayer.Instance.transform.position).normalized;
+        hit = (Physics.RaycastAll(CPlayer.Instance.transform.position, direction, distance));
 
         
         // for (int i = 0; i < hit.Length; ++i)
