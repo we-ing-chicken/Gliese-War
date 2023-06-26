@@ -3,9 +3,20 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using Photon.Pun.UtilityScripts;
+using UnityEngine.AI;
+using UnityEngine.Animations;
+using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
+using Unity.VisualScripting;
+using TMPro;
+using UnityEngine.ProBuilder.Shapes;
+using System.Collections;
 
 public class playerScript : MonoBehaviourPunCallbacks//, IPunObservable
 {
+    public float MouseX;
+    public float mouseSpeed;
+
     private PhotonView PV;
     private bool isJump;
     private new Rigidbody rigidbody;
@@ -22,8 +33,33 @@ public class playerScript : MonoBehaviourPunCallbacks//, IPunObservable
 
     public Animator anim;
 
-    //private Vector3 remotePos;
-    //private Quaternion remoteRot;
+    public int life;
+    public int offensivePower;
+    public int defensivePower;
+    public int maxHealth;
+    public int currHealth;
+
+    public List<Item> items;
+
+    public RealItem helmet;
+    public RealItem armor;
+    public RealItem shoe;
+    public RealItem weapon1;
+    public RealItem weapon2;
+    public int weaponNow = 1;
+
+    private string meleeAttackButtonName = "Fire1"; // �߻縦 ���� �Է� ��ư �̸�
+    private string magicAttackButtonName = "Fire2"; // �߻縦 ���� �Է� ��ư �̸�
+
+    public GameObject handR;
+    public GameObject back;
+
+    public GameObject attackEffectPos;
+    [SerializeField] private GameObject[] attackEffect;
+
+    public GameObject shoesEffectPos;
+
+    public bool isAttack = false;
 
     private float moveLR;
     private float moveFB;
@@ -41,17 +77,20 @@ public class playerScript : MonoBehaviourPunCallbacks//, IPunObservable
 
         //TODO : 캐릭터 생성 시 추가되도록.
         //anim = GetComponent<Animator>();
+
+        offensivePower = 10;
+        defensivePower = 10;
+        maxHealth = 100;
+        currHealth = 100;
+        move_speed = 8;
+
+        RefreshStat();
+
     }
 
     private void Update()
     {
         if (PV.IsMine)
-        //{
-        //    transform.position = Vector3.Lerp(transform.position, remotePos, 10 * Time.deltaTime);
-        //    transform.rotation = Quaternion.Lerp(transform.rotation, remoteRot, 10 * Time.deltaTime);
-        //    return;
-        //}
-        //else
         {
             moveLR = Input.GetAxisRaw("Horizontal");
             moveFB = Input.GetAxisRaw("Vertical");
@@ -60,19 +99,275 @@ public class playerScript : MonoBehaviourPunCallbacks//, IPunObservable
 
             anim.SetBool("isRun", ismove);
 
+            Look();
             player_lookTarget();
 
             transform.Translate(new Vector3(Input.GetAxisRaw("Horizontal") * Time.deltaTime * move_speed,
                                             0,
                                             Input.GetAxisRaw("Vertical") * Time.deltaTime * move_speed));
-            if (Input.GetButton(JumpButtonName))
+            if (Input.GetButtonDown(JumpButtonName))
             {
                 isJump = true;
                 Jump();
                 
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            weaponNow = 1;
+
+            if (weapon1 != null)
+                EquipWeapon();
+
+            RefreshStat();
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            weaponNow = 2;
+            if (weapon2 != null)
+                EquipWeapon();
+
+            RefreshStat();
+        }
     }
+    private void RefreshStat()
+    {
+        Inventory.instance.statParent.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text =
+            "Health : " + currHealth + " / " + maxHealth;
+        Inventory.instance.statParent.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text =
+            "Attack : " + (offensivePower + GetWeaponStat());
+        Inventory.instance.statParent.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text =
+            "Defense : " + defensivePower;
+        Inventory.instance.statParent.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text =
+            "Speed : " + move_speed;
+    }
+
+    private int GetWeaponStat()
+    {
+        if (weapon1 == null && weapon2 == null) return 0;
+
+        int power = 0;
+
+        if (weaponNow == 1)
+        {
+            if (weapon1 != null)
+                power = weapon1.stat.attackPower;
+        }
+        else if (weaponNow == 2)
+        {
+            if (weapon2 != null)
+                power = weapon2.stat.attackPower;
+        }
+
+        return power;
+    }
+
+    public void EquipWeapon()
+    {
+
+        if (handR.transform.childCount == 1)
+            Destroy(handR.transform.GetChild(0).gameObject);
+
+        if (weaponNow == 1)
+        {
+            if (weapon1 == null)
+                return;
+
+            switch (weapon1.item.weaponType)
+            {
+                case Item.WeaponType.Hammer:
+                    EquipHammer();
+                    break;
+
+                case Item.WeaponType.Knife:
+                    EquipKnife();
+                    break;
+
+                case Item.WeaponType.Spear:
+                    EquipSpear();
+                    break;
+            }
+        }
+        else if (weaponNow == 2)
+        {
+            if (weapon2 == null)
+                return;
+
+            switch (weapon2.item.weaponType)
+            {
+                case Item.WeaponType.Hammer:
+                    EquipHammer();
+                    break;
+
+                case Item.WeaponType.Knife:
+                    EquipKnife();
+                    break;
+
+                case Item.WeaponType.Spear:
+                    EquipSpear();
+                    break;
+            }
+        }
+        if (!isAttack)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                Debug.Log("Attack!");
+                AttackAnimation();
+                StartCoroutine(AttackEffect());
+            }
+        }
+
+        FarmingManager.Instance.SetEquipWeaponImage();
+    }
+
+    private void AttackAnimation()
+    {
+        if (weaponNow == 1)
+        {
+            if (weapon1 == null)
+                return;
+
+            switch (weapon1.item.weaponType)
+            {
+                case Item.WeaponType.Hammer:
+                    anim.SetTrigger("attackHammer");
+                    break;
+
+                case Item.WeaponType.Knife:
+                    anim.SetTrigger("attackSword");
+                    break;
+
+                case Item.WeaponType.Spear:
+                    anim.SetTrigger("attackSpear");
+                    break;
+            }
+        }
+        else if (weaponNow == 2)
+        {
+            if (weapon2 == null)
+                return;
+
+            switch (weapon2.item.weaponType)
+            {
+                case Item.WeaponType.Hammer:
+                    anim.SetTrigger("attackHammer");
+                    break;
+
+                case Item.WeaponType.Knife:
+                    anim.SetTrigger("attackSword");
+                    break;
+
+                case Item.WeaponType.Spear:
+                    anim.SetTrigger("attackSpear");
+                    break;
+            }
+        }
+    }
+
+    private void EquipHammer()
+    {
+        back.transform.GetChild(0).gameObject.SetActive(true);
+        back.transform.GetChild(1).gameObject.SetActive(false);
+        back.transform.GetChild(2).gameObject.SetActive(false);
+    }
+
+    private void EquipSpear()
+    {
+        back.transform.GetChild(1).gameObject.SetActive(true);
+        back.transform.GetChild(0).gameObject.SetActive(false);
+        back.transform.GetChild(2).gameObject.SetActive(false);
+    }
+
+    private void EquipKnife()
+    {
+        back.transform.GetChild(2).gameObject.SetActive(true);
+        back.transform.GetChild(0).gameObject.SetActive(false);
+        back.transform.GetChild(1).gameObject.SetActive(false);
+    }
+
+    IEnumerator AttackEffect()
+    {
+        if (weaponNow == 1)
+        {
+            if (weapon1 == null)
+                yield return null;
+
+            switch (weapon1.item.weaponType)
+            {
+                case Item.WeaponType.Hammer:
+                    yield return new WaitForSeconds(0.3f);
+                    attackEffectPos.transform.GetChild(2).gameObject.SetActive(true);
+                    StartCoroutine(QuitAttackEffect(2));
+                    break;
+
+                case Item.WeaponType.Knife:
+                    yield return new WaitForSeconds(0.2f);
+                    attackEffectPos.transform.GetChild(0).gameObject.SetActive(true);
+                    StartCoroutine(QuitAttackEffect(0));
+
+                    break;
+
+                case Item.WeaponType.Spear:
+                    yield return new WaitForSeconds(0.2f);
+                    attackEffectPos.transform.GetChild(1).gameObject.SetActive(true);
+                    StartCoroutine(QuitAttackEffect(1));
+                    break;
+            }
+        }
+        else if (weaponNow == 2)
+        {
+            if (weapon2 == null)
+                yield return null;
+
+            switch (weapon2.item.weaponType)
+            {
+                case Item.WeaponType.Hammer:
+                    yield return new WaitForSeconds(0.3f);
+                    attackEffectPos.transform.GetChild(2).gameObject.SetActive(true);
+                    StartCoroutine(QuitAttackEffect(2));
+                    break;
+
+                case Item.WeaponType.Knife:
+                    yield return new WaitForSeconds(0.2f);
+                    attackEffectPos.transform.GetChild(0).gameObject.SetActive(true);
+                    StartCoroutine(QuitAttackEffect(0));
+
+                    break;
+
+                case Item.WeaponType.Spear:
+                    yield return new WaitForSeconds(0.2f);
+                    attackEffectPos.transform.GetChild(1).gameObject.SetActive(true);
+                    StartCoroutine(QuitAttackEffect(1));
+                    break;
+            }
+        }
+        yield return null;
+    }
+
+    IEnumerator QuitAttackEffect(int pos)
+    {
+        yield return new WaitForSeconds(0.5f);
+        attackEffectPos.transform.GetChild(pos).gameObject.SetActive(false);
+        yield return null;
+    }
+
+    /*public void UnwearHelmet()
+    {
+        Destroy(head.transform.GetChild(1).gameObject);
+    }
+
+    public void UnwearArmor()
+    {
+        Destroy(body.transform.GetChild(1).gameObject);
+    }
+
+    public void UnwearShoes()
+    {
+        Destroy(footL.transform.GetChild(1).gameObject);
+        Destroy(footR.transform.GetChild(1).gameObject);
+    }*/
 
     private void player_lookTarget()
     {
@@ -124,32 +419,28 @@ public class playerScript : MonoBehaviourPunCallbacks//, IPunObservable
         playertransform.rotation = Quaternion.Lerp(playertransform.rotation, rotation, Time.deltaTime * 10);
     }
 
+    private void Look()
+    {
+        MouseX += Input.GetAxis("Mouse X") * mouseSpeed;
+        transform.rotation = Quaternion.Euler(0, MouseX, 0);
+    }
     ////RPC �Լ�
     //[PunRPC]
     void Jump()
     {
         if (!isJump) return;
-        //Debug.Log("Jump!");
+        isJump = false;
 
         anim.SetTrigger("doJump");
         rigidbody.velocity = Vector3.zero;
         rigidbody.angularVelocity = Vector3.zero;
         rigidbody.AddForce(Vector3.up * jump_force, ForceMode.Impulse);
-        isJump = false;
+        
     }
 
-    //public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    //{
-    //    if (stream.IsWriting)
-    //    { 
-    //        stream.SendNext(transform.position);
-    //        stream.SendNext(transform.rotation);
-    //        //stream.SendNext(Jump);
-    //    }
-    //    else
-    //    {
-    //        remotePos = (Vector3)stream.ReceiveNext();
-    //        remoteRot = (Quaternion)stream.ReceiveNext();
-    //    }
-    //}
+    public bool isMine()
+    {
+        bool isMine = PV.IsMine;
+        return isMine;
+    }
 }

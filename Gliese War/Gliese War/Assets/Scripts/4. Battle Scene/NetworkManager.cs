@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Pun; //¼±¾ð
-using Photon.Realtime; //¼±¾ð
-using UnityEngine.UI; //¼±¾ð
+using Photon.Pun; //ï¿½ï¿½ï¿½ï¿½
+using Photon.Realtime; //ï¿½ï¿½ï¿½ï¿½
+using UnityEngine.UI; //ï¿½ï¿½ï¿½ï¿½
 using TMPro;
 using UnityEngine.UIElements;
 
-public class NetworkManager : MonoBehaviourPunCallbacks //Å¬·¡½º »ó¼Ó
+public class NetworkManager : MonoBehaviourPunCallbacks //Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 {
+    private static NetworkManager _instance;
     public TMP_Text StatusText;
     public TMP_InputField NickNameInput;
     public TMP_InputField roomNameInput;
@@ -17,48 +18,77 @@ public class NetworkManager : MonoBehaviourPunCallbacks //Å¬·¡½º »ó¼Ó
     //public List<Transform> spawnpoints = new List<Transform>();
     public GameObject[] spawnpoints;
 
+    public CServercamTest cscamera;
+
     private bool connect = false;
 
-    //ÇöÀç »óÅÂ Ç¥½Ã 
-    private void Update() => StatusText.text = PhotonNetwork.NetworkClientState.ToString();
+    public static NetworkManager Instance
+    {
+        get
+        {
+            if (!_instance)
+            {
+                if (_instance == null)
+                    return null;
+
+                _instance = FindObjectOfType(typeof(NetworkManager)) as NetworkManager;
+            }
+
+            return _instance;
+        }
+    }
+    private void Awake()
+    {
+        if (_instance == null)
+        {
+            _instance = this;
+        }
+        else if (_instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private void Start()
     {
         Connect();
     }
-    //¼­¹ö¿¡ Á¢¼Ó
+
+    //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½ 
+    private void Update() => StatusText.text = PhotonNetwork.NetworkClientState.ToString();
+
+    
     public void Connect() => PhotonNetwork.ConnectUsingSettings();
-    //¿¬°á µÇ¸é È£Ãâ
     public override void OnConnectedToMaster()
     {
-        Debug.Log("¼­¹öÁ¢¼Ó¿Ï·á");
+        Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¿Ï·ï¿½");
         string nickName = PhotonNetwork.LocalPlayer.NickName;
         nickName = NickNameInput.text;
-        Debug.Log("´ç½ÅÀÇ ÀÌ¸§Àº " + nickName + " ÀÔ´Ï´Ù.");
+        Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ï¿½ï¿½ " + nickName + " ï¿½Ô´Ï´ï¿½.");
         connect = true;
     }
 
-    //¿¬°á ²÷±â
     public void Disconnect() => PhotonNetwork.Disconnect();
-    //¿¬°á ²÷°åÀ» ¶§ È£Ãâ
-    public override void OnDisconnected(DisconnectCause cause) => Debug.Log("¿¬°á²÷±è");
-
-    //¹æ ÀÔÀå
+    public override void OnDisconnected(DisconnectCause cause) => Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½" + cause);
     public void JoinRoom()
     {
         if(connect)
         {
             PhotonNetwork.JoinRandomRoom();
             uiPanel.SetActive(false);
-            Debug.Log(roomNameInput.text + "¹æ¿¡ ÀÔÀåÇÏ¿´½À´Ï´Ù.");
+            Debug.Log(roomNameInput.text + "ï¿½æ¿¡ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
         }
     }
-
-    //·£´ý ·ë ÀÔÀå¿¡ ½ÇÆÐÇÏ¸é »õ·Î¿î ¹æ »ý¼º (master ¹æ »ý¼º)
     public override void OnJoinRandomFailed(short returnCode, string message) =>
     PhotonNetwork.CreateRoom(roomNameInput.text, new RoomOptions { MaxPlayers = userNum });
 
-    //¹æ¿¡ ÀÔÀå ÇßÀ» ¶§ È£Ãâ 
+    //TODO - ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½Îµï¿½ï¿½ï¿½ ï¿½Ë»ï¿½ï¿½Ø¼ï¿½ spawnpoints ï¿½Ù¸ï¿½ï¿½ï¿½ ï¿½Ò´ï¿½?
     public override void OnJoinedRoom()
-    => PhotonNetwork.Instantiate("player", spawnpoints[0].transform.position, Quaternion.identity);
+    {
+        //cscamera.gameObject.SetActive(true);
+        GameObject p = new GameObject();
+        p = PhotonNetwork.Instantiate("player", spawnpoints[0].transform.position, Quaternion.identity);
+        //Debug.Log(p.GetComponent<playerScript>().isMine());
+        //cscamera.ps = p.GetComponent<playerScript>();
+    }
 }

@@ -13,7 +13,6 @@ public class CPlayer : MonoBehaviour
 {
     static public CPlayer instance;
     private float Gravity = 9.8f;
-    public int life;
     public float MouseX;
     public float mouseSpeed;
     public bool isUI = false;
@@ -97,7 +96,6 @@ public class CPlayer : MonoBehaviour
         moveDir = Vector3.zero;
         rot = 1.0f;
         isNear = false;
-        life = 10;
 
         offensivePower = 10;
         defensivePower = 10;
