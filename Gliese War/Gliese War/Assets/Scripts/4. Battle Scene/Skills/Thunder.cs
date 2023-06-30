@@ -4,8 +4,33 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Skill : MonoBehaviour
+public class Thunder : MonoBehaviour
 {
+
+    void Start()
+    {
+        StartCoroutine(Timer());
+    }
+
+    IEnumerator Timer()
+    {
+        float time = 0f;
+
+        while (true)
+        {
+            time += Time.deltaTime;
+
+            if (time >= 5f)
+            {
+                Destroy(transform.parent.parent.gameObject);
+                Debug.Log("끝");
+                break;
+            }
+
+            yield return null;
+        }
+    }
+    
     void OnParticleTrigger()
     {
         ParticleSystem ps = GetComponent<ParticleSystem>();
