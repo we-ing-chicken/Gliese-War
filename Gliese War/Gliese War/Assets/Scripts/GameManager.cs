@@ -45,9 +45,13 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public void SaveItems()
+    public void SaveItems(RealItem hm, RealItem am, RealItem sh, RealItem w1, RealItem w2)
     {
-        
+        helmet = hm;
+        armor = am;
+        shoe = sh;
+        weapon1 = w1;
+        weapon2 = w2;
     }
 
 

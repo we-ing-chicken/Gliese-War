@@ -29,7 +29,7 @@ public class FarmingManager : MonoBehaviour
     [Header("Timer")]
     //[SerializeField] private float fadeTime = 2f;
     private float _playTime = 0.0f; // 플레이한 시간
-    private float FARMING_TIME = 180f; // 게임 길이
+    private float FARMING_TIME = 30f; // 게임 길이
     //private float FARMING_TIME = 30; // 게임 길이
     [SerializeField] private GameObject timerTxt; //타이머 텍스트
     private TextMeshProUGUI _timerTxtComp; // 타이머 텍스트 컴포넌트
@@ -357,7 +357,7 @@ public class FarmingManager : MonoBehaviour
 
     public void PlayBattlePhase()
     {
-        GameManager.Instance.SaveItems();
+        GameManager.Instance.SaveItems(CPlayer.Instance.helmet, CPlayer.Instance.armor, CPlayer.Instance.shoe, CPlayer.Instance.weapon1, CPlayer.Instance.weapon2);
         SceneManager.LoadScene((int)(Scene.BattleScene));
     }
     

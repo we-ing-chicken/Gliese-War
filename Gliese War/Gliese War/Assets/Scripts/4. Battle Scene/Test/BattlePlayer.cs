@@ -101,7 +101,9 @@ public class BattlePlayer : MonoBehaviourPunCallbacks, IPunObservable
 
     private void Start()
     {
+
         instance = this;
+        allpyItems();
         charactercontroller = GetComponent<CharacterController>();
         //if (ignoreGravity)
         //    charactercontroller.
@@ -758,5 +760,22 @@ public class BattlePlayer : MonoBehaviourPunCallbacks, IPunObservable
             remotePos = (Vector3)stream.ReceiveNext();
             remoteRot = (Quaternion)stream.ReceiveNext();
         }
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        // if (hit.collider.tag.Equals("WALL"))
+        // if (hit.collider.CompareTag("WALL"))
+        if (hit.collider.tag == "Weapon")
+            Debug.Log($"OnControllerColliderHit - {hit.collider.name}");
+    }
+    void allpyItems()
+    {
+        if (GameManager.Instance == null) return;
+        helmet = GameManager.Instance.helmet;
+        armor = GameManager.Instance.armor;
+        shoe = GameManager.Instance.shoe;
+        weapon1 = GameManager.Instance.weapon1;
+        weapon2 = GameManager.Instance.weapon2;
     }
 }
