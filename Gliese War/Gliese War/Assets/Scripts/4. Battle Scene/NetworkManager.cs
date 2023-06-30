@@ -6,6 +6,7 @@ using Photon.Realtime; //����
 using UnityEngine.UI; //����
 using TMPro;
 using UnityEngine.UIElements;
+using Cinemachine;
 
 public class NetworkManager : MonoBehaviourPunCallbacks //Ŭ���� ���
 {
@@ -18,7 +19,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks //Ŭ���� ���
     //public List<Transform> spawnpoints = new List<Transform>();
     public GameObject[] spawnpoints;
 
-    public CServercamTest cscamera;
+    public CMvcam cscamera;
 
     private bool connect = false;
 
@@ -61,22 +62,22 @@ public class NetworkManager : MonoBehaviourPunCallbacks //Ŭ���� ���
     public void Connect() => PhotonNetwork.ConnectUsingSettings();
     public override void OnConnectedToMaster()
     {
-        Debug.Log("�������ӿϷ�");
+        Debug.Log("접속 완료");
         string nickName = PhotonNetwork.LocalPlayer.NickName;
         nickName = NickNameInput.text;
-        Debug.Log("����� �̸��� " + nickName + " �Դϴ�.");
+        Debug.Log("당신의 닉네임은 " + nickName + " 입니다.");
         connect = true;
     }
 
     public void Disconnect() => PhotonNetwork.Disconnect();
-    public override void OnDisconnected(DisconnectCause cause) => Debug.Log("�������" + cause);
+    public override void OnDisconnected(DisconnectCause cause) => Debug.Log("접속 종료" + cause);
     public void JoinRoom()
     {
         if(connect)
         {
             PhotonNetwork.JoinRandomRoom();
             uiPanel.SetActive(false);
-            Debug.Log(roomNameInput.text + "�濡 �����Ͽ����ϴ�.");
+            Debug.Log(roomNameInput.text + " 방으로 입장합니다.");
         }
     }
     public override void OnJoinRandomFailed(short returnCode, string message) =>
@@ -86,8 +87,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks //Ŭ���� ���
     public override void OnJoinedRoom()
     {
         //cscamera.gameObject.SetActive(true);
-        GameObject p = new GameObject();
-        p = PhotonNetwork.Instantiate("player", spawnpoints[0].transform.position, Quaternion.identity);
+        PhotonNetwork.Instantiate("player", spawnpoints[0].transform.position, Quaternion.identity);
+
+        //TODO - 시네머신 타겟 go로 변경
+        // = go.transform;
+        //cscamera.cmvc.GetCinemachineComponent<>
+
         //Debug.Log(p.GetComponent<playerScript>().isMine());
         //cscamera.ps = p.GetComponent<playerScript>();
     }

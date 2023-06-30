@@ -1,3 +1,5 @@
+using Cinemachine;
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ using UnityEngine.Animations;
 using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 
-public class BattlePlayer : MonoBehaviour
+public class BattlePlayer : MonoBehaviourPunCallbacks, IPunObservable
 {
     static public BattlePlayer instance;
     private float Gravity = 9.8f;
@@ -17,7 +19,6 @@ public class BattlePlayer : MonoBehaviour
     public float MouseX;
     public float mouseSpeed;
     public bool isUI = false;
-    public bool isFarming = false;
 
     private string moveFBAxisName = "Vertical"; // �յ� �������� ���� �Է��� �̸�
     private string moveLRAxisName = "Horizontal"; // �¿� �������� ���� �Է��� �̸�
@@ -90,6 +91,14 @@ public class BattlePlayer : MonoBehaviour
 
     public bool isNear;
 
+    private Vector3 remotePos;
+    private Quaternion remoteRot;
+
+
+    [SerializeField] private CinemachineVirtualCamera virtualCamera;
+
+    public PhotonView pv;
+
     private void Start()
     {
         instance = this;
@@ -124,6 +133,14 @@ public class BattlePlayer : MonoBehaviour
         isCool = false;
         
         EquipWeapon();
+
+        virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
+
+        if (pv.IsMine)
+        {
+            virtualCamera.Follow = transform;
+            virtualCamera.LookAt = transform;
+        }
     }
 
     private void Update()
@@ -139,19 +156,23 @@ public class BattlePlayer : MonoBehaviour
 
         if (charactercontroller == null) return;
 
+        if(pv.IsMine)
+        {
+            moveFB = Input.GetAxis(moveFBAxisName);
+
+            // rotate�� ���� �Է� ����
+            moveLR = Input.GetAxis(moveLRAxisName);
+
+            ismove = (Input.GetButton(moveFBAxisName) || Input.GetButton(moveLRAxisName));
+
+            // fire�� ���� �Է� ����
+            Mlattack = Input.GetButton(meleeAttackButtonName);
+            Mgattack = Input.GetButton(magicAttackButtonName);
+            p_Jump = Input.GetButton(JumpButtonName);
+            animate_Run();
+        }
         // move�� ���� �Է� ����
-        moveFB = Input.GetAxis(moveFBAxisName);
 
-        // rotate�� ���� �Է� ����
-        moveLR = Input.GetAxis(moveLRAxisName);
-
-        ismove = (Input.GetButton(moveFBAxisName) || Input.GetButton(moveLRAxisName));
-
-        // fire�� ���� �Է� ����
-        Mlattack = Input.GetButton(meleeAttackButtonName);
-        Mgattack = Input.GetButton(magicAttackButtonName);
-        p_Jump = Input.GetButton(JumpButtonName);
-        animate();
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -296,7 +317,17 @@ public class BattlePlayer : MonoBehaviour
         }
         else
         {
-            Move();
+            if (pv.IsMine)
+            {
+                remotePos = new Vector3(moveLR, 0, moveFB);
+                Move();
+            }
+            else
+            {
+                Move();
+                transform.rotation = Quaternion.Lerp(transform.rotation, remoteRot, moveSpeed * Time.deltaTime);
+            }
+
             if (p_Jump)
             {
                 isAttack = false;
@@ -317,8 +348,7 @@ public class BattlePlayer : MonoBehaviour
     {
         player_lookTarget();
 
-
-        moveDir = charactercontroller.transform.TransformDirection(new Vector3(moveLR, 0, moveFB)) * moveSpeed;
+        moveDir = charactercontroller.transform.TransformDirection(remotePos) * moveSpeed;
     }
 
     private void Jump()
@@ -334,8 +364,10 @@ public class BattlePlayer : MonoBehaviour
     private void Look()
     {
         MouseX += Input.GetAxis("Mouse X") * mouseSpeed;
-        if(!isUI)
-            transform.rotation = Quaternion.Euler(0, MouseX, 0);
+
+        if(pv.IsMine)
+            remoteRot = Quaternion.Euler(0, MouseX, 0);
+        transform.rotation = remoteRot;
     }
     private void player_lookTarget()
     {
@@ -388,7 +420,7 @@ public class BattlePlayer : MonoBehaviour
         playertransform.rotation = Quaternion.Lerp(playertransform.rotation, rotation, Time.deltaTime * 10);
     }
 
-    private void animate()
+    private void animate_Run()
     {
         if(!isUI)
             animator.SetBool("isRun", ismove);
@@ -705,6 +737,26 @@ public class BattlePlayer : MonoBehaviour
                 shoesEffectPos.transform.GetChild(4).gameObject.SetActive(true);
                 break;
             
+        }
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        // stream - 데이터를 주고 받는 통로 
+        // 내가 데이터를 보내는 중이라면
+        if (stream.IsWriting)
+        {
+            // 이 방안에 있는 모든 사용자에게 브로드캐스트 
+            // - 내 포지션 값을 보내보자
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
+        }
+        // 내가 데이터를 받는 중이라면 
+        else
+        {
+            // 순서대로 보내면 순서대로 들어옴. 근데 타입캐스팅 해주어야 함
+            remotePos = (Vector3)stream.ReceiveNext();
+            remoteRot = (Quaternion)stream.ReceiveNext();
         }
     }
 }

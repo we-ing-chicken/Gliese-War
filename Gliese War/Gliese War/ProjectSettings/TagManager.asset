@@ -17,6 +17,7 @@ TagManager:
   - Bee
   - Cactus
   - Bomb
+  - VirtualCamera
   layers:
   - Default
   - TransparentFX
