@@ -59,13 +59,15 @@ public class CPlayer : MonoBehaviour
     public GameObject back;
     
     public GameObject attackEffectPos;
-    [SerializeField] private GameObject[] attackEffect;
+    [SerializeField] private AudioClip[] attackSounds;
+
     
     public GameObject shoesEffectPos;
 
     public bool isAttack = false;
 
     private CharacterController charactercontroller;
+    private AudioSource audio;
 
 
     public float moveFB { get; private set; } // ������ �����̵� �Է°�
@@ -105,6 +107,8 @@ public class CPlayer : MonoBehaviour
 
     private void Start()
     {
+        audio = GetComponent<AudioSource>();
+        
         charactercontroller = GetComponent<CharacterController>();
         //if (ignoreGravity)
         //    charactercontroller.
@@ -176,6 +180,7 @@ public class CPlayer : MonoBehaviour
                 {
                     AttackAnimation();
                     StartCoroutine(AttackEffect());
+                    
                 }
             }
         }
@@ -364,19 +369,22 @@ public class CPlayer : MonoBehaviour
                     yield return new WaitForSeconds(0.3f);
                     attackEffectPos.transform.GetChild(2).gameObject.SetActive(true);
                     StartCoroutine(QuitAttackEffect(2));
+                    audio.PlayOneShot(attackSounds[2], 1f);
+
                     break;
                 
                 case Item.WeaponType.Knife:
                     yield return new WaitForSeconds(0.2f);
                     attackEffectPos.transform.GetChild(0).gameObject.SetActive(true);
                     StartCoroutine(QuitAttackEffect(0));
-                    
+                    audio.PlayOneShot(attackSounds[0], 1f);
                     break;
                 
                 case Item.WeaponType.Spear:
                     yield return new WaitForSeconds(0.2f);
                     attackEffectPos.transform.GetChild(1).gameObject.SetActive(true);
                     StartCoroutine(QuitAttackEffect(1));
+                    audio.PlayOneShot(attackSounds[1], 1f);
                     break;
             }
         }
@@ -389,19 +397,21 @@ public class CPlayer : MonoBehaviour
             {
                 case Item.WeaponType.Hammer:
                     yield return new WaitForSeconds(0.3f);
+                    audio.PlayOneShot(attackSounds[2], 1f);
                     attackEffectPos.transform.GetChild(2).gameObject.SetActive(true);
                     StartCoroutine(QuitAttackEffect(2));
                     break;
                 
                 case Item.WeaponType.Knife:
                     yield return new WaitForSeconds(0.2f);
+                    audio.PlayOneShot(attackSounds[0], 1f);
                     attackEffectPos.transform.GetChild(0).gameObject.SetActive(true);
                     StartCoroutine(QuitAttackEffect(0));
-                    
                     break;
                 
                 case Item.WeaponType.Spear:
                     yield return new WaitForSeconds(0.2f);
+                    audio.PlayOneShot(attackSounds[1], 1f);
                     attackEffectPos.transform.GetChild(1).gameObject.SetActive(true);
                     StartCoroutine(QuitAttackEffect(1));
                     break;
