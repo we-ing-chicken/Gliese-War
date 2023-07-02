@@ -301,16 +301,16 @@ public class CPlayerUI : MonoBehaviour
             
             switch (weapon1.item.weaponType)
             {
-                case Item.WeaponType.Hammer:
-                    animator.SetTrigger("attackHammer");
-                    break;
-                
-                case Item.WeaponType.Knife:
+                case Item.WeaponType.Sword:
                     animator.SetTrigger("attackSword");
                     break;
                 
                 case Item.WeaponType.Spear:
                     animator.SetTrigger("attackSpear");
+                    break;
+                
+                case Item.WeaponType.Hammer:
+                    animator.SetTrigger("attackHammer");
                     break;
             }
         }
@@ -321,16 +321,16 @@ public class CPlayerUI : MonoBehaviour
             
             switch (weapon2.item.weaponType)
             {
-                case Item.WeaponType.Hammer:
-                    animator.SetTrigger("attackHammer");
-                    break;
-                
-                case Item.WeaponType.Knife:
+                case Item.WeaponType.Sword:
                     animator.SetTrigger("attackSword");
                     break;
                 
                 case Item.WeaponType.Spear:
                     animator.SetTrigger("attackSpear");
+                    break;
+                
+                case Item.WeaponType.Hammer:
+                    animator.SetTrigger("attackHammer");
                     break;
             }
         }
@@ -436,16 +436,16 @@ public class CPlayerUI : MonoBehaviour
             
             switch (weapon1.item.weaponType)
             {
-                case Item.WeaponType.Hammer:
-                    EquipHammer();
-                    break;
-                
-                case Item.WeaponType.Knife:
-                    EquipKnife();
+                case Item.WeaponType.Sword:
+                    EquipSword();
                     break;
                 
                 case Item.WeaponType.Spear:
                     EquipSpear();
+                    break;
+                
+                case Item.WeaponType.Hammer:
+                    EquipHammer();
                     break;
             }
         }
@@ -456,16 +456,16 @@ public class CPlayerUI : MonoBehaviour
             
             switch (weapon2.item.weaponType)
             {
-                case Item.WeaponType.Hammer:
-                    EquipHammer();
-                    break;
-                
-                case Item.WeaponType.Knife:
-                    EquipKnife();
+                case Item.WeaponType.Sword:
+                    EquipSword();
                     break;
                 
                 case Item.WeaponType.Spear:
                     EquipSpear();
+                    break;
+                
+                case Item.WeaponType.Hammer:
+                    EquipHammer();
                     break;
             }
         }
@@ -487,7 +487,7 @@ public class CPlayerUI : MonoBehaviour
         back.transform.GetChild(2).gameObject.SetActive(false);
     }
     
-    private void EquipKnife()
+    private void EquipSword()
     {
         back.transform.GetChild(2).gameObject.SetActive(true);
         back.transform.GetChild(0).gameObject.SetActive(false);

@@ -180,8 +180,8 @@ public class playerScript : MonoBehaviourPunCallbacks//, IPunObservable
                     EquipHammer();
                     break;
 
-                case Item.WeaponType.Knife:
-                    EquipKnife();
+                case Item.WeaponType.Sword:
+                    EquipSword();
                     break;
 
                 case Item.WeaponType.Spear:
@@ -200,8 +200,8 @@ public class playerScript : MonoBehaviourPunCallbacks//, IPunObservable
                     EquipHammer();
                     break;
 
-                case Item.WeaponType.Knife:
-                    EquipKnife();
+                case Item.WeaponType.Sword:
+                    EquipSword();
                     break;
 
                 case Item.WeaponType.Spear:
@@ -235,7 +235,7 @@ public class playerScript : MonoBehaviourPunCallbacks//, IPunObservable
                     anim.SetTrigger("attackHammer");
                     break;
 
-                case Item.WeaponType.Knife:
+                case Item.WeaponType.Sword:
                     anim.SetTrigger("attackSword");
                     break;
 
@@ -255,7 +255,7 @@ public class playerScript : MonoBehaviourPunCallbacks//, IPunObservable
                     anim.SetTrigger("attackHammer");
                     break;
 
-                case Item.WeaponType.Knife:
+                case Item.WeaponType.Sword:
                     anim.SetTrigger("attackSword");
                     break;
 
@@ -280,7 +280,7 @@ public class playerScript : MonoBehaviourPunCallbacks//, IPunObservable
         back.transform.GetChild(2).gameObject.SetActive(false);
     }
 
-    private void EquipKnife()
+    private void EquipSword()
     {
         back.transform.GetChild(2).gameObject.SetActive(true);
         back.transform.GetChild(0).gameObject.SetActive(false);
@@ -302,7 +302,7 @@ public class playerScript : MonoBehaviourPunCallbacks//, IPunObservable
                     StartCoroutine(QuitAttackEffect(2));
                     break;
 
-                case Item.WeaponType.Knife:
+                case Item.WeaponType.Sword:
                     yield return new WaitForSeconds(0.2f);
                     attackEffectPos.transform.GetChild(0).gameObject.SetActive(true);
                     StartCoroutine(QuitAttackEffect(0));
@@ -329,7 +329,7 @@ public class playerScript : MonoBehaviourPunCallbacks//, IPunObservable
                     StartCoroutine(QuitAttackEffect(2));
                     break;
 
-                case Item.WeaponType.Knife:
+                case Item.WeaponType.Sword:
                     yield return new WaitForSeconds(0.2f);
                     attackEffectPos.transform.GetChild(0).gameObject.SetActive(true);
                     StartCoroutine(QuitAttackEffect(0));

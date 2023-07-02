@@ -23,8 +23,8 @@ public class WeaponAttackBattle : MonoBehaviour
                     StartCoroutine(TurnOffHandHammer());
                     break;
                 
-                case Item.WeaponType.Knife:
-                    TurnOnHandKnife();
+                case Item.WeaponType.Sword:
+                    TurnOnHandSword();
                     StartCoroutine(TurnOffHandKnife());
                     break;
                 
@@ -44,8 +44,8 @@ public class WeaponAttackBattle : MonoBehaviour
                     StartCoroutine(TurnOffHandHammer());
                     break;
                 
-                case Item.WeaponType.Knife:
-                    TurnOnHandKnife();
+                case Item.WeaponType.Sword:
+                    TurnOnHandSword();
                     StartCoroutine(TurnOffHandKnife());
                     break;
                 
@@ -77,7 +77,7 @@ public class WeaponAttackBattle : MonoBehaviour
         col.enabled = true;
     }
     
-    public void TurnOnHandKnife()
+    public void TurnOnHandSword()
     {
         BattlePlayer.instance.handR.transform.GetChild(2).gameObject.SetActive(true);
         BattlePlayer.instance.back.transform.GetChild(2).gameObject.SetActive(false);
