@@ -18,6 +18,8 @@ TagManager:
   - Cactus
   - Bomb
   - VirtualCamera
+  - Inside
+  - Outside
   layers:
   - Default
   - TransparentFX
