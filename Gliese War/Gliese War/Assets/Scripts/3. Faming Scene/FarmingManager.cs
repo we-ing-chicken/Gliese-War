@@ -196,7 +196,7 @@ public class FarmingManager : MonoBehaviour
         else if(Input.GetKeyDown(KeyCode.Alpha7))
             inventory.AcquireItem(inventory.spear[1]);
         else if(Input.GetKeyDown(KeyCode.Alpha8))
-            inventory.AcquireItem(inventory.knife[1]);
+            inventory.AcquireItem(inventory.sword[1]);
         //else if(Input.GetKeyDown(KeyCode.F9))
             //playercam.isDebug = true;
         //else 
@@ -437,7 +437,7 @@ public class FarmingManager : MonoBehaviour
                     weapon1Image.sprite = weaponImage[1];
                     break;
                 
-                case Item.WeaponType.Knife:
+                case Item.WeaponType.Sword:
                     weapon1Image.sprite = weaponImage[2];
                     break;
             }
@@ -486,7 +486,7 @@ public class FarmingManager : MonoBehaviour
                     weapon2Image.sprite = weaponImage[1];
                     break;
                 
-                case Item.WeaponType.Knife:
+                case Item.WeaponType.Sword:
                     weapon2Image.sprite = weaponImage[2];
                     break;
             }

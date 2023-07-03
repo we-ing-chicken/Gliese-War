@@ -47,7 +47,7 @@ public class Drop : MonoBehaviour
             if (isFirst)
             {
                 itemCategory = Item.ItemCategory.Weapon;
-                weaponType = Item.WeaponType.Knife;
+                weaponType = Item.WeaponType.Sword;
             }
             
             GameObject temp;
@@ -71,20 +71,20 @@ public class Drop : MonoBehaviour
                     weaponType = (Item.WeaponType)Random.Range(0, 3);
                     switch (weaponType)
                     {
-                        case Item.WeaponType.Knife:
-                            temp = Instantiate(_inven.knife[0].itemPrefab);
+                        case Item.WeaponType.Hammer:
+                            temp = Instantiate(_inven.hammer[0].itemPrefab);
+                            break;
+                        
+                        case Item.WeaponType.Sword:
+                            temp = Instantiate(_inven.sword[0].itemPrefab);
                             break;
                         
                         case Item.WeaponType.Spear:
                             temp = Instantiate(_inven.spear[0].itemPrefab);
                             break;
-                        
-                        case Item.WeaponType.Hammer:
-                            temp = Instantiate(_inven.hammer[0].itemPrefab);
-                            break;
-                        
+
                         default:
-                            temp = Instantiate(_inven.knife[0].itemPrefab);
+                            temp = Instantiate(_inven.sword[0].itemPrefab);
                             break;                        
                     }
                     
@@ -92,7 +92,7 @@ public class Drop : MonoBehaviour
                     break;
                 
                 default:
-                    temp = Instantiate(_inven.knife[0].itemPrefab);
+                    temp = Instantiate(_inven.sword[0].itemPrefab);
                     break;
             }
 
