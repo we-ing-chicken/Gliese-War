@@ -18,7 +18,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks //Ŭ���� ���
     public byte userNum = 4;
     //public List<Transform> spawnpoints = new List<Transform>();
     public GameObject[] spawnpoints;
-
+    int i = 0;
+    public int p_Num = 0;
+    public PhotonView pv;
     public CMvcam cscamera;
 
     private bool connect = false;
@@ -86,8 +88,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks //Ŭ���� ���
     //TODO - �÷��̾� �ε��� �˻��ؼ� spawnpoints �ٸ��� �Ҵ�?
     public override void OnJoinedRoom()
     {
+        Debug.Log(p_Num);
+
         //cscamera.gameObject.SetActive(true);
-        PhotonNetwork.Instantiate("player", spawnpoints[0].transform.position, Quaternion.identity);
+        PhotonNetwork.Instantiate("player", spawnpoints[p_Num].transform.position, Quaternion.identity);
+        //pv.RPC("numchange", RpcTarget.All);
+        Debug.Log(p_Num);
 
         //TODO - 시네머신 타겟 go로 변경
         // = go.transform;
@@ -95,5 +101,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks //Ŭ���� ���
 
         //Debug.Log(p.GetComponent<playerScript>().isMine());
         //cscamera.ps = p.GetComponent<playerScript>();
+    }
+
+    [PunRPC]
+    public void numchange()
+    {
+        p_Num++;
+
     }
 }

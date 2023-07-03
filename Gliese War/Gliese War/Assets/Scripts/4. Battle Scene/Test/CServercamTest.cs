@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CServercamTest : MonoBehaviour
 {
-    public playerScript ps;
+    public BattlePlayer bp;
     public float xmove = 0;
     public float ymove = 0;
     public float distance = 3;
@@ -14,17 +14,17 @@ public class CServercamTest : MonoBehaviour
 
     void Update()
     {
-        if (ps == null) return; 
+        if (bp == null) return; 
         else
         {
             Debug.Log("!");
-            Debug.Log(ps.transform.position);
+            Debug.Log(bp.transform.position);
 
             RaycastHit[] hit;
 
             //float dis = Vector3.Distance(Camera.main.transform.position, Player.instance.transform.position);
-            Vector3 direction = (Camera.main.transform.position - ps.transform.position).normalized;
-            hit = (Physics.RaycastAll(ps.transform.position, direction, distance));
+            Vector3 direction = (Camera.main.transform.position - bp.transform.position).normalized;
+            hit = (Physics.RaycastAll(bp.transform.position, direction, distance));
 
             for (int i = 0; i < hit.Length; ++i)
             {
