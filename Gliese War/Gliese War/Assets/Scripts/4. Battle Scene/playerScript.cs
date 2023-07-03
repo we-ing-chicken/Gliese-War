@@ -102,7 +102,8 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
     {
 
         instance = this;
-        allpyItems();
+        if(pv.IsMine) 
+            applyItems();
         charactercontroller = GetComponent<CharacterController>();
         //if (ignoreGravity)
         //    charactercontroller.
@@ -773,7 +774,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
         if (hit.collider.tag == "Weapon")
             Debug.Log($"OnControllerColliderHit - {hit.collider.name}");
     }
-    void allpyItems()
+    void applyItems()
     {
         if (GameManager.Instance == null) return;
         helmet = GameManager.Instance.helmet;
@@ -784,4 +785,5 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
 
         //Debug.Log(weapon1.item.itemName);
     }
+   
 }
