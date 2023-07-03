@@ -414,18 +414,21 @@ MonoBehaviour:
   ignoreGravity: 0
   items: []
   weaponNow: 1
-  head: {fileID: 0}
-  body: {fileID: 0}
-  footL: {fileID: 0}
-  footR: {fileID: 0}
-  handR: {fileID: 0}
-  back: {fileID: 0}
-  attackEffectPos: {fileID: 0}
+  head: {fileID: 3724357446949001300}
+  body: {fileID: 1979615428988282180}
+  footL: {fileID: 2857770910382995442}
+  footR: {fileID: 5056536023917263590}
+  handR: {fileID: 5056536023917263590}
+  back: {fileID: 1551576512757218905}
+  attackEffectPos: {fileID: 4121665317744831536}
   attackEffect: []
-  shoesEffectPos: {fileID: 0}
+  shoesEffectPos: {fileID: 5884637802145697270}
   isAttack: 0
-  magicAreaPrefab: {fileID: 0}
-  magicEffect: []
+  magicAreaPrefab: {fileID: 536122277616741434, guid: d5e1cf9552910224fa418da1e10b5e1d, type: 3}
+  magicEffect:
+  - {fileID: 7009505819816671087, guid: bbdd9b2151b492e4cb95557c2d13c3b1, type: 3}
+  - {fileID: 6021791871163653471, guid: ad1fd24df59c9d54eba32de0fb48d3f1, type: 3}
+  - {fileID: 8486861587000665785, guid: 072cba1ce6ea694488846820fc4449bf, type: 3}
   JumpPower: 0
   isNear: 0
   virtualCamera: {fileID: 0}
@@ -799,6 +802,11 @@ GameObject:
 --- !u!4 &2921981556648004440 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2384804823602199058, guid: 8252815073cfa0240a4264f49db81ac5, type: 3}
+  m_PrefabInstance: {fileID: 690301869197439306}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3724357446949001300 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4196196762369976606, guid: 8252815073cfa0240a4264f49db81ac5, type: 3}
   m_PrefabInstance: {fileID: 690301869197439306}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &4121665317744831536 stripped

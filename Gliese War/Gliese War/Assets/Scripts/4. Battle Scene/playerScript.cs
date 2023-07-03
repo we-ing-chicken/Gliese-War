@@ -135,7 +135,7 @@ public class playerScript : MonoBehaviourPunCallbacks, IPunObservable
         magicCooltime = 5f;
         isCool = false;
 
-        //EquipWeapon();
+        EquipWeapon();
 
         if (pv.IsMine)
         {
