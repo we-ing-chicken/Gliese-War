@@ -140,8 +140,8 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
             virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
             CServercamTest sct = Camera.main.GetComponent<CServercamTest>();
             //Debug.Log(Camera.main);
-            Debug.Log(Camera.main.GetComponent<CServercamTest>());
-            Debug.Log(sct);
+            //Debug.Log(Camera.main.GetComponent<CServercamTest>());
+            //Debug.Log(sct);
             //Debug.Log(sct.bp);
             //Debug.Log(GetComponent<BattlePlayer>());
             sct.bp = GetComponent<BattlePlayer>();
