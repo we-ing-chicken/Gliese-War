@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class CServercamTest : MonoBehaviour
 {
-    public BattlePlayer bp;
+    //public BattlePlayer bp;
+    public playerScript bp;
+
     public float xmove = 0;
     public float ymove = 0;
     public float distance = 3;

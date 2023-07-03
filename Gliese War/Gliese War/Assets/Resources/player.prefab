@@ -325,6 +325,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8274484789571185862}
   - component: {fileID: 1172362743485236797}
+  - component: {fileID: -921857062115279284}
   - component: {fileID: 1172362743485236796}
   - component: {fileID: 2368256628890923680}
   - component: {fileID: -744311401481893493}
@@ -379,6 +380,56 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.31, z: 0}
+--- !u!114 &-921857062115279284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4804161492713886577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1156e6129aa20b949b0c5236cfb760e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  life: 0
+  MouseX: 0
+  mouseSpeed: 5
+  isUI: 0
+  offensivePower: 10
+  defensivePower: 10
+  maxHealth: 10
+  currHealth: 10
+  moveSpeed: 8
+  animator: {fileID: 1535938522580959584}
+  playertransform: {fileID: 2921981556648004440}
+  leftTarget: {fileID: 5325442835542454712}
+  rightTarget: {fileID: 8220393501718015581}
+  fowardTarget: {fileID: 6957553723997986421}
+  backwardTarget: {fileID: 821319224224556372}
+  lbTarget: {fileID: 8126428843260526594}
+  lfTarget: {fileID: 2666388670586555565}
+  rbTarget: {fileID: 4113905645314562067}
+  rfTarget: {fileID: 8423574705613894597}
+  ignoreGravity: 0
+  items: []
+  weaponNow: 1
+  head: {fileID: 0}
+  body: {fileID: 0}
+  footL: {fileID: 0}
+  footR: {fileID: 0}
+  handR: {fileID: 0}
+  back: {fileID: 0}
+  attackEffectPos: {fileID: 0}
+  attackEffect: []
+  shoesEffectPos: {fileID: 0}
+  isAttack: 0
+  magicAreaPrefab: {fileID: 0}
+  magicEffect: []
+  JumpPower: 0
+  isNear: 0
+  virtualCamera: {fileID: 0}
+  pv: {fileID: -744311401481893493}
 --- !u!114 &1172362743485236796
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -433,7 +484,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4804161492713886577}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 93bb708a6b4b3a747a0b58777b8b11c8, type: 3}
   m_Name: 
@@ -478,8 +529,6 @@ MonoBehaviour:
   JumpPower: 5
   moveDir: {x: 0, y: 0, z: 0}
   isNear: 0
-  virtualCamera: {fileID: 0}
-  pv: {fileID: -744311401481893493}
 --- !u!114 &-744311401481893493
 MonoBehaviour:
   m_ObjectHideFlags: 0
