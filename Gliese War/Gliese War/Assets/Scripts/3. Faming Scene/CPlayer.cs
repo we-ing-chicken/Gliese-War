@@ -321,16 +321,16 @@ public class CPlayer : MonoBehaviour
             
             switch (weapon1.item.weaponType)
             {
-                case Item.WeaponType.Hammer:
-                    animator.SetTrigger("attackHammer");
-                    break;
-                
-                case Item.WeaponType.Knife:
+                case Item.WeaponType.Sword:
                     animator.SetTrigger("attackSword");
                     break;
                 
                 case Item.WeaponType.Spear:
                     animator.SetTrigger("attackSpear");
+                    break;
+                
+                case Item.WeaponType.Hammer:
+                    animator.SetTrigger("attackHammer");
                     break;
             }
         }
@@ -341,16 +341,17 @@ public class CPlayer : MonoBehaviour
             
             switch (weapon2.item.weaponType)
             {
-                case Item.WeaponType.Hammer:
-                    animator.SetTrigger("attackHammer");
-                    break;
                 
-                case Item.WeaponType.Knife:
+                case Item.WeaponType.Sword:
                     animator.SetTrigger("attackSword");
                     break;
                 
                 case Item.WeaponType.Spear:
                     animator.SetTrigger("attackSpear");
+                    break;
+                
+                case Item.WeaponType.Hammer:
+                    animator.SetTrigger("attackHammer");
                     break;
             }
         }
@@ -365,15 +366,7 @@ public class CPlayer : MonoBehaviour
             
             switch (weapon1.item.weaponType)
             {
-                case Item.WeaponType.Hammer:
-                    yield return new WaitForSeconds(0.3f);
-                    attackEffectPos.transform.GetChild(2).gameObject.SetActive(true);
-                    StartCoroutine(QuitAttackEffect(2));
-                    audio.PlayOneShot(attackSounds[2], 1f);
-
-                    break;
-                
-                case Item.WeaponType.Knife:
+                case Item.WeaponType.Sword:
                     yield return new WaitForSeconds(0.2f);
                     attackEffectPos.transform.GetChild(0).gameObject.SetActive(true);
                     StartCoroutine(QuitAttackEffect(0));
@@ -385,6 +378,13 @@ public class CPlayer : MonoBehaviour
                     attackEffectPos.transform.GetChild(1).gameObject.SetActive(true);
                     StartCoroutine(QuitAttackEffect(1));
                     audio.PlayOneShot(attackSounds[1], 1f);
+                    break;
+                
+                case Item.WeaponType.Hammer:
+                    yield return new WaitForSeconds(0.3f);
+                    attackEffectPos.transform.GetChild(2).gameObject.SetActive(true);
+                    StartCoroutine(QuitAttackEffect(2));
+                    audio.PlayOneShot(attackSounds[2], 1f);
                     break;
             }
         }
@@ -395,14 +395,7 @@ public class CPlayer : MonoBehaviour
             
             switch (weapon2.item.weaponType)
             {
-                case Item.WeaponType.Hammer:
-                    yield return new WaitForSeconds(0.3f);
-                    audio.PlayOneShot(attackSounds[2], 1f);
-                    attackEffectPos.transform.GetChild(2).gameObject.SetActive(true);
-                    StartCoroutine(QuitAttackEffect(2));
-                    break;
-                
-                case Item.WeaponType.Knife:
+                case Item.WeaponType.Sword:
                     yield return new WaitForSeconds(0.2f);
                     audio.PlayOneShot(attackSounds[0], 1f);
                     attackEffectPos.transform.GetChild(0).gameObject.SetActive(true);
@@ -414,6 +407,13 @@ public class CPlayer : MonoBehaviour
                     audio.PlayOneShot(attackSounds[1], 1f);
                     attackEffectPos.transform.GetChild(1).gameObject.SetActive(true);
                     StartCoroutine(QuitAttackEffect(1));
+                    break;
+                
+                case Item.WeaponType.Hammer:
+                    yield return new WaitForSeconds(0.3f);
+                    audio.PlayOneShot(attackSounds[2], 1f);
+                    attackEffectPos.transform.GetChild(2).gameObject.SetActive(true);
+                    StartCoroutine(QuitAttackEffect(2));
                     break;
             }
         }
@@ -537,16 +537,16 @@ public class CPlayer : MonoBehaviour
             
             switch (weapon1.item.weaponType)
             {
-                case Item.WeaponType.Hammer:
-                    EquipHammer();
-                    break;
-                
-                case Item.WeaponType.Knife:
-                    EquipKnife();
+                case Item.WeaponType.Sword:
+                    EquipSword();
                     break;
                 
                 case Item.WeaponType.Spear:
                     EquipSpear();
+                    break;
+                
+                case Item.WeaponType.Hammer:
+                    EquipHammer();
                     break;
             }
         }
@@ -561,8 +561,8 @@ public class CPlayer : MonoBehaviour
                     EquipHammer();
                     break;
                 
-                case Item.WeaponType.Knife:
-                    EquipKnife();
+                case Item.WeaponType.Sword:
+                    EquipSword();
                     break;
                 
                 case Item.WeaponType.Spear:
@@ -588,7 +588,7 @@ public class CPlayer : MonoBehaviour
         back.transform.GetChild(2).gameObject.SetActive(false);
     }
     
-    private void EquipKnife()
+    private void EquipSword()
     {
         back.transform.GetChild(2).gameObject.SetActive(true);
         back.transform.GetChild(0).gameObject.SetActive(false);

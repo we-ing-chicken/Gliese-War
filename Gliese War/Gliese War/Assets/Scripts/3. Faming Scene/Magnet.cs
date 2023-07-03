@@ -72,8 +72,8 @@ public class Magnet : MonoBehaviour
                 {
                     switch (weaponType)
                     {
-                        case Item.WeaponType.Knife: 
-                            _inven.AcquireItem(_inven.knife[(int)rank]);
+                        case Item.WeaponType.Sword: 
+                            _inven.AcquireItem(_inven.sword[(int)rank]);
                             break;
                         
                         case Item.WeaponType.Spear:

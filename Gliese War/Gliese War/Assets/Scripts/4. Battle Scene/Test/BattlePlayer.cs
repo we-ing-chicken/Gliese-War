@@ -94,10 +94,8 @@ public class BattlePlayer : MonoBehaviourPunCallbacks, IPunObservable
     private Vector3 remotePos;
     private Quaternion remoteRot;
 
+    private bool isSafe = false;
 
-    [SerializeField] private CinemachineVirtualCamera virtualCamera;
-
-    public PhotonView pv;
 
     private void Start()
     {
@@ -135,14 +133,7 @@ public class BattlePlayer : MonoBehaviourPunCallbacks, IPunObservable
         isCool = false;
         
         EquipWeapon();
-
-        virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
-
-        if (pv.IsMine)
-        {
-            virtualCamera.Follow = transform;
-            virtualCamera.LookAt = transform;
-        }
+        
     }
 
     private void Update()
@@ -157,9 +148,7 @@ public class BattlePlayer : MonoBehaviourPunCallbacks, IPunObservable
         //}
 
         if (charactercontroller == null) return;
-
-        if(pv.IsMine)
-        {
+        
             moveFB = Input.GetAxis(moveFBAxisName);
 
             // rotate�� ���� �Է� ����
@@ -172,7 +161,7 @@ public class BattlePlayer : MonoBehaviourPunCallbacks, IPunObservable
             Mgattack = Input.GetButton(magicAttackButtonName);
             p_Jump = Input.GetButton(JumpButtonName);
             animate_Run();
-        }
+        
         // move�� ���� �Է� ����
 
 
@@ -319,16 +308,8 @@ public class BattlePlayer : MonoBehaviourPunCallbacks, IPunObservable
         }
         else
         {
-            if (pv.IsMine)
-            {
-                remotePos = new Vector3(moveLR, 0, moveFB);
-                Move();
-            }
-            else
-            {
-                Move();
-                transform.rotation = Quaternion.Lerp(transform.rotation, remoteRot, moveSpeed * Time.deltaTime);
-            }
+            Move();
+            transform.rotation = Quaternion.Lerp(transform.rotation, remoteRot, moveSpeed * Time.deltaTime);
 
             if (p_Jump)
             {
@@ -349,7 +330,7 @@ public class BattlePlayer : MonoBehaviourPunCallbacks, IPunObservable
     private void Move()
     {
         player_lookTarget();
-
+        remotePos = new Vector3(moveLR, 0, moveFB);
         moveDir = charactercontroller.transform.TransformDirection(remotePos) * moveSpeed;
     }
 
@@ -366,9 +347,8 @@ public class BattlePlayer : MonoBehaviourPunCallbacks, IPunObservable
     private void Look()
     {
         MouseX += Input.GetAxis("Mouse X") * mouseSpeed;
-
-        if(pv.IsMine)
-            remoteRot = Quaternion.Euler(0, MouseX, 0);
+        
+        remoteRot = Quaternion.Euler(0, MouseX, 0);
         transform.rotation = remoteRot;
     }
     private void player_lookTarget()
@@ -437,16 +417,16 @@ public class BattlePlayer : MonoBehaviourPunCallbacks, IPunObservable
             
             switch (weapon1.item.weaponType)
             {
-                case Item.WeaponType.Hammer:
-                    animator.SetTrigger("attackHammer");
-                    break;
-                
-                case Item.WeaponType.Knife:
+                case Item.WeaponType.Sword:
                     animator.SetTrigger("attackSword");
                     break;
                 
                 case Item.WeaponType.Spear:
                     animator.SetTrigger("attackSpear");
+                    break;
+                
+                case Item.WeaponType.Hammer:
+                    animator.SetTrigger("attackHammer");
                     break;
             }
         }
@@ -457,16 +437,16 @@ public class BattlePlayer : MonoBehaviourPunCallbacks, IPunObservable
             
             switch (weapon2.item.weaponType)
             {
-                case Item.WeaponType.Hammer:
-                    animator.SetTrigger("attackHammer");
-                    break;
-                
-                case Item.WeaponType.Knife:
+                case Item.WeaponType.Sword:
                     animator.SetTrigger("attackSword");
                     break;
                 
                 case Item.WeaponType.Spear:
                     animator.SetTrigger("attackSpear");
+                    break;
+                
+                case Item.WeaponType.Hammer:
+                    animator.SetTrigger("attackHammer");
                     break;
             }
         }
@@ -481,23 +461,22 @@ public class BattlePlayer : MonoBehaviourPunCallbacks, IPunObservable
             
             switch (weapon1.item.weaponType)
             {
-                case Item.WeaponType.Hammer:
-                    yield return new WaitForSeconds(0.3f);
-                    attackEffectPos.transform.GetChild(2).gameObject.SetActive(true);
-                    StartCoroutine(QuitAttackEffect(2));
-                    break;
-                
-                case Item.WeaponType.Knife:
+                case Item.WeaponType.Sword:
                     yield return new WaitForSeconds(0.2f);
                     attackEffectPos.transform.GetChild(0).gameObject.SetActive(true);
                     StartCoroutine(QuitAttackEffect(0));
-                    
                     break;
                 
                 case Item.WeaponType.Spear:
                     yield return new WaitForSeconds(0.2f);
                     attackEffectPos.transform.GetChild(1).gameObject.SetActive(true);
                     StartCoroutine(QuitAttackEffect(1));
+                    break;
+                
+                case Item.WeaponType.Hammer:
+                    yield return new WaitForSeconds(0.3f);
+                    attackEffectPos.transform.GetChild(2).gameObject.SetActive(true);
+                    StartCoroutine(QuitAttackEffect(2));
                     break;
             }
         }
@@ -508,23 +487,22 @@ public class BattlePlayer : MonoBehaviourPunCallbacks, IPunObservable
             
             switch (weapon2.item.weaponType)
             {
-                case Item.WeaponType.Hammer:
-                    yield return new WaitForSeconds(0.3f);
-                    attackEffectPos.transform.GetChild(2).gameObject.SetActive(true);
-                    StartCoroutine(QuitAttackEffect(2));
-                    break;
-                
-                case Item.WeaponType.Knife:
+                case Item.WeaponType.Sword:
                     yield return new WaitForSeconds(0.2f);
                     attackEffectPos.transform.GetChild(0).gameObject.SetActive(true);
                     StartCoroutine(QuitAttackEffect(0));
-                    
                     break;
                 
                 case Item.WeaponType.Spear:
                     yield return new WaitForSeconds(0.2f);
                     attackEffectPos.transform.GetChild(1).gameObject.SetActive(true);
                     StartCoroutine(QuitAttackEffect(1));
+                    break;
+                
+                case Item.WeaponType.Hammer:
+                    yield return new WaitForSeconds(0.3f);
+                    attackEffectPos.transform.GetChild(2).gameObject.SetActive(true);
+                    StartCoroutine(QuitAttackEffect(2));
                     break;
             }
         }
@@ -647,16 +625,15 @@ public class BattlePlayer : MonoBehaviourPunCallbacks, IPunObservable
             
             switch (weapon1.item.weaponType)
             {
-                case Item.WeaponType.Hammer:
-                    EquipHammer();
-                    break;
-                
-                case Item.WeaponType.Knife:
-                    EquipKnife();
+                case Item.WeaponType.Sword:
+                    EquipSword();
                     break;
                 
                 case Item.WeaponType.Spear:
                     EquipSpear();
+                    break;
+                case Item.WeaponType.Hammer:
+                    EquipHammer();
                     break;
             }
         }
@@ -667,16 +644,16 @@ public class BattlePlayer : MonoBehaviourPunCallbacks, IPunObservable
             
             switch (weapon2.item.weaponType)
             {
-                case Item.WeaponType.Hammer:
-                    EquipHammer();
-                    break;
-                
-                case Item.WeaponType.Knife:
-                    EquipKnife();
+                case Item.WeaponType.Sword:
+                    EquipSword();
                     break;
                 
                 case Item.WeaponType.Spear:
                     EquipSpear();
+                    break;
+                
+                case Item.WeaponType.Hammer:
+                    EquipHammer();
                     break;
             }
         }
@@ -697,7 +674,7 @@ public class BattlePlayer : MonoBehaviourPunCallbacks, IPunObservable
         back.transform.GetChild(2).gameObject.SetActive(false);
     }
     
-    private void EquipKnife()
+    private void EquipSword()
     {
         back.transform.GetChild(2).gameObject.SetActive(true);
         back.transform.GetChild(0).gameObject.SetActive(false);
@@ -777,5 +754,32 @@ public class BattlePlayer : MonoBehaviourPunCallbacks, IPunObservable
         shoe = GameManager.Instance.shoe;
         weapon1 = GameManager.Instance.weapon1;
         weapon2 = GameManager.Instance.weapon2;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Inside"))
+        {
+            isSafe = true;
+        }
+    }
+    
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Inside"))
+        {
+            isSafe = false;
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+       if(!isSafe)
+       {
+           if (other.CompareTag("Outside"))
+        {
+            Debug.Log("밖");
+        }
+       }
     }
 }

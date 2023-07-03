@@ -244,6 +244,20 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
                 StartCoroutine(CheckCoolTime());
 
                 return;
+
+            switch (weapon1.item.weaponType)
+            {
+                case Item.WeaponType.Hammer:
+                    EquipHammer();
+                    break;
+
+                case Item.WeaponType.Sword:
+                    EquipSword();
+                    break;
+
+                case Item.WeaponType.Spear:
+                    EquipSpear();
+                    break;
             }
 
             AttackAnimation();
@@ -255,6 +269,20 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
             {
                 Debug.Log("쿨타임");
                 return;
+
+            switch (weapon2.item.weaponType)
+            {
+                case Item.WeaponType.Hammer:
+                    EquipHammer();
+                    break;
+
+                case Item.WeaponType.Sword:
+                    EquipSword();
+                    break;
+
+                case Item.WeaponType.Spear:
+                    EquipSpear();
+                    break;
             }
 
             isMagic = true;
@@ -448,8 +476,8 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
                     animator.SetTrigger("attackHammer");
                     break;
 
-                case Item.WeaponType.Knife:
-                    animator.SetTrigger("attackSword");
+                case Item.WeaponType.Sword:
+                    anim.SetTrigger("attackSword");
                     break;
 
                 case Item.WeaponType.Spear:
@@ -468,8 +496,8 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
                     animator.SetTrigger("attackHammer");
                     break;
 
-                case Item.WeaponType.Knife:
-                    animator.SetTrigger("attackSword");
+                case Item.WeaponType.Sword:
+                    anim.SetTrigger("attackSword");
                     break;
 
                 case Item.WeaponType.Spear:
@@ -477,6 +505,27 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
                     break;
             }
         }
+    }
+
+    private void EquipHammer()
+    {
+        back.transform.GetChild(0).gameObject.SetActive(true);
+        back.transform.GetChild(1).gameObject.SetActive(false);
+        back.transform.GetChild(2).gameObject.SetActive(false);
+    }
+
+    private void EquipSpear()
+    {
+        back.transform.GetChild(1).gameObject.SetActive(true);
+        back.transform.GetChild(0).gameObject.SetActive(false);
+        back.transform.GetChild(2).gameObject.SetActive(false);
+    }
+
+    private void EquipSword()
+    {
+        back.transform.GetChild(2).gameObject.SetActive(true);
+        back.transform.GetChild(0).gameObject.SetActive(false);
+        back.transform.GetChild(1).gameObject.SetActive(false);
     }
 
     IEnumerator AttackEffect()
@@ -494,7 +543,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
                     StartCoroutine(QuitAttackEffect(2));
                     break;
 
-                case Item.WeaponType.Knife:
+                case Item.WeaponType.Sword:
                     yield return new WaitForSeconds(0.2f);
                     attackEffectPos.transform.GetChild(0).gameObject.SetActive(true);
                     StartCoroutine(QuitAttackEffect(0));
@@ -521,7 +570,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
                     StartCoroutine(QuitAttackEffect(2));
                     break;
 
-                case Item.WeaponType.Knife:
+                case Item.WeaponType.Sword:
                     yield return new WaitForSeconds(0.2f);
                     attackEffectPos.transform.GetChild(0).gameObject.SetActive(true);
                     StartCoroutine(QuitAttackEffect(0));

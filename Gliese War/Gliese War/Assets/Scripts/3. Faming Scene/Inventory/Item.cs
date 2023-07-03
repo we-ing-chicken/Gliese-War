@@ -24,7 +24,7 @@ public class Item : ScriptableObject
 
     public enum WeaponType
     {
-        Knife,
+        Sword,
         Spear,
         Hammer,
         Nothing

@@ -22,7 +22,7 @@ public class Inventory : MonoBehaviour
     public Item[] helmet;
     public Item[] armor;
     public Item[] shoes;
-    public Item[] knife;
+    public Item[] sword;
     public Item[] spear;
     public Item[] hammer;
 
@@ -137,8 +137,8 @@ public class Inventory : MonoBehaviour
             {
                 switch (item.weaponType)
                 {
-                    case Item.WeaponType.Knife:
-                        AcquireItemWithMagic(knife[(int)item.itemRank + 1]);
+                    case Item.WeaponType.Sword:
+                        AcquireItemWithMagic(sword[(int)item.itemRank + 1]);
                         break;
                     
                     case Item.WeaponType.Spear:
