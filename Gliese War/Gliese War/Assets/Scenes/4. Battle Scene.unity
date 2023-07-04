@@ -2298,6 +2298,7 @@ MonoBehaviour:
   - {fileID: 860658928}
   - {fileID: 644304454}
   p_Num: 0
+  pv: {fileID: 0}
   cscamera: {fileID: 0}
 --- !u!4 &417233660
 Transform:
@@ -4014,7 +4015,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!81 &652639081
 AudioListener:
   m_ObjectHideFlags: 0

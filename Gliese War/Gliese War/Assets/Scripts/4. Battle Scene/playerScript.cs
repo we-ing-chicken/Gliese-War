@@ -11,9 +11,9 @@ using UnityEngine.Animations;
 using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 
-public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
+public class playerScript : MonoBehaviourPunCallbacks, IPunObservable
 {
-    static public PlayerScript instance;
+    static public playerScript instance;
     private float Gravity = 9.8f;
     public int life;
     public float MouseX;
@@ -86,7 +86,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
 
     public float JumpPower;
 
-    public Vector3 moveDir;
+    private Vector3 moveDir;
 
     public bool isNear;
 
@@ -100,6 +100,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
 
     private void Start()
     {
+        Debug.Log(pv.IsMine);
 
         instance = this;
         if(pv.IsMine) 
@@ -120,7 +121,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
 
         //flashRed = GetComponent<MeshRenderer>().material;
 
-        RefreshStat();
+        //RefreshStat();
 
         weapon1 = new RealItem();
         weapon1.item = TestManager.Instance.knife[1];
@@ -138,14 +139,20 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
 
         if (pv.IsMine)
         {
+            Debug.Log("isMine");
+
             virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
+            Debug.Log(virtualCamera);
+            Debug.Log(FindObjectOfType<CinemachineVirtualCamera>());
+
+
             CServercamTest sct = Camera.main.GetComponent<CServercamTest>();
             //Debug.Log(Camera.main);
-            //Debug.Log(Camera.main.GetComponent<CServercamTest>());
-            //Debug.Log(sct);
+            Debug.Log(Camera.main.GetComponent<CServercamTest>());
+            Debug.Log(sct);
             //Debug.Log(sct.bp);
             //Debug.Log(GetComponent<BattlePlayer>());
-            sct.bp = GetComponent<BattlePlayer>();
+            sct.bp = GetComponent<playerScript>();
             virtualCamera.Follow = transform;
             virtualCamera.LookAt = transform;
 
@@ -244,20 +251,6 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
                 StartCoroutine(CheckCoolTime());
 
                 return;
-
-            switch (weapon1.item.weaponType)
-            {
-                case Item.WeaponType.Hammer:
-                    EquipHammer();
-                    break;
-
-                case Item.WeaponType.Sword:
-                    EquipSword();
-                    break;
-
-                case Item.WeaponType.Spear:
-                    EquipSpear();
-                    break;
             }
 
             AttackAnimation();
@@ -269,20 +262,6 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
             {
                 Debug.Log("쿨타임");
                 return;
-
-            switch (weapon2.item.weaponType)
-            {
-                case Item.WeaponType.Hammer:
-                    EquipHammer();
-                    break;
-
-                case Item.WeaponType.Sword:
-                    EquipSword();
-                    break;
-
-                case Item.WeaponType.Spear:
-                    EquipSpear();
-                    break;
             }
 
             isMagic = true;
@@ -477,7 +456,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
                     break;
 
                 case Item.WeaponType.Sword:
-                    anim.SetTrigger("attackSword");
+                    animator.SetTrigger("attackSword");
                     break;
 
                 case Item.WeaponType.Spear:
@@ -497,7 +476,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
                     break;
 
                 case Item.WeaponType.Sword:
-                    anim.SetTrigger("attackSword");
+                    animator.SetTrigger("attackSword");
                     break;
 
                 case Item.WeaponType.Spear:
@@ -505,27 +484,6 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
                     break;
             }
         }
-    }
-
-    private void EquipHammer()
-    {
-        back.transform.GetChild(0).gameObject.SetActive(true);
-        back.transform.GetChild(1).gameObject.SetActive(false);
-        back.transform.GetChild(2).gameObject.SetActive(false);
-    }
-
-    private void EquipSpear()
-    {
-        back.transform.GetChild(1).gameObject.SetActive(true);
-        back.transform.GetChild(0).gameObject.SetActive(false);
-        back.transform.GetChild(2).gameObject.SetActive(false);
-    }
-
-    private void EquipSword()
-    {
-        back.transform.GetChild(2).gameObject.SetActive(true);
-        back.transform.GetChild(0).gameObject.SetActive(false);
-        back.transform.GetChild(1).gameObject.SetActive(false);
     }
 
     IEnumerator AttackEffect()
@@ -707,7 +665,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
                     EquipHammer();
                     break;
 
-                case Item.WeaponType.Knife:
+                case Item.WeaponType.Sword:
                     EquipKnife();
                     break;
 
@@ -727,7 +685,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
                     EquipHammer();
                     break;
 
-                case Item.WeaponType.Knife:
+                case Item.WeaponType.Sword:
                     EquipKnife();
                     break;
 
@@ -834,5 +792,4 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
 
         //Debug.Log(weapon1.item.itemName);
     }
-   
 }
