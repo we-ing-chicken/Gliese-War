@@ -789,4 +789,28 @@ public class playerScript : LivingEntity, IPunObservable
             weapon2.magic = Magic.Water;
         }
     }
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+    }
+
+    public override void RestoreHealth(float newHealth)
+    {
+        base.RestoreHealth(newHealth);
+    }
+
+    public override bool ApplyDamage(DamageMessage damageMessage)
+    {
+        if (!base.ApplyDamage(damageMessage)) return false;
+
+        return true;
+    }
+
+    public override void Die()
+    {
+        base.Die();
+
+        animator.SetTrigger("doDie");
+    }
 }
