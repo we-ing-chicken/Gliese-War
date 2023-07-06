@@ -392,10 +392,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1156e6129aa20b949b0c5236cfb760e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startingHealth: 100
   life: 0
   MouseX: 0
   mouseSpeed: 5
-  isUI: 0
   offensivePower: 10
   defensivePower: 10
   maxHealth: 10
@@ -659,7 +659,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 51157880799323551, guid: 8252815073cfa0240a4264f49db81ac5, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 94257512889900907, guid: 8252815073cfa0240a4264f49db81ac5, type: 3}
       propertyPath: m_IsActive
@@ -675,7 +675,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2384804823602199058, guid: 8252815073cfa0240a4264f49db81ac5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.159
+      value: -1.234
       objectReference: {fileID: 0}
     - target: {fileID: 2384804823602199058, guid: 8252815073cfa0240a4264f49db81ac5, type: 3}
       propertyPath: m_LocalPosition.z
