@@ -6,10 +6,20 @@ using UnityEngine;
 
 public class Meteo : MonoBehaviour
 {
+    private AudioSource audio;
 
     void Start()
     {
+        audio = GetComponent<AudioSource>();
+        
         StartCoroutine(Timer());
+        StartCoroutine(SoundTimer());
+    }
+
+    IEnumerator SoundTimer()
+    {
+        yield return new WaitForSeconds(2.5f);
+        audio.Play();
     }
 
     IEnumerator Timer()
