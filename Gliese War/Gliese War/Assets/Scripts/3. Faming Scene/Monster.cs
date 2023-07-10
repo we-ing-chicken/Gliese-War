@@ -41,6 +41,10 @@ public class Monster : MonoBehaviour
     private GameObject findImage;
     private Coroutine FindImageCor;
     
+    private AudioSource audio;
+    [SerializeField] private AudioClip[] sounds;
+    
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -48,6 +52,7 @@ public class Monster : MonoBehaviour
         drop = GetComponent<Drop>();
         rigid = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+        audio = GetComponent<AudioSource>();
         
         mat = transform.GetChild(1).GetComponent<SkinnedMeshRenderer>().material;
         before = mat.color;
@@ -86,6 +91,8 @@ public class Monster : MonoBehaviour
         if (other.transform.CompareTag("Player") && !attackCoolTime)
         {
             attackCoolTime = true;
+            audio.clip = sounds[0];
+            audio.Play();
             StartCoroutine(AttackWait());
         }
     }
@@ -95,9 +102,15 @@ public class Monster : MonoBehaviour
         HP -= CPlayer.Instance.GetAttackPower();
         StartCoroutine(HitColor());
         HPCor = StartCoroutine(FollowHPBar());
+        
+        audio.clip = sounds[1];
+        audio.Play();
+        
         if (HP <= 0 && !isDead)
         {
             isDead = true;
+            audio.clip = sounds[2];
+            audio.Play();
             drop.DropItem();
             StopCoroutine(HPCor);
             Destroy(HPUI.gameObject);

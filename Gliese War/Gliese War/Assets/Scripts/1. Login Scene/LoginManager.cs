@@ -84,6 +84,19 @@ namespace Team
                 if(joinPwInput.isFocused)
                     joinIDInput.Select();
             }
+
+            if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
+            {
+                if (loginWindow.activeSelf)
+                {
+                    Login();
+                }
+                else if (joinWindow.activeSelf)
+                {
+                    if(joinOKButton.GetComponent<Button>().interactable)
+                        JoinOkBtn();
+                }
+            }
             
         }
 
