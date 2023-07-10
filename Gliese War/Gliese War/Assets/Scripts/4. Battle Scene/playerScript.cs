@@ -15,6 +15,7 @@ using UnityEngine.UIElements;
 public class playerScript : LivingEntity, IPunObservable
 {
     static public playerScript instance;
+    public int myindex;
     private float Gravity = 9.8f;
     public int life;
     public float MouseX;
@@ -151,14 +152,7 @@ public class playerScript : LivingEntity, IPunObservable
 
     private void Update()
     {
-        //    ӿ       ¿             Է              ʴ´ 
-        //if (FarmingManager.Instance != null && FarmingManager._isEnd)
-        //{
-        //    moveFB = 0;
-        //    moveLR = 0;
-        //    Mlattack = false;
-        //    return;
-        //}
+        if (transform.GetComponent<LivingEntity>().dead) return;
 
         if (charactercontroller == null) return;
 
@@ -774,7 +768,7 @@ public class playerScript : LivingEntity, IPunObservable
 
     void SetBattleItemEquip()
     {
-        Debug.Log(weapon1.item + ", " + weapon1.magic + ", " + weapon1.stat.attackPower);
+        //Debug.Log(weapon1.item + ", " + weapon1.magic + ", " + weapon1.stat.attackPower);
         if(weapon1 == null) 
         {
             weapon1 = new RealItem();
@@ -811,6 +805,13 @@ public class playerScript : LivingEntity, IPunObservable
     {
         base.Die();
 
-        animator.SetTrigger("doDie");
+        StartCoroutine("die");
+
+        BattleManager.Instance.BM_RemoveList(myindex);
+    }
+    IEnumerator die()
+    {
+        animator.SetTrigger("Dying");
+        yield return new WaitForSeconds(0.3f);
     }
 }

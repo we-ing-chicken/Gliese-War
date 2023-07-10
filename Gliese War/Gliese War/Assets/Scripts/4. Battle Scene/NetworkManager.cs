@@ -25,6 +25,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks //Ŭ���� ���
 
     private bool connect = false;
 
+    public GameObject go;
+
     public static NetworkManager Instance
     {
         get
@@ -91,9 +93,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks //Ŭ���� ���
         Debug.Log(p_Num);
 
         //cscamera.gameObject.SetActive(true);
-        PhotonNetwork.Instantiate("player", spawnpoints[p_Num].transform.position, Quaternion.identity);
+        GameObject temp = PhotonNetwork.Instantiate("player", spawnpoints[p_Num].transform.position, Quaternion.identity);
         //pv.RPC("numchange", RpcTarget.All);
+        temp.GetComponent<playerScript>().myindex = p_Num;
         Debug.Log(p_Num);
+        BattleManager.Instance.charNums.Add(p_Num);
+
 
         //TODO - 시네머신 타겟 go로 변경
         // = go.transform;
@@ -103,10 +108,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks //Ŭ���� ���
         //cscamera.ps = p.GetComponent<playerScript>();
     }
 
-    [PunRPC]
-    public void numchange()
-    {
-        p_Num++;
+    //[PunRPC]
+    //public void numchange()
+    //{
+    //    p_Num++;
 
-    }
+    //}
 }

@@ -10,7 +10,7 @@ public class LivingEntity : MonoBehaviourPunCallbacks, IDamageable
     public float health { get; protected set; }
     public bool dead { get; protected set; }
 
-    private const float minTimeBetDamaged = 0.1f;
+    private const float minTimeDamaged = 0.1f;
     private float lastDamagedTime;
 
     public event Action OnDeath;
@@ -19,7 +19,7 @@ public class LivingEntity : MonoBehaviourPunCallbacks, IDamageable
     {
         get
         {
-            if (Time.time >= lastDamagedTime + minTimeBetDamaged) return false;
+            if (Time.time >= lastDamagedTime + minTimeDamaged) return false;
 
             return true;
         }
