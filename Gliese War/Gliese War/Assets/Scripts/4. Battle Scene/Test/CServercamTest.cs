@@ -19,8 +19,6 @@ public class CServercamTest : MonoBehaviour
         if (bp == null) return; 
         else
         {
-            Debug.Log("!");
-            Debug.Log(bp.transform.position);
 
             RaycastHit[] hit;
 

@@ -1,5 +1,6 @@
 using Cinemachine;
 using Photon.Pun;
+using Photon.Pun.Demo.Cockpit.Forms;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,14 +12,14 @@ using UnityEngine.Animations;
 using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 
-public class playerScript : MonoBehaviourPunCallbacks, IPunObservable
+public class playerScript : LivingEntity, IPunObservable
 {
     static public playerScript instance;
+    public int myindex;
     private float Gravity = 9.8f;
     public int life;
     public float MouseX;
     public float mouseSpeed;
-    public bool isUI = false;
 
     private string moveFBAxisName = "Vertical"; //  յ                 Է     ̸ 
     private string moveLRAxisName = "Horizontal"; //  ¿                 Է     ̸ 
@@ -106,8 +107,6 @@ public class playerScript : MonoBehaviourPunCallbacks, IPunObservable
         if(pv.IsMine) 
             applyItems();
         charactercontroller = GetComponent<CharacterController>();
-        //if (ignoreGravity)
-        //    charactercontroller.
         moveDir = Vector3.zero;
         rot = 1.0f;
         isNear = false;
@@ -121,16 +120,11 @@ public class playerScript : MonoBehaviourPunCallbacks, IPunObservable
 
         //flashRed = GetComponent<MeshRenderer>().material;
 
-        //RefreshStat();
+        RefreshStat();
 
-        weapon1 = new RealItem();
-        weapon1.item = TestManager.Instance.knife[1];
-        weapon1.magic = Magic.Fire;
+        SetBattleItemEquip();
 
-
-        weapon2 = new RealItem();
-        weapon2.item = TestManager.Instance.knife[1];
-        weapon2.magic = Magic.Water;
+        
 
         magicCooltime = 5f;
         isCool = false;
@@ -147,11 +141,8 @@ public class playerScript : MonoBehaviourPunCallbacks, IPunObservable
 
 
             CServercamTest sct = Camera.main.GetComponent<CServercamTest>();
-            //Debug.Log(Camera.main);
             Debug.Log(Camera.main.GetComponent<CServercamTest>());
             Debug.Log(sct);
-            //Debug.Log(sct.bp);
-            //Debug.Log(GetComponent<BattlePlayer>());
             sct.bp = GetComponent<playerScript>();
             virtualCamera.Follow = transform;
             virtualCamera.LookAt = transform;
@@ -161,33 +152,21 @@ public class playerScript : MonoBehaviourPunCallbacks, IPunObservable
 
     private void Update()
     {
-        //    ӿ       ¿             Է              ʴ´ 
-        //if (FarmingManager.Instance != null && FarmingManager._isEnd)
-        //{
-        //    moveFB = 0;
-        //    moveLR = 0;
-        //    Mlattack = false;
-        //    return;
-        //}
+        if (transform.GetComponent<LivingEntity>().dead) return;
 
         if (charactercontroller == null) return;
 
         if (pv.IsMine)
         {
-            moveFB = Input.GetAxis(moveFBAxisName);
-
-            // rotate         Է      
+            moveFB = Input.GetAxis(moveFBAxisName); 
             moveLR = Input.GetAxis(moveLRAxisName);
 
             ismove = (Input.GetButton(moveFBAxisName) || Input.GetButton(moveLRAxisName));
-
-            // fire         Է      
             Mlattack = Input.GetButton(meleeAttackButtonName);
             Mgattack = Input.GetButton(magicAttackButtonName);
             p_Jump = Input.GetButton(JumpButtonName);
             animate_Run();
         }
-        // move         Է      
 
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -347,11 +326,8 @@ public class playerScript : MonoBehaviourPunCallbacks, IPunObservable
             if (p_Jump)
             {
                 isAttack = false;
-                if (!isUI)
-                {
                     animator.SetTrigger("doJump");
                     Jump();
-                }
 
             }
         }
@@ -438,12 +414,12 @@ public class playerScript : MonoBehaviourPunCallbacks, IPunObservable
 
     private void animate_Run()
     {
-        if (!isUI)
             animator.SetBool("isRun", ismove);
     }
 
     private void AttackAnimation()
     {
+        //Debug.Log(weaponNow);
         if (weaponNow == 1)
         {
             if (weapon1 == null)
@@ -758,19 +734,13 @@ public class playerScript : MonoBehaviourPunCallbacks, IPunObservable
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        // stream - 데이터를 주고 받는 통로 
-        // 내가 데이터를 보내는 중이라면
         if (stream.IsWriting)
         {
-            // 이 방안에 있는 모든 사용자에게 브로드캐스트 
-            // - 내 포지션 값을 보내보자
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
         }
-        // 내가 데이터를 받는 중이라면 
         else
         {
-            // 순서대로 보내면 순서대로 들어옴. 근데 타입캐스팅 해주어야 함
             remotePos = (Vector3)stream.ReceiveNext();
             remoteRot = (Quaternion)stream.ReceiveNext();
         }
@@ -778,8 +748,13 @@ public class playerScript : MonoBehaviourPunCallbacks, IPunObservable
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        if (hit.collider.tag == "Weapon")
-            Debug.Log($"OnControllerColliderHit - {hit.collider.name}");
+        //if (hit.collider.tag == "Weapon")
+        //{
+        //    Debug.Log($"OnControllerColliderHit - {hit.collider.name}");
+            
+        //}
+        // TO DO : 무기 스크립트 생성, 충돌 대상 태그가 플레이어라면 대상의 ApplyDamage 호출
+           
     }
     void applyItems()
     {
@@ -789,7 +764,54 @@ public class playerScript : MonoBehaviourPunCallbacks, IPunObservable
         shoe = GameManager.Instance.shoe;
         weapon1 = GameManager.Instance.weapon1;
         weapon2 = GameManager.Instance.weapon2;
+    }
 
-        //Debug.Log(weapon1.item.itemName);
+    void SetBattleItemEquip()
+    {
+        //Debug.Log(weapon1.item + ", " + weapon1.magic + ", " + weapon1.stat.attackPower);
+        if(weapon1 == null) 
+        {
+            weapon1 = new RealItem();
+            weapon1.item = TestManager.Instance.knife[1];
+            weapon1.magic = Magic.Fire;
+        }
+
+        if(weapon2 == null)
+        {
+            weapon2 = new RealItem();
+            weapon2.item = TestManager.Instance.knife[1];
+            weapon2.magic = Magic.Water;
+        }
+    }
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+    }
+
+    public override void RestoreHealth(float newHealth)
+    {
+        base.RestoreHealth(newHealth);
+    }
+
+    public override bool ApplyDamage(DamageMessage damageMessage)
+    {
+        if (!base.ApplyDamage(damageMessage)) return false;
+
+        return true;
+    }
+
+    public override void Die()
+    {
+        base.Die();
+
+        StartCoroutine("die");
+
+        BattleManager.Instance.BM_RemoveList(myindex);
+    }
+    IEnumerator die()
+    {
+        animator.SetTrigger("Dying");
+        yield return new WaitForSeconds(0.3f);
     }
 }

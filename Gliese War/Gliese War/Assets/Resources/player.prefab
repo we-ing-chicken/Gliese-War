@@ -89,7 +89,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6cebca42fbb17248a9861991b1422e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1172362743485236796}
+  player: {fileID: 0}
   xmove: 0
   ymove: 0
   distance: 150
@@ -326,9 +326,8 @@ GameObject:
   - component: {fileID: 8274484789571185862}
   - component: {fileID: 1172362743485236797}
   - component: {fileID: -921857062115279284}
-  - component: {fileID: 1172362743485236796}
-  - component: {fileID: 2368256628890923680}
   - component: {fileID: -744311401481893493}
+  - component: {fileID: -683230259665081171}
   m_Layer: 0
   m_Name: player
   m_TagString: Player
@@ -392,10 +391,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1156e6129aa20b949b0c5236cfb760e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startingHealth: 100
+  myindex: 0
   life: 0
   MouseX: 0
   mouseSpeed: 5
-  isUI: 0
   offensivePower: 10
   defensivePower: 10
   maxHealth: 10
@@ -433,105 +433,6 @@ MonoBehaviour:
   isNear: 0
   virtualCamera: {fileID: 0}
   pv: {fileID: -744311401481893493}
---- !u!114 &1172362743485236796
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4804161492713886577}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0de10af01dd12724992da3b3b4fd3828, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MouseX: 0
-  mouseSpeed: 5
-  isUI: 0
-  isFarming: 1
-  offensivePower: 0
-  defensivePower: 0
-  maxHealth: 0
-  currHealth: 0
-  moveSpeed: 8
-  animator: {fileID: 0}
-  playertransform: {fileID: 0}
-  leftTarget: {fileID: 5325442835542454712}
-  rightTarget: {fileID: 8220393501718015581}
-  fowardTarget: {fileID: 6957553723997986421}
-  backwardTarget: {fileID: 821319224224556372}
-  lbTarget: {fileID: 8126428843260526594}
-  lfTarget: {fileID: 2666388670586555565}
-  rbTarget: {fileID: 4113905645314562067}
-  rfTarget: {fileID: 8423574705613894597}
-  ignoreGravity: 0
-  items: []
-  weaponNow: 1
-  head: {fileID: 0}
-  body: {fileID: 0}
-  footL: {fileID: 0}
-  footR: {fileID: 0}
-  handR: {fileID: 0}
-  back: {fileID: 0}
-  attackEffectPos: {fileID: 0}
-  attackSounds: []
-  shoesEffectPos: {fileID: 0}
-  isAttack: 0
-  JumpPower: 5
-  moveDir: {x: 0, y: 0, z: 0}
-  isNear: 0
---- !u!114 &2368256628890923680
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4804161492713886577}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93bb708a6b4b3a747a0b58777b8b11c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  life: 0
-  MouseX: 0
-  mouseSpeed: 5
-  isUI: 0
-  offensivePower: 0
-  defensivePower: 0
-  maxHealth: 0
-  currHealth: 0
-  moveSpeed: 8
-  animator: {fileID: 1535938522580959584}
-  playertransform: {fileID: 2921981556648004440}
-  leftTarget: {fileID: 5325442835542454712}
-  rightTarget: {fileID: 8220393501718015581}
-  fowardTarget: {fileID: 6957553723997986421}
-  backwardTarget: {fileID: 821319224224556372}
-  lbTarget: {fileID: 8126428843260526594}
-  lfTarget: {fileID: 2666388670586555565}
-  rbTarget: {fileID: 4113905645314562067}
-  rfTarget: {fileID: 8423574705613894597}
-  ignoreGravity: 0
-  items: []
-  weaponNow: 1
-  head: {fileID: 4942705219009216939}
-  body: {fileID: 1979615428988282180}
-  footL: {fileID: 2857770910382995442}
-  footR: {fileID: 4150262766563221550}
-  handR: {fileID: 5056536023917263590}
-  back: {fileID: 1551576512757218905}
-  attackEffectPos: {fileID: 4121665317744831536}
-  attackEffect: []
-  shoesEffectPos: {fileID: 5884637802145697270}
-  isAttack: 0
-  magicAreaPrefab: {fileID: 536122277616741434, guid: d5e1cf9552910224fa418da1e10b5e1d, type: 3}
-  magicEffect:
-  - {fileID: 7009505819816671087, guid: bbdd9b2151b492e4cb95557c2d13c3b1, type: 3}
-  - {fileID: 6021791871163653471, guid: ad1fd24df59c9d54eba32de0fb48d3f1, type: 3}
-  - {fileID: 8486861587000665785, guid: 072cba1ce6ea694488846820fc4449bf, type: 3}
-  JumpPower: 5
-  moveDir: {x: 0, y: 0, z: 0}
-  isNear: 0
 --- !u!114 &-744311401481893493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -551,12 +452,28 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 0
   ObservedComponents:
-  - {fileID: 2368256628890923680}
+  - {fileID: 0}
   - {fileID: 2881729006663315671}
   - {fileID: 4125734202276628042}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &-683230259665081171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4804161492713886577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c4690d38b8f4a04eb81c9c4cdf22ce1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  handR: {fileID: 0}
+  back: {fileID: 0}
+  attackEffectPos: {fileID: 0}
+  shoesEffectPos: {fileID: 0}
 --- !u!1 &5889112624553643365
 GameObject:
   m_ObjectHideFlags: 0
@@ -659,7 +576,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 51157880799323551, guid: 8252815073cfa0240a4264f49db81ac5, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 94257512889900907, guid: 8252815073cfa0240a4264f49db81ac5, type: 3}
       propertyPath: m_IsActive
@@ -675,7 +592,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2384804823602199058, guid: 8252815073cfa0240a4264f49db81ac5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.159
+      value: -1.234
       objectReference: {fileID: 0}
     - target: {fileID: 2384804823602199058, guid: 8252815073cfa0240a4264f49db81ac5, type: 3}
       propertyPath: m_LocalPosition.z
@@ -755,28 +672,28 @@ MonoBehaviour:
   ShowParameterInspector: 1
   m_SynchronizeParameters:
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: isRun
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: doJump
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: attackSword
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: attackHammer
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: attackSpear
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: magicAttack
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: dying
   m_SynchronizeLayers:
-  - SynchronizeType: 0
+  - SynchronizeType: 2
     LayerIndex: 0
 --- !u!114 &4125734202276628042
 MonoBehaviour:
@@ -812,16 +729,6 @@ GameObject:
 --- !u!1 &4121665317744831536 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3505886422675971450, guid: 8252815073cfa0240a4264f49db81ac5, type: 3}
-  m_PrefabInstance: {fileID: 690301869197439306}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &4150262766563221550 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3462353438972236132, guid: 8252815073cfa0240a4264f49db81ac5, type: 3}
-  m_PrefabInstance: {fileID: 690301869197439306}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &4942705219009216939 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5551941981381243105, guid: 8252815073cfa0240a4264f49db81ac5, type: 3}
   m_PrefabInstance: {fileID: 690301869197439306}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &5056536023917263590 stripped
