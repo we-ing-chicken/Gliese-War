@@ -329,7 +329,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             }
         }
 
-        charactercontroller.Move(moveDir * Time.deltaTime);
+        charactercontroller.Move(moveDir * Time.deltaTime * moveSpeed);
         animate_Run();
     }
 
@@ -337,7 +337,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         player_lookTarget();
 
-        moveDir = charactercontroller.transform.TransformDirection(remoteDir) * moveSpeed;
+        moveDir = charactercontroller.transform.TransformDirection(remoteDir);
     }
 
     private void Jump()
