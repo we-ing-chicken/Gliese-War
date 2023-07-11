@@ -355,10 +355,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     private void Look()
     {
-        MouseX += Input.GetAxis("Mouse X") * mouseSpeed;
+        if(photonView.IsMine)
+        {
+            MouseX += Input.GetAxis("Mouse X") * mouseSpeed;
+        }
 
-        if (photonView.IsMine)
-            remoteRot = Quaternion.Euler(0, MouseX, 0);
+        remoteRot = Quaternion.Euler(0, MouseX, 0);
     }
     private void player_lookTarget()
     {
@@ -736,12 +738,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
         if (stream.IsWriting)
         {
             stream.SendNext(moveDir);
-            stream.SendNext(transform.rotation);
+            stream.SendNext(MouseX);
         }
         else
         {
             remoteDir = (Vector3)stream.ReceiveNext();
-            remoteRot = (Quaternion)stream.ReceiveNext();
+            MouseX = (float)stream.ReceiveNext();
         }
     }
 
