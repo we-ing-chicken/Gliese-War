@@ -116,13 +116,9 @@ public class playerScript : LivingEntity, IPunObservable
         currHealth = 100;
         moveSpeed = 8;
 
-        //flashRed = GetComponent<MeshRenderer>().material;
-
-        RefreshStat();
-
         SetBattleItemEquip();
 
-        
+        RefreshStat();
 
         magicCooltime = 5f;
         isCool = false;
@@ -131,16 +127,10 @@ public class playerScript : LivingEntity, IPunObservable
 
         if (photonView.IsMine)
         {
-            Debug.Log("isMine");
-
             virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
-            Debug.Log(virtualCamera);
-            Debug.Log(FindObjectOfType<CinemachineVirtualCamera>());
-
 
             CServercamTest sct = Camera.main.GetComponent<CServercamTest>();
-            Debug.Log(Camera.main.GetComponent<CServercamTest>());
-            Debug.Log(sct);
+
             sct.bp = GetComponent<playerScript>();
             virtualCamera.Follow = transform;
             virtualCamera.LookAt = transform;
