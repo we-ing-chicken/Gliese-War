@@ -96,7 +96,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks //Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï
         //cscamera.gameObject.SetActive(true);
         GameObject temp = PhotonNetwork.Instantiate("player", spawnpoints[p_Num].transform.position, Quaternion.identity);
         //pv.RPC("numchange", RpcTarget.All);
-        temp.GetComponent<BattlePlayer>().myindex = p_Num;
+        temp.GetComponent<BattlePlayer>().myindex = PhotonNetwork.CurrentRoom.Players.Count;
         Debug.Log(p_Num);
         photonView.RPC("numchange", RpcTarget.All);
     }

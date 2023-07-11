@@ -223,7 +223,7 @@ public class BattlePlayer : LivingEntity//, IPunObservable
 
                     return;
                 }
-
+                Debug.Log(myindex);
                 AttackStart();
                 AttackAnimation();
                 StartCoroutine(AttackEffect());
