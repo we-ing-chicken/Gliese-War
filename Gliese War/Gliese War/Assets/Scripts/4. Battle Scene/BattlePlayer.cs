@@ -206,23 +206,27 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
         if (Input.GetMouseButtonDown(0))
         {
-            if (isMagic)
+            if(photonView.IsMine)
             {
-                GameObject magic = Instantiate(magicEffect[magicNum]); //1 Tornado , 2 Thunder  0 Fire
-                magic.transform.position = magicAreaPrefab.transform.position;
-                StopCoroutine(magicCor);
-                animator.SetTrigger("magicAttack");
-                magicAreaPrefab.SetActive(false);
-                isMagic = false;
+                if (isMagic)
+                {
+                    GameObject magic = Instantiate(magicEffect[magicNum]); //1 Tornado , 2 Thunder  0 Fire
+                    magic.transform.position = magicAreaPrefab.transform.position;
+                    StopCoroutine(magicCor);
+                    animator.SetTrigger("magicAttack");
+                    magicAreaPrefab.SetActive(false);
+                    isMagic = false;
 
-                isCool = true;
-                StartCoroutine(CheckCoolTime());
+                    isCool = true;
+                    StartCoroutine(CheckCoolTime());
 
-                return;
+                    return;
+                }
+
+                AttackAnimation();
+                StartCoroutine(AttackEffect());
             }
-
-            AttackAnimation();
-            StartCoroutine(AttackEffect());
+            
         }
         else if (Input.GetMouseButtonDown(1))
         {
