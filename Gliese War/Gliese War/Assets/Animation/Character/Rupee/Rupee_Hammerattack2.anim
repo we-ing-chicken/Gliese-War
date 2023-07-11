@@ -62746,3 +62746,10 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 0
+    functionName: AttackStart
+    data: 
+    objectReferenceParameter: {fileID: 8980038520097037082, guid: e0f7636ef9175104a91a9814f8f4c2c6, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

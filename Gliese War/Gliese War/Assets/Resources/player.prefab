@@ -834,7 +834,7 @@ GameObject:
   - component: {fileID: 1535938522580959584}
   - component: {fileID: 2881729006663315671}
   - component: {fileID: 4125734202276628042}
-  - component: {fileID: 6213373085264897261}
+  - component: {fileID: 7948013086493141461}
   m_Layer: 0
   m_Name: Sugar_ani
   m_TagString: Untagged
@@ -936,7 +936,7 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
---- !u!114 &6213373085264897261
+--- !u!114 &7948013086493141461
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -945,7 +945,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2578071170688422370}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c4690d38b8f4a04eb81c9c4cdf22ce1, type: 3}
+  m_Script: {fileID: 11500000, guid: 04a37331e24c5c541841632b842accae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   handR: {fileID: 5056536023917263590}
