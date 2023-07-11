@@ -92,7 +92,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     public bool isNear;
 
-    private Vector3 remotePos;
+    private Vector3 remoteDir;
     private Quaternion remoteRot;
 
     private bool isSafe = false;
@@ -299,6 +299,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         //if (BattleManager.Instance._isFading) return;
         if (charactercontroller == null) return;
         Look();
+        Debug.Log("IsMine : " + photonView.IsMine + ", remotePos : " + remoteDir);
 
         if (!charactercontroller.isGrounded)
         {
@@ -309,11 +310,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
         {
             if (photonView.IsMine)
             {
-                remotePos = new Vector3(moveLR, 0, moveFB);
+                remoteDir = new Vector3(moveLR, 0, moveFB);
                 Move();
             }
             else
             {
+                
                 Move();
                 transform.rotation = Quaternion.Lerp(transform.rotation, remoteRot, moveSpeed * Time.deltaTime);
             }
@@ -335,7 +337,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         player_lookTarget();
 
-        moveDir = charactercontroller.transform.TransformDirection(remotePos) * moveSpeed;
+        moveDir = charactercontroller.transform.TransformDirection(remoteDir) * moveSpeed;
     }
 
     private void Jump()
@@ -731,12 +733,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         if (stream.IsWriting)
         {
-            stream.SendNext(transform.position);
+            stream.SendNext(moveDir);
             stream.SendNext(transform.rotation);
         }
         else
         {
-            remotePos = (Vector3)stream.ReceiveNext();
+            remoteDir = (Vector3)stream.ReceiveNext();
             remoteRot = (Quaternion)stream.ReceiveNext();
         }
     }
