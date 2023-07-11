@@ -94,8 +94,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks //Ŭ���� ���
 
         //cscamera.gameObject.SetActive(true);
         GameObject temp = PhotonNetwork.Instantiate("player", spawnpoints[p_Num].transform.position, Quaternion.identity);
-        //temp.GetComponent<CharacterController>().enabled = false;
-        Debug.Log("A");
+        //pv.RPC("numchange", RpcTarget.All);
 
         switch (temp.GetComponent<PhotonView>().ViewID)
         {
@@ -113,21 +112,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks //Ŭ���� ���
                 break;
         }
 
-        //temp.GetComponent<CharacterController>().center = spawnpoints[temp.GetComponent<BattlePlayer>().myindex].transform.position;
-        //StartCoroutine(Teleport(temp.GetComponent<CharacterController>().enabled));
+        p_Num = temp.GetComponent<BattlePlayer>().myindex;
 
-        //temp.GetComponent<CharacterController>().enabled = true;
-        Debug.Log("myindex : " + temp.GetComponent<BattlePlayer>().myindex);
-        //BattleManager.Instance.player_indexes.Add(temp.GetComponent<PhotonView>().ViewID++);
         StartCoroutine("nc");
-        Debug.Log("B");
 
-        //TODO - 시네머신 타겟 go로 변경
-        // = go.transform;
-        //cscamera.cmvc.GetCinemachineComponent<>
-
-        //Debug.Log(p.GetComponent<playerScript>().isMine());
-        //cscamera.ps = p.GetComponent<playerScript>();
+        Debug.Log(p_Num);
+        BattleManager.Instance.player_indexes.Add(p_Num);
+        photonView.RPC("numchange", RpcTarget.All);
     }
 
     [PunRPC]
@@ -136,13 +127,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks //Ŭ���� ���
         p_Num++;
         Debug.Log("p_Num : " + p_Num);
     }
-
-    //IEnumerator Teleport(bool x)
-    //{
-
-    //    yield return new WaitForEndOfFrame();
-    //    x = true;
-    //}
     IEnumerator nc()
     {
         Debug.Log("photonView : " + photonView);
@@ -151,6 +135,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks //Ŭ���� ���
 
         Debug.Log("photonView : " + photonView);
         photonView.RPC("numchange", RpcTarget.All);
-       
+
     }
 }
