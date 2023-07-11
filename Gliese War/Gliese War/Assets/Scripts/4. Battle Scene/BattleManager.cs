@@ -6,6 +6,15 @@ public class BattleManager : MonoBehaviour
 {
     private static BattleManager _instance;
     public List<int> charNums = new List<int>();
+    
+    [Header("Canvas")] public GameObject invenCanvas;
+    public Canvas pauseCanvas;
+    public Canvas fadeCanvas;
+    public Canvas hitCanvas;
+
+    public Item[] sword;
+    public Item[] spear;
+    public Item[] hammer;
 
     public static BattleManager Instance
     {
@@ -47,5 +56,44 @@ public class BattleManager : MonoBehaviour
                 
         }
 
+    }
+    
+    private void SwitchCanvasActive(Canvas temp)
+    {
+        if (temp.gameObject.activeSelf)
+            temp.gameObject.SetActive(false);
+        else
+            temp.gameObject.SetActive(true);
+    }
+    
+    private void SwitchCanvasActive(GameObject temp)
+    {
+        if (temp.gameObject.activeSelf)
+            temp.gameObject.SetActive(false);
+        else
+            temp.gameObject.SetActive(true);
+    }
+    private void SwitchGameObjectActive(GameObject temp)
+    {
+        if (temp.gameObject.activeSelf)
+            temp.gameObject.SetActive(false);
+        else
+            temp.gameObject.SetActive(true);
+    }
+    
+    public void HitScreen()
+    {
+        StartCoroutine(HitCoroutine());
+    }
+
+    IEnumerator HitCoroutine()
+    {
+        for (int i = 0; i < 6; ++i)
+        {
+            SwitchCanvasActive(hitCanvas);
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        yield return null;
     }
 }
