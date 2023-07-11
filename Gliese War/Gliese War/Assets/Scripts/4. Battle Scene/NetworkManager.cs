@@ -91,33 +91,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks //Ŭ���� ���
     //TODO - �÷��̾� �ε��� �˻��ؼ� spawnpoints �ٸ��� �Ҵ�?
     public override void OnJoinedRoom()
     {
+        Debug.Log(p_Num);
 
         //cscamera.gameObject.SetActive(true);
         GameObject temp = PhotonNetwork.Instantiate("player", spawnpoints[p_Num].transform.position, Quaternion.identity);
         //pv.RPC("numchange", RpcTarget.All);
-
-        switch (temp.GetComponent<PhotonView>().ViewID)
-        {
-            case 1001:
-                temp.GetComponent<BattlePlayer>().myindex = 0;
-                break;
-            case 2001:
-                temp.GetComponent<BattlePlayer>().myindex = 1;
-                break;
-            case 3001:
-                temp.GetComponent<BattlePlayer>().myindex = 2;
-                break;
-            case 4001:
-                temp.GetComponent<BattlePlayer>().myindex = 3;
-                break;
-        }
-
-        p_Num = temp.GetComponent<BattlePlayer>().myindex;
-
-        StartCoroutine("nc");
-
+        temp.GetComponent<BattlePlayer>().myindex = p_Num;
         Debug.Log(p_Num);
-        BattleManager.Instance.player_indexes.Add(p_Num);
         photonView.RPC("numchange", RpcTarget.All);
     }
 
@@ -125,16 +105,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks //Ŭ���� ���
     public void numchange()
     {
         p_Num++;
-        Debug.Log("p_Num : " + p_Num);
-    }
-    IEnumerator nc()
-    {
-        Debug.Log("photonView : " + photonView);
-
-        yield return new WaitUntil(() => photonView.enabled);
-
-        Debug.Log("photonView : " + photonView);
-        photonView.RPC("numchange", RpcTarget.All);
 
     }
 }
