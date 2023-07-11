@@ -1,6 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
+using Photon.Pun;
 using UnityEngine;
 
 public class WeaponAttackBattle : MonoBehaviour
@@ -11,12 +14,30 @@ public class WeaponAttackBattle : MonoBehaviour
     public GameObject back;
     public GameObject attackEffectPos;
     public GameObject shoesEffectPos;
-    
+
+    private BattlePlayer mine;
+    private BattlePlayer[] players;
+
+    private void Start()
+    {
+        players = FindObjectsOfType<BattlePlayer>();
+
+        foreach (BattlePlayer p in players)
+        {
+            if (p.photonView.IsMine)
+            {
+                mine = p;
+                break;
+            }
+        }
+    }
+
     public void AttackStart()
     {
-        if (BattlePlayer.instance.weaponNow == 1)
+        //네트워크 매니저가 배틀매니저에 플레이어 인덱스의 자기 pnum을 토스 
+        if (mine.weaponNow == 1)
         {
-            switch (BattlePlayer.instance.weapon1.item.weaponType)
+            switch (mine.weapon1.item.weaponType)
             {
                 case Item.WeaponType.Hammer:
                     TurnOnHandHammer();
@@ -34,10 +55,10 @@ public class WeaponAttackBattle : MonoBehaviour
                     break;
             }
         }
-        else if (BattlePlayer.instance.weaponNow == 2)
+        else if (mine.weaponNow == 2)
         {
 
-            switch (BattlePlayer.instance.weapon2.item.weaponType)
+            switch (mine.weapon2.item.weaponType)
             {
                 case Item.WeaponType.Hammer:
                     TurnOnHandHammer();
@@ -56,33 +77,33 @@ public class WeaponAttackBattle : MonoBehaviour
             }
         }
 
-        BattlePlayer.instance.isAttack = true;
+        mine.isAttack = true;
     }
 
     public void TurnOnHandHammer()
     {
-        BattlePlayer.instance.handR.transform.GetChild(0).gameObject.SetActive(true);
-        BattlePlayer.instance.back.transform.GetChild(0).gameObject.SetActive(false);
+        mine.handR.transform.GetChild(0).gameObject.SetActive(true);
+        mine.back.transform.GetChild(0).gameObject.SetActive(false);
         
-        col = BattlePlayer.instance.handR.transform.GetChild(0).GetComponent<MeshCollider>();
+        col = mine.handR.transform.GetChild(0).GetComponent<MeshCollider>();
         col.enabled = true;
     }
     
     public void TurnOnHandSpear()
     {
-        BattlePlayer.instance.handR.transform.GetChild(1).gameObject.SetActive(true);
-        BattlePlayer.instance.back.transform.GetChild(1).gameObject.SetActive(false);
+        mine.handR.transform.GetChild(1).gameObject.SetActive(true);
+        mine.back.transform.GetChild(1).gameObject.SetActive(false);
         
-        col = BattlePlayer.instance.handR.transform.GetChild(1).GetComponent<MeshCollider>();
+        col = mine.handR.transform.GetChild(1).GetComponent<MeshCollider>();
         col.enabled = true;
     }
     
     public void TurnOnHandSword()
     {
-        BattlePlayer.instance.handR.transform.GetChild(2).gameObject.SetActive(true);
-        BattlePlayer.instance.back.transform.GetChild(2).gameObject.SetActive(false);
+        mine.handR.transform.GetChild(2).gameObject.SetActive(true);
+        mine.back.transform.GetChild(2).gameObject.SetActive(false);
         
-        col = BattlePlayer.instance.handR.transform.GetChild(2).GetComponent<MeshCollider>();
+        col = mine.handR.transform.GetChild(2).GetComponent<MeshCollider>();
         col.enabled = true;
     }
 
@@ -90,38 +111,38 @@ public class WeaponAttackBattle : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         
-        col = BattlePlayer.instance.handR.transform.GetChild(0).GetComponent<MeshCollider>();
+        col = mine.handR.transform.GetChild(0).GetComponent<MeshCollider>();
         col.enabled = false;
         
-        BattlePlayer.instance.handR.transform.GetChild(0).gameObject.SetActive(false);
-        BattlePlayer.instance.back.transform.GetChild(0).gameObject.SetActive(true);
+        mine.handR.transform.GetChild(0).gameObject.SetActive(false);
+        mine.back.transform.GetChild(0).gameObject.SetActive(true);
         
-        BattlePlayer.instance.isAttack = false;
+        mine.isAttack = false;
     }
     
     IEnumerator TurnOffHandSpear()
     {
         yield return new WaitForSeconds(0.6f);
         
-        col = BattlePlayer.instance.handR.transform.GetChild(1).GetComponent<MeshCollider>();
+        col = mine.handR.transform.GetChild(1).GetComponent<MeshCollider>();
         col.enabled = false;
         
-        BattlePlayer.instance.handR.transform.GetChild(1).gameObject.SetActive(false);
-        BattlePlayer.instance.back.transform.GetChild(1).gameObject.SetActive(true);
+        mine.handR.transform.GetChild(1).gameObject.SetActive(false);
+        mine.back.transform.GetChild(1).gameObject.SetActive(true);
         
-        BattlePlayer.instance.isAttack = false;
+        mine.isAttack = false;
     }
     
     IEnumerator TurnOffHandKnife()
     {
         yield return new WaitForSeconds(0.9f);
         
-        col = BattlePlayer.instance.handR.transform.GetChild(2).GetComponent<MeshCollider>();
+        col = mine.handR.transform.GetChild(2).GetComponent<MeshCollider>();
         col.enabled = false;
         
-        BattlePlayer.instance.handR.transform.GetChild(2).gameObject.SetActive(false);
-        BattlePlayer.instance.back.transform.GetChild(2).gameObject.SetActive(true);
+        mine.handR.transform.GetChild(2).gameObject.SetActive(false);
+        mine.back.transform.GetChild(2).gameObject.SetActive(true);
         
-        BattlePlayer.instance.isAttack = false;
+        mine.isAttack = false;
     }
 }
