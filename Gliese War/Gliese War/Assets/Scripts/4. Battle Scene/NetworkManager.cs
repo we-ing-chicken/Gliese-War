@@ -119,7 +119,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks //Ŭ���� ���
         //temp.GetComponent<CharacterController>().enabled = true;
         Debug.Log("myindex : " + temp.GetComponent<BattlePlayer>().myindex);
         //BattleManager.Instance.player_indexes.Add(temp.GetComponent<PhotonView>().ViewID++);
-        StartCoroutine(nc(temp));
+        StartCoroutine("nc");
         Debug.Log("B");
 
         //TODO - 시네머신 타겟 go로 변경
