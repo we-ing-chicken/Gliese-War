@@ -313,12 +313,14 @@ public class BattlePlayer : LivingEntity, IPunObservable
                 remoteDir = new Vector3(moveLR, 0, moveFB);
                 Move();
                 Look();
+                transform.rotation = remoteRot;
+
             }
             else
             {
                 
                 Move();
-                transform.rotation = Quaternion.Lerp(transform.rotation, remoteRot, moveSpeed * Time.deltaTime);
+                transform.rotation = remoteRot;
             }
 
             if (p_Jump)
