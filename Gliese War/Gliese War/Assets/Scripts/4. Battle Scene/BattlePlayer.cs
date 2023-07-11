@@ -12,7 +12,7 @@ using UnityEngine.Animations;
 using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 
-public class BattlePlayer : LivingEntity//, IPunObservable
+public class BattlePlayer : LivingEntity, IPunObservable
 {
     static public BattlePlayer instance;
     public int myindex;
@@ -727,19 +727,19 @@ public class BattlePlayer : LivingEntity//, IPunObservable
         }
     }
 
-    //public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    //{
-    //    if (stream.IsWriting)
-    //    {
-    //        stream.SendNext(transform.position);
-    //        stream.SendNext(transform.rotation);
-    //    }
-    //    else
-    //    {
-    //        remotePos = (Vector3)stream.ReceiveNext();
-    //        remoteRot = (Quaternion)stream.ReceiveNext();
-    //    }
-    //}
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
+        }
+        else
+        {
+            remotePos = (Vector3)stream.ReceiveNext();
+            remoteRot = (Quaternion)stream.ReceiveNext();
+        }
+    }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
