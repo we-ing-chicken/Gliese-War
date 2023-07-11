@@ -97,14 +97,12 @@ public class playerScript : LivingEntity, IPunObservable
 
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
 
-    public PhotonView pv;
-
     private void Start()
     {
-        Debug.Log(pv.IsMine);
+        Debug.Log(photonView.IsMine);
 
         instance = this;
-        if(pv.IsMine) 
+        if(photonView.IsMine) 
             applyItems();
         charactercontroller = GetComponent<CharacterController>();
         moveDir = Vector3.zero;
@@ -131,7 +129,7 @@ public class playerScript : LivingEntity, IPunObservable
 
         EquipWeapon();
 
-        if (pv.IsMine)
+        if (photonView.IsMine)
         {
             Debug.Log("isMine");
 
@@ -156,7 +154,7 @@ public class playerScript : LivingEntity, IPunObservable
 
         if (charactercontroller == null) return;
 
-        if (pv.IsMine)
+        if (photonView.IsMine)
         {
             moveFB = Input.GetAxis(moveFBAxisName); 
             moveLR = Input.GetAxis(moveLRAxisName);
@@ -312,7 +310,7 @@ public class playerScript : LivingEntity, IPunObservable
         }
         else
         {
-            if (pv.IsMine)
+            if (photonView.IsMine)
             {
                 remotePos = new Vector3(moveLR, 0, moveFB);
                 Move();
@@ -357,7 +355,7 @@ public class playerScript : LivingEntity, IPunObservable
     {
         MouseX += Input.GetAxis("Mouse X") * mouseSpeed;
 
-        if (pv.IsMine)
+        if (photonView.IsMine)
             remoteRot = Quaternion.Euler(0, MouseX, 0);
         transform.rotation = remoteRot;
     }
