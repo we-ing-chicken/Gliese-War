@@ -7,6 +7,7 @@ using UnityEngine.UI; //����
 using TMPro;
 using UnityEngine.UIElements;
 using Cinemachine;
+using System;
 
 public class NetworkManager : MonoBehaviourPunCallbacks //Ŭ���� ���
 {
@@ -95,10 +96,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks //Ŭ���� ���
         //cscamera.gameObject.SetActive(true);
         GameObject temp = PhotonNetwork.Instantiate("player", spawnpoints[p_Num].transform.position, Quaternion.identity);
         //pv.RPC("numchange", RpcTarget.All);
-        temp.GetComponent<BattlePlayer>().myindex = p_Num;
-        Debug.Log("p_Num : " + p_Num);
-        BattleManager.Instance.player_indexes.Add(p_Num);
-        photonView.RPC("numchange", RpcTarget.All);
+        temp.GetComponent<BattlePlayer>().myindex = temp.GetComponent<PhotonView>().ViewID;
+
+        Debug.Log("myindex : " + temp.GetComponent<BattlePlayer>().myindex);
+        BattleManager.Instance.player_indexes.Add(temp.GetComponent<PhotonView>().ViewID++);
+
+
 
         //TODO - 시네머신 타겟 go로 변경
         // = go.transform;

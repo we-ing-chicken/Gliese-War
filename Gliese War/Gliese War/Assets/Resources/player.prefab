@@ -1219,7 +1219,7 @@ GameObject:
   - component: {fileID: 8274484789571185862}
   - component: {fileID: 1172362743485236797}
   - component: {fileID: -921857062115279284}
-  - component: {fileID: -744311401481893493}
+  - component: {fileID: -4829223945961888455}
   m_Layer: 0
   m_Name: player
   m_TagString: Player
@@ -1324,7 +1324,7 @@ MonoBehaviour:
   JumpPower: 5
   isNear: 0
   virtualCamera: {fileID: 0}
---- !u!114 &-744311401481893493
+--- !u!114 &-4829223945961888455
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1343,7 +1343,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 0
   ObservedComponents:
-  - {fileID: 0}
+  - {fileID: -921857062115279284}
   - {fileID: 2881729006663315671}
   - {fileID: 4125734202276628042}
   sceneViewId: 0
