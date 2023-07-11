@@ -60,6 +60,7 @@ public class BattlePlayer : LivingEntity//, IPunObservable
     [SerializeField] private GameObject footR;
     public GameObject handR;
     public GameObject back;
+    private MeshCollider col;
 
     [SerializeField] private GameObject attackEffectPos;
     [SerializeField] private GameObject[] attackEffect;
@@ -223,6 +224,7 @@ public class BattlePlayer : LivingEntity//, IPunObservable
                     return;
                 }
 
+                AttackStart();
                 AttackAnimation();
                 StartCoroutine(AttackEffect());
             }
@@ -833,5 +835,118 @@ public class BattlePlayer : LivingEntity//, IPunObservable
                 Debug.Log("밖");
             }
         }
+    }
+    
+    public void AttackStart()
+    {
+        if (weaponNow == 1)
+        {
+            switch (weapon1.item.weaponType)
+            {
+                case Item.WeaponType.Hammer:
+                    TurnOnHandHammer();
+                    StartCoroutine(TurnOffHandHammer());
+                    break;
+                
+                case Item.WeaponType.Sword:
+                    TurnOnHandSword();
+                    StartCoroutine(TurnOffHandKnife());
+                    break;
+                
+                case Item.WeaponType.Spear:
+                    TurnOnHandSpear();
+                    StartCoroutine(TurnOffHandSpear());
+                    break;
+            }
+        }
+        else if (weaponNow == 2)
+        {
+
+            switch (weapon2.item.weaponType)
+            {
+                case Item.WeaponType.Hammer:
+                    TurnOnHandHammer();
+                    StartCoroutine(TurnOffHandHammer());
+                    break;
+                
+                case Item.WeaponType.Sword:
+                    TurnOnHandSword();
+                    StartCoroutine(TurnOffHandKnife());
+                    break;
+                
+                case Item.WeaponType.Spear:
+                    TurnOnHandSpear();
+                    StartCoroutine(TurnOffHandSpear());
+                    break;
+            }
+        }
+
+        isAttack = true;
+    }
+
+    public void TurnOnHandHammer()
+    {
+        handR.transform.GetChild(0).gameObject.SetActive(true);
+        back.transform.GetChild(0).gameObject.SetActive(false);
+        
+        col = handR.transform.GetChild(0).GetComponent<MeshCollider>();
+        col.enabled = true;
+    }
+    
+    public void TurnOnHandSpear()
+    {
+        handR.transform.GetChild(1).gameObject.SetActive(true);
+        back.transform.GetChild(1).gameObject.SetActive(false);
+        
+        col = handR.transform.GetChild(1).GetComponent<MeshCollider>();
+        col.enabled = true;
+    }
+    
+    public void TurnOnHandSword()
+    {
+        handR.transform.GetChild(2).gameObject.SetActive(true);
+        back.transform.GetChild(2).gameObject.SetActive(false);
+        
+        col = handR.transform.GetChild(2).GetComponent<MeshCollider>();
+        col.enabled = true;
+    }
+
+    IEnumerator TurnOffHandHammer()
+    {
+        yield return new WaitForSeconds(0.5f);
+        
+        col = handR.transform.GetChild(0).GetComponent<MeshCollider>();
+        col.enabled = false;
+        
+        handR.transform.GetChild(0).gameObject.SetActive(false);
+        back.transform.GetChild(0).gameObject.SetActive(true);
+        
+        isAttack = false;
+    }
+    
+    IEnumerator TurnOffHandSpear()
+    {
+        yield return new WaitForSeconds(0.6f);
+        
+        col = handR.transform.GetChild(1).GetComponent<MeshCollider>();
+        col.enabled = false;
+        
+        handR.transform.GetChild(1).gameObject.SetActive(false);
+        back.transform.GetChild(1).gameObject.SetActive(true);
+        
+        isAttack = false;
+    }
+    
+    IEnumerator TurnOffHandKnife()
+    {
+        yield return new WaitForSeconds(0.9f);
+        
+        col = handR.transform.GetChild(2).GetComponent<MeshCollider>();
+        col.enabled = false;
+        
+        handR.transform.GetChild(2).gameObject.SetActive(false);
+        back.transform.GetChild(2).gameObject.SetActive(true);
+        
+        isAttack = false;
     }
 }
