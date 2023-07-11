@@ -429,10 +429,9 @@ MonoBehaviour:
   - {fileID: 7009505819816671087, guid: bbdd9b2151b492e4cb95557c2d13c3b1, type: 3}
   - {fileID: 6021791871163653471, guid: ad1fd24df59c9d54eba32de0fb48d3f1, type: 3}
   - {fileID: 8486861587000665785, guid: 072cba1ce6ea694488846820fc4449bf, type: 3}
-  JumpPower: 0
+  JumpPower: 5
   isNear: 0
   virtualCamera: {fileID: 0}
-  pv: {fileID: -744311401481893493}
 --- !u!114 &-744311401481893493
 MonoBehaviour:
   m_ObjectHideFlags: 0

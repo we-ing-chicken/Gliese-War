@@ -5,7 +5,7 @@ using UnityEngine;
 public class BattleManager : MonoBehaviour
 {
     private static BattleManager _instance;
-    public List<int> charNums = new List<int>();
+    public List<int> player_indexes = new List<int>();
     
     [Header("Canvas")] public GameObject invenCanvas;
     public Canvas pauseCanvas;
@@ -46,12 +46,12 @@ public class BattleManager : MonoBehaviour
 
     public void BM_RemoveList(int removeNum)
     {
-        for (int i = charNums.Count - 1; i >= 0; i--)
+        for (int i = player_indexes.Count - 1; i >= 0; i--)
         {
-            if (charNums[i] == removeNum)
+            if (player_indexes[i] == removeNum)
             {
-                Debug.Log("removelist" + charNums[i]);
-                charNums.Remove(charNums[i]);
+                Debug.Log("removelist" + player_indexes[i]);
+                player_indexes.Remove(player_indexes[i]);
             }
                 
         }

@@ -97,7 +97,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks //Ŭ���� ���
         //pv.RPC("numchange", RpcTarget.All);
         temp.GetComponent<playerScript>().myindex = p_Num;
         Debug.Log(p_Num);
-        BattleManager.Instance.charNums.Add(p_Num);
+        BattleManager.Instance.player_indexes.Add(p_Num);
 
 
         //TODO - 시네머신 타겟 go로 변경

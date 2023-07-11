@@ -154,9 +154,9 @@ public class playerScript : LivingEntity, IPunObservable
             Mlattack = Input.GetButton(meleeAttackButtonName);
             Mgattack = Input.GetButton(magicAttackButtonName);
             p_Jump = Input.GetButton(JumpButtonName);
-            animate_Run();
+            
         }
-
+        
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -315,14 +315,14 @@ public class playerScript : LivingEntity, IPunObservable
             if (p_Jump)
             {
                 isAttack = false;
-                    animator.SetTrigger("doJump");
-                    Jump();
+                animator.SetTrigger("doJump");
+                Jump();
 
             }
         }
 
         charactercontroller.Move(moveDir * Time.deltaTime);
-        //tranform.position 전송
+        animate_Run();
     }
 
     private void Move()
@@ -631,7 +631,7 @@ public class playerScript : LivingEntity, IPunObservable
                     break;
 
                 case Item.WeaponType.Sword:
-                    EquipKnife();
+                    EquipSword();
                     break;
 
                 case Item.WeaponType.Spear:
@@ -651,7 +651,7 @@ public class playerScript : LivingEntity, IPunObservable
                     break;
 
                 case Item.WeaponType.Sword:
-                    EquipKnife();
+                    EquipSword();
                     break;
 
                 case Item.WeaponType.Spear:
@@ -676,7 +676,7 @@ public class playerScript : LivingEntity, IPunObservable
         back.transform.GetChild(2).gameObject.SetActive(false);
     }
 
-    private void EquipKnife()
+    private void EquipSword()
     {
         back.transform.GetChild(2).gameObject.SetActive(true);
         back.transform.GetChild(0).gameObject.SetActive(false);
@@ -761,14 +761,14 @@ public class playerScript : LivingEntity, IPunObservable
         if(weapon1 == null) 
         {
             weapon1 = new RealItem();
-            weapon1.item = TestManager.Instance.knife[1];
+            weapon1.item = BattleManager.Instance.sword[1];
             weapon1.magic = Magic.Fire;
         }
 
         if(weapon2 == null)
         {
             weapon2 = new RealItem();
-            weapon2.item = TestManager.Instance.knife[1];
+            weapon2.item = BattleManager.Instance.sword[1];
             weapon2.magic = Magic.Water;
         }
     }
