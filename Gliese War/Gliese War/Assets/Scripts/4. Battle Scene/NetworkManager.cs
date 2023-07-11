@@ -61,8 +61,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks //Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï
 
     //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½ 
     private void Update() => StatusText.text = PhotonNetwork.NetworkClientState.ToString();
-
-    
+        
     public void Connect() => PhotonNetwork.ConnectUsingSettings();
     public override void OnConnectedToMaster()
     {
@@ -98,12 +97,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks //Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï
         temp.GetComponent<playerScript>().myindex = p_Num;
         Debug.Log(p_Num);
         BattleManager.Instance.charNums.Add(p_Num);
+        photonView.RPC("numchange", RpcTarget.All);
     }
 
-    //[PunRPC]
-    //public void numchange()
-    //{
-    //    p_Num++;
+    [PunRPC]
+    public void numchange()
+    {
+        p_Num++;
 
-    //}
+    }
 }
