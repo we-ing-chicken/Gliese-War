@@ -94,6 +94,7 @@ public class playerScript : LivingEntity, IPunObservable
     private Vector3 remotePos;
     private Quaternion remoteRot;
 
+    private bool isSafe = false;
 
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
 
@@ -801,5 +802,32 @@ public class playerScript : LivingEntity, IPunObservable
     {
         animator.SetTrigger("Dying");
         yield return new WaitForSeconds(0.3f);
+    }
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Inside"))
+        {
+            isSafe = true;
+        }
+    }
+    
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Inside"))
+        {
+            isSafe = false;
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if(!isSafe)
+        {
+            if (other.CompareTag("Outside"))
+            {
+                Debug.Log("밖");
+            }
+        }
     }
 }
