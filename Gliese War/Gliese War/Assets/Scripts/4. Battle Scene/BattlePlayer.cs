@@ -112,11 +112,22 @@ public class BattlePlayer : LivingEntity, IPunObservable
         isNear = false;
         life = 10;
 
-        offensivePower = GameManager.Instance.stat.attackPower;
-        defensivePower = GameManager.Instance.stat.defensePower;
-        maxHealth = GameManager.Instance.stat.health;
-        currHealth = maxHealth;
-        moveSpeed = GameManager.Instance.stat.moveSpeed;
+        if (GameManager.Instance != null)
+        {
+            offensivePower = GameManager.Instance.stat.attackPower;
+            defensivePower = GameManager.Instance.stat.defensePower;
+            maxHealth = GameManager.Instance.stat.health;
+            currHealth = maxHealth;
+            moveSpeed = GameManager.Instance.stat.moveSpeed;
+        }
+        else
+        {
+            offensivePower = 10;
+            defensivePower = 10;
+            maxHealth = 100;
+            currHealth = 100;
+            moveSpeed = 10;
+        }
 
         SetBattleItemEquip();
 
@@ -178,17 +189,17 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            weapon1.item = TestManager.Instance.knife[1];
+            weapon1.item = BattleManager.Instance.sword[1];
             EquipWeapon();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha5))
         {
-            weapon1.item = TestManager.Instance.spear[1];
+            weapon1.item = BattleManager.Instance.spear[1];
             EquipWeapon();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha6))
         {
-            weapon1.item = TestManager.Instance.hammer[1];
+            weapon1.item = BattleManager.Instance.hammer[1];
             EquipWeapon();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha7))
@@ -205,7 +216,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
 
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !isAttack)
         {
             if(photonView.IsMine)
             {
@@ -224,6 +235,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
                     return;
                 }
                 Debug.Log(myindex);
+                isAttack = true;
                 AttackStart();
                 AttackAnimation();
                 StartCoroutine(AttackEffect());
@@ -815,7 +827,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             isSafe = true;
         }
         
-        if (other.CompareTag("Weapon"))
+        if (other.CompareTag("Weapon") && !other.transform.GetComponentInParent<BattlePlayer>().photonView.IsMine)
         {
             BattleManager.Instance.HitScreen();
         }
@@ -840,6 +852,11 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
     }
     
+    public void GetDamage(int val)
+    {
+        currHealth -= val;
+    }
+    
     public void AttackStart()
     {
         if (weaponNow == 1)
@@ -853,7 +870,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
                 
                 case Item.WeaponType.Sword:
                     TurnOnHandSword();
-                    StartCoroutine(TurnOffHandKnife());
+                    StartCoroutine(TurnOffHandSword());
                     break;
                 
                 case Item.WeaponType.Spear:
@@ -874,7 +891,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
                 
                 case Item.WeaponType.Sword:
                     TurnOnHandSword();
-                    StartCoroutine(TurnOffHandKnife());
+                    StartCoroutine(TurnOffHandSword());
                     break;
                 
                 case Item.WeaponType.Spear:
@@ -940,7 +957,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         isAttack = false;
     }
     
-    IEnumerator TurnOffHandKnife()
+    IEnumerator TurnOffHandSword()
     {
         yield return new WaitForSeconds(0.9f);
         

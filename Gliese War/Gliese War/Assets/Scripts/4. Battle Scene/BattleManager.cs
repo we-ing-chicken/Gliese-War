@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +16,9 @@ public class BattleManager : MonoBehaviour
     public Item[] sword;
     public Item[] spear;
     public Item[] hammer;
+    
+    public bool _isFading = true;
+    public bool _isInven = false;
 
     public static BattleManager Instance
     {
@@ -41,6 +45,23 @@ public class BattleManager : MonoBehaviour
         else if (_instance != this)
         {
             Destroy(gameObject);
+        }
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            if (!pauseCanvas.gameObject.activeSelf)
+            {
+                SwitchCanvasActive(invenCanvas);
+                //SwitchGameObjectActive(characterCam);
+            }
+
+            if (_isInven)
+                _isInven = false;
+            else
+                _isInven = true;
         }
     }
 
