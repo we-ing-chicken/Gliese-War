@@ -748,7 +748,18 @@ public class BattlePlayer : LivingEntity, IPunObservable
             remoteDir = -remoteDir;
             //Debug.Log("PhotonNetwork.Time : " + PhotonNetwork.Time + ", info.SentServerTime : " + info.SentServerTime + ", lag : " + lag);
             //Debug.Log("1remoteDir : " + remoteDir);
-            //remoteDir = remoteDir + remoteDir * lag;
+            //remoteDir = remoteDir + remoteDir / lag;
+            if(remoteDir.x <= 0)
+                remoteDir.x = remoteDir.x - remoteDir.x * lag;
+            else
+                remoteDir.x = remoteDir.x + remoteDir.x * lag;
+
+            remoteDir.y = remoteDir.y + remoteDir.y * lag;
+            if (remoteDir.z <= 0)
+                remoteDir.z = remoteDir.z - remoteDir.z * lag;
+            else
+                remoteDir.z = remoteDir.z + remoteDir.z * lag;
+
             //Debug.Log("2remoteDir : " + remoteDir);
             //MouseX = MouseX * lag;
         }
