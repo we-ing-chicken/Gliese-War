@@ -99,16 +99,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
 
-    Vector3 _networkPosition;
-    Quaternion _networkRotation;
-    Rigidbody _rb;
-
     private void Start()
     {
         Debug.Log(photonView.IsMine);
 
         instance = this;
-        if (photonView.IsMine)
+        if(photonView.IsMine) 
             applyItems();
         charactercontroller = GetComponent<CharacterController>();
         moveDir = Vector3.zero;
@@ -142,28 +138,26 @@ public class BattlePlayer : LivingEntity, IPunObservable
             virtualCamera.LookAt = transform;
 
         }
-        _rb = GetComponent<Rigidbody>();
     }
 
     private void Update()
     {
         if (transform.GetComponent<LivingEntity>().dead) return;
 
-        //if (charactercontroller == null) return;
+        if (charactercontroller == null) return;
 
         if (photonView.IsMine)
         {
-            moveFB = Input.GetAxis(moveFBAxisName);
+            moveFB = Input.GetAxis(moveFBAxisName); 
             moveLR = Input.GetAxis(moveLRAxisName);
-            Debug.Log("1moveLR : " + moveLR + ", moveFB : " + moveFB);
 
             ismove = (Input.GetButton(moveFBAxisName) || Input.GetButton(moveLRAxisName));
             Mlattack = Input.GetButton(meleeAttackButtonName);
             Mgattack = Input.GetButton(magicAttackButtonName);
             p_Jump = Input.GetButton(JumpButtonName);
-
+            
         }
-
+        
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -213,7 +207,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
         if (Input.GetMouseButtonDown(0))
         {
-            if (photonView.IsMine)
+            if(photonView.IsMine)
             {
                 if (isMagic)
                 {
@@ -234,7 +228,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
                 AttackAnimation();
                 StartCoroutine(AttackEffect());
             }
-
+            
         }
         else if (Input.GetMouseButtonDown(1))
         {
@@ -255,92 +249,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
             magicAreaPrefab.SetActive(false);
         }
 
-        //if (charactercontroller == null) return;
-
-
-        //if (!charactercontroller.isGrounded)
-        //{
-        //    if (!ignoreGravity)
-        //        Fall();
-        //}
-        //else
-        //{
-        //if (photonView.IsMine)
-        //{
-        //    remoteDir = new Vector3(moveLR, 0, moveFB);
-        //    Move();
-        //    Look();
-        //    Debug.Log("IsMine : " + photonView.IsMine + ", remoteRot : " + remoteRot);
-
-        //    transform.rotation = remoteRot;
-
-        //}
-        //else
-        //{
-        //    Move();
-        //    Look();
-        //    Debug.Log("IsMine : " + photonView.IsMine + ", remoteRot : " + remoteRot);
-
-        //    transform.rotation = remoteRot;
-        //}
-
-        //if (p_Jump)
-        //{
-        //    isAttack = false;
-        //    animator.SetTrigger("doJump");
-        //    Jump();
-
-        //}
-        //}
-
-        //charactercontroller.Move(moveDir * Time.deltaTime * moveSpeed);
-
-        animate_Run();
-    }
-
-    public void FixedUpdate()
-    {
-        if (photonView.IsMine)
-        {
-
-            remoteDir = new Vector3(moveLR, 0, moveFB);
-            Debug.Log("2moveLR : " + moveLR + ", moveFB : " + moveFB);
-            //Debug.Log("IsMine : " + photonView.IsMine + ", remoteDir : " + remoteDir);
-
-            Move();
-            _rb.position = Vector3.MoveTowards(_rb.position, _rb.position + remoteDir, Time.fixedDeltaTime * moveSpeed);
-
-            Look();
-            //Debug.Log("IsMine : " + photonView.IsMine + ", remoteRot : " + remoteRot);
-
-            _rb.rotation = Quaternion.Euler(0, MouseX, 0);
-
-
-        }
-        else
-        {
-            _rb.position = Vector3.MoveTowards(_rb.position, _networkPosition, Time.fixedDeltaTime);
-            _rb.rotation = Quaternion.Euler(_networkRotation.x, _networkRotation.y, _networkRotation.z);
-        }
-    }
-
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (stream.IsWriting)
-        {
-            stream.SendNext(_rb.position);
-            stream.SendNext(_rb.rotation);
-            stream.SendNext(_rb.velocity);
-        }
-        else
-        {
-            _networkPosition = (Vector3)stream.ReceiveNext();
-            _networkRotation = (Quaternion)stream.ReceiveNext();
-            _rb.velocity = (Vector3)stream.ReceiveNext();
-
-            float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTimestamp));
-            _networkPosition += (_rb.velocity * lag);
-        }
     }
 
     IEnumerator SetMagicArea()
@@ -385,11 +293,54 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
     }
 
+    private void FixedUpdate()
+    {
+        //else
+        //if (BattleManager.Instance._isFading) return;
+        if (charactercontroller == null) return;
+        
+        Debug.Log("IsMine : " + photonView.IsMine + ", remotePos : " + remoteDir);
+
+        if (!charactercontroller.isGrounded)
+        {
+            if (!ignoreGravity)
+                Fall();
+        }
+        else
+        {
+            if (photonView.IsMine)
+            {
+                remoteDir = new Vector3(moveLR, 0, moveFB);
+                Move();
+                Look();
+                transform.rotation = remoteRot;
+
+            }
+            else
+            {
+                Move();
+                Look();
+                transform.rotation = remoteRot;
+            }
+
+            if (p_Jump)
+            {
+                isAttack = false;
+                animator.SetTrigger("doJump");
+                Jump();
+
+            }
+        }
+
+        charactercontroller.Move(moveDir * Time.deltaTime  * moveSpeed);
+        animate_Run();
+    }
+
     private void Move()
     {
         player_lookTarget();
 
-        //moveDir = charactercontroller.transform.TransformDirection(remoteDir);
+        moveDir = charactercontroller.transform.TransformDirection(remoteDir);
     }
 
     private void Jump()
@@ -402,7 +353,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     }
     private void Look()
     {
-        if (photonView.IsMine)
+        if(photonView.IsMine)
         {
             MouseX = MouseX + (Input.GetAxis("Mouse X") * mouseSpeed);
         }
@@ -462,7 +413,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     private void animate_Run()
     {
-        animator.SetBool("isRun", ismove);
+            animator.SetBool("isRun", ismove);
     }
 
     private void AttackAnimation()
@@ -780,15 +731,29 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
     }
 
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(moveDir);
+            stream.SendNext(MouseX);
+        }
+        else
+        {
+            remoteDir = (Vector3)stream.ReceiveNext();
+            MouseX = (float)stream.ReceiveNext();
+        }
+    }
+
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         //if (hit.collider.tag == "Weapon")
         //{
         //    Debug.Log($"OnControllerColliderHit - {hit.collider.name}");
-
+            
         //}
         // TO DO : 무기 스크립트 생성, 충돌 대상 태그가 플레이어라면 대상의 ApplyDamage 호출
-
+           
     }
     void applyItems()
     {
@@ -803,14 +768,14 @@ public class BattlePlayer : LivingEntity, IPunObservable
     void SetBattleItemEquip()
     {
         //Debug.Log(weapon1.item + ", " + weapon1.magic + ", " + weapon1.stat.attackPower);
-        if (weapon1 == null)
+        if(weapon1 == null) 
         {
             weapon1 = new RealItem();
             weapon1.item = BattleManager.Instance.sword[1];
             weapon1.magic = Magic.Fire;
         }
 
-        if (weapon2 == null)
+        if(weapon2 == null)
         {
             weapon2 = new RealItem();
             weapon2.item = BattleManager.Instance.sword[1];
@@ -848,7 +813,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         animator.SetTrigger("Dying");
         yield return new WaitForSeconds(0.3f);
     }
-
+    
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Inside"))
@@ -856,7 +821,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             isSafe = true;
         }
     }
-
+    
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Inside"))
@@ -867,7 +832,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     private void OnTriggerStay(Collider other)
     {
-        if (!isSafe)
+        if(!isSafe)
         {
             if (other.CompareTag("Outside"))
             {
@@ -875,7 +840,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             }
         }
     }
-
+    
     public void AttackStart()
     {
         if (weaponNow == 1)
@@ -886,12 +851,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
                     TurnOnHandHammer();
                     StartCoroutine(TurnOffHandHammer());
                     break;
-
+                
                 case Item.WeaponType.Sword:
                     TurnOnHandSword();
                     StartCoroutine(TurnOffHandKnife());
                     break;
-
+                
                 case Item.WeaponType.Spear:
                     TurnOnHandSpear();
                     StartCoroutine(TurnOffHandSpear());
@@ -907,12 +872,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
                     TurnOnHandHammer();
                     StartCoroutine(TurnOffHandHammer());
                     break;
-
+                
                 case Item.WeaponType.Sword:
                     TurnOnHandSword();
                     StartCoroutine(TurnOffHandKnife());
                     break;
-
+                
                 case Item.WeaponType.Spear:
                     TurnOnHandSpear();
                     StartCoroutine(TurnOffHandSpear());
@@ -927,25 +892,25 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         handR.transform.GetChild(0).gameObject.SetActive(true);
         back.transform.GetChild(0).gameObject.SetActive(false);
-
+        
         col = handR.transform.GetChild(0).GetComponent<MeshCollider>();
         col.enabled = true;
     }
-
+    
     public void TurnOnHandSpear()
     {
         handR.transform.GetChild(1).gameObject.SetActive(true);
         back.transform.GetChild(1).gameObject.SetActive(false);
-
+        
         col = handR.transform.GetChild(1).GetComponent<MeshCollider>();
         col.enabled = true;
     }
-
+    
     public void TurnOnHandSword()
     {
         handR.transform.GetChild(2).gameObject.SetActive(true);
         back.transform.GetChild(2).gameObject.SetActive(false);
-
+        
         col = handR.transform.GetChild(2).GetComponent<MeshCollider>();
         col.enabled = true;
     }
@@ -953,39 +918,39 @@ public class BattlePlayer : LivingEntity, IPunObservable
     IEnumerator TurnOffHandHammer()
     {
         yield return new WaitForSeconds(0.5f);
-
+        
         col = handR.transform.GetChild(0).GetComponent<MeshCollider>();
         col.enabled = false;
-
+        
         handR.transform.GetChild(0).gameObject.SetActive(false);
         back.transform.GetChild(0).gameObject.SetActive(true);
-
+        
         isAttack = false;
     }
-
+    
     IEnumerator TurnOffHandSpear()
     {
         yield return new WaitForSeconds(0.6f);
-
+        
         col = handR.transform.GetChild(1).GetComponent<MeshCollider>();
         col.enabled = false;
-
+        
         handR.transform.GetChild(1).gameObject.SetActive(false);
         back.transform.GetChild(1).gameObject.SetActive(true);
-
+        
         isAttack = false;
     }
-
+    
     IEnumerator TurnOffHandKnife()
     {
         yield return new WaitForSeconds(0.9f);
-
+        
         col = handR.transform.GetChild(2).GetComponent<MeshCollider>();
         col.enabled = false;
-
+        
         handR.transform.GetChild(2).gameObject.SetActive(false);
         back.transform.GetChild(2).gameObject.SetActive(true);
-
+        
         isAttack = false;
     }
 }
