@@ -261,6 +261,44 @@ public class BattlePlayer : LivingEntity, IPunObservable
             magicAreaPrefab.SetActive(false);
         }
 
+
+        if (charactercontroller == null) return;
+
+        Debug.Log("IsMine : " + photonView.IsMine + ", remotePos : " + remoteDir);
+
+        if (!charactercontroller.isGrounded)
+        {
+            if (!ignoreGravity)
+                Fall();
+        }
+        else
+        {
+            if (photonView.IsMine)
+            {
+                remoteDir = new Vector3(moveLR, 0, moveFB);
+                Move();
+                Look();
+                transform.rotation = remoteRot;
+
+            }
+            else
+            {
+                Move();
+                Look();
+                transform.rotation = remoteRot;
+            }
+
+            if (p_Jump)
+            {
+                isAttack = false;
+                animator.SetTrigger("doJump");
+                Jump();
+
+            }
+        }
+
+        charactercontroller.Move(moveDir * Time.deltaTime * moveSpeed);
+        animate_Run();
     }
 
     IEnumerator SetMagicArea()
@@ -303,49 +341,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
             yield return null;
         }
-    }
-
-    private void FixedUpdate()
-    {
-        //else
-        //if (BattleManager.Instance._isFading) return;
-        if (charactercontroller == null) return;
-        
-        Debug.Log("IsMine : " + photonView.IsMine + ", remotePos : " + remoteDir);
-
-        if (!charactercontroller.isGrounded)
-        {
-            if (!ignoreGravity)
-                Fall();
-        }
-        else
-        {
-            if (photonView.IsMine)
-            {
-                remoteDir = new Vector3(moveLR, 0, moveFB);
-                Move();
-                Look();
-                transform.rotation = remoteRot;
-
-            }
-            else
-            {
-                Move();
-                Look();
-                transform.rotation = remoteRot;
-            }
-
-            if (p_Jump)
-            {
-                isAttack = false;
-                animator.SetTrigger("doJump");
-                Jump();
-
-            }
-        }
-
-        charactercontroller.Move(moveDir * Time.deltaTime  * moveSpeed);
-        animate_Run();
     }
 
     private void Move()
@@ -748,6 +743,10 @@ public class BattlePlayer : LivingEntity, IPunObservable
         {
             remoteDir = (Vector3)stream.ReceiveNext();
             MouseX = (float)stream.ReceiveNext();
+
+            float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
+            remoteDir = remoteDir * lag;
+            MouseX = MouseX * lag;
         }
     }
 
