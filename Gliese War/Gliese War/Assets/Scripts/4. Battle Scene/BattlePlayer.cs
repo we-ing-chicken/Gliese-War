@@ -342,11 +342,11 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     private void Jump()
     {
-        remoteDir.y = JumpPower;
+        moveDir.y = JumpPower;
     }
     private void Fall()
     {
-        remoteDir.y -= Gravity * Time.deltaTime;
+        moveDir.y -= Gravity * Time.deltaTime;
     }
     private void Look()
     {
