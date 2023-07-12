@@ -273,6 +273,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
             {
                 Move();
                 Look();
+                Debug.Log("IsMine : " + photonView.IsMine + ", remoteRot : " + remoteRot);
+
                 transform.rotation = remoteRot;
             }
 
@@ -340,11 +342,11 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     private void Jump()
     {
-        moveDir.y = JumpPower;
+        remoteDir.y = JumpPower;
     }
     private void Fall()
     {
-        moveDir.y -= Gravity * Time.deltaTime;
+        remoteDir.y -= Gravity * Time.deltaTime;
     }
     private void Look()
     {
@@ -730,7 +732,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         if (stream.IsWriting)
         {
-            stream.SendNext(moveDir);
+            stream.SendNext(remoteDir);
             stream.SendNext(MouseX);
         }
         else
