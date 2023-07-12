@@ -251,7 +251,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
         if (charactercontroller == null) return;
 
-        Debug.Log("IsMine : " + photonView.IsMine + ", remotePos : " + remoteDir);
 
         if (!charactercontroller.isGrounded)
         {
@@ -265,6 +264,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
                 remoteDir = new Vector3(moveLR, 0, moveFB);
                 Move();
                 Look();
+                Debug.Log("IsMine : " + photonView.IsMine + ", remoteRot : " + remoteRot);
+
                 transform.rotation = remoteRot;
 
             }
