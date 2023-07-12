@@ -116,11 +116,11 @@ public class BattlePlayer : LivingEntity, IPunObservable
         isNear = false;
         life = 10;
 
-        offensivePower = 10;
-        defensivePower = 10;
-        maxHealth = 100;
-        currHealth = 100;
-        moveSpeed = 8;
+        offensivePower = GameManager.Instance.stat.attackPower;
+        defensivePower = GameManager.Instance.stat.defensePower;
+        maxHealth = GameManager.Instance.stat.health;
+        currHealth = maxHealth;
+        moveSpeed = GameManager.Instance.stat.moveSpeed;
 
         SetBattleItemEquip();
 
@@ -599,16 +599,10 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     private void RefreshStat()
     {
-
-        // Inventory.instance.statParent.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text =
-        //     "Health : " + currHealth + " / " + maxHealth;
-        // Inventory.instance.statParent.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text =
-        //     "Attack : " + (offensivePower + GetWeaponStat());
-        // Inventory.instance.statParent.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text =
-        //     "Defense : " + defensivePower;
-        // Inventory.instance.statParent.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text =
-        //     "Speed : " + moveSpeed;
-
+        Inventory.instance.statParent.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Health : " + currHealth + " / " + maxHealth;
+        Inventory.instance.statParent.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Attack : " + (offensivePower + GetWeaponStat());
+        Inventory.instance.statParent.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "Defense : " + defensivePower;
+        Inventory.instance.statParent.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = "Speed : " + moveSpeed;
     }
 
     private int GetWeaponStat()
@@ -854,6 +848,11 @@ public class BattlePlayer : LivingEntity, IPunObservable
         if (other.CompareTag("Inside"))
         {
             isSafe = true;
+        }
+        
+        if (other.CompareTag("Weapon"))
+        {
+            BattleManager.Instance.HitScreen();
         }
     }
 
