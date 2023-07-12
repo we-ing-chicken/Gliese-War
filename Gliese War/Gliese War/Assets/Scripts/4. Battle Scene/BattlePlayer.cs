@@ -745,8 +745,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
             MouseX = (float)stream.ReceiveNext();
 
             float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
-            remoteDir = remoteDir * lag;
-            MouseX = MouseX * lag;
+            remoteDir = -remoteDir;
+            //Debug.Log("PhotonNetwork.Time : " + PhotonNetwork.Time + ", info.SentServerTime : " + info.SentServerTime + ", lag : " + lag);
+            //Debug.Log("1remoteDir : " + remoteDir);
+            //remoteDir = remoteDir + remoteDir * lag;
+            //Debug.Log("2remoteDir : " + remoteDir);
+            //MouseX = MouseX * lag;
         }
     }
 
