@@ -299,7 +299,9 @@ public class BattlePlayer : LivingEntity, IPunObservable
         //if (BattleManager.Instance._isFading) return;
         if (charactercontroller == null) return;
         
-        Debug.Log("IsMine : " + photonView.IsMine + ", remotePos : " + remoteDir);
+        Debug.Log("IsMine : " + photonView.IsMine + ", remoteDir : " + remoteDir);
+        Debug.Log("IsMine : " + photonView.IsMine + ", remotePos : " + transform.position);
+
 
         if (!charactercontroller.isGrounded)
         {
@@ -312,15 +314,15 @@ public class BattlePlayer : LivingEntity, IPunObservable
             {
                 remoteDir = new Vector3(moveLR, 0, moveFB);
                 Move();
-                Look();
-                transform.rotation = remoteRot;
+                //Look();
+                //transform.rotation = remoteRot;
 
             }
             else
             {
-                
                 Move();
-                transform.rotation = remoteRot;
+                //Look();
+                //transform.rotation = remoteRot;
             }
 
             if (p_Jump)
@@ -347,17 +349,15 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         moveDir.y = JumpPower;
     }
-
     private void Fall()
     {
         moveDir.y -= Gravity * Time.deltaTime;
     }
-
     private void Look()
     {
         if(photonView.IsMine)
         {
-            MouseX += Input.GetAxis("Mouse X") * mouseSpeed;
+            MouseX = MouseX + (Input.GetAxis("Mouse X") * mouseSpeed);
         }
 
         remoteRot = Quaternion.Euler(0, MouseX, 0);
@@ -745,6 +745,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
             remoteDir = (Vector3)stream.ReceiveNext();
             MouseX = (float)stream.ReceiveNext();
         }
+        Look();
+        transform.rotation = remoteRot;
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
