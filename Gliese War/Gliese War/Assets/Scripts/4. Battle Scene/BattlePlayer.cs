@@ -96,6 +96,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
     private Quaternion remoteRot;
 
     private float lag;
+    new private Rigidbody rigidbody;
+    private float remotetime;
 
     private bool isSafe = false;
 
@@ -109,6 +111,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         if(photonView.IsMine) 
             applyItems();
         //charactercontroller = GetComponent<CharacterController>();
+        rigidbody = GetComponent<Rigidbody>();
         moveDir = Vector3.zero;
         rot = 1.0f;
         isNear = false;
@@ -298,6 +301,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             Vector3 lookRight = new Vector3(Camera.main.transform.right.x, 0f, Camera.main.transform.right.z).normalized;
             moveDir = lookForward * moveFB + lookRight * moveLR;
             transform.position += moveDir * moveSpeed * Time.deltaTime;
+            Debug.Log(rigidbody.velocity);
             //Debug.Log("transform.position : " + transform.position);
             //Debug.Log("remoteDir : " + remoteDir);
             //Debug.Log("transform.position + remoteDir : " + transform.position + remoteDir);
@@ -312,8 +316,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         else
         {
             //ismove = (remoteDir.x > 0 || remoteDir.z > 0);
-            transform.position =
-            Vector3.MoveTowards(transform.position, remotePos, moveSpeed);
+            transform.position += moveDir * moveSpeed * remotetime;
 
             remoteRot = Quaternion.Euler(0, MouseX, 0);
             transform.rotation = remoteRot;
@@ -762,13 +765,15 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         if (stream.IsWriting)
         {
-            stream.SendNext(transform.position);
+            stream.SendNext(moveDir);
             stream.SendNext(MouseX);
+            stream.SendNext(Time.deltaTime);
         }
         else
         {
-            remotePos = (Vector3)stream.ReceiveNext();
+            moveDir = (Vector3)stream.ReceiveNext();
             MouseX = (float)stream.ReceiveNext();
+            remotetime = (float)stream.ReceiveNext();
 
             //lag = Mathf.Abs((float)(PhotonNetwork.Time - info.timestamp));
             //remoteDir.y = -remoteDir.y;
