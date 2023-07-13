@@ -316,7 +316,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         else
         {
             //ismove = (remoteDir.x > 0 || remoteDir.z > 0);
-            transform.position += moveDir * moveSpeed * remotetime;
+            transform.position += moveDir * moveSpeed * Time.deltaTime;
 
             remoteRot = Quaternion.Euler(0, MouseX, 0);
             transform.rotation = remoteRot;
@@ -767,13 +767,13 @@ public class BattlePlayer : LivingEntity, IPunObservable
         {
             stream.SendNext(moveDir);
             stream.SendNext(MouseX);
-            stream.SendNext(Time.deltaTime);
+            //stream.SendNext(Time.deltaTime);
         }
         else
         {
             moveDir = (Vector3)stream.ReceiveNext();
             MouseX = (float)stream.ReceiveNext();
-            remotetime = (float)stream.ReceiveNext();
+            //remotetime = (float)stream.ReceiveNext();
 
             //lag = Mathf.Abs((float)(PhotonNetwork.Time - info.timestamp));
             //remoteDir.y = -remoteDir.y;
