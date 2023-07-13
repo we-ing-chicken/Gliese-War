@@ -82,7 +82,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     public float moveFB { get; private set; } //             ̵   Է° 
     public float moveLR { get; private set; } //         ¿  ̵   Է° 
     public float rot { get; private set; } //        ȸ    Է° 
-    public bool Mlattack { get; private set; } //         ߻ 1  Է° 
+    public bool LeftMouseButtonDown { get; private set; } //         ߻ 1  Է° 
     public bool Mgattack { get; private set; } //         ߻ 2  Է° 
     public bool p_Jump { get; private set; } //              Է° 
 
@@ -168,7 +168,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
             moveLR = Input.GetAxis(moveLRAxisName);
 
             ismove = (Input.GetButton(moveFBAxisName) || Input.GetButton(moveLRAxisName));
-            Mlattack = Input.GetButton(meleeAttackButtonName);
             Mgattack = Input.GetButton(magicAttackButtonName);
             p_Jump = Input.GetButton(JumpButtonName);
 
@@ -220,13 +219,19 @@ public class BattlePlayer : LivingEntity, IPunObservable
             magicNum = 2;
         }
 
+        if (photonView.IsMine)
+        {
+            LeftMouseButtonDown = Input.GetMouseButtonDown(0);
+        }
 
-        if (Input.GetMouseButtonDown(0) && !isAttack)
+        if (LeftMouseButtonDown && !isAttack)
         {
             if (photonView.IsMine)
             {
+                photonView.RPC("SendMouseButtonDown", RpcTarget.Others, LeftMouseButtonDown);
                 if (isMagic)
                 {
+
                     GameObject magic = Instantiate(magicEffect[magicNum]); //1 Tornado , 2 Thunder  0 Fire
                     magic.transform.position = magicAreaPrefab.transform.position;
                     StopCoroutine(magicCor);
@@ -239,13 +244,20 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
                     return;
                 }
-                Debug.Log(myindex);
                 isAttack = true;
                 AttackStart();
                 AttackAnimation();
                 StartCoroutine(AttackEffect());
             }
+            else
+            {
 
+                isAttack = true;
+
+                AttackStart();
+                StartCoroutine(AttackEffect());
+
+            }
         }
         else if (Input.GetMouseButtonDown(1))
         {
@@ -1014,5 +1026,11 @@ public class BattlePlayer : LivingEntity, IPunObservable
         back.transform.GetChild(2).gameObject.SetActive(true);
         
         isAttack = false;
+    }
+
+    [PunRPC]
+    void SendMouseButtonDown(bool LBD)
+    {
+        LeftMouseButtonDown = LBD;
     }
 }

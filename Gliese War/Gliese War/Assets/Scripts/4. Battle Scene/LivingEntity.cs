@@ -15,7 +15,7 @@ public class LivingEntity : MonoBehaviourPunCallbacks, IDamageable
 
     public event Action OnDeath;
 
-    protected bool IsInvulnerabe            //무적 상태. 메이플 피격시스템과 비슷한 처리.
+    protected bool IsInvulnerable            //무적 상태. 메이플 피격시스템과 비슷한 처리.
     {
         get
         {
@@ -33,7 +33,7 @@ public class LivingEntity : MonoBehaviourPunCallbacks, IDamageable
 
     public virtual bool ApplyDamage(DamageMessage damageMessage)
     {
-        if (IsInvulnerabe || damageMessage.damager == gameObject || dead) return false;
+        if (IsInvulnerable || damageMessage.damager == gameObject || dead) return false;
 
         Debug.Log(damageMessage.damager + ", " + damageMessage.damage);
         lastDamagedTime = Time.time;
