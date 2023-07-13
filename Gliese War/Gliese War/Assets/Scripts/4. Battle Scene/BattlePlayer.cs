@@ -95,7 +95,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     private Vector3 remoteDir;
     private Quaternion remoteRot;
 
-    private Rigidbody rigidbody;
+    private float lag;
 
     private bool isSafe = false;
 
@@ -298,9 +298,9 @@ public class BattlePlayer : LivingEntity, IPunObservable
             Vector3 lookRight = new Vector3(Camera.main.transform.right.x, 0f, Camera.main.transform.right.z).normalized;
             remoteDir = lookForward * moveFB + lookRight * moveLR;
             transform.position += remoteDir * moveSpeed * Time.deltaTime;
-            Debug.Log("transform.position : " + transform.position);
-            Debug.Log("remoteDir : " + remoteDir);
-            Debug.Log("transform.position + remoteDir : " + transform.position + remoteDir);
+            //Debug.Log("transform.position : " + transform.position);
+            //Debug.Log("remoteDir : " + remoteDir);
+            //Debug.Log("transform.position + remoteDir : " + transform.position + remoteDir);
             playertransform.LookAt(playertransform.position + remoteDir);
 
             //Look();
@@ -311,10 +311,11 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
         else
         {
-            ismove = (remoteDir.x > 0 || remoteDir.z > 0);
+            //ismove = (remoteDir.x > 0 || remoteDir.z > 0);
+            transform.position += remoteDir * moveSpeed * Time.deltaTime;
+
             remoteRot = Quaternion.Euler(0, MouseX, 0);
-            rigidbody.position = Vector3.MoveTowards(rigidbody.position, remoteDir, Time.deltaTime);
-            rigidbody.rotation = Quaternion.RotateTowards(rigidbody.rotation, remoteRot, Time.deltaTime * 100.0f);
+            transform.rotation = remoteRot;
         }
         //}
 
@@ -768,22 +769,22 @@ public class BattlePlayer : LivingEntity, IPunObservable
             remoteDir = (Vector3)stream.ReceiveNext();
             MouseX = (float)stream.ReceiveNext();
 
-            float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
+            //lag = Mathf.Abs((float)(PhotonNetwork.Time - info.timestamp));
             //remoteDir.y = -remoteDir.y;
             //remoteDir = -remoteDir;
             //Debug.Log("PhotonNetwork.Time : " + PhotonNetwork.Time + ", info.SentServerTime : " + info.SentServerTime + ", lag : " + lag);
             //Debug.Log("1remoteDir : " + remoteDir);
             //remoteDir = remoteDir + remoteDir * lag;
-            //if(remoteDir.x <= 0)
-            //    remoteDir.x = remoteDir.x + remoteDir.x * lag;
-            //else
+            //if (remoteDir.x <= 0)
             //    remoteDir.x = remoteDir.x - remoteDir.x * lag;
-
-            //remoteDir.y = remoteDir.y - remoteDir.y * lag;
-            //if (remoteDir.z <= 0)
-            //    remoteDir.z = remoteDir.z + remoteDir.z * lag;
             //else
+            //    remoteDir.x = remoteDir.x + remoteDir.x * lag;
+
+            ////remoteDir.y = remoteDir.y + remoteDir.y * lag;
+            //if (remoteDir.z <= 0)
             //    remoteDir.z = remoteDir.z - remoteDir.z * lag;
+            //else
+            //    remoteDir.z = remoteDir.z + remoteDir.z * lag;
 
             //Debug.Log("2remoteDir : " + remoteDir);
             //MouseX = MouseX * lag;
