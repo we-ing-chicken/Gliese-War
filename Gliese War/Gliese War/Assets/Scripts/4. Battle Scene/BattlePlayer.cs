@@ -771,7 +771,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
         else
         {
-            moveDir = (Vector3)stream.ReceiveNext() + transform.position;
+            moveDir = (Vector3)stream.ReceiveNext() - transform.position;
             MouseX = (float)stream.ReceiveNext();
             //remotetime = (float)stream.ReceiveNext();
 
