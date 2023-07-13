@@ -288,12 +288,20 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
         if (photonView.IsMine)
         {
-            remoteDir = new Vector3(moveLR, 0, moveFB).normalized;
+            //remoteDir = new Vector3(moveLR, 0, moveFB).normalized;
             //player_lookTarget();
-            transform.LookAt(transform.position + remoteDir);
+
+            
 
             //Move();
+            Vector3 lookForward = new Vector3(Camera.main.transform.forward.x, 0f, Camera.main.transform.forward.z).normalized;
+            Vector3 lookRight = new Vector3(Camera.main.transform.right.x, 0f, Camera.main.transform.right.z).normalized;
+            remoteDir = lookForward * moveFB + lookRight * moveLR;
             transform.position += remoteDir * moveSpeed * Time.deltaTime;
+            Debug.Log("transform.position : " + transform.position);
+            Debug.Log("remoteDir : " + remoteDir);
+            Debug.Log("transform.position + remoteDir : " + transform.position + remoteDir);
+            playertransform.LookAt(playertransform.position + remoteDir);
 
             //Look();
             MouseX = MouseX + (Input.GetAxis("Mouse X") * mouseSpeed);
@@ -304,6 +312,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         else
         {
             ismove = (remoteDir.x > 0 || remoteDir.z > 0);
+            remoteRot = Quaternion.Euler(0, MouseX, 0);
             rigidbody.position = Vector3.MoveTowards(rigidbody.position, remoteDir, Time.deltaTime);
             rigidbody.rotation = Quaternion.RotateTowards(rigidbody.rotation, remoteRot, Time.deltaTime * 100.0f);
         }
