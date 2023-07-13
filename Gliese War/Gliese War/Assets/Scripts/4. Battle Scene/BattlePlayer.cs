@@ -312,7 +312,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
         else
         {
             //ismove = (remoteDir.x > 0 || remoteDir.z > 0);
-            transform.position = Vector3.Lerp(transform.position, remotePos, 0.001f);
+            transform.position =
+            Vector3.MoveTowards(transform.position, remotePos, moveSpeed);
 
             remoteRot = Quaternion.Euler(0, MouseX, 0);
             transform.rotation = remoteRot;
