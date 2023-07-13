@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class WeaponAttack : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class WeaponAttack : MonoBehaviour
 
     public void AttackStart()
     {
+
         if (CPlayer.Instance.weaponNow == 1)
         {
             switch (CPlayer.Instance.weapon1.item.weaponType)
@@ -22,12 +24,12 @@ public class WeaponAttack : MonoBehaviour
                     TurnOnHandHammer();
                     StartCoroutine(TurnOffHandHammer());
                     break;
-                
+
                 case Item.WeaponType.Sword:
                     TurnOnHandSword();
-                    StartCoroutine(TurnOffHandKnife());
+                    StartCoroutine(TurnOffHandSword());
                     break;
-                
+
                 case Item.WeaponType.Spear:
                     TurnOnHandSpear();
                     StartCoroutine(TurnOffHandSpear());
@@ -43,12 +45,12 @@ public class WeaponAttack : MonoBehaviour
                     TurnOnHandHammer();
                     StartCoroutine(TurnOffHandHammer());
                     break;
-                
+
                 case Item.WeaponType.Sword:
                     TurnOnHandSword();
-                    StartCoroutine(TurnOffHandKnife());
+                    StartCoroutine(TurnOffHandSword());
                     break;
-                
+
                 case Item.WeaponType.Spear:
                     TurnOnHandSpear();
                     StartCoroutine(TurnOffHandSpear());
@@ -57,6 +59,7 @@ public class WeaponAttack : MonoBehaviour
         }
 
         CPlayer.Instance.isAttack = true;
+
     }
 
     public void TurnOnHandHammer()
@@ -112,7 +115,7 @@ public class WeaponAttack : MonoBehaviour
         CPlayer.Instance.isAttack = false;
     }
     
-    IEnumerator TurnOffHandKnife()
+    IEnumerator TurnOffHandSword()
     {
         yield return new WaitForSeconds(0.9f);
         

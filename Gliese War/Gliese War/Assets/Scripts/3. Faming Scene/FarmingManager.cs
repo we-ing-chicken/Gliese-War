@@ -356,6 +356,7 @@ public class FarmingManager : MonoBehaviour
     public void PlayBattlePhase()
     {
         GameManager.Instance.SaveItems(CPlayer.Instance.helmet, CPlayer.Instance.armor, CPlayer.Instance.shoe, CPlayer.Instance.weapon1, CPlayer.Instance.weapon2);
+        GameManager.Instance.SaveStat(CPlayer.Instance.maxHealth, CPlayer.Instance.offensivePower, CPlayer.Instance.defensivePower, CPlayer.Instance.moveSpeed);
         SceneManager.LoadScene((int)(Scene.BattleScene));
     }
     

@@ -8,7 +8,8 @@ public class GameManager : MonoBehaviour
 
     public GameObject[] characters;
     public int charNum;
-    
+
+    public Stat stat;
     public RealItem helmet;
     public RealItem armor;
     public RealItem shoe;
@@ -52,6 +53,14 @@ public class GameManager : MonoBehaviour
         shoe = sh;
         weapon1 = w1;
         weapon2 = w2;
+    }
+
+    public void SaveStat(int maxHP, int aP, int dP, int mV)
+    {
+        stat.health = maxHP;
+        stat.attackPower = aP;
+        stat.defensePower = dP;
+        stat.moveSpeed = mV;
     }
 
 

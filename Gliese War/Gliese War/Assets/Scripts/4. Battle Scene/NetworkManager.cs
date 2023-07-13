@@ -7,6 +7,7 @@ using UnityEngine.UI; //����
 using TMPro;
 using UnityEngine.UIElements;
 using Cinemachine;
+using System;
 
 public class NetworkManager : MonoBehaviourPunCallbacks //Ŭ���� ���
 {
@@ -92,12 +93,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks //Ŭ���� ���
         Debug.Log(p_Num);
 
         //cscamera.gameObject.SetActive(true);
-        GameObject temp = PhotonNetwork.Instantiate("player", spawnpoints[p_Num].transform.position, Quaternion.identity);
+        GameObject temp = PhotonNetwork.Instantiate("player", spawnpoints[PhotonNetwork.CurrentRoom.Players.Count].transform.position, Quaternion.identity);
         //pv.RPC("numchange", RpcTarget.All);
-        temp.GetComponent<playerScript>().myindex = p_Num;
+        temp.GetComponent<BattlePlayer>().myindex = PhotonNetwork.CurrentRoom.Players.Count;
         Debug.Log(p_Num);
-        BattleManager.Instance.charNums.Add(p_Num);
-        photonView.RPC("numchange", RpcTarget.All);
+        //photonView.RPC("numchange", RpcTarget.All);
     }
 
     [PunRPC]

@@ -65,6 +65,7 @@ public class CPlayer : MonoBehaviour
     public GameObject shoesEffectPos;
 
     public bool isAttack = false;
+    private MeshCollider col;
 
     private CharacterController charactercontroller;
     private AudioSource audio;
@@ -178,6 +179,7 @@ public class CPlayer : MonoBehaviour
             {
                 if (Input.GetMouseButtonDown(0))
                 {
+                    AttackStart();
                     AttackAnimation();
                     StartCoroutine(AttackEffect());
                     
@@ -687,5 +689,120 @@ public class CPlayer : MonoBehaviour
                 break;
             
         }
+    }
+    
+    public void AttackStart()
+    {
+
+        if (Instance.weaponNow == 1)
+        {
+            switch (weapon1.item.weaponType)
+            {
+                case Item.WeaponType.Hammer:
+                    TurnOnHandHammer();
+                    StartCoroutine(TurnOffHandHammer());
+                    break;
+
+                case Item.WeaponType.Sword:
+                    TurnOnHandSword();
+                    StartCoroutine(TurnOffHandSword());
+                    break;
+
+                case Item.WeaponType.Spear:
+                    TurnOnHandSpear();
+                    StartCoroutine(TurnOffHandSpear());
+                    break;
+            }
+        }
+        else if (weaponNow == 2)
+        {
+
+            switch (weapon2.item.weaponType)
+            {
+                case Item.WeaponType.Hammer:
+                    TurnOnHandHammer();
+                    StartCoroutine(TurnOffHandHammer());
+                    break;
+
+                case Item.WeaponType.Sword:
+                    TurnOnHandSword();
+                    StartCoroutine(TurnOffHandSword());
+                    break;
+
+                case Item.WeaponType.Spear:
+                    TurnOnHandSpear();
+                    StartCoroutine(TurnOffHandSpear());
+                    break;
+            }
+        }
+
+        Instance.isAttack = true;
+
+    }
+
+    public void TurnOnHandHammer()
+    {
+        Instance.handR.transform.GetChild(0).gameObject.SetActive(true);
+        Instance.back.transform.GetChild(0).gameObject.SetActive(false);
+        
+        col = Instance.handR.transform.GetChild(0).GetComponent<MeshCollider>();
+        col.enabled = true;
+    }
+    
+    public void TurnOnHandSpear()
+    {
+        Instance.handR.transform.GetChild(1).gameObject.SetActive(true);
+        Instance.back.transform.GetChild(1).gameObject.SetActive(false);
+        
+        col = Instance.handR.transform.GetChild(1).GetComponent<MeshCollider>();
+        col.enabled = true;
+    }
+    
+    public void TurnOnHandSword()
+    {
+        Instance.handR.transform.GetChild(2).gameObject.SetActive(true);
+        Instance.back.transform.GetChild(2).gameObject.SetActive(false);
+        
+        col = Instance.handR.transform.GetChild(2).GetComponent<MeshCollider>();
+        col.enabled = true;
+    }
+
+    IEnumerator TurnOffHandHammer()
+    {
+        yield return new WaitForSeconds(0.5f);
+        
+        col = Instance.handR.transform.GetChild(0).GetComponent<MeshCollider>();
+        col.enabled = false;
+        
+        Instance.handR.transform.GetChild(0).gameObject.SetActive(false);
+        Instance.back.transform.GetChild(0).gameObject.SetActive(true);
+        
+        Instance.isAttack = false;
+    }
+    
+    IEnumerator TurnOffHandSpear()
+    {
+        yield return new WaitForSeconds(0.6f);
+        
+        col = Instance.handR.transform.GetChild(1).GetComponent<MeshCollider>();
+        col.enabled = false;
+        
+        Instance.handR.transform.GetChild(1).gameObject.SetActive(false);
+        Instance.back.transform.GetChild(1).gameObject.SetActive(true);
+        
+        Instance.isAttack = false;
+    }
+    
+    IEnumerator TurnOffHandSword()
+    {
+        yield return new WaitForSeconds(0.9f);
+        
+        col = Instance.handR.transform.GetChild(2).GetComponent<MeshCollider>();
+        col.enabled = false;
+        
+        Instance.handR.transform.GetChild(2).gameObject.SetActive(false);
+        Instance.back.transform.GetChild(2).gameObject.SetActive(true);
+        
+        Instance.isAttack = false;
     }
 }
