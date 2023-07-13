@@ -92,7 +92,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     public bool isNear;
 
-    private Vector3 remoteDir;
+    private Vector3 remotePos;
     private Quaternion remoteRot;
 
     private float lag;
@@ -266,7 +266,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
         //if (charactercontroller == null) return;
 
-        Debug.Log("IsMine : " + photonView.IsMine + ", remotePos : " + remoteDir);
+        Debug.Log("IsMine : " + photonView.IsMine + ", remotePos : " + remotePos);
 
         //if (!charactercontroller.isGrounded)
         //{
@@ -296,12 +296,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
             //Move();
             Vector3 lookForward = new Vector3(Camera.main.transform.forward.x, 0f, Camera.main.transform.forward.z).normalized;
             Vector3 lookRight = new Vector3(Camera.main.transform.right.x, 0f, Camera.main.transform.right.z).normalized;
-            remoteDir = lookForward * moveFB + lookRight * moveLR;
-            transform.position += remoteDir * moveSpeed * Time.deltaTime;
+            moveDir = lookForward * moveFB + lookRight * moveLR;
+            transform.position += moveDir * moveSpeed * Time.deltaTime;
             //Debug.Log("transform.position : " + transform.position);
             //Debug.Log("remoteDir : " + remoteDir);
             //Debug.Log("transform.position + remoteDir : " + transform.position + remoteDir);
-            playertransform.LookAt(playertransform.position + remoteDir);
+            playertransform.LookAt(playertransform.position + moveDir);
 
             //Look();
             MouseX = MouseX + (Input.GetAxis("Mouse X") * mouseSpeed);
@@ -312,7 +312,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         else
         {
             //ismove = (remoteDir.x > 0 || remoteDir.z > 0);
-            transform.position += remoteDir * moveSpeed * Time.deltaTime;
+            transform.position = remotePos;
 
             remoteRot = Quaternion.Euler(0, MouseX, 0);
             transform.rotation = remoteRot;
@@ -761,12 +761,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         if (stream.IsWriting)
         {
-            stream.SendNext(remoteDir);
+            stream.SendNext(transform.position);
             stream.SendNext(MouseX);
         }
         else
         {
-            remoteDir = (Vector3)stream.ReceiveNext();
+            remotePos = (Vector3)stream.ReceiveNext();
             MouseX = (float)stream.ReceiveNext();
 
             //lag = Mathf.Abs((float)(PhotonNetwork.Time - info.timestamp));
