@@ -851,6 +851,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     protected override void OnEnable()
     {
+        
         base.OnEnable();
     }
 
@@ -890,6 +891,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
         if (other.CompareTag("Weapon") && !other.transform.GetComponentInParent<BattlePlayer>().photonView.IsMine)
         {
             BattleManager.Instance.HitScreen();
+            DamageMessage damageMessage = new DamageMessage();
+            damageMessage.damager = gameObject;
+            damageMessage.damage = offensivePower;
+
+            photonView.RPC("SendApplyDamage", RpcTarget.All, damageMessage);
+            
         }
     }
     
@@ -1034,5 +1041,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
     void SendMouseButtonDown(bool LBD)
     {
         LeftMouseButtonDown = LBD;
+    }
+
+    [PunRPC]
+    void SendApplyDamage(DamageMessage dm)
+    {
+        ApplyDamage(dm);
+        Debug.Log(GetComponent<LivingEntity>().health);
     }
 }
