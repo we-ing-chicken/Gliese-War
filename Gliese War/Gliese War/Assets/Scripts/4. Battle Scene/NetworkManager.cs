@@ -98,6 +98,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks //Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï
         //pv.RPC("numchange", RpcTarget.All);
         temp.GetComponent<BattlePlayer>().myindex = PhotonNetwork.CurrentRoom.Players.Count;
         Debug.Log(p_Num);
+        BattleManager.Instance.players[p_Num] = temp;
         //photonView.RPC("numchange", RpcTarget.All);
     }
 
