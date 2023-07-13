@@ -95,6 +95,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
     private Vector3 remoteDir;
     private Quaternion remoteRot;
 
+    private Rigidbody rigidbody;
+
     private bool isSafe = false;
 
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
@@ -106,7 +108,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         instance = this;
         if(photonView.IsMine) 
             applyItems();
-        charactercontroller = GetComponent<CharacterController>();
+        //charactercontroller = GetComponent<CharacterController>();
         moveDir = Vector3.zero;
         rot = 1.0f;
         isNear = false;
@@ -155,20 +157,20 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         if (transform.GetComponent<LivingEntity>().dead) return;
 
-        if (charactercontroller == null) return;
+        //if (charactercontroller == null) return;
 
         if (photonView.IsMine)
         {
-            moveFB = Input.GetAxis(moveFBAxisName); 
+            moveFB = Input.GetAxis(moveFBAxisName);
             moveLR = Input.GetAxis(moveLRAxisName);
 
             ismove = (Input.GetButton(moveFBAxisName) || Input.GetButton(moveLRAxisName));
             Mlattack = Input.GetButton(meleeAttackButtonName);
             Mgattack = Input.GetButton(magicAttackButtonName);
             p_Jump = Input.GetButton(JumpButtonName);
-            
+
         }
-        
+
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -218,7 +220,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
         if (Input.GetMouseButtonDown(0) && !isAttack)
         {
-            if(photonView.IsMine)
+            if (photonView.IsMine)
             {
                 if (isMagic)
                 {
@@ -240,7 +242,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
                 AttackAnimation();
                 StartCoroutine(AttackEffect());
             }
-            
+
         }
         else if (Input.GetMouseButtonDown(1))
         {
@@ -262,42 +264,52 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
 
 
-        if (charactercontroller == null) return;
+        //if (charactercontroller == null) return;
 
         Debug.Log("IsMine : " + photonView.IsMine + ", remotePos : " + remoteDir);
 
-        if (!charactercontroller.isGrounded)
+        //if (!charactercontroller.isGrounded)
+        //{
+        //    if (!ignoreGravity)
+        //        Fall();
+        //}
+        //else
+        //{
+
+
+        if (p_Jump)
         {
-            if (!ignoreGravity)
-                Fall();
+            isAttack = false;
+            animator.SetTrigger("doJump");
+
+
+            //Jump();
+
+        }
+        if (photonView.IsMine)
+        {
+            remoteDir = new Vector3(moveLR, 0, moveFB).normalized;
+            //player_lookTarget();
+            transform.LookAt(transform.position + remoteDir);
+
+            //Move();
+            transform.position += remoteDir * moveSpeed * Time.deltaTime;
+
+            //Look();
+            MouseX = MouseX + (Input.GetAxis("Mouse X") * mouseSpeed);
+            remoteRot = Quaternion.Euler(0, MouseX, 0);
+            transform.rotation = remoteRot;
+
         }
         else
         {
-            if (photonView.IsMine)
-            {
-                remoteDir = new Vector3(moveLR, 0, moveFB);
-                Move();
-                Look();
-                transform.rotation = remoteRot;
-
-            }
-            else
-            {
-                Move();
-                Look();
-                transform.rotation = remoteRot;
-            }
-
-            if (p_Jump)
-            {
-                isAttack = false;
-                animator.SetTrigger("doJump");
-                Jump();
-
-            }
+            ismove = (remoteDir.x > 0 || remoteDir.z > 0);
+            rigidbody.position = Vector3.MoveTowards(rigidbody.position, remoteDir, Time.deltaTime);
+            rigidbody.rotation = Quaternion.RotateTowards(rigidbody.rotation, remoteRot, Time.deltaTime * 100.0f);
         }
+        //}
 
-        charactercontroller.Move(moveDir * Time.deltaTime * moveSpeed);
+        //charactercontroller.Move(moveDir * Time.deltaTime * moveSpeed);
         animate_Run();
     }
 
@@ -345,31 +357,34 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     private void Move()
     {
-        player_lookTarget();
+        //player_lookTarget();
 
-        moveDir = charactercontroller.transform.TransformDirection(remoteDir);
+        //transform.position += remoteDir * moveSpeed * Time.deltaTime;
+
+        //moveDir = charactercontroller.transform.TransformDirection(remoteDir);
     }
 
     private void Jump()
     {
-        moveDir.y = JumpPower;
+
+        //remoteDir.y = JumpPower;
     }
     private void Fall()
     {
-        moveDir.y -= Gravity * Time.deltaTime;
+        //remoteDir.y -= Gravity * Time.deltaTime;
     }
     private void Look()
     {
-        if(photonView.IsMine)
-        {
-            MouseX = MouseX + (Input.GetAxis("Mouse X") * mouseSpeed);
-        }
+        //if(photonView.IsMine)
+        //{
+        //    MouseX = MouseX + (Input.GetAxis("Mouse X") * mouseSpeed);
+        //}
 
-        remoteRot = Quaternion.Euler(0, MouseX, 0);
+        //remoteRot = Quaternion.Euler(0, MouseX, 0);
     }
     private void player_lookTarget()
     {
-        if (charactercontroller == null) return;
+        //if (charactercontroller == null) return;
 
         if (moveLR < 0 && moveFB < 0)    // left + back
         {
