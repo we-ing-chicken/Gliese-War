@@ -256,6 +256,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
                 AttackStart();
                 StartCoroutine(AttackEffect());
+                LeftMouseButtonDown = false;
+                photonView.RPC("SendMouseButtonDown", RpcTarget.All, LeftMouseButtonDown);
 
             }
         }
