@@ -33,7 +33,7 @@ public class LivingEntity : MonoBehaviourPunCallbacks, IDamageable
 
     public virtual bool ApplyDamage(DamageMessage damageMessage)
     {
-        if (IsInvulnerable || damageMessage.damager == gameObject || dead) return false;
+        if (IsInvulnerable || damageMessage.damager == GetComponent<LivingEntity>().photonView.ViewID || dead) return false;
 
         Debug.Log(damageMessage.damager + ", " + damageMessage.damage);
         lastDamagedTime = Time.time;

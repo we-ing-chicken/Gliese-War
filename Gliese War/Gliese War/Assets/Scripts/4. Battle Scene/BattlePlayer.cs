@@ -893,7 +893,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             BattleManager.Instance.HitScreen();
             
 
-            photonView.RPC("SendApplyDamage", RpcTarget.All, gameObject, offensivePower);
+            photonView.RPC("SendApplyDamage", RpcTarget.All, other.transform.GetComponentInParent<BattlePlayer>().photonView.ViewID, offensivePower);
             
         }
     }
@@ -1042,12 +1042,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
     }
 
     [PunRPC]
-    void SendApplyDamage(GameObject go, float op)
+    void SendApplyDamage(int vi, float op)
     {
         DamageMessage damageMessage = new DamageMessage();
-        damageMessage.damager = go;
+        damageMessage.damager = vi;
         damageMessage.damage = op;
         ApplyDamage(damageMessage);
-        Debug.Log(GetComponent<LivingEntity>().health);
+        //Debug.Log(GetComponent<LivingEntity>().health);
     }
 }
