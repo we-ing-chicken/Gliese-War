@@ -891,11 +891,9 @@ public class BattlePlayer : LivingEntity, IPunObservable
         if (other.CompareTag("Weapon") && !other.transform.GetComponentInParent<BattlePlayer>().photonView.IsMine)
         {
             BattleManager.Instance.HitScreen();
-            DamageMessage damageMessage = new DamageMessage();
-            damageMessage.damager = gameObject;
-            damageMessage.damage = offensivePower;
+            
 
-            photonView.RPC("SendApplyDamage", RpcTarget.All, damageMessage);
+            photonView.RPC("SendApplyDamage", RpcTarget.All, gameObject, offensivePower);
             
         }
     }
@@ -1044,9 +1042,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
     }
 
     [PunRPC]
-    void SendApplyDamage(DamageMessage dm)
+    void SendApplyDamage(GameObject go, float op)
     {
-        ApplyDamage(dm);
+        DamageMessage damageMessage = new DamageMessage();
+        damageMessage.damager = go;
+        damageMessage.damage = op;
+        ApplyDamage(damageMessage);
         Debug.Log(GetComponent<LivingEntity>().health);
     }
 }
