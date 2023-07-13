@@ -736,7 +736,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         if (stream.IsWriting)
         {
-            stream.SendNext(moveDir);
+            stream.SendNext(remoteDir);
             stream.SendNext(MouseX);
         }
         else
@@ -745,20 +745,21 @@ public class BattlePlayer : LivingEntity, IPunObservable
             MouseX = (float)stream.ReceiveNext();
 
             float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
-            remoteDir = -remoteDir;
+            //remoteDir.y = -remoteDir.y;
+            //remoteDir = -remoteDir;
             //Debug.Log("PhotonNetwork.Time : " + PhotonNetwork.Time + ", info.SentServerTime : " + info.SentServerTime + ", lag : " + lag);
             //Debug.Log("1remoteDir : " + remoteDir);
-            //remoteDir = remoteDir + remoteDir / lag;
-            if(remoteDir.x <= 0)
-                remoteDir.x = remoteDir.x - remoteDir.x * lag;
-            else
-                remoteDir.x = remoteDir.x + remoteDir.x * lag;
+            //remoteDir = remoteDir + remoteDir * lag;
+            //if(remoteDir.x <= 0)
+            //    remoteDir.x = remoteDir.x + remoteDir.x * lag;
+            //else
+            //    remoteDir.x = remoteDir.x - remoteDir.x * lag;
 
-            remoteDir.y = remoteDir.y + remoteDir.y * lag;
-            if (remoteDir.z <= 0)
-                remoteDir.z = remoteDir.z - remoteDir.z * lag;
-            else
-                remoteDir.z = remoteDir.z + remoteDir.z * lag;
+            //remoteDir.y = remoteDir.y - remoteDir.y * lag;
+            //if (remoteDir.z <= 0)
+            //    remoteDir.z = remoteDir.z + remoteDir.z * lag;
+            //else
+            //    remoteDir.z = remoteDir.z - remoteDir.z * lag;
 
             //Debug.Log("2remoteDir : " + remoteDir);
             //MouseX = MouseX * lag;
