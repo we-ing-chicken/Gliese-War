@@ -72,7 +72,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
     private CharacterController charactercontroller;
 
     private bool isMagic;
-    [SerializeField] private GameObject magicAreaPrefab;
     private Coroutine magicCor;
     [SerializeField] private GameObject[] magicEffect;
     private float magicCooltime;
@@ -233,10 +232,10 @@ public class BattlePlayer : LivingEntity, IPunObservable
                 {
 
                     GameObject magic = Instantiate(magicEffect[magicNum]); //1 Tornado , 2 Thunder  0 Fire
-                    magic.transform.position = magicAreaPrefab.transform.position;
+                    magic.transform.position = MagicArea.Instance.transform.position;
                     StopCoroutine(magicCor);
                     animator.SetTrigger("magicAttack");
-                    magicAreaPrefab.SetActive(false);
+                    MagicArea.Instance.transform.position = new Vector3(0,0,0);
                     isMagic = false;
 
                     isCool = true;
@@ -271,13 +270,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
             isMagic = true;
             magicCor = StartCoroutine(SetMagicArea());
-            magicAreaPrefab.SetActive(true);
         }
         else if (Input.GetMouseButtonUp(1))
         {
             isMagic = false;
             StopCoroutine(magicCor);
-            magicAreaPrefab.SetActive(false);
+            MagicArea.Instance.transform.position = new Vector3(0,0,0);
         }
 
 
@@ -356,7 +354,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             {
                 if (hit[i].transform.CompareTag("Terrain"))
                 {
-                    magicAreaPrefab.transform.position = hit[i].point;
+                    MagicArea.Instance.transform.position = hit[i].point;
                     break;
                 }
             }
