@@ -4,7 +4,7 @@ using UnityEngine;
 
 public struct DamageMessage
 {
-    public int damager;      // °ø°ÝÀÚ
-    public float damage;            // °ø°Ý·®
+    public int damager;      // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    public int damage;            // ï¿½ï¿½ï¿½Ý·ï¿½
 
 }

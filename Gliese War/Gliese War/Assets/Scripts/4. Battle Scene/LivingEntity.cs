@@ -6,8 +6,8 @@ using Photon.Pun;
 
 public class LivingEntity : MonoBehaviourPunCallbacks, IDamageable
 {
-    public float startingHealth = 100f;
-    public float health { get; protected set; }
+    public int startingHealth;
+    public int health { get; protected set; }
     public bool dead { get; protected set; }
 
     private const float minTimeDamaged = 0.1f;
@@ -15,7 +15,7 @@ public class LivingEntity : MonoBehaviourPunCallbacks, IDamageable
 
     public event Action OnDeath;
 
-    protected bool IsInvulnerable            //¹«Àû »óÅÂ. ¸ÞÀÌÇÃ ÇÇ°Ý½Ã½ºÅÛ°ú ºñ½ÁÇÑ Ã³¸®.
+    protected bool IsInvulnerable            //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ç°Ý½Ã½ï¿½ï¿½Û°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½.
     {
         get
         {
@@ -28,6 +28,12 @@ public class LivingEntity : MonoBehaviourPunCallbacks, IDamageable
     new protected virtual void OnEnable()
     {
         dead = false;
+        
+        if(GameManager.Instance != null)
+            startingHealth = GameManager.Instance.stat.health;
+        else
+            startingHealth = 100;
+
         health = startingHealth;
     }
 
@@ -44,7 +50,7 @@ public class LivingEntity : MonoBehaviourPunCallbacks, IDamageable
         return true;
     }
 
-    public virtual void RestoreHealth(float newHealth)
+    public virtual void RestoreHealth(int newHealth)
     {
         if (dead) return;
 
