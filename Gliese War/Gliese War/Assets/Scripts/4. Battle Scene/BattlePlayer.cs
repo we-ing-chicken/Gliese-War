@@ -295,7 +295,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
             }
             else
             {
-
                 isAttack = true;
                 
                 AttackStart();
@@ -1118,5 +1117,9 @@ public class BattlePlayer : LivingEntity, IPunObservable
         magicNum = which; 
         
         MakeMagic(magicNum, magicPosition, magicMaster);
+        if (!photonView.IsMine)
+        {
+            animator.SetTrigger("magicAttack");
+        }
     }
 }
