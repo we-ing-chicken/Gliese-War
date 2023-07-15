@@ -79,6 +79,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     private int magicMaster;    // who's magic
     private float magicCooltime;    // how long wait for use magic again
     private int magicNum = 0;   // other magic num
+    private bool otherMagic; // check other use magic
 
     public float moveFB { get; private set; } //             ̵   Է° 
     public float moveLR { get; private set; } //         ¿  ̵   Է° 
@@ -109,8 +110,15 @@ public class BattlePlayer : LivingEntity, IPunObservable
         Debug.Log(photonView.IsMine);
 
         instance = this;
-        if(photonView.IsMine) 
+        if (photonView.IsMine)
+        {
             applyItems();
+        }
+        else
+        {
+            playertransform.GetComponent<AudioListener>().enabled = false;
+        }
+        
         //charactercontroller = GetComponent<CharacterController>();
         rigidbody = GetComponent<Rigidbody>();
         moveDir = Vector3.zero;
@@ -295,10 +303,16 @@ public class BattlePlayer : LivingEntity, IPunObservable
             }
             else
             {
-                isAttack = true;
-                
-                AttackStart();
-                StartCoroutine(AttackEffect());
+                if (otherMagic)
+                {
+                    animator.SetTrigger("magicAttack");
+                    otherMagic = false;
+                }
+                else
+                {
+                    AttackStart();
+                    StartCoroutine(AttackEffect());
+                }
                 LeftMouseButtonDown = false;
                 photonView.RPC("SendMouseButtonDown", RpcTarget.All, LeftMouseButtonDown);
 
@@ -1114,12 +1128,9 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         magicPosition = position;
         magicMaster = who;
-        magicNum = which; 
+        magicNum = which;
+        otherMagic = true;
         
         MakeMagic(magicNum, magicPosition, magicMaster);
-        if (!photonView.IsMine)
-        {
-            animator.SetTrigger("magicAttack");
-        }
     }
 }
