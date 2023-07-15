@@ -19,7 +19,14 @@ public class Tornado : MonoBehaviour
         master = m;
         
         ps = GetComponent<ParticleSystem>();
-        ps.trigger.SetCollider(1, CPlayer.Instance);
+
+        for(int i = 0 ; i < BattleManager.Instance.players.Length ; ++i)
+        {
+            if (BattleManager.Instance.players[i] == null) continue;
+            if (BattleManager.Instance.players[i].GetComponent<BattlePlayer>().myindex == m) continue;
+            
+            ps.trigger.SetCollider(i, BattleManager.Instance.players[i].transform);
+        }
     }
 
     IEnumerator Timer()
@@ -52,7 +59,6 @@ public class Tornado : MonoBehaviour
         {
             if (BattleManager.Instance.players[i] == null) continue;
             
-            Debug.Log(BattleManager.Instance.players[i].transform);
             //ps.trigger.SetCollider(i, BattleManager.Instance.players[i].transform);
         }
 

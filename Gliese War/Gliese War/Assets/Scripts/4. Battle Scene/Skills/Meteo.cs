@@ -24,9 +24,12 @@ public class Meteo : MonoBehaviour
         
         ps = GetComponent<ParticleSystem>();
 
-        foreach (GameObject g in BattleManager.Instance.players)
+        for(int i = 0 ; i < BattleManager.Instance.players.Length ; ++i)
         {
-            ps.trigger.SetCollider(1, g.transform);
+            if (BattleManager.Instance.players[i] == null) continue;
+            if (BattleManager.Instance.players[i].GetComponent<BattlePlayer>().myindex == m) continue;
+            
+            ps.trigger.SetCollider(i, BattleManager.Instance.players[i].transform);
         }
     }
 
@@ -65,7 +68,6 @@ public class Meteo : MonoBehaviour
         {
             if (BattleManager.Instance.players == null) continue;
             
-            Debug.Log(BattleManager.Instance.players[i].transform);
             //ps.trigger.SetCollider(i, BattleManager.Instance.players[i].transform);
         }
         
