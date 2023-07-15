@@ -6,10 +6,20 @@ using UnityEngine;
 
 public class Tornado : MonoBehaviour
 {
-
+    private int master;
+    private ParticleSystem ps;
+    
     void Start()
     {
         StartCoroutine(Timer());
+    }
+    
+    public void SetMaster(int m)
+    {
+        master = m;
+        
+        ps = GetComponent<ParticleSystem>();
+        ps.trigger.SetCollider(1, CPlayer.Instance);
     }
 
     IEnumerator Timer()
@@ -33,12 +43,18 @@ public class Tornado : MonoBehaviour
     
     void OnParticleTrigger()
     {
-        ParticleSystem ps = GetComponent<ParticleSystem>();
-        
-        ps.trigger.SetCollider(1, CPlayer.Instance);
-
         // particles
         List<ParticleSystem.Particle> enter = new List<ParticleSystem.Particle>();
+        
+        ps = GetComponent<ParticleSystem>();
+
+        for (int i = 0; i < BattleManager.Instance.players.Length; ++i)
+        {
+            if (BattleManager.Instance.players[i] == null) continue;
+            
+            Debug.Log(BattleManager.Instance.players[i].transform);
+            //ps.trigger.SetCollider(i, BattleManager.Instance.players[i].transform);
+        }
 
         // get
         int numEnter = ps.GetTriggerParticles(ParticleSystemTriggerEventType.Enter, enter, out var outData);
@@ -51,7 +67,7 @@ public class Tornado : MonoBehaviour
 
         if (obj.CompareTag("Player"))
         {
-            obj.GetComponent<CPlayer>().GetDamage(1);
+            obj.GetComponent<BattlePlayer>().GetDamage(1);
             return;
         }
 

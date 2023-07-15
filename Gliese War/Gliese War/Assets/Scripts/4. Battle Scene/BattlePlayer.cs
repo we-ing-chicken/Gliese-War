@@ -29,8 +29,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     public int offensivePower;
     public int defensivePower;
-    public int maxHealth;
-    public int currHealth;
     public int moveSpeed; //  յ            ӵ 
     [SerializeField] private Animator animator;
     [SerializeField] private Transform playertransform;
@@ -70,13 +68,17 @@ public class BattlePlayer : LivingEntity, IPunObservable
     public bool isAttack = false;
 
     private CharacterController charactercontroller;
-
-    private bool isMagic;
-    private Coroutine magicCor;
+    
+    private bool isMagic;   // while right mouse down
+    private bool isCool;    // after use magic
+    private Coroutine magicCor; // set magic area position coroutine 
     [SerializeField] private GameObject[] magicEffect;
-    private float magicCooltime;
-    private bool isCool;
-    private int magicNum = 0;
+    private Vector3 magicPosition;
+    private int myMagicNum = 0; // my magic num
+    
+    private int magicMaster;    // who's magic
+    private float magicCooltime;    // how long wait for use magic again
+    private int magicNum = 0;   // other magic num
 
     public float moveFB { get; private set; } //             ̵   Է° 
     public float moveLR { get; private set; } //         ¿  ̵   Է° 
@@ -120,16 +122,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
         {
             offensivePower = GameManager.Instance.stat.attackPower;
             defensivePower = GameManager.Instance.stat.defensePower;
-            maxHealth = GameManager.Instance.stat.health;
-            currHealth = maxHealth;
             moveSpeed = GameManager.Instance.stat.moveSpeed;
         }
         else
         {
             offensivePower = 10;
             defensivePower = 10;
-            maxHealth = 100;
-            currHealth = 100;
             moveSpeed = 10;
         }
 
@@ -137,6 +135,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
         RefreshStat();
 
+        myMagicNum = 1;
         magicCooltime = 5f;
         isCool = false;
 
@@ -175,7 +174,27 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
+            if (weapon1 == null) return;
+            
             weaponNow = 1;
+
+            switch (weapon1.magic)
+            {
+                case Magic.Fire:
+                    myMagicNum = 0;
+                    break;
+                
+                case Magic.Water:
+                    myMagicNum = 1;
+                    break;
+                
+                case Magic.Light:
+                    myMagicNum = 2;
+                    break;
+                
+                case Magic.Nothing:
+                    break;
+            }
 
             if (weapon1 != null)
                 EquipWeapon();
@@ -184,7 +203,28 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
+            if (weapon2 == null) return;
+            
             weaponNow = 2;
+            
+            switch (weapon2.magic)
+            {
+                case Magic.Fire:
+                    myMagicNum = 0;
+                    break;
+                
+                case Magic.Water:
+                    myMagicNum = 1;
+                    break;
+                
+                case Magic.Light:
+                    myMagicNum = 2;
+                    break;
+                
+                case Magic.Nothing:
+                    break;
+            }
+            
             if (weapon2 != null)
                 EquipWeapon();
 
@@ -207,15 +247,20 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
         else if (Input.GetKeyDown(KeyCode.Alpha7))
         {
-            magicNum = 0;
+            myMagicNum = 0;
         }
         else if (Input.GetKeyDown(KeyCode.Alpha8))
         {
-            magicNum = 1;
+            myMagicNum = 1;
         }
         else if (Input.GetKeyDown(KeyCode.Alpha9))
         {
-            magicNum = 2;
+            myMagicNum = 2;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            Debug.Log(base.health);
+            GetDamage(5);
         }
 
         if (photonView.IsMine)
@@ -230,15 +275,15 @@ public class BattlePlayer : LivingEntity, IPunObservable
                 photonView.RPC("SendMouseButtonDown", RpcTarget.Others, LeftMouseButtonDown);
                 if (isMagic)
                 {
-
-                    GameObject magic = Instantiate(magicEffect[magicNum]); //1 Tornado , 2 Thunder  0 Fire
-                    magic.transform.position = MagicArea.Instance.transform.position;
-                    StopCoroutine(magicCor);
                     animator.SetTrigger("magicAttack");
-                    MagicArea.Instance.transform.position = new Vector3(0,0,0);
+                    MakeMagic(myMagicNum, MagicArea.Instance.transform.position, myindex);
                     isMagic = false;
-
+                    StopCoroutine(magicCor);
+                    
+                    //photonView.RPC("SendMagic", RpcTarget.Others, MagicArea.Instance.transform, myindex);
+                    
                     isCool = true;
+                    MagicArea.Instance.transform.position = new Vector3(0,0,0);
                     StartCoroutine(CheckCoolTime());
 
                     return;
@@ -252,7 +297,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             {
 
                 isAttack = true;
-
+                
                 AttackStart();
                 StartCoroutine(AttackEffect());
                 LeftMouseButtonDown = false;
@@ -361,6 +406,28 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
             yield return null;
         }
+    }
+
+    void MakeMagic(int num, Vector3 pos, int who)
+    {
+        GameObject magic = Instantiate(magicEffect[num]); //1 Tornado , 2 Thunder  0 Fire
+
+        switch (num)
+        {
+            case (int)Magic.Fire:
+                magic.transform.GetChild(0).GetChild(4).GetComponent<Meteo>().SetMaster(who);
+                break;
+
+            case (int)Magic.Water:
+                magic.transform.GetChild(1).GetComponent<Tornado>().SetMaster(who);
+                break;
+            
+            case (int)Magic.Light:
+                magic.transform.GetChild(2).GetChild(1).GetComponent<Thunder>().SetMaster(who);
+                break;
+        }
+        
+        magic.transform.position = pos;
     }
 
     IEnumerator CheckCoolTime()
@@ -579,8 +646,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         //offensivePower -= realItem.stat.attackPower;
         defensivePower -= realItem.stat.defensePower;
-        maxHealth -= realItem.stat.health;
-        currHealth -= realItem.stat.health;
         moveSpeed -= realItem.stat.moveSpeed;
         RefreshStat();
     }
@@ -589,8 +654,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         //offensivePower += realItem.stat.attackPower;
         defensivePower += realItem.stat.defensePower;
-        maxHealth += realItem.stat.health;
-        currHealth += realItem.stat.health;
         moveSpeed += realItem.stat.moveSpeed;
         RefreshStat();
         SetShoesEffect();
@@ -598,7 +661,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     private void RefreshStat()
     {
-        Inventory.instance.statParent.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Health : " + currHealth + " / " + maxHealth;
+        Inventory.instance.statParent.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Health : " + health + " / " + startingHealth;
         Inventory.instance.statParent.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Attack : " + (offensivePower + GetWeaponStat());
         Inventory.instance.statParent.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "Defense : " + defensivePower;
         Inventory.instance.statParent.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = "Speed : " + moveSpeed;
@@ -849,11 +912,10 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     protected override void OnEnable()
     {
-        
         base.OnEnable();
     }
 
-    public override void RestoreHealth(float newHealth)
+    public override void RestoreHealth(int newHealth)
     {
         base.RestoreHealth(newHealth);
     }
@@ -861,7 +923,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     public override bool ApplyDamage(DamageMessage damageMessage)
     {
         if (!base.ApplyDamage(damageMessage)) return false;
-
+        MyHPBar.Instance.SetHPBar(startingHealth, health);
         return true;
     }
 
@@ -917,7 +979,9 @@ public class BattlePlayer : LivingEntity, IPunObservable
     
     public void GetDamage(int val)
     {
-        currHealth -= val;
+        health -= val;
+        MyHPBar.Instance.SetHPBar(startingHealth, health);
+        BattleManager.Instance.HitScreen();
     }
     
     public void AttackStart()
@@ -1048,4 +1112,14 @@ public class BattlePlayer : LivingEntity, IPunObservable
     //    ApplyDamage(damageMessage);
     //    //Debug.Log(GetComponent<LivingEntity>().health);
     //}
+
+    [PunRPC]
+    void SendMagic(Vector3 position, int who, int which)
+    {
+        magicPosition = position;
+        magicMaster = who;
+        magicNum = which; 
+        
+        MakeMagic(magicNum, magicPosition, magicMaster);
+    }
 }

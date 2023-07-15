@@ -1273,8 +1273,6 @@ MonoBehaviour:
   mouseSpeed: 5
   offensivePower: 10
   defensivePower: 10
-  maxHealth: 10
-  currHealth: 10
   moveSpeed: 8
   animator: {fileID: 1535938522580959584}
   playertransform: {fileID: 2921981556648004440}
@@ -1299,7 +1297,6 @@ MonoBehaviour:
   attackEffect: []
   shoesEffectPos: {fileID: 5884637802145697270}
   isAttack: 0
-  magicAreaPrefab: {fileID: 536122277616741434, guid: d5e1cf9552910224fa418da1e10b5e1d, type: 3}
   magicEffect:
   - {fileID: 7009505819816671087, guid: bbdd9b2151b492e4cb95557c2d13c3b1, type: 3}
   - {fileID: 6021791871163653471, guid: ad1fd24df59c9d54eba32de0fb48d3f1, type: 3}
