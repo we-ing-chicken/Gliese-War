@@ -280,7 +280,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
                     isMagic = false;
                     StopCoroutine(magicCor);
                     
-                    //photonView.RPC("SendMagic", RpcTarget.Others, MagicArea.Instance.transform, myindex);
+                    photonView.RPC("SendMagic", RpcTarget.Others, MagicArea.Instance.transform.position, myindex);
                     
                     isCool = true;
                     MagicArea.Instance.transform.position = new Vector3(0,0,0);
