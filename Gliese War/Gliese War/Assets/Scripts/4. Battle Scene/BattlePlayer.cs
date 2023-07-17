@@ -10,6 +10,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Animations;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class BattlePlayer : LivingEntity, IPunObservable
@@ -956,6 +957,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         StartCoroutine("die");
 
         BattleManager.Instance.BM_RemoveList(myindex);
+        SceneManager.LoadScene(1);
     }
     IEnumerator die()
     {
@@ -973,7 +975,11 @@ public class BattlePlayer : LivingEntity, IPunObservable
         if (other.CompareTag("Weapon") && !other.transform.GetComponentInParent<BattlePlayer>().photonView.IsMine)
         {
             health -= 10;
-            MyHPBar.Instance.SetHPBar(startingHealth, health);
+            DamageMessage dm;
+            dm.damager = myindex;
+            dm.damage = 10;
+            ApplyDamage(dm);
+            //MyHPBar.Instance.SetHPBar(startingHealth, health);
             BattleManager.Instance.HitScreen();
         }
     }
@@ -993,7 +999,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
             if (other.CompareTag("Outside") && photonView.IsMine)
             {
                 Debug.Log("밖");
-                GetDamage(1);
+                DamageMessage dm;
+                dm.damager = myindex;
+                dm.damage = 1;
+                ApplyDamage(dm);
+                BattleManager.Instance.HitScreen();
+                //GetDamage(1);
             }
         }
     }
