@@ -52,6 +52,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     public RealItem weapon2;
     public int weaponNow = 1;
     bool ismove = false;
+    bool isjump = false;
 
     [SerializeField] private GameObject head;
     [SerializeField] private GameObject body;
@@ -340,7 +341,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
         //if (charactercontroller == null) return;
 
-        Debug.Log("IsMine : " + photonView.IsMine + ", remotePos : " + remotePos);
+        //Debug.Log("IsMine : " + photonView.IsMine + ", remotePos : " + remotePos);
 
         //if (!charactercontroller.isGrounded)
         //{
@@ -351,11 +352,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
         //{
 
 
-        if (p_Jump)
+        if (p_Jump && !isjump)
         {
-            isAttack = false;
+            isAttack = true;
+            isjump = true;
             animator.SetTrigger("doJump");
-
+            rigidbody.AddForce(Vector3.up * JumpPower, ForceMode.Impulse);
 
             //Jump();
 
@@ -964,7 +966,17 @@ public class BattlePlayer : LivingEntity, IPunObservable
         animator.SetTrigger("Dying");
         yield return new WaitForSeconds(0.3f);
     }
-    
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Terrain")
+        {
+            isAttack = false;
+            animator.SetBool("doJump", false);
+            isjump = false;
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Inside") && photonView.IsMine)
