@@ -18,10 +18,10 @@ public struct Stat
 
 public enum Magic
 {
-    Nothing,
-    Water,
     Fire,
-    Light
+    Water,
+    Light,
+    Nothing
 }
 
 public class RealItem

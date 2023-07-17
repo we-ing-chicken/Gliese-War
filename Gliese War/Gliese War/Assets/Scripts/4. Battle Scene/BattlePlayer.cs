@@ -437,7 +437,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         switch (num)
         {
             case (int)Magic.Fire:
-                magic.transform.GetChild(0).GetChild(4).GetComponent<Meteo>().SetMaster(who);
+                magic.transform.GetChild(0).GetChild(5).GetChild(3).GetComponent<Meteo>().SetMaster(who);
                 break;
 
             case (int)Magic.Water:
