@@ -84,7 +84,7 @@ public class Meteo : MonoBehaviour
         {
             DamageMessage dm;
             dm.damager = master;
-            dm.damage = 1;
+            dm.damage = 30;
             obj.GetComponent<BattlePlayer>().ApplyDamage(dm);
             //obj.GetComponent<BattlePlayer>().GetDamage(1);
             
