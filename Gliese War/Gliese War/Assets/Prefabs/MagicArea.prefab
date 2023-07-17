@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6481012259288805350}
   - component: {fileID: 6461757833587659952}
   - component: {fileID: 6288381172512667402}
+  - component: {fileID: 1982316777}
   m_Layer: 0
   m_Name: MagicArea
   m_TagString: Untagged
@@ -27,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 536122277616741434}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: -0.2, z: 3}
+  m_LocalScale: {x: 5, y: -0.2, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -83,3 +84,15 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1982316777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 536122277616741434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de5cc2c96bfe55945b53b91e917af845, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

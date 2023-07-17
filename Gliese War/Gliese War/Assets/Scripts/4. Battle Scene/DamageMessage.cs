@@ -4,9 +4,7 @@ using UnityEngine;
 
 public struct DamageMessage
 {
-    public GameObject damager;      // °ø°ÝÀÚ
-    public float damage;            // °ø°Ý·®
+    public int damager;      // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    public int damage;            // ï¿½ï¿½ï¿½Ý·ï¿½
 
-    public Vector3 hitPoint;        // °ø°Ý À§Ä¡
-    public Vector3 hitNormal;       // °ø°Ý ¹æÇâ
 }

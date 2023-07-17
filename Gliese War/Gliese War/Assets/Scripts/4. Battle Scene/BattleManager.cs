@@ -6,6 +6,7 @@ using UnityEngine;
 public class BattleManager : MonoBehaviour
 {
     private static BattleManager _instance;
+    public GameObject[] players;
     public List<int> player_indexes = new List<int>();
     
     [Header("Canvas")] public GameObject invenCanvas;
@@ -46,6 +47,8 @@ public class BattleManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        players = new GameObject[4];
     }
 
     private void Update()

@@ -1,6 +1,5 @@
-using Cinemachine;
+﻿using Cinemachine;
 using Photon.Pun;
-using Photon.Pun.Demo.Cockpit.Forms;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,24 +11,26 @@ using UnityEngine.Animations;
 using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 
-public class BattlePlayer : LivingEntity, IPunObservable
+public class BattleP : MonoBehaviourPunCallbacks, IPunObservable
 {
-    static public BattlePlayer instance;
-    public int myindex;
+    static public BattleP instance;
     private float Gravity = 9.8f;
     public int life;
     public float MouseX;
     public float mouseSpeed;
+    public bool isUI = false;
 
-    private string moveFBAxisName = "Vertical"; //  յ                 Է     ̸ 
-    private string moveLRAxisName = "Horizontal"; //  ¿                 Է     ̸ 
-    private string meleeAttackButtonName = "Fire1"; //  ߻縦       Է    ư  ̸ 
-    private string magicAttackButtonName = "Fire2"; //  ߻縦       Է    ư  ̸ 
+    private string moveFBAxisName = "Vertical"; // �յ� �������� ���� �Է��� �̸�
+    private string moveLRAxisName = "Horizontal"; // �¿� �������� ���� �Է��� �̸�
+    private string meleeAttackButtonName = "Fire1"; // �߻縦 ���� �Է� ��ư �̸�
+    private string magicAttackButtonName = "Fire2"; // �߻縦 ���� �Է� ��ư �̸�
     private string JumpButtonName = "Jump";
 
     public int offensivePower;
     public int defensivePower;
-    public int moveSpeed; //  յ            ӵ 
+    public int maxHealth;
+    public int currHealth;
+    public int moveSpeed; // �յ� �������� �ӵ�
     [SerializeField] private Animator animator;
     [SerializeField] private Transform playertransform;
     [SerializeField] private Transform leftTarget;
@@ -41,6 +42,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     [SerializeField] private Transform rbTarget;
     [SerializeField] private Transform rfTarget;
     [SerializeField] private bool ignoreGravity = false;
+
 
     public List<Item> items;
 
@@ -68,141 +70,105 @@ public class BattlePlayer : LivingEntity, IPunObservable
     public bool isAttack = false;
 
     private CharacterController charactercontroller;
-    
-    private bool isMagic;   // while right mouse down
-    private bool isCool;    // after use magic
-    private Coroutine magicCor; // set magic area position coroutine 
-    [SerializeField] private GameObject[] magicEffect;
-    private Vector3 magicPosition;
-    private int myMagicNum = 0; // my magic num
-    
-    private int magicMaster;    // who's magic
-    private float magicCooltime;    // how long wait for use magic again
-    private int magicNum = 0;   // other magic num
-    private bool otherMagic; // check other use magic
 
-    public float moveFB { get; private set; } //             ̵   Է° 
-    public float moveLR { get; private set; } //         ¿  ̵   Է° 
-    public float rot { get; private set; } //        ȸ    Է° 
-    public bool LeftMouseButtonDown { get; private set; } //         ߻ 1  Է° 
-    public bool Mgattack { get; private set; } //         ߻ 2  Է° 
-    public bool p_Jump { get; private set; } //              Է° 
+    private bool isMagic;
+    [SerializeField] private GameObject magicAreaPrefab;
+    private Coroutine magicCor;
+    [SerializeField] private GameObject[] magicEffect;
+    private float magicCooltime;
+    private bool isCool;
+    private int magicNum = 0;
+
+    public float moveFB { get; private set; } // ������ �����̵� �Է°�
+    public float moveLR { get; private set; } // ������ �¿��̵� �Է°�
+    public float rot { get; private set; } // ������ ȸ�� �Է°�
+    public bool Mlattack { get; private set; } // ������ �߻�1 �Է°�
+    public bool Mgattack { get; private set; } // ������ �߻�2 �Է°�
+    public bool p_Jump { get; private set; } // ������ ���� �Է°�
 
     public float JumpPower;
 
-    private Vector3 moveDir;
+    public Vector3 moveDir;
 
     public bool isNear;
 
     private Vector3 remotePos;
     private Quaternion remoteRot;
 
-    private float lag;
-    new private Rigidbody rigidbody;
-    private float remotetime;
-
     private bool isSafe = false;
 
-    [SerializeField] private CinemachineVirtualCamera virtualCamera;
 
     private void Start()
     {
-        Debug.Log(photonView.IsMine);
 
         instance = this;
-        if (photonView.IsMine)
-        {
-            applyItems();
-        }
-        else
-        {
-            playertransform.GetComponent<AudioListener>().enabled = false;
-        }
-        
-        //charactercontroller = GetComponent<CharacterController>();
-        rigidbody = GetComponent<Rigidbody>();
+        allpyItems();
+        charactercontroller = GetComponent<CharacterController>();
+        //if (ignoreGravity)
+        //    charactercontroller.
         moveDir = Vector3.zero;
         rot = 1.0f;
         isNear = false;
         life = 10;
 
-        if (GameManager.Instance != null)
-        {
-            offensivePower = GameManager.Instance.stat.attackPower;
-            defensivePower = GameManager.Instance.stat.defensePower;
-            moveSpeed = GameManager.Instance.stat.moveSpeed;
-        }
-        else
-        {
-            offensivePower = 10;
-            defensivePower = 10;
-            moveSpeed = 10;
-        }
+        offensivePower = 10;
+        defensivePower = 10;
+        maxHealth = 100;
+        currHealth = 100;
+        moveSpeed = 8;
 
-        SetBattleItemEquip();
+        //flashRed = GetComponent<MeshRenderer>().material;
 
         RefreshStat();
 
-        myMagicNum = 1;
+        weapon1 = new RealItem();
+        weapon1.item = TestManager.Instance.knife[1];
+        weapon1.magic = Magic.Fire;
+
+
+        weapon2 = new RealItem();
+        weapon2.item = TestManager.Instance.knife[1];
+        weapon2.magic = Magic.Water;
+
         magicCooltime = 5f;
         isCool = false;
 
         EquipWeapon();
 
-        if (photonView.IsMine)
-        {
-            virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
-
-            CServercamTest sct = Camera.main.GetComponent<CServercamTest>();
-
-            sct.bp = GetComponent<BattlePlayer>();
-            virtualCamera.Follow = transform;
-            virtualCamera.LookAt = transform;
-
-        }
     }
 
     private void Update()
     {
-        if (transform.GetComponent<LivingEntity>().dead) return;
+        // ���ӿ��� ���¿����� ����� �Է��� �������� �ʴ´�
+        //if (FarmingManager.Instance != null && FarmingManager._isEnd)
+        //{
+        //    moveFB = 0;
+        //    moveLR = 0;
+        //    Mlattack = false;
+        //    return;
+        //}
 
-        //if (charactercontroller == null) return;
+        if (charactercontroller == null) return;
 
-        if (photonView.IsMine)
-        {
-            moveFB = Input.GetAxis(moveFBAxisName);
-            moveLR = Input.GetAxis(moveLRAxisName);
+        moveFB = Input.GetAxis(moveFBAxisName);
 
-            ismove = (Input.GetButton(moveFBAxisName) || Input.GetButton(moveLRAxisName));
-            Mgattack = Input.GetButton(magicAttackButtonName);
-            p_Jump = Input.GetButton(JumpButtonName);
+        // rotate�� ���� �Է� ����
+        moveLR = Input.GetAxis(moveLRAxisName);
 
-        }
+        ismove = (Input.GetButton(moveFBAxisName) || Input.GetButton(moveLRAxisName));
+
+        // fire�� ���� �Է� ����
+        Mlattack = Input.GetButton(meleeAttackButtonName);
+        Mgattack = Input.GetButton(magicAttackButtonName);
+        p_Jump = Input.GetButton(JumpButtonName);
+        animate_Run();
+
+        // move�� ���� �Է� ����
 
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            if (weapon1 == null) return;
-            
             weaponNow = 1;
-
-            switch (weapon1.magic)
-            {
-                case Magic.Fire:
-                    myMagicNum = 0;
-                    break;
-                
-                case Magic.Water:
-                    myMagicNum = 1;
-                    break;
-                
-                case Magic.Light:
-                    myMagicNum = 2;
-                    break;
-                
-                case Magic.Nothing:
-                    break;
-            }
 
             if (weapon1 != null)
                 EquipWeapon();
@@ -211,28 +177,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            if (weapon2 == null) return;
-            
             weaponNow = 2;
-            
-            switch (weapon2.magic)
-            {
-                case Magic.Fire:
-                    myMagicNum = 0;
-                    break;
-                
-                case Magic.Water:
-                    myMagicNum = 1;
-                    break;
-                
-                case Magic.Light:
-                    myMagicNum = 2;
-                    break;
-                
-                case Magic.Nothing:
-                    break;
-            }
-            
             if (weapon2 != null)
                 EquipWeapon();
 
@@ -240,83 +185,52 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            weapon1.item = BattleManager.Instance.sword[1];
+            weapon1.item = TestManager.Instance.knife[1];
             EquipWeapon();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha5))
         {
-            weapon1.item = BattleManager.Instance.spear[1];
+            weapon1.item = TestManager.Instance.spear[1];
             EquipWeapon();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha6))
         {
-            weapon1.item = BattleManager.Instance.hammer[1];
+            weapon1.item = TestManager.Instance.hammer[1];
             EquipWeapon();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha7))
         {
-            myMagicNum = 0;
+            magicNum = 0;
         }
         else if (Input.GetKeyDown(KeyCode.Alpha8))
         {
-            myMagicNum = 1;
+            magicNum = 1;
         }
         else if (Input.GetKeyDown(KeyCode.Alpha9))
         {
-            myMagicNum = 2;
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha0))
-        {
-            Debug.Log(base.health);
-            GetDamage(5);
+            magicNum = 2;
         }
 
-        if (photonView.IsMine)
-        {
-            LeftMouseButtonDown = Input.GetMouseButtonDown(0);
-        }
 
-        if (LeftMouseButtonDown && !isAttack)
+        if (Input.GetMouseButtonDown(0))
         {
-            if (photonView.IsMine)
+            if (isMagic)
             {
-                photonView.RPC("SendMouseButtonDown", RpcTarget.Others, LeftMouseButtonDown);
-                if (isMagic)
-                {
-                    animator.SetTrigger("magicAttack");
-                    MakeMagic(myMagicNum, MagicArea.Instance.transform.position, myindex);
-                    isMagic = false;
-                    StopCoroutine(magicCor);
-                    
-                    photonView.RPC("SendMagic", RpcTarget.Others, MagicArea.Instance.transform.position, myindex, myMagicNum);
-                    
-                    isCool = true;
-                    MagicArea.Instance.transform.position = new Vector3(0,0,0);
-                    StartCoroutine(CheckCoolTime());
+                GameObject magic = Instantiate(magicEffect[magicNum]); //1 Tornado , 2 Thunder  0 Fire
+                magic.transform.position = magicAreaPrefab.transform.position;
+                StopCoroutine(magicCor);
+                animator.SetTrigger("magicAttack");
+                magicAreaPrefab.SetActive(false);
+                isMagic = false;
 
-                    return;
-                }
-                isAttack = true;
-                AttackStart();
-                AttackAnimation();
-                StartCoroutine(AttackEffect());
-            }
-            else
-            {
-                if (otherMagic)
-                {
-                    animator.SetTrigger("magicAttack");
-                    otherMagic = false;
-                }
-                else
-                {
-                    AttackStart();
-                    StartCoroutine(AttackEffect());
-                }
-                LeftMouseButtonDown = false;
-                photonView.RPC("SendMouseButtonDown", RpcTarget.All, LeftMouseButtonDown);
+                isCool = true;
+                StartCoroutine(CheckCoolTime());
 
+                return;
             }
+            AttackStart();
+            AttackAnimation();
+            StartCoroutine(AttackEffect());
         }
         else if (Input.GetMouseButtonDown(1))
         {
@@ -328,128 +242,39 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
             isMagic = true;
             magicCor = StartCoroutine(SetMagicArea());
+            magicAreaPrefab.SetActive(true);
         }
         else if (Input.GetMouseButtonUp(1))
         {
             isMagic = false;
             StopCoroutine(magicCor);
-            MagicArea.Instance.transform.position = new Vector3(0,0,0);
+            magicAreaPrefab.SetActive(false);
         }
 
-
-        //if (charactercontroller == null) return;
-
-        Debug.Log("IsMine : " + photonView.IsMine + ", remotePos : " + remotePos);
-
-        //if (!charactercontroller.isGrounded)
-        //{
-        //    if (!ignoreGravity)
-        //        Fall();
-        //}
-        //else
-        //{
-
-
-        if (p_Jump)
-        {
-            isAttack = false;
-            animator.SetTrigger("doJump");
-
-
-            //Jump();
-
-        }
-        if (photonView.IsMine)
-        {
-            //remoteDir = new Vector3(moveLR, 0, moveFB).normalized;
-            //player_lookTarget();
-
-            
-
-            //Move();
-            Vector3 lookForward = new Vector3(Camera.main.transform.forward.x, 0f, Camera.main.transform.forward.z).normalized;
-            Vector3 lookRight = new Vector3(Camera.main.transform.right.x, 0f, Camera.main.transform.right.z).normalized;
-            moveDir = lookForward * moveFB + lookRight * moveLR;
-            transform.position += moveDir * moveSpeed * Time.deltaTime;
-            playertransform.LookAt(playertransform.position + moveDir);
-
-            //Look();
-            MouseX = MouseX + (Input.GetAxis("Mouse X") * mouseSpeed);
-            remoteRot = Quaternion.Euler(0, MouseX, 0);
-            transform.rotation = remoteRot;
-
-        }
-        else
-        {
-            //ismove = (remoteDir.x > 0 || remoteDir.z > 0);
-            transform.position += moveDir * moveSpeed * Time.deltaTime;
-
-            remoteRot = Quaternion.Euler(0, MouseX, 0);
-            transform.rotation = remoteRot;
-        }
-        //}
-
-        //charactercontroller.Move(moveDir * Time.deltaTime * moveSpeed);
-        animate_Run();
     }
 
     IEnumerator SetMagicArea()
     {
         Debug.Log("On");
-
-        Transform playerTransform = null;
-        
-        for (int i = 0; i < BattleManager.Instance.players.Length; ++i)
-        {
-            if (BattleManager.Instance.players[i] == null) continue;
-
-            if (BattleManager.Instance.players[i].GetComponent<BattlePlayer>().photonView.IsMine)
-            {
-                playerTransform = BattleManager.Instance.players[i].GetComponent<BattlePlayer>().transform;
-            }
-        }
-        
-        float distance = Vector3.Distance(Camera.main.transform.position, playerTransform.position);
+        float distance = Vector3.Distance(Camera.main.transform.position, transform.position);
         RaycastHit[] hit;
 
         while (true)
         {
-            Vector3 direction = ((playerTransform.position + new Vector3(0f, 1f, 0f)) - Camera.main.transform.position).normalized;
+            Vector3 direction = ((transform.position + new Vector3(0f, 1f, 0f)) - Camera.main.transform.position).normalized;
             hit = (Physics.RaycastAll(Camera.main.transform.position, direction, distance + 10f));
 
             for (int i = 0; i < hit.Length; ++i)
             {
                 if (hit[i].transform.CompareTag("Terrain"))
                 {
-                    MagicArea.Instance.transform.position = hit[i].point;
+                    magicAreaPrefab.transform.position = hit[i].point;
                     break;
                 }
             }
 
             yield return null;
         }
-    }
-
-    void MakeMagic(int num, Vector3 pos, int who)
-    {
-        GameObject magic = Instantiate(magicEffect[num]); //1 Tornado , 2 Thunder  0 Fire
-
-        switch (num)
-        {
-            case (int)Magic.Fire:
-                magic.transform.GetChild(0).GetChild(4).GetComponent<Meteo>().SetMaster(who);
-                break;
-
-            case (int)Magic.Water:
-                magic.transform.GetChild(1).GetComponent<Tornado>().SetMaster(who);
-                break;
-            
-            case (int)Magic.Light:
-                magic.transform.GetChild(2).GetChild(1).GetComponent<Thunder>().SetMaster(who);
-                break;
-        }
-        
-        magic.transform.position = pos;
     }
 
     IEnumerator CheckCoolTime()
@@ -470,36 +295,66 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
     }
 
+    private void FixedUpdate()
+    {
+        //else
+        //if (BattleManager.Instance._isFading) return;
+        if (charactercontroller == null) return;
+        Look();
+
+        if (!charactercontroller.isGrounded)
+        {
+            if (!ignoreGravity)
+                Fall();
+        }
+        else
+        {
+            Move();
+            transform.rotation = Quaternion.Lerp(transform.rotation, remoteRot, moveSpeed * Time.deltaTime);
+
+            if (p_Jump)
+            {
+                isAttack = false;
+                if (!isUI)
+                {
+                    animator.SetTrigger("doJump");
+                    Jump();
+                }
+
+            }
+        }
+
+        charactercontroller.Move(moveDir * Time.deltaTime);
+        //tranform.position 전송
+    }
+
     private void Move()
     {
-        //player_lookTarget();
-
-        //transform.position += remoteDir * moveSpeed * Time.deltaTime;
-
-        //moveDir = charactercontroller.transform.TransformDirection(remoteDir);
+        player_lookTarget();
+        remotePos = new Vector3(moveLR, 0, moveFB);
+        moveDir = charactercontroller.transform.TransformDirection(remotePos) * moveSpeed;
     }
 
     private void Jump()
     {
-
-        //remoteDir.y = JumpPower;
+        moveDir.y = JumpPower;
     }
+
     private void Fall()
     {
-        //remoteDir.y -= Gravity * Time.deltaTime;
+        moveDir.y -= Gravity * Time.deltaTime;
     }
+
     private void Look()
     {
-        //if(photonView.IsMine)
-        //{
-        //    MouseX = MouseX + (Input.GetAxis("Mouse X") * mouseSpeed);
-        //}
+        MouseX += Input.GetAxis("Mouse X") * mouseSpeed;
 
-        //remoteRot = Quaternion.Euler(0, MouseX, 0);
+        remoteRot = Quaternion.Euler(0, MouseX, 0);
+        transform.rotation = remoteRot;
     }
     private void player_lookTarget()
     {
-        //if (charactercontroller == null) return;
+        if (charactercontroller == null) return;
 
         if (moveLR < 0 && moveFB < 0)    // left + back
         {
@@ -550,12 +405,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     private void animate_Run()
     {
+        if (!isUI)
             animator.SetBool("isRun", ismove);
     }
 
     private void AttackAnimation()
     {
-        //Debug.Log(weaponNow);
         if (weaponNow == 1)
         {
             if (weapon1 == null)
@@ -563,16 +418,16 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
             switch (weapon1.item.weaponType)
             {
-                case Item.WeaponType.Hammer:
-                    animator.SetTrigger("attackHammer");
-                    break;
-
                 case Item.WeaponType.Sword:
                     animator.SetTrigger("attackSword");
                     break;
 
                 case Item.WeaponType.Spear:
                     animator.SetTrigger("attackSpear");
+                    break;
+
+                case Item.WeaponType.Hammer:
+                    animator.SetTrigger("attackHammer");
                     break;
             }
         }
@@ -583,16 +438,16 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
             switch (weapon2.item.weaponType)
             {
-                case Item.WeaponType.Hammer:
-                    animator.SetTrigger("attackHammer");
-                    break;
-
                 case Item.WeaponType.Sword:
                     animator.SetTrigger("attackSword");
                     break;
 
                 case Item.WeaponType.Spear:
                     animator.SetTrigger("attackSpear");
+                    break;
+
+                case Item.WeaponType.Hammer:
+                    animator.SetTrigger("attackHammer");
                     break;
             }
         }
@@ -607,23 +462,22 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
             switch (weapon1.item.weaponType)
             {
-                case Item.WeaponType.Hammer:
-                    yield return new WaitForSeconds(0.3f);
-                    attackEffectPos.transform.GetChild(2).gameObject.SetActive(true);
-                    StartCoroutine(QuitAttackEffect(2));
-                    break;
-
                 case Item.WeaponType.Sword:
                     yield return new WaitForSeconds(0.2f);
                     attackEffectPos.transform.GetChild(0).gameObject.SetActive(true);
                     StartCoroutine(QuitAttackEffect(0));
-
                     break;
 
                 case Item.WeaponType.Spear:
                     yield return new WaitForSeconds(0.2f);
                     attackEffectPos.transform.GetChild(1).gameObject.SetActive(true);
                     StartCoroutine(QuitAttackEffect(1));
+                    break;
+
+                case Item.WeaponType.Hammer:
+                    yield return new WaitForSeconds(0.3f);
+                    attackEffectPos.transform.GetChild(2).gameObject.SetActive(true);
+                    StartCoroutine(QuitAttackEffect(2));
                     break;
             }
         }
@@ -634,23 +488,22 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
             switch (weapon2.item.weaponType)
             {
-                case Item.WeaponType.Hammer:
-                    yield return new WaitForSeconds(0.3f);
-                    attackEffectPos.transform.GetChild(2).gameObject.SetActive(true);
-                    StartCoroutine(QuitAttackEffect(2));
-                    break;
-
                 case Item.WeaponType.Sword:
                     yield return new WaitForSeconds(0.2f);
                     attackEffectPos.transform.GetChild(0).gameObject.SetActive(true);
                     StartCoroutine(QuitAttackEffect(0));
-
                     break;
 
                 case Item.WeaponType.Spear:
                     yield return new WaitForSeconds(0.2f);
                     attackEffectPos.transform.GetChild(1).gameObject.SetActive(true);
                     StartCoroutine(QuitAttackEffect(1));
+                    break;
+
+                case Item.WeaponType.Hammer:
+                    yield return new WaitForSeconds(0.3f);
+                    attackEffectPos.transform.GetChild(2).gameObject.SetActive(true);
+                    StartCoroutine(QuitAttackEffect(2));
                     break;
             }
         }
@@ -668,6 +521,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         //offensivePower -= realItem.stat.attackPower;
         defensivePower -= realItem.stat.defensePower;
+        maxHealth -= realItem.stat.health;
+        currHealth -= realItem.stat.health;
         moveSpeed -= realItem.stat.moveSpeed;
         RefreshStat();
     }
@@ -676,6 +531,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         //offensivePower += realItem.stat.attackPower;
         defensivePower += realItem.stat.defensePower;
+        maxHealth += realItem.stat.health;
+        currHealth += realItem.stat.health;
         moveSpeed += realItem.stat.moveSpeed;
         RefreshStat();
         SetShoesEffect();
@@ -683,10 +540,16 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     private void RefreshStat()
     {
-        Inventory.instance.statParent.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Health : " + health + " / " + startingHealth;
-        Inventory.instance.statParent.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Attack : " + (offensivePower + GetWeaponStat());
-        Inventory.instance.statParent.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "Defense : " + defensivePower;
-        Inventory.instance.statParent.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = "Speed : " + moveSpeed;
+
+        // Inventory.instance.statParent.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text =
+        //     "Health : " + currHealth + " / " + maxHealth;
+        // Inventory.instance.statParent.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text =
+        //     "Attack : " + (offensivePower + GetWeaponStat());
+        // Inventory.instance.statParent.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text =
+        //     "Defense : " + defensivePower;
+        // Inventory.instance.statParent.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text =
+        //     "Speed : " + moveSpeed;
+
     }
 
     private int GetWeaponStat()
@@ -763,16 +626,15 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
             switch (weapon1.item.weaponType)
             {
-                case Item.WeaponType.Hammer:
-                    EquipHammer();
-                    break;
-
                 case Item.WeaponType.Sword:
                     EquipSword();
                     break;
 
                 case Item.WeaponType.Spear:
                     EquipSpear();
+                    break;
+                case Item.WeaponType.Hammer:
+                    EquipHammer();
                     break;
             }
         }
@@ -783,16 +645,16 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
             switch (weapon2.item.weaponType)
             {
-                case Item.WeaponType.Hammer:
-                    EquipHammer();
-                    break;
-
                 case Item.WeaponType.Sword:
                     EquipSword();
                     break;
 
                 case Item.WeaponType.Spear:
                     EquipSpear();
+                    break;
+
+                case Item.WeaponType.Hammer:
+                    EquipHammer();
                     break;
             }
         }
@@ -860,51 +722,32 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
+        // stream - 데이터를 주고 받는 통로 
+        // 내가 데이터를 보내는 중이라면
         if (stream.IsWriting)
         {
+            // 이 방안에 있는 모든 사용자에게 브로드캐스트 
+            // - 내 포지션 값을 보내보자
             stream.SendNext(transform.position);
-            stream.SendNext(MouseX);
-            //stream.SendNext(Time.deltaTime);
+            stream.SendNext(transform.rotation);
         }
+        // 내가 데이터를 받는 중이라면 
         else
         {
-            moveDir = (Vector3)stream.ReceiveNext() - transform.position;
-            MouseX = (float)stream.ReceiveNext();
-            //remotetime = (float)stream.ReceiveNext();
-
-            //lag = Mathf.Abs((float)(PhotonNetwork.Time - info.timestamp));
-            //remoteDir.y = -remoteDir.y;
-            //remoteDir = -remoteDir;
-            //Debug.Log("PhotonNetwork.Time : " + PhotonNetwork.Time + ", info.SentServerTime : " + info.SentServerTime + ", lag : " + lag);
-            //Debug.Log("1remoteDir : " + remoteDir);
-            //remoteDir = remoteDir + remoteDir * lag;
-            //if (remoteDir.x <= 0)
-            //    remoteDir.x = remoteDir.x - remoteDir.x * lag;
-            //else
-            //    remoteDir.x = remoteDir.x + remoteDir.x * lag;
-
-            ////remoteDir.y = remoteDir.y + remoteDir.y * lag;
-            //if (remoteDir.z <= 0)
-            //    remoteDir.z = remoteDir.z - remoteDir.z * lag;
-            //else
-            //    remoteDir.z = remoteDir.z + remoteDir.z * lag;
-
-            //Debug.Log("2remoteDir : " + remoteDir);
-            //MouseX = MouseX * lag;
+            // 순서대로 보내면 순서대로 들어옴. 근데 타입캐스팅 해주어야 함
+            remotePos = (Vector3)stream.ReceiveNext();
+            remoteRot = (Quaternion)stream.ReceiveNext();
         }
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        //if (hit.collider.tag == "Weapon")
-        //{
-        //    Debug.Log($"OnControllerColliderHit - {hit.collider.name}");
-            
-        //}
-        // TO DO : 무기 스크립트 생성, 충돌 대상 태그가 플레이어라면 대상의 ApplyDamage 호출
-           
+        // if (hit.collider.tag.Equals("WALL"))
+        // if (hit.collider.CompareTag("WALL"))
+        if (hit.collider.tag == "Weapon")
+            Debug.Log($"OnControllerColliderHit - {hit.collider.name}");
     }
-    void applyItems()
+    void allpyItems()
     {
         if (GameManager.Instance == null) return;
         helmet = GameManager.Instance.helmet;
@@ -914,70 +757,14 @@ public class BattlePlayer : LivingEntity, IPunObservable
         weapon2 = GameManager.Instance.weapon2;
     }
 
-    void SetBattleItemEquip()
-    {
-        //Debug.Log(weapon1.item + ", " + weapon1.magic + ", " + weapon1.stat.attackPower);
-        if(weapon1 == null) 
-        {
-            weapon1 = new RealItem();
-            weapon1.item = BattleManager.Instance.sword[1];
-            weapon1.magic = Magic.Fire;
-        }
-
-        if(weapon2 == null)
-        {
-            weapon2 = new RealItem();
-            weapon2.item = BattleManager.Instance.sword[1];
-            weapon2.magic = Magic.Water;
-        }
-    }
-
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-    }
-
-    public override void RestoreHealth(int newHealth)
-    {
-        base.RestoreHealth(newHealth);
-    }
-
-    public override bool ApplyDamage(DamageMessage damageMessage)
-    {
-        if (!base.ApplyDamage(damageMessage)) return false;
-        MyHPBar.Instance.SetHPBar(startingHealth, health);
-        return true;
-    }
-
-    public override void Die()
-    {
-        base.Die();
-
-        StartCoroutine("die");
-
-        BattleManager.Instance.BM_RemoveList(myindex);
-    }
-    IEnumerator die()
-    {
-        animator.SetTrigger("Dying");
-        yield return new WaitForSeconds(0.3f);
-    }
-    
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Inside"))
         {
             isSafe = true;
         }
-        
-        if (other.CompareTag("Weapon") && !other.transform.GetComponentInParent<BattlePlayer>().photonView.IsMine)
-        {
-            health -= 10;
-            MyHPBar.Instance.SetHPBar(startingHealth, health);
-            BattleManager.Instance.HitScreen();
-        }
     }
-    
+
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Inside"))
@@ -988,20 +775,13 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     private void OnTriggerStay(Collider other)
     {
-        if(!isSafe)
+        if (!isSafe)
         {
             if (other.CompareTag("Outside"))
             {
                 Debug.Log("밖");
             }
         }
-    }
-    
-    public void GetDamage(int val)
-    {
-        health -= val;
-        MyHPBar.Instance.SetHPBar(startingHealth, health);
-        BattleManager.Instance.HitScreen();
     }
     
     public void AttackStart()
@@ -1115,22 +895,5 @@ public class BattlePlayer : LivingEntity, IPunObservable
         back.transform.GetChild(2).gameObject.SetActive(true);
         
         isAttack = false;
-    }
-
-    [PunRPC]
-    void SendMouseButtonDown(bool LBD)
-    {
-        LeftMouseButtonDown = LBD;
-    }
-
-    [PunRPC]
-    void SendMagic(Vector3 position, int who, int which)
-    {
-        magicPosition = position;
-        magicMaster = who;
-        magicNum = which;
-        otherMagic = true;
-        
-        MakeMagic(magicNum, magicPosition, magicMaster);
     }
 }
