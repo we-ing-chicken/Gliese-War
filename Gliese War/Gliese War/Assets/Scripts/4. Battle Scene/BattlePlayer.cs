@@ -976,7 +976,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         {
             health -= 10;
             DamageMessage dm;
-            dm.damager = myindex;
+            dm.damager = other.transform.GetComponentInParent<BattlePlayer>().myindex;
             dm.damage = 10;
             ApplyDamage(dm);
             //MyHPBar.Instance.SetHPBar(startingHealth, health);
