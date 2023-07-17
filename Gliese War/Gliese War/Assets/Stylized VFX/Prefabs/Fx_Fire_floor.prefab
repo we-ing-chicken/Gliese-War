@@ -19564,7 +19564,7 @@ GameObject:
   - component: {fileID: 4793850535975072482}
   - component: {fileID: 4793850535975072483}
   m_Layer: 0
-  m_Name: Fx_Fire_floor
+  m_Name: FX_Fire_floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
