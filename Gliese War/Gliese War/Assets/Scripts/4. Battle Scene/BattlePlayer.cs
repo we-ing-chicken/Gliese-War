@@ -116,7 +116,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
         else
         {
-            playertransform.GetComponent<AudioListener>().enabled = false;
+            GetComponent<AudioListener>().enabled = false;
         }
         
         //charactercontroller = GetComponent<CharacterController>();
