@@ -965,7 +965,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Inside"))
+        if (other.CompareTag("Inside") && photonView.IsMine)
         {
             isSafe = true;
         }
@@ -980,7 +980,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Inside"))
+        if (other.CompareTag("Inside") && photonView.IsMine)
         {
             isSafe = false;
         }
@@ -990,9 +990,10 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         if(!isSafe)
         {
-            if (other.CompareTag("Outside"))
+            if (other.CompareTag("Outside") && photonView.IsMine)
             {
                 Debug.Log("밖");
+                GetDamage(1);
             }
         }
     }
