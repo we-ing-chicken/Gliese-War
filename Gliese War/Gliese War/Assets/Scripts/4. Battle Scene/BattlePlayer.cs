@@ -994,6 +994,15 @@ public class BattlePlayer : LivingEntity, IPunObservable
             //MyHPBar.Instance.SetHPBar(startingHealth, health);
             BattleManager.Instance.HitScreen();
         }
+
+        if (other.CompareTag("Item"))
+        {
+            DamageMessage dm;
+            dm.damager = myindex;
+            dm.damage = -20;
+            ApplyDamage(dm);
+            Destroy(other.gameObject);
+        }
     }
     
     private void OnTriggerExit(Collider other)
