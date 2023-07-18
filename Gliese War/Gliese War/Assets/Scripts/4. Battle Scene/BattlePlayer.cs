@@ -10,6 +10,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Animations;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
@@ -104,6 +105,9 @@ public class BattlePlayer : LivingEntity, IPunObservable
     private float remotetime;
 
     private bool isSafe = false;
+    
+    private float statusTime;
+    private bool isOn = false;
 
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
 
@@ -271,6 +275,14 @@ public class BattlePlayer : LivingEntity, IPunObservable
         {
             Debug.Log(base.health);
             GetDamage(5);
+        }
+        else if (Input.GetKeyDown(KeyCode.P))
+        {
+            StartCoroutine(Burns());
+        }
+        else if (Input.GetKeyDown(KeyCode.O))
+        {
+            StartCoroutine(Toxic());
         }
 
         if (photonView.IsMine)
@@ -1165,5 +1177,80 @@ public class BattlePlayer : LivingEntity, IPunObservable
         otherMagic = true;
         
         MakeMagic(magicNum, magicPosition, magicMaster);
+    }
+
+    IEnumerator Burns()
+    {
+        if (isOn) yield break;
+        
+        float total = 7f;
+        statusTime = 0f;
+        isOn = true;
+        
+        StartCoroutine(Timecheck());
+        
+        while (true)
+        {
+            if (statusTime >= total)
+            {
+                isOn = false;
+                break;
+            }
+
+            DamageMessage dm;
+            dm.damager = myindex;
+            dm.damage = 2;
+            ApplyDamage(dm);
+            
+            BattleManager.Instance.HitScreen();
+            
+            yield return new WaitForSeconds(2f);
+        }
+        
+        yield return null;
+    }
+
+    IEnumerator Toxic()
+    {
+        if (isOn) yield break;
+        
+        float total = 7f;
+        statusTime = 0f;
+        isOn = true;
+        
+        StartCoroutine(Timecheck());
+        
+        while (true)
+        {
+            if (statusTime >= total)
+            {
+                isOn = false;
+                break;
+            }
+
+            DamageMessage dm;
+            dm.damager = myindex;
+            dm.damage = 2;
+            ApplyDamage(dm);
+            
+            BattleManager.Instance.HitScreen();
+            
+            yield return new WaitForSeconds(2f);
+        }
+        
+        yield return null;
+    }
+
+    IEnumerator Timecheck()
+    {
+        while (true)
+        {
+            statusTime += Time.deltaTime;
+            
+            if (!isOn)
+                break;
+
+            yield return null;
+        }
     }
 }
