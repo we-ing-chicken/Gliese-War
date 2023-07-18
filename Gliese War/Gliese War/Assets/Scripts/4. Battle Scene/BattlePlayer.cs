@@ -611,7 +611,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             switch (weapon1.item.weaponType)
             {
                 case Item.WeaponType.Hammer:
-                    yield return new WaitForSeconds(0.3f);
+                    yield return new WaitForSeconds(0.7f);
                     attackEffectPos.transform.GetChild(2).gameObject.SetActive(true);
                     StartCoroutine(QuitAttackEffect(2));
                     break;
@@ -638,7 +638,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             switch (weapon2.item.weaponType)
             {
                 case Item.WeaponType.Hammer:
-                    yield return new WaitForSeconds(0.3f);
+                    yield return new WaitForSeconds(0.7f);
                     attackEffectPos.transform.GetChild(2).gameObject.SetActive(true);
                     StartCoroutine(QuitAttackEffect(2));
                     break;
@@ -1113,7 +1113,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     IEnumerator TurnOffHandHammer()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.9f);
         
         col = handR.transform.GetChild(0).GetComponent<MeshCollider>();
         col.enabled = false;
@@ -1139,7 +1139,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     
     IEnumerator TurnOffHandSword()
     {
-        yield return new WaitForSeconds(0.9f);
+        yield return new WaitForSeconds(1f);
         
         col = handR.transform.GetChild(2).GetComponent<MeshCollider>();
         col.enabled = false;
