@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-1633718032953992640
+--- !u!114 &-589407727692012724
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: New Material
-  m_Shader: {fileID: -6465566751694194690, guid: 66ab7d3401c13f84091d18e75b914ad2, type: 3}
+  m_Name: M_FX_C_Water
+  m_Shader: {fileID: -6465566751694194690, guid: eec25686906244a44b0e7fa19aa676df, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -33,20 +33,8 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _Add_Tex:
-        m_Texture: {fileID: 2800000, guid: 0395cffa8228c7d4c89d851e19f5a2d7, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _BaseMap:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Base_Tex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Base_Texture:
-        m_Texture: {fileID: 2800000, guid: 047d2904cec0450468abfc13fc131bdd, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -73,6 +61,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Main_Tex:
+        m_Texture: {fileID: 2800000, guid: eef54117744602244b3a7a317a66c2a0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -89,6 +81,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Sub_Tex:
+        m_Texture: {fileID: 2800000, guid: a4850ab25e36e7941a4e8ecfbc4eebf7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -103,6 +99,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _All_Power: 1
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -120,7 +117,6 @@ Material:
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
-    - _Power: 5
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
@@ -129,18 +125,18 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
+    - _Toon_Power: 57.6
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _Add_Tex_Flow: {r: 0.1, g: 0, b: 0, a: 0}
-    - _Add_Tex_Offset: {r: 0, g: 0, b: 0, a: 0}
-    - _Add_Tex_Tiling: {r: 3, g: 3, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Base_Tex_Flow: {r: 0, g: 0, b: 0, a: 0}
-    - _Base_Texture_Tiling: {r: 1, g: 1, b: 0, a: 0}
-    - _Base_Texure_Offset: {r: 1, g: 1, b: 0, a: 0}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.33041117, g: 0.37478015, b: 0.7075472, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-    - _Tiling_offset: {r: 1, g: 1, b: 0, a: 0}
+    - _Main_Tex_Flow: {r: 0.5, g: 0, b: 0, a: 0}
+    - _Main_Tex_Offset: {r: 0, g: 0, b: 0, a: 0}
+    - _Main_Tex_Tiling: {r: 1, g: 1, b: 0, a: 0}
+    - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _Sub_Tex_Flow: {r: 0, g: 0, b: 0, a: 0}
+    - _Sub_Tex_Offset: {r: 0, g: 0, b: 0, a: 0}
+    - _Sub_Tex_Tiling: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
