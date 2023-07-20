@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_FX_C_Water
+  m_Name: M_FX_C_Thunder
   m_Shader: {fileID: -6465566751694194690, guid: eec25686906244a44b0e7fa19aa676df, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -62,7 +62,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Main_Tex:
-        m_Texture: {fileID: 2800000, guid: 3560436a7aef76d43b4a360764dfbf6e, type: 3}
+        m_Texture: {fileID: 2800000, guid: 975ef0027df37d64d8c40f6e68711c1f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -82,7 +82,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Sub_Tex:
-        m_Texture: {fileID: 2800000, guid: a4850ab25e36e7941a4e8ecfbc4eebf7, type: 3}
+        m_Texture: {fileID: 2800000, guid: 0395cffa8228c7d4c89d851e19f5a2d7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -125,18 +125,18 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
-    - _Toon_Power: 57.6
+    - _Toon_Power: 24.8
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0.24110004, g: 0.3174584, b: 0.8113208, a: 1}
+    - _Color: {r: 1, g: 0.76839715, b: 0.3726415, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Main_Tex_Flow: {r: 0.6, g: 0, b: 0, a: 0}
+    - _Main_Tex_Flow: {r: 0.1, g: 0, b: 0, a: 0}
     - _Main_Tex_Offset: {r: 0, g: 0, b: 0, a: 0}
     - _Main_Tex_Tiling: {r: 1, g: 1, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _Sub_Tex_Flow: {r: 0, g: 0, b: 0, a: 0}
+    - _Sub_Tex_Flow: {r: 0.1, g: 0, b: 0, a: 0}
     - _Sub_Tex_Offset: {r: 0, g: 0, b: 0, a: 0}
     - _Sub_Tex_Tiling: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
