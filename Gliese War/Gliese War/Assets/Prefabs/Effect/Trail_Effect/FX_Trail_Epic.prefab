@@ -9706,7 +9706,7 @@ TrailRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0
+        time: 0.007125891
         value: 1
         inSlope: 0
         outSlope: 0
@@ -9714,37 +9714,55 @@ TrailRenderer:
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.5057741
+        value: 0.49665952
+        inSlope: -1.5107355
+        outSlope: -1.5107355
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.10287079
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 0.7632121, b: 0.2783019, a: 0}
-      key1: {r: 0.7294118, g: 0.8601399, b: 1, a: 1}
-      key2: {r: 1, g: 1, b: 1, a: 1}
-      key3: {r: 0, g: 0, b: 0, a: 0}
-      key4: {r: 0, g: 0, b: 0, a: 0}
+      key0: {r: 1, g: 0.8123037, b: 0.27843142, a: 0}
+      key1: {r: 0.9809218, g: 0.8226213, b: 0.32930666, a: 1}
+      key2: {r: 0.3820755, g: 0.4822059, b: 1, a: 0.14117648}
+      key3: {r: 1, g: 1, b: 1, a: 0}
+      key4: {r: 1, g: 1, b: 1, a: 0}
       key5: {r: 0, g: 0, b: 0, a: 0}
       key6: {r: 0, g: 0, b: 0, a: 0}
       key7: {r: 0, g: 0, b: 0, a: 0}
       ctime0: 7903
-      ctime1: 39514
-      ctime2: 65535
-      ctime3: 0
-      ctime4: 0
+      ctime1: 45761
+      ctime2: 49798
+      ctime3: 65535
+      ctime4: 65535
       ctime5: 0
       ctime6: 0
       ctime7: 0
       atime0: 0
       atime1: 7325
-      atime2: 39321
+      atime2: 49488
       atime3: 65535
       atime4: 65342
       atime5: 0
       atime6: 0
       atime7: 0
       m_Mode: 0
-      m_NumColorKeys: 3
+      m_NumColorKeys: 4
       m_NumAlphaKeys: 4
     numCornerVertices: 0
     numCapVertices: 0
