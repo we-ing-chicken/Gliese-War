@@ -1023,12 +1023,17 @@ public class BattlePlayer : LivingEntity, IPunObservable
             BattleManager.Instance.HitScreen();
         }
 
-        if (other.CompareTag("Item"))
+        if (other.CompareTag("Item") && photonView.IsMine)
         {
             DamageMessage dm;
             dm.damager = myindex;
             dm.damage = -20;
             ApplyDamage(dm);
+            Destroy(other.gameObject);
+            
+        }
+        else if(other.CompareTag("Item"))
+        {
             Destroy(other.gameObject);
         }
     }
