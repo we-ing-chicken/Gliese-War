@@ -41,7 +41,7 @@ public class LivingEntity : MonoBehaviourPunCallbacks, IDamageable
     {
         if (IsInvulnerable || damageMessage.damager == GetComponent<LivingEntity>().photonView.ViewID || dead) return false;
 
-        Debug.Log(damageMessage.damager + ", " + damageMessage.damage);
+        
         lastDamagedTime = Time.time;
         health -= damageMessage.damage;
 

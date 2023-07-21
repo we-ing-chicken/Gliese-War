@@ -10,6 +10,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Animations;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
@@ -105,6 +106,9 @@ public class BattlePlayer : LivingEntity, IPunObservable
     private float remotetime;
 
     private bool isSafe = false;
+    
+    private float statusTime;
+    private bool isOn = false;
 
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
 
@@ -271,6 +275,14 @@ public class BattlePlayer : LivingEntity, IPunObservable
         {
             Debug.Log(base.health);
             GetDamage(5);
+        }
+        else if (Input.GetKeyDown(KeyCode.P))
+        {
+            StartCoroutine(Burns());
+        }
+        else if (Input.GetKeyDown(KeyCode.O))
+        {
+            StartCoroutine(Toxic());
         }
 
         if (photonView.IsMine)
@@ -611,7 +623,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             switch (weapon1.item.weaponType)
             {
                 case Item.WeaponType.Hammer:
-                    yield return new WaitForSeconds(0.3f);
+                    yield return new WaitForSeconds(0.7f);
                     attackEffectPos.transform.GetChild(2).gameObject.SetActive(true);
                     StartCoroutine(QuitAttackEffect(2));
                     break;
@@ -638,7 +650,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             switch (weapon2.item.weaponType)
             {
                 case Item.WeaponType.Hammer:
-                    yield return new WaitForSeconds(0.3f);
+                    yield return new WaitForSeconds(0.7f);
                     attackEffectPos.transform.GetChild(2).gameObject.SetActive(true);
                     StartCoroutine(QuitAttackEffect(2));
                     break;
@@ -1006,6 +1018,15 @@ public class BattlePlayer : LivingEntity, IPunObservable
             //MyHPBar.Instance.SetHPBar(startingHealth, health);
             BattleManager.Instance.HitScreen();
         }
+
+        if (other.CompareTag("Item"))
+        {
+            DamageMessage dm;
+            dm.damager = myindex;
+            dm.damage = -20;
+            ApplyDamage(dm);
+            Destroy(other.gameObject);
+        }
     }
     
     private void OnTriggerExit(Collider other)
@@ -1116,7 +1137,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     IEnumerator TurnOffHandHammer()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.9f);
         
         col = handR.transform.GetChild(0).GetComponent<MeshCollider>();
         col.enabled = false;
@@ -1142,7 +1163,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     
     IEnumerator TurnOffHandSword()
     {
-        yield return new WaitForSeconds(0.9f);
+        yield return new WaitForSeconds(1f);
         
         col = handR.transform.GetChild(2).GetComponent<MeshCollider>();
         col.enabled = false;
@@ -1168,5 +1189,80 @@ public class BattlePlayer : LivingEntity, IPunObservable
         otherMagic = true;
         
         MakeMagic(magicNum, magicPosition, magicMaster);
+    }
+
+    IEnumerator Burns()
+    {
+        if (isOn) yield break;
+        
+        float total = 7f;
+        statusTime = 0f;
+        isOn = true;
+        
+        StartCoroutine(Timecheck());
+        
+        while (true)
+        {
+            if (statusTime >= total)
+            {
+                isOn = false;
+                break;
+            }
+
+            DamageMessage dm;
+            dm.damager = myindex;
+            dm.damage = 2;
+            ApplyDamage(dm);
+            
+            BattleManager.Instance.HitScreen();
+            
+            yield return new WaitForSeconds(2f);
+        }
+        
+        yield return null;
+    }
+
+    IEnumerator Toxic()
+    {
+        if (isOn) yield break;
+        
+        float total = 7f;
+        statusTime = 0f;
+        isOn = true;
+        
+        StartCoroutine(Timecheck());
+        
+        while (true)
+        {
+            if (statusTime >= total)
+            {
+                isOn = false;
+                break;
+            }
+
+            DamageMessage dm;
+            dm.damager = myindex;
+            dm.damage = 2;
+            ApplyDamage(dm);
+            
+            BattleManager.Instance.HitScreen();
+            
+            yield return new WaitForSeconds(2f);
+        }
+        
+        yield return null;
+    }
+
+    IEnumerator Timecheck()
+    {
+        while (true)
+        {
+            statusTime += Time.deltaTime;
+            
+            if (!isOn)
+                break;
+
+            yield return null;
+        }
     }
 }
