@@ -967,6 +967,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         if (!base.ApplyDamage(damageMessage)) return false;
         MyHPBar.Instance.SetHPBar(startingHealth, health);
+        BattleManager.Instance.HitScreen();
         return true;
     }
 
