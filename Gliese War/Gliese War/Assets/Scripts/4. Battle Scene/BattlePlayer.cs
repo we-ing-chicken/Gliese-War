@@ -1020,7 +1020,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             dm.damage = 10;
             ApplyDamage(dm);
 
-            ShowHitEffect(other.gameObject, other.transform.GetComponentInParent<BattlePlayer>().myMagicNum);
+            ShowHitEffect(myindex, other.transform.GetComponentInParent<BattlePlayer>().myMagicNum);
             
             photonView.RPC("SendHit", RpcTarget.Others, gameObject, other.transform.GetComponentInParent<BattlePlayer>().myMagicNum);
             
@@ -1081,11 +1081,11 @@ public class BattlePlayer : LivingEntity, IPunObservable
         BattleManager.Instance.HitScreen();
     }
 
-    public void ShowHitEffect(GameObject parent, int magicNum)
+    public void ShowHitEffect(int who, int magicNum)
     {
         GameObject hitEffect;
         hitEffect = Instantiate(BattleManager.Instance.HitEffects[magicNum]);
-        hitEffect.transform.position = parent.transform.position;
+        hitEffect.transform.position = BattleManager.Instance.players[who].transform.position;
     }
     
     public void AttackStart()
@@ -1318,8 +1318,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
     }
 
     [PunRPC]
-    void SendHit(GameObject obj, int magicNum)
+    void SendHit(int who, int magicNum)
     {
-        ShowHitEffect(obj, magicNum);
+        ShowHitEffect(who, magicNum);
     }
 }
