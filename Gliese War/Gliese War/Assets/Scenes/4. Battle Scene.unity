@@ -11766,6 +11766,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ac7de932d142f51479b871243f82f724, type: 2}
   _isFading: 1
   _isInven: 0
+  HitEffects:
+  - {fileID: 7782017463901848733, guid: 8791918a178ba7e418f2acaf1034d21e, type: 3}
+  - {fileID: 8141322796856537134, guid: 4fe7dea95c8c6ad43b496d36f7031922, type: 3}
+  - {fileID: 5861862543999682406, guid: 59630d89b1d9bde488fb18576b36d6d6, type: 3}
+  HealEffect: {fileID: 2406144625218964543, guid: 2e47a0f6b8dd61e48a9f944fbb35ed24, type: 3}
 --- !u!4 &440040328
 Transform:
   m_ObjectHideFlags: 0

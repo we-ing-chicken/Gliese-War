@@ -1019,7 +1019,9 @@ public class BattlePlayer : LivingEntity, IPunObservable
             dm.damager = other.transform.GetComponentInParent<BattlePlayer>().myindex;
             dm.damage = 10;
             ApplyDamage(dm);
-            //MyHPBar.Instance.SetHPBar(startingHealth, health);
+
+            
+            
             BattleManager.Instance.HitScreen();
         }
 
@@ -1029,11 +1031,17 @@ public class BattlePlayer : LivingEntity, IPunObservable
             dm.damager = myindex;
             dm.damage = -20;
             ApplyDamage(dm);
+        
+            GameObject effect = Instantiate(BattleManager.Instance.HealEffect);
+            effect.transform.position = other.transform.position;
+
             Destroy(other.gameObject);
-            
         }
         else if(other.CompareTag("Item"))
         {
+            GameObject effect = Instantiate(BattleManager.Instance.HealEffect);
+            effect.transform.position = new Vector3(other.transform.position.x,other.transform.position.y - 0.5f,other.transform.position.z);
+
             Destroy(other.gameObject);
         }
     }

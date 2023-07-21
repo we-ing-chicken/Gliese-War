@@ -21,6 +21,9 @@ public class BattleManager : MonoBehaviour
     public bool _isFading = true;
     public bool _isInven = false;
 
+    public GameObject[] HitEffects;
+    public GameObject HealEffect;
+
     public static BattleManager Instance
     {
         get
