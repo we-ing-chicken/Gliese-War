@@ -68,6 +68,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     [SerializeField] private GameObject[] attackEffect;
 
     [SerializeField] private GameObject shoesEffectPos;
+    [SerializeField] private GameObject whatMagicPos;
 
     public bool isAttack = false;
 
@@ -156,6 +157,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         isCool = false;
 
         EquipWeapon();
+        WhatMagicEffect();
 
         if (photonView.IsMine)
         {
@@ -214,6 +216,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
                 EquipWeapon();
 
             RefreshStat();
+            WhatMagicEffect();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
@@ -243,6 +246,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
                 EquipWeapon();
 
             RefreshStat();
+            WhatMagicEffect();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
@@ -1264,5 +1268,31 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
             yield return null;
         }
+    }
+
+    void WhatMagicEffect()
+    {
+        Debug.Log("BBBB");
+        switch (myMagicNum)
+        { 
+            case (int)Magic.Fire:
+                whatMagicPos.transform.GetChild(0).gameObject.SetActive(true);
+                whatMagicPos.transform.GetChild(1).gameObject.SetActive(false);
+                whatMagicPos.transform.GetChild(2).gameObject.SetActive(false);
+                break;
+
+            case (int)Magic.Water:
+                whatMagicPos.transform.GetChild(0).gameObject.SetActive(false);
+                whatMagicPos.transform.GetChild(1).gameObject.SetActive(true);
+                whatMagicPos.transform.GetChild(2).gameObject.SetActive(false);
+                break;
+
+            case (int)Magic.Light:
+                whatMagicPos.transform.GetChild(0).gameObject.SetActive(false);
+                whatMagicPos.transform.GetChild(1).gameObject.SetActive(false);
+                whatMagicPos.transform.GetChild(2).gameObject.SetActive(true);
+                break;
+            }
+        
     }
 }
