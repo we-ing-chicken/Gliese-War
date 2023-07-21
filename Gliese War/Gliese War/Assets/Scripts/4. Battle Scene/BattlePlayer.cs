@@ -1332,7 +1332,11 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
         for (int i = 0; i < pl.Length; ++i)
         {
-            if (pl[i].GetComponent<BattlePlayer>().photonView.IsMine) continue;
+            if (pl[i].GetComponent<BattlePlayer>().photonView.IsMine)
+            {
+                BattleManager.Instance.players[pl[i].GetComponent<BattlePlayer>().myindex] = pl[i].gameObject;
+                continue;
+            }
 
             if (pl[i].GetComponent<BattlePlayer>().photonView.ViewID == viewID)
             {
