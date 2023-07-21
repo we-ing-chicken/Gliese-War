@@ -79,7 +79,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     private Coroutine magicCor; // set magic area position coroutine 
     [SerializeField] private GameObject[] magicEffect;
     private Vector3 magicPosition;
-    private int myMagicNum = 0; // my magic num
+    public int myMagicNum = 0; // my magic num
     
     private int magicMaster;    // who's magic
     private float magicCooltime;    // how long wait for use magic again
@@ -1020,11 +1020,14 @@ public class BattlePlayer : LivingEntity, IPunObservable
             dm.damage = 10;
             ApplyDamage(dm);
 
+            ShowHitEffect(other.gameObject, other.transform.GetComponentInParent<BattlePlayer>().myMagicNum);
             
+            photonView.RPC("SendHit", RpcTarget.Others, gameObject, other.transform.GetComponentInParent<BattlePlayer>().myMagicNum);
             
             BattleManager.Instance.HitScreen();
         }
 
+        GameObject healEffect;
         if (other.CompareTag("Item") && photonView.IsMine)
         {
             DamageMessage dm;
@@ -1032,15 +1035,15 @@ public class BattlePlayer : LivingEntity, IPunObservable
             dm.damage = -20;
             ApplyDamage(dm);
         
-            GameObject effect = Instantiate(BattleManager.Instance.HealEffect);
-            effect.transform.position = other.transform.position;
+            healEffect = Instantiate(BattleManager.Instance.HealEffect);
+            healEffect.transform.position = other.transform.position;
 
             Destroy(other.gameObject);
         }
         else if(other.CompareTag("Item"))
         {
-            GameObject effect = Instantiate(BattleManager.Instance.HealEffect);
-            effect.transform.position = new Vector3(other.transform.position.x,other.transform.position.y - 0.5f,other.transform.position.z);
+            healEffect = Instantiate(BattleManager.Instance.HealEffect);
+            healEffect.transform.position = new Vector3(other.transform.position.x,other.transform.position.y - 0.5f,other.transform.position.z);
 
             Destroy(other.gameObject);
         }
@@ -1077,6 +1080,13 @@ public class BattlePlayer : LivingEntity, IPunObservable
         MyHPBar.Instance.SetHPBar(startingHealth, health);
         BattleManager.Instance.HitScreen();
     }
+
+    public void ShowHitEffect(GameObject parent, int magicNum)
+    {
+        GameObject hitEffect;
+        hitEffect = Instantiate(BattleManager.Instance.HitEffects[magicNum]);
+        hitEffect.transform.position = parent.transform.position;
+    }
     
     public void AttackStart()
     {
@@ -1090,8 +1100,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
                     break;
                 
                 case Item.WeaponType.Sword:
-                    TurnOnHandSword();
                     StartCoroutine(TurnOffHandSword());
+                    TurnOnHandSword();
                     break;
                 
                 case Item.WeaponType.Spear:
@@ -1285,7 +1295,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     void WhatMagicEffect()
     {
-        Debug.Log("BBBB");
         switch (myMagicNum)
         { 
             case (int)Magic.Fire:
@@ -1305,7 +1314,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
                 whatMagicPos.transform.GetChild(1).gameObject.SetActive(false);
                 whatMagicPos.transform.GetChild(2).gameObject.SetActive(true);
                 break;
-            }
-        
+        }
+    }
+
+    [PunRPC]
+    void SendHit(GameObject obj, int magicNum)
+    {
+        ShowHitEffect(obj, magicNum);
     }
 }
