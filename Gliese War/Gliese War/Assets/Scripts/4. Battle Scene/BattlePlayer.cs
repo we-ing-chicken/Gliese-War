@@ -53,6 +53,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     public int weaponNow = 1;
     bool ismove = false;
     bool isjump = false;
+    public bool isalive;
 
     [SerializeField] private GameObject head;
     [SerializeField] private GameObject body;
@@ -120,7 +121,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
         {
             GetComponent<AudioListener>().enabled = false;
         }
-        
+        if (!isalive) isalive = true;
+
         //charactercontroller = GetComponent<CharacterController>();
         rigidbody = GetComponent<Rigidbody>();
         moveDir = Vector3.zero;
@@ -166,11 +168,9 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     private void Update()
     {
-        if (transform.GetComponent<LivingEntity>().dead) return;
-
         //if (charactercontroller == null) return;
 
-        if (photonView.IsMine)
+        if (photonView.IsMine && isalive)
         {
             moveFB = Input.GetAxis(moveFBAxisName);
             moveLR = Input.GetAxis(moveLRAxisName);
@@ -393,7 +393,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         //}
 
         //charactercontroller.Move(moveDir * Time.deltaTime * moveSpeed);
-        animate_Run();
+        animate_Run(isalive);
     }
 
     IEnumerator SetMagicArea()
@@ -551,9 +551,9 @@ public class BattlePlayer : LivingEntity, IPunObservable
         playertransform.rotation = Quaternion.Lerp(playertransform.rotation, rotation, Time.deltaTime * 10);
     }
 
-    private void animate_Run()
+    private void animate_Run(bool ia)
     {
-            animator.SetBool("isRun", ismove);
+            if(ia) animator.SetBool("isRun", ismove);
     }
 
     private void AttackAnimation()
@@ -956,15 +956,27 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         base.Die();
 
+        SetParameter();
+
         StartCoroutine("die");
 
-        BattleManager.Instance.BM_RemoveList(myindex);
-        SceneManager.LoadScene(1);
+        //BattleManager.Instance.BM_RemoveList(myindex);
+        
+    }
+    public void SetParameter()
+    {
+        isalive = false;
+        animator.SetBool("isRun", false);
+        moveDir = Vector3.zero;
+        moveSpeed = 0;
+        isAttack = true;
+        ismove = false;
     }
     IEnumerator die()
     {
-        animator.SetTrigger("Dying");
-        yield return new WaitForSeconds(0.3f);
+        animator.SetTrigger("dying");
+        yield return new WaitForSeconds(2.0f);
+        SceneManager.LoadScene(1);
     }
 
     void OnCollisionEnter(Collision collision)

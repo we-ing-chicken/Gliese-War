@@ -1288,6 +1288,7 @@ MonoBehaviour:
   ignoreGravity: 0
   items: []
   weaponNow: 1
+  isalive: 0
   head: {fileID: 3724357446949001300}
   body: {fileID: 1979615428988282180}
   footL: {fileID: 2857770910382995442}
