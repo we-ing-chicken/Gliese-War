@@ -170,6 +170,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
             virtualCamera.LookAt = transform;
 
         }
+        
+        photonView.RPC("SendIndex", RpcTarget.All, photonView.ViewID, myindex);
     }
 
     private void Update()
@@ -1321,5 +1323,22 @@ public class BattlePlayer : LivingEntity, IPunObservable
     void SendHit(int who, int magicNum)
     {
         ShowHitEffect(who, magicNum);
+    }
+
+    [PunRPC]
+    void SendIndex(int viewID, int index)
+    {
+        GameObject[] pl = GameObject.FindGameObjectsWithTag("Player");
+
+        for (int i = 0; i < pl.Length; ++i)
+        {
+            if (pl[i].GetComponent<BattlePlayer>().photonView.IsMine) continue;
+
+            if (pl[i].GetComponent<BattlePlayer>().photonView.ViewID == viewID)
+            {
+                pl[i].GetComponent<BattlePlayer>().myindex = index;
+                BattleManager.Instance.players[index] = pl[i].gameObject;
+            }
+        }
     }
 }

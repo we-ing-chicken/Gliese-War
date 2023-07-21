@@ -91,14 +91,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks //Ŭ���� ���
     //TODO - �÷��̾� �ε��� �˻��ؼ� spawnpoints �ٸ��� �Ҵ�?
     public override void OnJoinedRoom()
     {
-        Debug.Log(p_Num);
-
         //cscamera.gameObject.SetActive(true);
         GameObject temp = PhotonNetwork.Instantiate("player", spawnpoints[PhotonNetwork.CurrentRoom.Players.Count-1].transform.position, Quaternion.identity);
         //pv.RPC("numchange", RpcTarget.All);
-        temp.GetComponent<BattlePlayer>().myindex = PhotonNetwork.CurrentRoom.Players.Count-1;
-        Debug.Log(p_Num);
-        BattleManager.Instance.players[p_Num] = temp;
         //photonView.RPC("numchange", RpcTarget.All);
     }
 
