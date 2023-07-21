@@ -5,11 +5,13 @@ using UnityEngine;
 public class Magnetic : MonoBehaviour
 {
     private float time;
+    private float originY;
     
     // Start is called before the first frame update
     void Start()
     {
         time = 0f;
+        originY = transform.localScale.y;
     }
 
     // Update is called once per frame
@@ -27,7 +29,8 @@ public class Magnetic : MonoBehaviour
         // time * 0.2f == 20초
 
         transform.localScale = Vector3.Lerp(transform.localScale, Vector3.zero, Time.deltaTime * 0.0125f);
-
+        transform.localScale = new Vector3(transform.localScale.x, originY, transform.localScale.z);
+        
         if (transform.localScale.x < 6f)
             Debug.Log(time);
         else
