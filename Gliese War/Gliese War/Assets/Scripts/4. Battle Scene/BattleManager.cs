@@ -37,6 +37,16 @@ public class BattleManager : MonoBehaviour
     public GameObject[] characterUIs;
     public GameObject characterCam;
 
+    public GameObject helmetEquip;
+    public GameObject armorEquip;
+    public GameObject shoeEquip;
+    public GameObject weapon1Equip;
+    public GameObject weapon1Magic;
+    public GameObject weapon2Equip;
+    public GameObject weapon2Magic;
+
+    public Sprite[] magics;
+
     public static BattleManager Instance
     {
         get

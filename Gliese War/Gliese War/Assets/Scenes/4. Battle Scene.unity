@@ -1181,7 +1181,6 @@ GameObject:
   - component: {fileID: 168738695}
   - component: {fileID: 168738698}
   - component: {fileID: 168738697}
-  - component: {fileID: 168738696}
   m_Layer: 5
   m_Name: Shoes
   m_TagString: Shoes
@@ -1209,20 +1208,6 @@ RectTransform:
   m_AnchoredPosition: {x: -213, y: -307.9}
   m_SizeDelta: {x: 104, y: 96}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &168738696
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 168738694}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 382aafaf72f1de947b70fe3332a8e393, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemImage: {fileID: 0}
-  magicImage: {fileID: 0}
 --- !u!114 &168738697
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1236,8 +1221,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -6687,7 +6672,6 @@ GameObject:
   - component: {fileID: 382475862}
   - component: {fileID: 382475865}
   - component: {fileID: 382475864}
-  - component: {fileID: 382475863}
   m_Layer: 5
   m_Name: Weapon1
   m_TagString: Weapon
@@ -6716,20 +6700,6 @@ RectTransform:
   m_AnchoredPosition: {x: 212, y: 81}
   m_SizeDelta: {x: 104, y: 96}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &382475863
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 382475861}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 382aafaf72f1de947b70fe3332a8e393, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemImage: {fileID: 0}
-  magicImage: {fileID: 0}
 --- !u!114 &382475864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6743,8 +6713,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -11818,6 +11788,17 @@ MonoBehaviour:
   - {fileID: 8980038520097037082, guid: 2c236d4f45a2eff47891c770256afb63, type: 3}
   - {fileID: 3049878089078284456, guid: 8252815073cfa0240a4264f49db81ac5, type: 3}
   characterCam: {fileID: 1682606309}
+  helmetEquip: {fileID: 1845390578}
+  armorEquip: {fileID: 734214609}
+  shoeEquip: {fileID: 168738694}
+  weapon1Equip: {fileID: 382475861}
+  weapon1Magic: {fileID: 139164242}
+  weapon2Equip: {fileID: 980730236}
+  weapon2Magic: {fileID: 1173992650}
+  magics:
+  - {fileID: 21300000, guid: afc3596eb54b6424d9245b6c502f8f73, type: 3}
+  - {fileID: 21300000, guid: 100262d2922d0764f8b069b768f7e03e, type: 3}
+  - {fileID: 21300000, guid: ed3ffb3d815e9014b89b81aee3e1dd4b, type: 3}
 --- !u!4 &440040328
 Transform:
   m_ObjectHideFlags: 0
@@ -18859,7 +18840,6 @@ GameObject:
   - component: {fileID: 734214610}
   - component: {fileID: 734214613}
   - component: {fileID: 734214612}
-  - component: {fileID: 734214611}
   m_Layer: 5
   m_Name: Armor
   m_TagString: Armor
@@ -18887,20 +18867,6 @@ RectTransform:
   m_AnchoredPosition: {x: -213, y: -55}
   m_SizeDelta: {x: 104, y: 96}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &734214611
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 734214609}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 382aafaf72f1de947b70fe3332a8e393, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemImage: {fileID: 0}
-  magicImage: {fileID: 0}
 --- !u!114 &734214612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18914,8 +18880,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -29797,7 +29763,6 @@ GameObject:
   - component: {fileID: 980730237}
   - component: {fileID: 980730240}
   - component: {fileID: 980730239}
-  - component: {fileID: 980730238}
   m_Layer: 5
   m_Name: Weapon2
   m_TagString: Weapon
@@ -29826,20 +29791,6 @@ RectTransform:
   m_AnchoredPosition: {x: 212, y: -175.5}
   m_SizeDelta: {x: 104, y: 96}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &980730238
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 980730236}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 382aafaf72f1de947b70fe3332a8e393, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemImage: {fileID: 0}
-  magicImage: {fileID: 0}
 --- !u!114 &980730239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29853,8 +29804,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -40992,7 +40943,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bbe74d65a7e2cc844a5a2c5c92d43bb2, type: 2}
   - {fileID: 11400000, guid: 15d48c5f4ed6e6648ab8bae67093309b, type: 2}
   - {fileID: 11400000, guid: 4d9ba79403d7d2d428a36eda294723e4, type: 2}
-  sword: []
+  sword:
+  - {fileID: 11400000, guid: 37030e55f953d1648adc88e3dd24bdf0, type: 2}
+  - {fileID: 11400000, guid: 6281ae3d67e42bd43928ac56f1ef8472, type: 2}
+  - {fileID: 11400000, guid: 5783198b11aa97b45b132222943aff7b, type: 2}
+  - {fileID: 11400000, guid: 3bf9d77f2b4dcca46b25c0fe15db822d, type: 2}
+  - {fileID: 11400000, guid: 09446875bde96ac48b3be169468651ec, type: 2}
   spear:
   - {fileID: 11400000, guid: 0d4756bad4ec26f48b84946a04acc3ea, type: 2}
   - {fileID: 11400000, guid: fb5c4ef8494d5db4096dd4873b8eed51, type: 2}
@@ -54514,7 +54470,6 @@ GameObject:
   - component: {fileID: 1845390579}
   - component: {fileID: 1845390582}
   - component: {fileID: 1845390581}
-  - component: {fileID: 1845390580}
   m_Layer: 5
   m_Name: Helmet
   m_TagString: Helmet
@@ -54542,20 +54497,6 @@ RectTransform:
   m_AnchoredPosition: {x: -213, y: 200}
   m_SizeDelta: {x: 104, y: 96}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1845390580
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1845390578}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 382aafaf72f1de947b70fe3332a8e393, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemImage: {fileID: 0}
-  magicImage: {fileID: 0}
 --- !u!114 &1845390581
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54569,8 +54510,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:

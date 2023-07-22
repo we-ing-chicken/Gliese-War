@@ -7,12 +7,12 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.AI;
 using UnityEngine.Animations;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering.UI;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
 
 public class BattlePlayer : LivingEntity, IPunObservable
 {
@@ -149,6 +149,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
 
         SetBattleItemEquip();
+        SetEquipItemImage();
 
         RefreshStat();
 
@@ -191,106 +192,108 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
         }
 
-
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if(photonView.IsMine)
         {
-            if (weapon1 == null) return;
-            
-            weaponNow = 1;
-
-            switch (weapon1.magic)
+            if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                case Magic.Fire:
-                    myMagicNum = 0;
-                    break;
-                
-                case Magic.Water:
-                    myMagicNum = 1;
-                    break;
-                
-                case Magic.Light:
-                    myMagicNum = 2;
-                    break;
-                
-                case Magic.Nothing:
-                    break;
+                if (weapon1 == null) return;
+
+                weaponNow = 1;
+
+                switch (weapon1.magic)
+                {
+                    case Magic.Fire:
+                        myMagicNum = 0;
+                        break;
+
+                    case Magic.Water:
+                        myMagicNum = 1;
+                        break;
+
+                    case Magic.Light:
+                        myMagicNum = 2;
+                        break;
+
+                    case Magic.Nothing:
+                        break;
+                }
+
+                if (weapon1 != null)
+                    EquipWeapon();
+
+                RefreshStat();
+                WhatMagicEffect();
             }
-
-            if (weapon1 != null)
-                EquipWeapon();
-
-            RefreshStat();
-            WhatMagicEffect();
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            if (weapon2 == null) return;
-            
-            weaponNow = 2;
-            
-            switch (weapon2.magic)
+            else if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                case Magic.Fire:
-                    myMagicNum = 0;
-                    break;
-                
-                case Magic.Water:
-                    myMagicNum = 1;
-                    break;
-                
-                case Magic.Light:
-                    myMagicNum = 2;
-                    break;
-                
-                case Magic.Nothing:
-                    break;
-            }
-            
-            if (weapon2 != null)
-                EquipWeapon();
+                if (weapon2 == null) return;
 
-            RefreshStat();
-            WhatMagicEffect();
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            weapon1.item = BattleManager.Instance.sword[1];
-            EquipWeapon();
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            weapon1.item = BattleManager.Instance.spear[1];
-            EquipWeapon();
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha6))
-        {
-            weapon1.item = BattleManager.Instance.hammer[1];
-            EquipWeapon();
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha7))
-        {
-            myMagicNum = 0;
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha8))
-        {
-            myMagicNum = 1;
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha9))
-        {
-            myMagicNum = 2;
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha0))
-        {
-            Debug.Log(base.health);
-            GetDamage(5);
-        }
-        else if (Input.GetKeyDown(KeyCode.P))
-        {
-            StartCoroutine(Burns());
-        }
-        else if (Input.GetKeyDown(KeyCode.O))
-        {
-            StartCoroutine(Toxic());
+                weaponNow = 2;
+
+                switch (weapon2.magic)
+                {
+                    case Magic.Fire:
+                        myMagicNum = 0;
+                        break;
+
+                    case Magic.Water:
+                        myMagicNum = 1;
+                        break;
+
+                    case Magic.Light:
+                        myMagicNum = 2;
+                        break;
+
+                    case Magic.Nothing:
+                        break;
+                }
+
+                if (weapon2 != null)
+                    EquipWeapon();
+
+                RefreshStat();
+                WhatMagicEffect();
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha4))
+            {
+                weapon1.item = BattleManager.Instance.sword[1];
+                EquipWeapon();
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha5))
+            {
+                weapon1.item = BattleManager.Instance.spear[1];
+                EquipWeapon();
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha6))
+            {
+                weapon1.item = BattleManager.Instance.hammer[1];
+                EquipWeapon();
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha7))
+            {
+                myMagicNum = 0;
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha8))
+            {
+                myMagicNum = 1;
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha9))
+            {
+                myMagicNum = 2;
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha0))
+            {
+                Debug.Log(base.health);
+                GetDamage(5);
+            }
+            else if (Input.GetKeyDown(KeyCode.P))
+            {
+                StartCoroutine(Burns());
+            }
+            else if (Input.GetKeyDown(KeyCode.O))
+            {
+                StartCoroutine(Toxic());
+            }
         }
 
         if (photonView.IsMine)
@@ -940,20 +943,86 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     void SetBattleItemEquip()
     {
-        //Debug.Log(weapon1.item + ", " + weapon1.magic + ", " + weapon1.stat.attackPower);
-        if(weapon1 == null) 
+        if (GameManager.Instance == null)
         {
-            weapon1 = new RealItem();
-            weapon1.item = BattleManager.Instance.sword[1];
-            weapon1.magic = Magic.Fire;
+            //Debug.Log(weapon1.item + ", " + weapon1.magic + ", " + weapon1.stat.attackPower);
+            if(weapon1 == null) 
+            {
+                weapon1 = new RealItem();
+                weapon1.item = BattleManager.Instance.sword[1];
+                weapon1.magic = Magic.Fire;
+            }
+
+            if(weapon2 == null)
+            {
+                weapon2 = new RealItem();
+                weapon2.item = BattleManager.Instance.spear[1];
+                weapon2.magic = Magic.Water;
+            }
+        }
+        else
+        {
+            if (photonView.IsMine)
+            {
+                helmet = GameManager.Instance.helmet;
+                armor = GameManager.Instance.armor;
+                shoe = GameManager.Instance.shoe;
+                weapon1 = GameManager.Instance.weapon1;
+                weapon2 = GameManager.Instance.weapon2;
+            }
+        }
+    }
+
+    void SetEquipItemImage()
+    {
+        if(BattleManager.Instance.helmetEquip != null) BattleManager.Instance.helmetEquip.GetComponent<Image>().sprite = helmet.item.itemImage;
+        if(BattleManager.Instance.armorEquip != null) BattleManager.Instance.armorEquip.GetComponent<Image>().sprite = armor.item.itemImage;
+        if(BattleManager.Instance.shoeEquip != null) BattleManager.Instance.shoeEquip.GetComponent<Image>().sprite = shoe.item.itemImage;
+
+        if (BattleManager.Instance.weapon1Equip != null)
+        {
+            BattleManager.Instance.weapon1Equip.GetComponent<Image>().sprite = weapon1.item.itemImage;
+            BattleManager.Instance.weapon1Magic.GetComponent<Image>().sprite = GetMagicImage(weapon1.magic);
+            if (weapon1.magic == Magic.Nothing)
+            {
+                Color color = BattleManager.Instance.weapon1Magic.GetComponent<Image>().color = new Color();
+                color.a = 0;
+                BattleManager.Instance.weapon1Magic.GetComponent<Image>().color = color;
+            }
         }
 
-        if(weapon2 == null)
+        if (BattleManager.Instance.weapon2Equip != null)
         {
-            weapon2 = new RealItem();
-            weapon2.item = BattleManager.Instance.sword[1];
-            weapon2.magic = Magic.Water;
+            BattleManager.Instance.weapon2Equip.GetComponent<Image>().sprite = weapon2.item.itemImage;
+            BattleManager.Instance.weapon2Magic.GetComponent<Image>().sprite = GetMagicImage(weapon2.magic);
+            if (weapon2.magic == Magic.Nothing)
+            {
+                Color color = BattleManager.Instance.weapon2Magic.GetComponent<Image>().color = new Color();
+                color.a = 0;
+                BattleManager.Instance.weapon2Magic.GetComponent<Image>().color = color;
+            }
         }
+    }
+
+    Sprite GetMagicImage(Magic magic)
+    {
+        switch (magic)
+        {
+            case Magic.Fire:
+                return BattleManager.Instance.magics[0];
+            
+            case Magic.Water:
+                return BattleManager.Instance.magics[1];
+            
+            case Magic.Light:
+                return BattleManager.Instance.magics[2];
+            
+            case Magic.Nothing:
+                return null;
+            
+        }
+
+        return null;
     }
 
     protected override void OnEnable()
