@@ -33,6 +33,10 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private Image weapon1Image;
     [SerializeField] private Image weapon2Image;
 
+    public GameObject characterUIParent;
+    public GameObject[] characterUIs;
+    public GameObject characterCam;
+
     public static BattleManager Instance
     {
         get
@@ -70,7 +74,7 @@ public class BattleManager : MonoBehaviour
             if (!pauseCanvas.gameObject.activeSelf)
             {
                 SwitchCanvasActive(invenCanvas);
-                //SwitchGameObjectActive(characterCam);
+                SwitchGameObjectActive(characterCam);
             }
 
             if (_isInven)
@@ -235,5 +239,23 @@ public class BattleManager : MonoBehaviour
             }
         }
         
+    }
+
+    public void MakeUICharacter()
+    {
+        GameObject temp;
+        
+        if (GameManager.Instance == null)
+        {
+            temp = Instantiate(characterUIs[2]);
+            temp.transform.position = characterUIParent.transform.position;
+        }
+        else
+        {
+            temp = Instantiate(GameManager.Instance.characters[GameManager.Instance.charNum]);
+            temp.transform.position = characterUIParent.transform.position;
+        }
+        
+        temp.transform.SetParent(characterUIParent.transform);
     }
 }

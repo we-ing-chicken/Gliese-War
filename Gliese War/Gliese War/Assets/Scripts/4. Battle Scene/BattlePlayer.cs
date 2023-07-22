@@ -159,6 +159,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
         EquipWeapon();
         WhatMagicEffect();
 
+        BattleManager.Instance.MakeUICharacter();
+
         if (photonView.IsMine)
         {
             virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
