@@ -122,15 +122,15 @@ public class Inventory : MonoBehaviour
         switch (item.itemCategory)
         {
             case Item.ItemCategory.Helmet:
-                AcquireItemWithMagic(helmet[(int)item.itemRank + 1]);
+                AcquireItem(helmet[(int)item.itemRank + 1]);
                 break;
             
             case Item.ItemCategory.Armor:
-                AcquireItemWithMagic(armor[(int)item.itemRank + 1]);
+                AcquireItem(armor[(int)item.itemRank + 1]);
                 break;
             
             case Item.ItemCategory.Shoes:
-                AcquireItemWithMagic(shoes[(int)item.itemRank + 1]);
+                AcquireItem(shoes[(int)item.itemRank + 1]);
                 break;
 
             case Item.ItemCategory.Weapon:
