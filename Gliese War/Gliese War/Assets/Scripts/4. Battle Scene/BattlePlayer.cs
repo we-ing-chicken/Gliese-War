@@ -817,7 +817,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
                     break;
             }
         }
-
+    
+        BattleManager.Instance.SetEquipWeaponImage();
     }
 
     private void EquipHammer()

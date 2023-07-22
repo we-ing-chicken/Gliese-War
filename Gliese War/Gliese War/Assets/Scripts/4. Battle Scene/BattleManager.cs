@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BattleManager : MonoBehaviour
 {
@@ -23,6 +24,14 @@ public class BattleManager : MonoBehaviour
 
     public GameObject[] HitEffects;
     public GameObject HealEffect;
+    
+    [SerializeField] private Sprite[] weaponImage;
+
+    [SerializeField] private Image weaponNum1Image;
+    [SerializeField] private Image weaponNum2Image;
+    
+    [SerializeField] private Image weapon1Image;
+    [SerializeField] private Image weapon2Image;
 
     public static BattleManager Instance
     {
@@ -122,5 +131,109 @@ public class BattleManager : MonoBehaviour
         }
 
         yield return null;
+    }
+    
+    public void SetEquipWeaponImage()
+    {
+        if (!BattlePlayer.instance.photonView.IsMine) return;
+        
+        if (BattlePlayer.instance.weapon1 == null)
+        {
+            Color color = weapon1Image.color;
+            color.a = 0f;
+            weapon1Image.color = color;
+            
+            color = weaponNum1Image.color;
+            color.a = 0.5f;
+            weaponNum1Image.color = color;
+        }
+        else
+        {
+            switch (BattlePlayer.instance.weapon1.item.weaponType)
+            {
+                case Item.WeaponType.Hammer:
+                    weapon1Image.sprite = weaponImage[0];
+                    break;
+                
+                case Item.WeaponType.Spear:
+                    weapon1Image.sprite = weaponImage[1];
+                    break;
+                
+                case Item.WeaponType.Sword:
+                    weapon1Image.sprite = weaponImage[2];
+                    break;
+            }
+            
+            if (BattlePlayer.instance.weaponNow == 1)
+            {
+                Color color = weapon1Image.color;
+                color.a = 1f;
+                weapon1Image.color = color;
+
+                color = weaponNum1Image.color;
+                color.a = 1f;
+                weaponNum1Image.color = color;
+            }
+            else
+            {
+                Color color = weapon1Image.color;
+                color.a = 0.5f;
+                weapon1Image.color = color;
+
+                color = weaponNum1Image.color;
+                color.a = 0.5f;
+                weaponNum1Image.color = color;
+            }
+        }
+
+        if (BattlePlayer.instance.weapon2 == null)
+        {
+            Color color = weapon2Image.color;
+            color.a = 0f;
+            weapon2Image.color = color;
+            
+            color = weaponNum2Image.color;
+            color.a = 0.5f;
+            weaponNum2Image.color = color;
+        }
+        else
+        {
+            switch (BattlePlayer.instance.weapon2.item.weaponType)
+            {
+                case Item.WeaponType.Hammer:
+                    weapon2Image.sprite = weaponImage[0];
+                    break;
+                
+                case Item.WeaponType.Spear:
+                    weapon2Image.sprite = weaponImage[1];
+                    break;
+                
+                case Item.WeaponType.Sword:
+                    weapon2Image.sprite = weaponImage[2];
+                    break;
+            }
+            
+            if (BattlePlayer.instance.weaponNow == 2)
+            {
+                Color color = weapon2Image.color;
+                color.a = 1f;
+                weapon2Image.color = color;
+            
+                color = weaponNum2Image.color;
+                color.a = 1f;
+                weaponNum2Image.color = color;
+            }
+            else
+            {
+                Color color = weapon2Image.color;
+                color.a = 0.5f;
+                weapon2Image.color = color;
+            
+                color = weaponNum2Image.color;
+                color.a = 0.5f;
+                weaponNum2Image.color = color;
+            }
+        }
+        
     }
 }

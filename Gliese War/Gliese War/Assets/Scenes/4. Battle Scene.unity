@@ -11771,6 +11771,14 @@ MonoBehaviour:
   - {fileID: 8141322796856537134, guid: 4fe7dea95c8c6ad43b496d36f7031922, type: 3}
   - {fileID: 5861862543999682406, guid: 59630d89b1d9bde488fb18576b36d6d6, type: 3}
   HealEffect: {fileID: 2406144625218964543, guid: 2e47a0f6b8dd61e48a9f944fbb35ed24, type: 3}
+  weaponImage:
+  - {fileID: 21300000, guid: 81d725d852bb5454e8ce9690021da5a7, type: 3}
+  - {fileID: 21300000, guid: dac187df5776e1c4fb49398a75ce02b1, type: 3}
+  - {fileID: 21300000, guid: 96b4b0b0955f61143912f01bee4ab44f, type: 3}
+  weaponNum1Image: {fileID: 1484140543}
+  weaponNum2Image: {fileID: 500998933}
+  weapon1Image: {fileID: 1854739949}
+  weapon2Image: {fileID: 59990791}
 --- !u!4 &440040328
 Transform:
   m_ObjectHideFlags: 0
