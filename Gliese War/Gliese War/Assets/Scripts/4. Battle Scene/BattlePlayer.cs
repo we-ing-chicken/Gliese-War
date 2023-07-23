@@ -167,7 +167,11 @@ public class BattlePlayer : LivingEntity, IPunObservable
         isCool = false;
 
         EquipWeapon();
-        WhatMagicEffect(myindex, (int)GetMagic());
+        if (photonView.IsMine)
+        {
+            WhatMagicEffect(myindex, (int)GetMagic());
+            
+        }
     }
 
     private void Update()
@@ -184,12 +188,13 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
         
 
-        if (NetworkManager.Instance.sendOK && photonView.ViewID != 0 && PhotonNetwork.CurrentRoom.Players.Count == 2)
+        if (NetworkManager.Instance.sendOK && photonView.ViewID != 0 && PhotonNetwork.CurrentRoom.Players.Count == 1)
         {
             NetworkManager.Instance.sendOK = false;
             photonView.RPC("SendIndex", RpcTarget.All, photonView.ViewID, myindex);
             photonView.RPC("StartGame", RpcTarget.All);
             photonView.RPC("ChangeWeapon", RpcTarget.Others, myindex, (int)weapon1.magic);
+            WhatMagicEffect(myindex, (int)GetMagic());
         }
 
         if (isWait || !isStart) return;
@@ -1093,7 +1098,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
         else if (weaponNow == 2)
         {
-            return weapon1.magic;
+            return weapon2.magic;
         }
 
         return Magic.Nothing;
