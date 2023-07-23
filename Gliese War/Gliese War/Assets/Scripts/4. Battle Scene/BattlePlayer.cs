@@ -170,7 +170,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
         if (photonView.IsMine)
         {
             WhatMagicEffect(myindex, (int)GetMagic());
-            
         }
     }
 
@@ -188,7 +187,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
         
 
-        if (NetworkManager.Instance.sendOK && photonView.ViewID != 0 && PhotonNetwork.CurrentRoom.Players.Count == 1)
+        if (NetworkManager.Instance.sendOK && photonView.ViewID != 0 && PhotonNetwork.CurrentRoom.Players.Count == 2)
         {
             NetworkManager.Instance.sendOK = false;
             photonView.RPC("SendIndex", RpcTarget.All, photonView.ViewID, myindex);
@@ -244,7 +243,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
                 RefreshStat();
                 WhatMagicEffect(myindex, (int)GetMagic());
-                photonView.RPC("ChangeWeapon", RpcTarget.Others, myindex, (int)weapon1.magic);
+                photonView.RPC("ChangeWeapon", RpcTarget.Others, myindex, (int)weapon1.item.weaponType, (int)weapon1.magic);
             }
             else if (Input.GetKeyDown(KeyCode.Alpha2))
             {
@@ -275,7 +274,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
                 RefreshStat();
                 WhatMagicEffect(myindex, (int)GetMagic());
-                photonView.RPC("ChangeWeapon", RpcTarget.Others, myindex, (int)weapon2.magic);
+                photonView.RPC("ChangeWeapon", RpcTarget.Others, myindex,(int)weapon2.item.weaponType, (int)weapon2.magic);
             }
             else if (Input.GetKeyDown(KeyCode.Alpha4))
             {
@@ -1090,6 +1089,20 @@ public class BattlePlayer : LivingEntity, IPunObservable
         return null;
     }
 
+    Item.WeaponType GetWeaponNum()
+    {
+        if (weaponNow == 1)
+        {
+            return weapon1.item.weaponType;
+        }
+        else if (weaponNow == 2)
+        {
+            return weapon2.item.weaponType;
+        }
+
+        return Item.WeaponType.Nothing;
+    }
+
     Magic GetMagic()
     {
         if (weaponNow == 1)
@@ -1447,6 +1460,50 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
     }
 
+    void WhatWeapon(int who, int weaopnNum)
+    {
+        if (BattleManager.Instance.players[who] == null) return;
+        
+        switch (weaopnNum)
+        {
+            case (int)Item.WeaponType.Hammer:
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(0)
+                    .gameObject.SetActive(true);
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(1)
+                    .gameObject.SetActive(false);
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(2)
+                    .gameObject.SetActive(false);
+                break;
+
+            case (int)Item.WeaponType.Spear:
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(0)
+                    .gameObject.SetActive(false);
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(1)
+                    .gameObject.SetActive(true);
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(2)
+                    .gameObject.SetActive(false);
+                break;
+
+            case (int)Item.WeaponType.Sword:
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(0)
+                    .gameObject.SetActive(false);
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(1)
+                    .gameObject.SetActive(false);
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(2)
+                    .gameObject.SetActive(true);
+                break;
+
+            default:
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().whatMagicPos.transform.GetChild(0)
+                    .gameObject.SetActive(false);
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().whatMagicPos.transform.GetChild(1)
+                    .gameObject.SetActive(false);
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().whatMagicPos.transform.GetChild(2)
+                    .gameObject.SetActive(false);
+                break;
+        }
+    }
+
     void WhatMagicEffect(int who, int magicNum)
     {
         if (BattleManager.Instance.players[who] == null) return;
@@ -1526,8 +1583,9 @@ public class BattlePlayer : LivingEntity, IPunObservable
     }
 
     [PunRPC]
-    void ChangeWeapon(int who, int magicNum)
+    void ChangeWeapon(int who, int weaponNum, int magicNum)
     {
+        WhatWeapon(who, weaponNum);
         WhatMagicEffect(who, magicNum);
     }
 }
