@@ -150,33 +150,40 @@ public class BattleManager : MonoBehaviour
     {
         while (true)
         {
-            if (dollyTrack.GetComponent<CinemachineSmoothPath>().m_Waypoints[3].position + dollyTrack.transform.position == loadingCamera.transform.position)
+            if (dollyTrack.GetComponent<CinemachineSmoothPath>().m_Waypoints[3].position +
+                dollyTrack.transform.position == loadingCamera.transform.position)
             {
                 Destroy(temp.gameObject);
-                
+
                 loadingVCam.SetActive(false);
                 loadingCamera.SetActive(false);
-                
+
                 mainVCam.SetActive(true);
                 mainCamera.SetActive(true);
 
-                SwitchCanvasActive(playCanvas);
-                
-                if (BattlePlayer.instance.photonView.IsMine)
+                playCanvas.gameObject.SetActive(true);
+
+                for (int i = 0; i < players.Length; ++i)
                 {
-                    BattlePlayer.instance.virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
+                    if (players[i] == null) continue;
 
-                    CServercamTest sct = Camera.main.GetComponent<CServercamTest>();
+                    if (players[i].GetComponent<BattlePlayer>().photonView.IsMine)
+                    {
+                        players[i].GetComponent<BattlePlayer>().virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
 
-                    sct.bp = GetComponent<BattlePlayer>();
-                    BattlePlayer.instance.virtualCamera.Follow = BattlePlayer.instance.transform;
-                    BattlePlayer.instance.virtualCamera.LookAt = BattlePlayer.instance.transform;
-                    
-                    MakeUICharacter();
+                        CServercamTest sct = Camera.main.GetComponent<CServercamTest>();
 
-                    BattlePlayer.instance.isStart = true;
+                        sct.bp = GetComponent<BattlePlayer>();
+                        players[i].GetComponent<BattlePlayer>().virtualCamera.Follow = players[i].GetComponent<BattlePlayer>().transform;
+                        players[i].GetComponent<BattlePlayer>().virtualCamera.LookAt = players[i].GetComponent<BattlePlayer>().transform;
+
+                        MakeUICharacter();
+
+                        players[i].GetComponent<BattlePlayer>().isStart = true;
+                    }
                 }
-                
+
+
                 water.SetActive(false);
                 
                 Magnetic.instance.magneticStart();
