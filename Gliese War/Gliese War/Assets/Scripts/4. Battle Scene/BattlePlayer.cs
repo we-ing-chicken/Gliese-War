@@ -192,7 +192,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             NetworkManager.Instance.sendOK = false;
             photonView.RPC("SendIndex", RpcTarget.All, photonView.ViewID, myindex);
             photonView.RPC("StartGame", RpcTarget.All);
-            photonView.RPC("ChangeWeapon", RpcTarget.Others, myindex, (int)weapon1.magic);
+            photonView.RPC("ChangeWeapon", RpcTarget.Others, myindex, (int)GetWeaponNum(), (int)weapon1.magic);
             WhatMagicEffect(myindex, (int)GetMagic());
         }
 
