@@ -352,6 +352,8 @@ public class BattleManager : MonoBehaviour
 
     public void MakeUICharacter()
     {
+        if (!BattlePlayer.instance.photonView.IsMine) return;
+        
         GameObject temp;
         
         if (GameManager.Instance == null)
