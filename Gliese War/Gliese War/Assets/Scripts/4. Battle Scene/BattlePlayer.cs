@@ -111,10 +111,20 @@ public class BattlePlayer : LivingEntity, IPunObservable
     private float statusTime;
     private bool isOn = false;
 
-    [SerializeField] private CinemachineVirtualCamera virtualCamera;
+    public bool isUI = false;
+    public bool isWait = false;
+    public bool isStart = false;
+
+    public CinemachineVirtualCamera virtualCamera;
 
     private void Start()
     {
+        if (isUI)
+        {
+            GetComponent<AudioListener>().enabled = false;
+            return;
+        }
+        
         Debug.Log(photonView.IsMine);
 
         instance = this;
@@ -159,26 +169,32 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
         EquipWeapon();
         WhatMagicEffect();
-
-        BattleManager.Instance.MakeUICharacter();
-
-        if (photonView.IsMine)
-        {
-            virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
-
-            CServercamTest sct = Camera.main.GetComponent<CServercamTest>();
-
-            sct.bp = GetComponent<BattlePlayer>();
-            virtualCamera.Follow = transform;
-            virtualCamera.LookAt = transform;
-
-        }
-        
-        photonView.RPC("SendIndex", RpcTarget.All, photonView.ViewID, myindex);
     }
 
     private void Update()
     {
+        if (isUI) return;
+        
+        if(isWait)
+        {
+            if (!BattleManager.Instance.gameWait && NetworkManager.Instance.connect)
+            {
+                BattleManager.Instance.gameWait = true;
+                NetworkManager.Instance.JoinRoom();
+            }
+        }
+        
+
+        if (NetworkManager.Instance.sendOK && photonView.ViewID != 0 && PhotonNetwork.CurrentRoom.Players.Count == 1)
+        {
+            NetworkManager.Instance.sendOK = false;
+            photonView.RPC("SendIndex", RpcTarget.All, photonView.ViewID, myindex);
+            photonView.RPC("StartGame", RpcTarget.All);
+        }
+
+        if (isWait || !isStart) return;
+        
+        
         //if (charactercontroller == null) return;
 
         if (photonView.IsMine && isalive)
@@ -385,7 +401,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
             //Jump();
 
         }
-        if (photonView.IsMine)
+        
+        if (photonView.IsMine && BattleManager.Instance.mainCamera.gameObject.activeSelf)
         {
             //remoteDir = new Vector3(moveLR, 0, moveFB).normalized;
             //player_lookTarget();
@@ -1013,6 +1030,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     void SetEquipItemImage()
     {
         if (GameManager.Instance == null) return;
+        if (isWait || isUI) return;
         
         if(BattleManager.Instance.helmetEquip != null) BattleManager.Instance.helmetEquip.GetComponent<Image>().sprite = helmet.item.itemImage;
         if(BattleManager.Instance.armorEquip != null) BattleManager.Instance.armorEquip.GetComponent<Image>().sprite = armor.item.itemImage;
@@ -1456,5 +1474,11 @@ public class BattlePlayer : LivingEntity, IPunObservable
                 BattleManager.Instance.players[index] = pl[i].gameObject;
             }
         }
+    }
+
+    [PunRPC]
+    void StartGame()
+    {
+        BattleManager.Instance.GameStart();
     }
 }

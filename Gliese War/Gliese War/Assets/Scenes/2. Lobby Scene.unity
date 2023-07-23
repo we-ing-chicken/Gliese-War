@@ -11520,10 +11520,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 753fccbbdbef55542a9f3d9334ad77a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characters:
+  farmingCharacters:
   - {fileID: 405712581622059825, guid: 69261c6960d959c41a7b72761c7c1315, type: 3}
   - {fileID: 8980038520097037082, guid: 2c236d4f45a2eff47891c770256afb63, type: 3}
   - {fileID: 3049878089078284456, guid: 8252815073cfa0240a4264f49db81ac5, type: 3}
+  battleCharacters:
+  - {fileID: 4804161492713886577, guid: d46b5f4114b97b6458750d10001b3fe9, type: 3}
+  - {fileID: 4804161492713886577, guid: 6810fa7e6283c3748b36906951cbbeca, type: 3}
+  - {fileID: 4804161492713886577, guid: 2996bd538cef5e348b0530e98c7a904c, type: 3}
   charNum: 0
 --- !u!4 &1843727417
 Transform:

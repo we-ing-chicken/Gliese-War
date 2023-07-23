@@ -24,7 +24,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks //Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï
     public PhotonView pv;
     public CMvcam cscamera;
 
-    private bool connect = false;
+    public bool connect = false;
+    public bool sendOK;
 
     public GameObject go;
 
@@ -92,10 +93,18 @@ public class NetworkManager : MonoBehaviourPunCallbacks //Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï
     public override void OnJoinedRoom()
     {
         //cscamera.gameObject.SetActive(true);
-        GameObject temp = PhotonNetwork.Instantiate("player", spawnpoints[PhotonNetwork.CurrentRoom.Players.Count-1].transform.position, Quaternion.identity);
+        //GameObject temp = PhotonNetwork.Instantiate("player", new Vector3(0,0, 0), Quaternion.identity);
+        GameObject temp;
+        if(GameManager.Instance != null)
+            temp = PhotonNetwork.Instantiate(GameManager.Instance.battleCharacters[GameManager.Instance.charNum].name, spawnpoints[PhotonNetwork.CurrentRoom.Players.Count-1].transform.position, Quaternion.identity);
+        else
+            temp = PhotonNetwork.Instantiate("Sugar", spawnpoints[PhotonNetwork.CurrentRoom.Players.Count-1].transform.position, Quaternion.identity);
+        
         //pv.RPC("numchange", RpcTarget.All);
         temp.GetComponent<BattlePlayer>().myindex = PhotonNetwork.CurrentRoom.Players.Count-1;
+        
         //photonView.RPC("numchange", RpcTarget.All);
+        sendOK = true;
     }
 
     [PunRPC]

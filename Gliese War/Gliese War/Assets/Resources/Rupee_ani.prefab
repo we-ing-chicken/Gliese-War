@@ -1651,6 +1651,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8634616374553280928}
   - component: {fileID: -449862091412976184}
+  - component: {fileID: 5529496293874616938}
+  - component: {fileID: 8880551263488310954}
   - component: {fileID: 1217634403713453009}
   m_Layer: 0
   m_Name: Rupee_ani
@@ -1698,6 +1700,61 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &5529496293874616938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8980038520097037082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 4
+    SynchronizeType: 2
+    Name: isRun
+  - Type: 9
+    SynchronizeType: 1
+    Name: doJump
+  - Type: 9
+    SynchronizeType: 1
+    Name: attackSword
+  - Type: 9
+    SynchronizeType: 1
+    Name: attackHammer
+  - Type: 9
+    SynchronizeType: 1
+    Name: attackSpear
+  - Type: 9
+    SynchronizeType: 1
+    Name: magicAttack
+  - Type: 9
+    SynchronizeType: 1
+    Name: dying
+  m_SynchronizeLayers:
+  - SynchronizeType: 2
+    LayerIndex: 0
+--- !u!114 &8880551263488310954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8980038520097037082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 0
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!114 &1217634403713453009
 MonoBehaviour:
   m_ObjectHideFlags: 0

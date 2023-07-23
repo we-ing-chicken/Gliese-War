@@ -23,6 +23,7 @@ TagManager:
   - Item
   - Character
   - Wall
+  - Water
   layers:
   - Default
   - TransparentFX

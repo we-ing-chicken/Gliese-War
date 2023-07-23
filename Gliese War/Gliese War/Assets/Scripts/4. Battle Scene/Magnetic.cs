@@ -1,22 +1,40 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Magnetic : MonoBehaviour
 {
+    static public Magnetic instance;
+    
     private float time;
     private float originY;
+    private bool gameStart = false;
     
     // Start is called before the first frame update
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
     void Start()
     {
         time = 0f;
         originY = transform.localScale.y;
     }
 
+    public void magneticStart()
+    {
+        gameStart = true;
+    }
+
     // Update is called once per frame
     void Update()
     {
+        if (gameStart)
+        {
+            
         // Time.deltaTime 4초
         // 6분 == 360초
         // time * 0.01f == 410초
@@ -35,5 +53,6 @@ public class Magnetic : MonoBehaviour
             Debug.Log(time);
         else
             time += Time.deltaTime;
+        }
     }
 }

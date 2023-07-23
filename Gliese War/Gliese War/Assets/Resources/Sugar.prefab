@@ -1224,7 +1224,7 @@ GameObject:
   - component: {fileID: -7499791481208903878}
   - component: {fileID: 5954466778573789819}
   m_Layer: 0
-  m_Name: player
+  m_Name: Sugar
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1308,6 +1308,9 @@ MonoBehaviour:
   myMagicNum: 0
   JumpPower: 5
   isNear: 0
+  isUI: 0
+  isWait: 0
+  isStart: 0
   virtualCamera: {fileID: 0}
 --- !u!114 &-4829223945961888455
 MonoBehaviour:

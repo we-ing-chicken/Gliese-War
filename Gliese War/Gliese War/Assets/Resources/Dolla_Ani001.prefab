@@ -163,6 +163,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1074867024343927179}
   - component: {fileID: 1235620801366974553}
+  - component: {fileID: 2719012445550297884}
+  - component: {fileID: 8502606491413684761}
   - component: {fileID: 6573567822235809415}
   m_Layer: 0
   m_Name: Dolla_Ani001
@@ -210,6 +212,61 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2719012445550297884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 405712581622059825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 4
+    SynchronizeType: 2
+    Name: isRun
+  - Type: 9
+    SynchronizeType: 1
+    Name: doJump
+  - Type: 9
+    SynchronizeType: 1
+    Name: attackSword
+  - Type: 9
+    SynchronizeType: 1
+    Name: attackHammer
+  - Type: 9
+    SynchronizeType: 1
+    Name: attackSpear
+  - Type: 9
+    SynchronizeType: 1
+    Name: magicAttack
+  - Type: 9
+    SynchronizeType: 1
+    Name: dying
+  m_SynchronizeLayers:
+  - SynchronizeType: 2
+    LayerIndex: 0
+--- !u!114 &8502606491413684761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 405712581622059825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 0
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!114 &6573567822235809415
 MonoBehaviour:
   m_ObjectHideFlags: 0

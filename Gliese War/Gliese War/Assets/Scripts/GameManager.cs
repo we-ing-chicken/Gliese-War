@@ -6,7 +6,8 @@ public class GameManager : MonoBehaviour
 {
     private static GameManager _instance;
 
-    public GameObject[] characters;
+    public GameObject[] farmingCharacters;
+    public GameObject[] battleCharacters;
     public int charNum;
 
     public Stat stat;

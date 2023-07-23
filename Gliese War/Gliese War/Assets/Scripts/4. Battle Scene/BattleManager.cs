@@ -1,12 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class BattleManager : MonoBehaviour
 {
     private static BattleManager _instance;
+    
+    [Header("Players")]
     public GameObject[] players;
     public List<int> player_indexes = new List<int>();
     
@@ -14,13 +17,17 @@ public class BattleManager : MonoBehaviour
     public Canvas pauseCanvas;
     public Canvas fadeCanvas;
     public Canvas hitCanvas;
+    public Canvas playCanvas;
 
+    [Header("Item")]
     public Item[] sword;
     public Item[] spear;
     public Item[] hammer;
     
+    [Header("Flag")]
     public bool _isFading = true;
     public bool _isInven = false;
+    public bool gameWait = false;
 
     public GameObject[] HitEffects;
     public GameObject HealEffect;
@@ -33,10 +40,12 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private Image weapon1Image;
     [SerializeField] private Image weapon2Image;
 
+    [Header("Character UI")]
     public GameObject characterUIParent;
     public GameObject[] characterUIs;
     public GameObject characterCam;
-
+    
+    [Header("Equip")]
     public GameObject helmetEquip;
     public GameObject armorEquip;
     public GameObject shoeEquip;
@@ -45,7 +54,24 @@ public class BattleManager : MonoBehaviour
     public GameObject weapon2Equip;
     public GameObject weapon2Magic;
 
+    [Header("Magic")]
     public Sprite[] magics;
+
+    [Header("Wait")]
+    public GameObject mainCamera;
+    public GameObject mainVCam;
+    
+    public GameObject loadingCamera;
+    public GameObject loadingVCam;
+    public GameObject dollyTrack;
+    public GameObject dollyCart;
+
+    public GameObject water;
+    public GameObject waitPos;
+
+    public GameObject testPlayer;
+    public GameObject temp;
+    
 
     public static BattleManager Instance
     {
@@ -77,20 +103,93 @@ public class BattleManager : MonoBehaviour
         players = new GameObject[4];
     }
 
+    private void Start()
+    {
+        if (GameManager.Instance != null)
+        {
+            temp = Instantiate(GameManager.Instance.battleCharacters[GameManager.Instance.charNum]);
+            temp.GetComponent<BattlePlayer>().isWait = true;
+            temp.transform.position = waitPos.transform.position;
+            
+        }
+        else
+        { 
+            temp = Instantiate(testPlayer);
+            temp.GetComponent<BattlePlayer>().isWait = true;
+            temp.transform.position = waitPos.transform.position;
+        }
+    }
+
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (gameWait)
         {
-            if (!pauseCanvas.gameObject.activeSelf)
+            if (Input.GetKeyDown(KeyCode.Tab))
             {
-                SwitchCanvasActive(invenCanvas);
-                SwitchGameObjectActive(characterCam);
+                if (!pauseCanvas.gameObject.activeSelf)
+                {
+                    SwitchCanvasActive(invenCanvas);
+                    SwitchGameObjectActive(characterCam);
+                }
+
+                if (_isInven)
+                    _isInven = false;
+                else
+                    _isInven = true;
+            }
+        }
+    }
+
+    public void GameStart()
+    {
+        dollyCart.GetComponent<CinemachineDollyCart>().m_Speed = 15;
+        StartCoroutine(StartCart());
+    }
+
+    IEnumerator StartCart()
+    {
+        while (true)
+        {
+            if (dollyTrack.GetComponent<CinemachineSmoothPath>().m_Waypoints[3].position + dollyTrack.transform.position == loadingCamera.transform.position)
+            {
+                Destroy(temp.gameObject);
+                
+                loadingVCam.SetActive(false);
+                loadingCamera.SetActive(false);
+                
+                mainVCam.SetActive(true);
+                mainCamera.SetActive(true);
+
+                SwitchCanvasActive(playCanvas);
+                
+                if (BattlePlayer.instance.photonView.IsMine)
+                {
+                    BattlePlayer.instance.virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
+
+                    CServercamTest sct = Camera.main.GetComponent<CServercamTest>();
+
+                    sct.bp = GetComponent<BattlePlayer>();
+                    BattlePlayer.instance.virtualCamera.Follow = BattlePlayer.instance.transform;
+                    BattlePlayer.instance.virtualCamera.LookAt = BattlePlayer.instance.transform;
+                    
+                    MakeUICharacter();
+
+                    BattlePlayer.instance.isStart = true;
+                }
+                
+                water.SetActive(false);
+                
+                Magnetic.instance.magneticStart();
+                
+
+                // if (BattlePlayer.instance.photonView.IsMine)
+                // {
+                //     BattlePlayer.instance.transform.position = NetworkManager.Instance.spawnpoints[BattlePlayer.instance.myindex].transform.position;
+                // }
+                yield break;
             }
 
-            if (_isInven)
-                _isInven = false;
-            else
-                _isInven = true;
+            yield return null;
         }
     }
 
@@ -258,14 +357,14 @@ public class BattleManager : MonoBehaviour
         if (GameManager.Instance == null)
         {
             temp = Instantiate(characterUIs[2]);
-            temp.transform.position = characterUIParent.transform.position;
         }
         else
         {
-            temp = Instantiate(GameManager.Instance.characters[GameManager.Instance.charNum]);
-            temp.transform.position = characterUIParent.transform.position;
+            temp = Instantiate(GameManager.Instance.battleCharacters[GameManager.Instance.charNum]);
         }
-        
+
+        temp.GetComponent<BattlePlayer>().isUI = true;
+        temp.transform.position = characterUIParent.transform.position;
         temp.transform.SetParent(characterUIParent.transform);
     }
 }
