@@ -162,8 +162,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         SetEquipItemImage();
 
         RefreshStat();
-
-        myMagicNum = 1;
+        
         magicCooltime = 5f;
         isCool = false;
 
@@ -1446,6 +1445,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
                 whatMagicPos.transform.GetChild(0).gameObject.SetActive(false);
                 whatMagicPos.transform.GetChild(1).gameObject.SetActive(false);
                 whatMagicPos.transform.GetChild(2).gameObject.SetActive(true);
+                break;
+            
+            default:
+                whatMagicPos.transform.GetChild(0).gameObject.SetActive(false);
+                whatMagicPos.transform.GetChild(1).gameObject.SetActive(false);
+                whatMagicPos.transform.GetChild(2).gameObject.SetActive(false);
                 break;
         }
     }
