@@ -1030,7 +1030,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
     void SetEquipItemImage()
     {
         if (GameManager.Instance == null) return;
-        if (isWait || isUI) return;
+        if (isWait || isUI ) return;
+        if (!photonView.IsMine) return;
         
         if(BattleManager.Instance.helmetEquip != null) BattleManager.Instance.helmetEquip.GetComponent<Image>().sprite = helmet.item.itemImage;
         if(BattleManager.Instance.armorEquip != null) BattleManager.Instance.armorEquip.GetComponent<Image>().sprite = armor.item.itemImage;
