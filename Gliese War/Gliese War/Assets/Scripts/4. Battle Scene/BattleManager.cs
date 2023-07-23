@@ -366,7 +366,8 @@ public class BattleManager : MonoBehaviour
         }
 
         temp.GetComponent<BattlePlayer>().isUI = true;
-        temp.transform.position = characterUIParent.transform.position;
         temp.transform.SetParent(characterUIParent.transform);
+        temp.transform.position = characterUIParent.transform.position;
+        temp.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll; 
     }
 }

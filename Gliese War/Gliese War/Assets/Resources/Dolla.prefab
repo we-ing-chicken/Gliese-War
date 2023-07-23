@@ -581,6 +581,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8274484789571185862}
     m_Modifications:
+    - target: {fileID: 20137354604916510, guid: ad33443f4a22cbd4392ab15f928bcce6, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 405712581622059825, guid: ad33443f4a22cbd4392ab15f928bcce6, type: 3}
       propertyPath: m_Name
       value: Dolla_Ani001

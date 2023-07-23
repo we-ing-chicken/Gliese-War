@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2982995426790283842}
   - component: {fileID: 8500709705389126006}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Dolla
   m_TagString: Untagged
   m_Icon: {fileID: 0}

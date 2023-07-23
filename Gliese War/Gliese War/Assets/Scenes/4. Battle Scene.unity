@@ -12168,7 +12168,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ac7de932d142f51479b871243f82f724, type: 2}
   _isFading: 1
   _isInven: 0
-  isStart: 0
+  gameWait: 0
   HitEffects:
   - {fileID: 7782017463901848733, guid: 8791918a178ba7e418f2acaf1034d21e, type: 3}
   - {fileID: 8141322796856537134, guid: 4fe7dea95c8c6ad43b496d36f7031922, type: 3}
@@ -12184,9 +12184,9 @@ MonoBehaviour:
   weapon2Image: {fileID: 59990791}
   characterUIParent: {fileID: 130412605}
   characterUIs:
-  - {fileID: 405712581622059825, guid: 69261c6960d959c41a7b72761c7c1315, type: 3}
-  - {fileID: 8980038520097037082, guid: 2c236d4f45a2eff47891c770256afb63, type: 3}
-  - {fileID: 3049878089078284456, guid: 8252815073cfa0240a4264f49db81ac5, type: 3}
+  - {fileID: 4804161492713886577, guid: d46b5f4114b97b6458750d10001b3fe9, type: 3}
+  - {fileID: 4804161492713886577, guid: 6810fa7e6283c3748b36906951cbbeca, type: 3}
+  - {fileID: 4804161492713886577, guid: 2996bd538cef5e348b0530e98c7a904c, type: 3}
   characterCam: {fileID: 1682606309}
   helmetEquip: {fileID: 1845390578}
   armorEquip: {fileID: 734214609}
@@ -19075,7 +19075,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 643888049}
   m_LocalRotation: {x: 0, y: 0.9961947, z: -0, w: -0.08715578}
-  m_LocalPosition: {x: 0.3, y: 3.3, z: 2.57}
+  m_LocalPosition: {x: 0.3, y: 2, z: 2.1}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -47321,7 +47321,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1260053836}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 2.2, z: 4.5}
+  m_LocalPosition: {x: 0, y: 1, z: 4}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []

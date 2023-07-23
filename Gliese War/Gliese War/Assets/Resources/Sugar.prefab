@@ -1934,7 +1934,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1609249263764861135}
   - component: {fileID: 2063690068685808395}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sugar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
