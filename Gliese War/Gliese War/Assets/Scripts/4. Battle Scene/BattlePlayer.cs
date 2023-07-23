@@ -390,19 +390,25 @@ public class BattlePlayer : LivingEntity, IPunObservable
             //remoteDir = new Vector3(moveLR, 0, moveFB).normalized;
             //player_lookTarget();
 
-            
 
-            //Move();
-            Vector3 lookForward = new Vector3(Camera.main.transform.forward.x, 0f, Camera.main.transform.forward.z).normalized;
-            Vector3 lookRight = new Vector3(Camera.main.transform.right.x, 0f, Camera.main.transform.right.z).normalized;
-            moveDir = lookForward * moveFB + lookRight * moveLR;
-            transform.position += moveDir * moveSpeed * Time.deltaTime;
-            playertransform.LookAt(playertransform.position + moveDir);
+            if (CheckHitWall(new Vector3(moveFB,0,moveLR)) || CheckHitWall(new Vector3(-moveFB,0,-moveLR)))
+            {
+                Debug.Log("AAAAAAAAAAAAAAA");
+            }
+            else
+            {
+                Vector3 lookForward = new Vector3(Camera.main.transform.forward.x, 0f, Camera.main.transform.forward.z).normalized;
+                Vector3 lookRight = new Vector3(Camera.main.transform.right.x, 0f, Camera.main.transform.right.z).normalized;
+                moveDir = lookForward * moveFB + lookRight * moveLR;
+                //Move();
+                transform.position += moveDir * moveSpeed * Time.deltaTime;
+                playertransform.LookAt(playertransform.position + moveDir);
 
-            //Look();
-            MouseX = MouseX + (Input.GetAxis("Mouse X") * mouseSpeed);
-            remoteRot = Quaternion.Euler(0, MouseX, 0);
-            transform.rotation = remoteRot;
+            }   
+                //Look();
+                MouseX = MouseX + (Input.GetAxis("Mouse X") * mouseSpeed);
+                remoteRot = Quaternion.Euler(0, MouseX, 0);
+                transform.rotation = remoteRot;
 
         }
         else
@@ -417,6 +423,37 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
         //charactercontroller.Move(moveDir * Time.deltaTime * moveSpeed);
         animate_Run(isalive);
+    }
+    
+    bool CheckHitWall(Vector3 movement)
+    {
+        // 움직임에 대한 로컬 벡터를 월드 벡터로 변환해준다.
+        movement = transform.TransformDirection(movement);
+        // scope로 ray 충돌을 확인할 범위를 지정할 수 있다.
+        float scope = 1f;
+
+        // 플레이어의 머리, 가슴, 발 총 3군데에서 ray를 쏜다.
+        List<Vector3> rayPositions = new List<Vector3>();
+        rayPositions.Add(transform.position + Vector3.up * 0.1f);
+        rayPositions.Add(transform.position + Vector3.up * GetComponent<CapsuleCollider>().height * 0.5f);
+        rayPositions.Add(transform.position + Vector3.up * GetComponent<CapsuleCollider>().height);
+
+        // 디버깅을 위해 ray를 화면에 그린다.
+        foreach (Vector3 pos in rayPositions)
+        {
+            Debug.DrawRay(pos, movement * scope, Color.red);
+        }
+
+        // ray와 벽의 충돌을 확인한다.
+        foreach (Vector3 pos in rayPositions)
+        {
+            if (Physics.Raycast(pos, movement, out RaycastHit hit, scope))
+            {
+                if (hit.collider.CompareTag("Wall"))
+                    return true;
+            }
+        }
+        return false;
     }
 
     IEnumerator SetMagicArea()
@@ -975,6 +1012,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     void SetEquipItemImage()
     {
+        if (GameManager.Instance == null) return;
+        
         if(BattleManager.Instance.helmetEquip != null) BattleManager.Instance.helmetEquip.GetComponent<Image>().sprite = helmet.item.itemImage;
         if(BattleManager.Instance.armorEquip != null) BattleManager.Instance.armorEquip.GetComponent<Image>().sprite = armor.item.itemImage;
         if(BattleManager.Instance.shoeEquip != null) BattleManager.Instance.shoeEquip.GetComponent<Image>().sprite = shoe.item.itemImage;

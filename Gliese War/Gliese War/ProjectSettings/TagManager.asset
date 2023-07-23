@@ -21,6 +21,8 @@ TagManager:
   - Inside
   - Outside
   - Item
+  - Character
+  - Wall
   layers:
   - Default
   - TransparentFX
