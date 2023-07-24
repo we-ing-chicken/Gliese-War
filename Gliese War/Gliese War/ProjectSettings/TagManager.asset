@@ -24,6 +24,7 @@ TagManager:
   - Character
   - Wall
   - Water
+  - Heal
   layers:
   - Default
   - TransparentFX

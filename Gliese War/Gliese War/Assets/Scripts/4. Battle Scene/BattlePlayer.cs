@@ -187,7 +187,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
         
 
-        if (NetworkManager.Instance.sendOK && photonView.ViewID != 0 && PhotonNetwork.CurrentRoom.Players.Count == 2)
+        if (NetworkManager.Instance.sendOK && photonView.ViewID != 0 && PhotonNetwork.CurrentRoom.Players.Count == 1)
         {
             NetworkManager.Instance.sendOK = false;
             photonView.RPC("SendIndex", RpcTarget.All, photonView.ViewID, myindex);
@@ -1251,6 +1251,14 @@ public class BattlePlayer : LivingEntity, IPunObservable
                 BattleManager.Instance.HitScreen();
                 //GetDamage(1);
             }
+        }
+        
+        if (other.CompareTag("Heal") && photonView.IsMine)
+        {
+            DamageMessage dm;
+            dm.damager = myindex;
+            dm.damage = -1;
+            ApplyDamage(dm);
         }
     }
     
