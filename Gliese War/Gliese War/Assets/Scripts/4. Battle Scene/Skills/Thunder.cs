@@ -73,7 +73,11 @@ public class Thunder : MonoBehaviour
 
         if (obj.CompareTag("Player"))
         {
-            obj.GetComponent<BattlePlayer>().GetDamage(1);
+            DamageMessage dm;
+            dm.damager = master;
+            dm.damage = 30;
+            obj.GetComponent<BattlePlayer>().ApplyDamage(dm);
+            //obj.GetComponent<BattlePlayer>().GetDamage(1);
             return;
         }
 

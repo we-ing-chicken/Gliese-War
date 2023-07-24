@@ -7,10 +7,12 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.AI;
 using UnityEngine.Animations;
 using UnityEngine.EventSystems;
-using UnityEngine.UIElements;
+using UnityEngine.Rendering.UI;
+using UnityEngine.SceneManagement;
 
 public class BattlePlayer : LivingEntity, IPunObservable
 {
@@ -51,6 +53,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
     public RealItem weapon2;
     public int weaponNow = 1;
     bool ismove = false;
+    bool isjump = false;
+    public bool isalive;
 
     [SerializeField] private GameObject head;
     [SerializeField] private GameObject body;
@@ -64,6 +68,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     [SerializeField] private GameObject[] attackEffect;
 
     [SerializeField] private GameObject shoesEffectPos;
+    [SerializeField] private GameObject whatMagicPos;
 
     public bool isAttack = false;
 
@@ -74,7 +79,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     private Coroutine magicCor; // set magic area position coroutine 
     [SerializeField] private GameObject[] magicEffect;
     private Vector3 magicPosition;
-    private int myMagicNum = 0; // my magic num
+    public int myMagicNum = 0; // my magic num
     
     private int magicMaster;    // who's magic
     private float magicCooltime;    // how long wait for use magic again
@@ -102,11 +107,24 @@ public class BattlePlayer : LivingEntity, IPunObservable
     private float remotetime;
 
     private bool isSafe = false;
+    
+    private float statusTime;
+    private bool isOn = false;
 
-    [SerializeField] private CinemachineVirtualCamera virtualCamera;
+    public bool isUI = false;
+    public bool isWait = false;
+    public bool isStart = false;
+
+    public CinemachineVirtualCamera virtualCamera;
 
     private void Start()
     {
+        if (isUI)
+        {
+            GetComponent<AudioListener>().enabled = false;
+            return;
+        }
+        
         Debug.Log(photonView.IsMine);
 
         instance = this;
@@ -116,9 +134,10 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
         else
         {
-            playertransform.GetComponent<AudioListener>().enabled = false;
+            GetComponent<AudioListener>().enabled = false;
         }
-        
+        if (!isalive) isalive = true;
+
         //charactercontroller = GetComponent<CharacterController>();
         rigidbody = GetComponent<Rigidbody>();
         moveDir = Vector3.zero;
@@ -140,35 +159,49 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
 
         SetBattleItemEquip();
+        SetEquipItemImage();
 
         RefreshStat();
-
-        myMagicNum = 1;
+        
         magicCooltime = 5f;
         isCool = false;
 
         EquipWeapon();
-
         if (photonView.IsMine)
         {
-            virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
-
-            CServercamTest sct = Camera.main.GetComponent<CServercamTest>();
-
-            sct.bp = GetComponent<BattlePlayer>();
-            virtualCamera.Follow = transform;
-            virtualCamera.LookAt = transform;
-
+            WhatMagicEffect(myindex, (int)GetMagic());
         }
     }
 
     private void Update()
     {
-        if (transform.GetComponent<LivingEntity>().dead) return;
+        if (isUI) return;
+        
+        if(isWait)
+        {
+            if (!BattleManager.Instance.gameWait && NetworkManager.Instance.connect)
+            {
+                BattleManager.Instance.gameWait = true;
+                NetworkManager.Instance.JoinRoom();
+            }
+        }
+        
 
+        if (NetworkManager.Instance.sendOK && photonView.ViewID != 0 && PhotonNetwork.CurrentRoom.Players.Count == 2)
+        {
+            NetworkManager.Instance.sendOK = false;
+            photonView.RPC("SendIndex", RpcTarget.All, photonView.ViewID, myindex);
+            photonView.RPC("StartGame", RpcTarget.All);
+            photonView.RPC("ChangeWeapon", RpcTarget.Others, myindex, (int)GetWeaponNum(), (int)weapon1.magic);
+            WhatMagicEffect(myindex, (int)GetMagic());
+        }
+
+        if (isWait || !isStart) return;
+        
+        
         //if (charactercontroller == null) return;
 
-        if (photonView.IsMine)
+        if (photonView.IsMine && isalive)
         {
             moveFB = Input.GetAxis(moveFBAxisName);
             moveLR = Input.GetAxis(moveLRAxisName);
@@ -179,96 +212,110 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
         }
 
-
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if(photonView.IsMine)
         {
-            if (weapon1 == null) return;
-            
-            weaponNow = 1;
-
-            switch (weapon1.magic)
+            if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                case Magic.Fire:
-                    myMagicNum = 0;
-                    break;
-                
-                case Magic.Water:
-                    myMagicNum = 1;
-                    break;
-                
-                case Magic.Light:
-                    myMagicNum = 2;
-                    break;
-                
-                case Magic.Nothing:
-                    break;
+                if (weapon1 == null) return;
+
+                weaponNow = 1;
+
+                switch (weapon1.magic)
+                {
+                    case Magic.Fire:
+                        myMagicNum = 0;
+                        break;
+
+                    case Magic.Water:
+                        myMagicNum = 1;
+                        break;
+
+                    case Magic.Light:
+                        myMagicNum = 2;
+                        break;
+
+                    case Magic.Nothing:
+                        break;
+                }
+
+                if (weapon1 != null)
+                    EquipWeapon();
+
+                RefreshStat();
+                WhatMagicEffect(myindex, (int)GetMagic());
+                photonView.RPC("ChangeWeapon", RpcTarget.Others, myindex, (int)weapon1.item.weaponType, (int)weapon1.magic);
             }
-
-            if (weapon1 != null)
-                EquipWeapon();
-
-            RefreshStat();
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            if (weapon2 == null) return;
-            
-            weaponNow = 2;
-            
-            switch (weapon2.magic)
+            else if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                case Magic.Fire:
-                    myMagicNum = 0;
-                    break;
-                
-                case Magic.Water:
-                    myMagicNum = 1;
-                    break;
-                
-                case Magic.Light:
-                    myMagicNum = 2;
-                    break;
-                
-                case Magic.Nothing:
-                    break;
-            }
-            
-            if (weapon2 != null)
-                EquipWeapon();
+                if (weapon2 == null) return;
 
-            RefreshStat();
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            weapon1.item = BattleManager.Instance.sword[1];
-            EquipWeapon();
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            weapon1.item = BattleManager.Instance.spear[1];
-            EquipWeapon();
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha6))
-        {
-            weapon1.item = BattleManager.Instance.hammer[1];
-            EquipWeapon();
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha7))
-        {
-            myMagicNum = 0;
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha8))
-        {
-            myMagicNum = 1;
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha9))
-        {
-            myMagicNum = 2;
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha0))
-        {
-            Debug.Log(base.health);
-            GetDamage(5);
+                weaponNow = 2;
+
+                switch (weapon2.magic)
+                {
+                    case Magic.Fire:
+                        myMagicNum = 0;
+                        break;
+
+                    case Magic.Water:
+                        myMagicNum = 1;
+                        break;
+
+                    case Magic.Light:
+                        myMagicNum = 2;
+                        break;
+
+                    case Magic.Nothing:
+                        break;
+                }
+
+                if (weapon2 != null)
+                    EquipWeapon();
+
+                RefreshStat();
+                WhatMagicEffect(myindex, (int)GetMagic());
+                photonView.RPC("ChangeWeapon", RpcTarget.Others, myindex,(int)weapon2.item.weaponType, (int)weapon2.magic);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha4))
+            {
+                weapon1.item = BattleManager.Instance.sword[1];
+                EquipWeapon();
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha5))
+            {
+                weapon1.item = BattleManager.Instance.spear[1];
+                EquipWeapon();
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha6))
+            {
+                weapon1.item = BattleManager.Instance.hammer[1];
+                EquipWeapon();
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha7))
+            {
+                myMagicNum = 0;
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha8))
+            {
+                myMagicNum = 1;
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha9))
+            {
+                myMagicNum = 2;
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha0))
+            {
+                Debug.Log(base.health);
+                GetDamage(5);
+            }
+            else if (Input.GetKeyDown(KeyCode.P))
+            {
+                StartCoroutine(Burns());
+            }
+            else if (Input.GetKeyDown(KeyCode.O))
+            {
+                StartCoroutine(Toxic());
+            }
         }
 
         if (photonView.IsMine)
@@ -339,7 +386,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
         //if (charactercontroller == null) return;
 
-        Debug.Log("IsMine : " + photonView.IsMine + ", remotePos : " + remotePos);
+        //Debug.Log("IsMine : " + photonView.IsMine + ", remotePos : " + remotePos);
 
         //if (!charactercontroller.isGrounded)
         //{
@@ -350,22 +397,41 @@ public class BattlePlayer : LivingEntity, IPunObservable
         //{
 
 
-        if (p_Jump)
+        if (p_Jump && !isjump)
         {
-            isAttack = false;
+            isAttack = true;
+            isjump = true;
             animator.SetTrigger("doJump");
-
+            rigidbody.AddForce(Vector3.up * JumpPower, ForceMode.Impulse);
 
             //Jump();
 
         }
-        if (photonView.IsMine)
+        
+        if (photonView.IsMine && BattleManager.Instance.mainCamera.gameObject.activeSelf)
         {
             //remoteDir = new Vector3(moveLR, 0, moveFB).normalized;
             //player_lookTarget();
 
-            
 
+            // if (CheckHitWall(new Vector3(moveFB,0,moveLR)) || CheckHitWall(new Vector3(-moveFB,0,-moveLR)))
+            // {
+            // }
+            // else
+            // {
+            //     Vector3 lookForward = new Vector3(Camera.main.transform.forward.x, 0f, Camera.main.transform.forward.z).normalized;
+            //     Vector3 lookRight = new Vector3(Camera.main.transform.right.x, 0f, Camera.main.transform.right.z).normalized;
+            //     moveDir = lookForward * moveFB + lookRight * moveLR;
+            //     //Move();
+            //     transform.position += moveDir * moveSpeed * Time.deltaTime;
+            //     playertransform.LookAt(playertransform.position + moveDir);
+            //
+            // }   
+            //     //Look();
+            //     MouseX = MouseX + (Input.GetAxis("Mouse X") * mouseSpeed);
+            //     remoteRot = Quaternion.Euler(0, MouseX, 0);
+            //     transform.rotation = remoteRot;
+            
             //Move();
             Vector3 lookForward = new Vector3(Camera.main.transform.forward.x, 0f, Camera.main.transform.forward.z).normalized;
             Vector3 lookRight = new Vector3(Camera.main.transform.right.x, 0f, Camera.main.transform.right.z).normalized;
@@ -390,7 +456,38 @@ public class BattlePlayer : LivingEntity, IPunObservable
         //}
 
         //charactercontroller.Move(moveDir * Time.deltaTime * moveSpeed);
-        animate_Run();
+        animate_Run(isalive);
+    }
+    
+    bool CheckHitWall(Vector3 movement)
+    {
+        // 움직임에 대한 로컬 벡터를 월드 벡터로 변환해준다.
+        movement = transform.TransformDirection(movement);
+        // scope로 ray 충돌을 확인할 범위를 지정할 수 있다.
+        float scope = 1f;
+
+        // 플레이어의 머리, 가슴, 발 총 3군데에서 ray를 쏜다.
+        List<Vector3> rayPositions = new List<Vector3>();
+        rayPositions.Add(transform.position + Vector3.up * 0.1f);
+        rayPositions.Add(transform.position + Vector3.up * GetComponent<CapsuleCollider>().height * 0.5f);
+        rayPositions.Add(transform.position + Vector3.up * GetComponent<CapsuleCollider>().height);
+
+        // 디버깅을 위해 ray를 화면에 그린다.
+        foreach (Vector3 pos in rayPositions)
+        {
+            Debug.DrawRay(pos, movement * scope, Color.red);
+        }
+
+        // ray와 벽의 충돌을 확인한다.
+        foreach (Vector3 pos in rayPositions)
+        {
+            if (Physics.Raycast(pos, movement, out RaycastHit hit, scope))
+            {
+                if (hit.collider.CompareTag("Wall"))
+                    return true;
+            }
+        }
+        return false;
     }
 
     IEnumerator SetMagicArea()
@@ -437,7 +534,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         switch (num)
         {
             case (int)Magic.Fire:
-                magic.transform.GetChild(0).GetChild(4).GetComponent<Meteo>().SetMaster(who);
+                magic.transform.GetChild(0).GetChild(5).GetChild(3).GetComponent<Meteo>().SetMaster(who);
                 break;
 
             case (int)Magic.Water:
@@ -548,9 +645,9 @@ public class BattlePlayer : LivingEntity, IPunObservable
         playertransform.rotation = Quaternion.Lerp(playertransform.rotation, rotation, Time.deltaTime * 10);
     }
 
-    private void animate_Run()
+    private void animate_Run(bool ia)
     {
-            animator.SetBool("isRun", ismove);
+            if(ia) animator.SetBool("isRun", ismove);
     }
 
     private void AttackAnimation()
@@ -608,7 +705,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             switch (weapon1.item.weaponType)
             {
                 case Item.WeaponType.Hammer:
-                    yield return new WaitForSeconds(0.3f);
+                    yield return new WaitForSeconds(0.7f);
                     attackEffectPos.transform.GetChild(2).gameObject.SetActive(true);
                     StartCoroutine(QuitAttackEffect(2));
                     break;
@@ -635,7 +732,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             switch (weapon2.item.weaponType)
             {
                 case Item.WeaponType.Hammer:
-                    yield return new WaitForSeconds(0.3f);
+                    yield return new WaitForSeconds(0.7f);
                     attackEffectPos.transform.GetChild(2).gameObject.SetActive(true);
                     StartCoroutine(QuitAttackEffect(2));
                     break;
@@ -796,7 +893,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
                     break;
             }
         }
-
+    
+        BattleManager.Instance.SetEquipWeaponImage();
     }
 
     private void EquipHammer()
@@ -916,20 +1014,118 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     void SetBattleItemEquip()
     {
-        //Debug.Log(weapon1.item + ", " + weapon1.magic + ", " + weapon1.stat.attackPower);
-        if(weapon1 == null) 
+        if (GameManager.Instance == null)
         {
-            weapon1 = new RealItem();
-            weapon1.item = BattleManager.Instance.sword[1];
-            weapon1.magic = Magic.Fire;
+            //Debug.Log(weapon1.item + ", " + weapon1.magic + ", " + weapon1.stat.attackPower);
+            if(weapon1 == null) 
+            {
+                weapon1 = new RealItem();
+                weapon1.item = BattleManager.Instance.sword[1];
+                weapon1.magic = Magic.Fire;
+            }
+
+            if(weapon2 == null)
+            {
+                weapon2 = new RealItem();
+                weapon2.item = BattleManager.Instance.spear[1];
+                weapon2.magic = Magic.Water;
+            }
+        }
+        else
+        {
+            if (photonView.IsMine)
+            {
+                helmet = GameManager.Instance.helmet;
+                armor = GameManager.Instance.armor;
+                shoe = GameManager.Instance.shoe;
+                weapon1 = GameManager.Instance.weapon1;
+                weapon2 = GameManager.Instance.weapon2;
+            }
+        }
+    }
+
+    void SetEquipItemImage()
+    {
+        if (GameManager.Instance == null) return;
+        if (isWait || isUI ) return;
+        if (!photonView.IsMine) return;
+        
+        if(BattleManager.Instance.helmetEquip != null) BattleManager.Instance.helmetEquip.GetComponent<Image>().sprite = helmet.item.itemImage;
+        if(BattleManager.Instance.armorEquip != null) BattleManager.Instance.armorEquip.GetComponent<Image>().sprite = armor.item.itemImage;
+        if(BattleManager.Instance.shoeEquip != null) BattleManager.Instance.shoeEquip.GetComponent<Image>().sprite = shoe.item.itemImage;
+
+        if (BattleManager.Instance.weapon1Equip != null)
+        {
+            BattleManager.Instance.weapon1Equip.GetComponent<Image>().sprite = weapon1.item.itemImage;
+            BattleManager.Instance.weapon1Magic.GetComponent<Image>().sprite = GetMagicImage(weapon1.magic);
+            if (weapon1.magic == Magic.Nothing)
+            {
+                Color color = BattleManager.Instance.weapon1Magic.GetComponent<Image>().color = new Color();
+                color.a = 0;
+                BattleManager.Instance.weapon1Magic.GetComponent<Image>().color = color;
+            }
         }
 
-        if(weapon2 == null)
+        if (BattleManager.Instance.weapon2Equip != null)
         {
-            weapon2 = new RealItem();
-            weapon2.item = BattleManager.Instance.sword[1];
-            weapon2.magic = Magic.Water;
+            BattleManager.Instance.weapon2Equip.GetComponent<Image>().sprite = weapon2.item.itemImage;
+            BattleManager.Instance.weapon2Magic.GetComponent<Image>().sprite = GetMagicImage(weapon2.magic);
+            if (weapon2.magic == Magic.Nothing)
+            {
+                Color color = BattleManager.Instance.weapon2Magic.GetComponent<Image>().color = new Color();
+                color.a = 0;
+                BattleManager.Instance.weapon2Magic.GetComponent<Image>().color = color;
+            }
         }
+    }
+
+    Sprite GetMagicImage(Magic magic)
+    {
+        switch (magic)
+        {
+            case Magic.Fire:
+                return BattleManager.Instance.magics[0];
+            
+            case Magic.Water:
+                return BattleManager.Instance.magics[1];
+            
+            case Magic.Light:
+                return BattleManager.Instance.magics[2];
+            
+            case Magic.Nothing:
+                return null;
+            
+        }
+
+        return null;
+    }
+
+    Item.WeaponType GetWeaponNum()
+    {
+        if (weaponNow == 1)
+        {
+            return weapon1.item.weaponType;
+        }
+        else if (weaponNow == 2)
+        {
+            return weapon2.item.weaponType;
+        }
+
+        return Item.WeaponType.Nothing;
+    }
+
+    Magic GetMagic()
+    {
+        if (weaponNow == 1)
+        {
+            return weapon1.magic;
+        }
+        else if (weaponNow == 2)
+        {
+            return weapon2.magic;
+        }
+
+        return Magic.Nothing;
     }
 
     protected override void OnEnable()
@@ -945,7 +1141,22 @@ public class BattlePlayer : LivingEntity, IPunObservable
     public override bool ApplyDamage(DamageMessage damageMessage)
     {
         if (!base.ApplyDamage(damageMessage)) return false;
+        
+        
+        if (damageMessage.damage > 0)
+        {
+            BattleManager.Instance.HitScreen();
+        }
+        else
+        {
+            if (health - damageMessage.damage > startingHealth)
+            {
+                health = startingHealth;
+            }
+        }
+        
         MyHPBar.Instance.SetHPBar(startingHealth, health);
+        
         return true;
     }
 
@@ -953,19 +1164,42 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         base.Die();
 
+        SetParameter();
+
         StartCoroutine("die");
 
-        BattleManager.Instance.BM_RemoveList(myindex);
+        //BattleManager.Instance.BM_RemoveList(myindex);
+        
+    }
+    public void SetParameter()
+    {
+        isalive = false;
+        animator.SetBool("isRun", false);
+        moveDir = Vector3.zero;
+        moveSpeed = 0;
+        isAttack = true;
+        ismove = false;
     }
     IEnumerator die()
     {
-        animator.SetTrigger("Dying");
-        yield return new WaitForSeconds(0.3f);
+        animator.SetTrigger("dying");
+        yield return new WaitForSeconds(2.0f);
+        SceneManager.LoadScene(1);
     }
-    
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Terrain")
+        {
+            isAttack = false;
+            animator.SetBool("doJump", false);
+            isjump = false;
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Inside"))
+        if (other.CompareTag("Inside") && photonView.IsMine)
         {
             isSafe = true;
         }
@@ -973,14 +1207,43 @@ public class BattlePlayer : LivingEntity, IPunObservable
         if (other.CompareTag("Weapon") && !other.transform.GetComponentInParent<BattlePlayer>().photonView.IsMine)
         {
             health -= 10;
-            MyHPBar.Instance.SetHPBar(startingHealth, health);
+            DamageMessage dm;
+            dm.damager = other.transform.GetComponentInParent<BattlePlayer>().myindex;
+            dm.damage = 10;
+            ApplyDamage(dm);
+
+            ShowHitEffect(myindex, other.transform.GetComponentInParent<BattlePlayer>().myMagicNum);
+            
+            photonView.RPC("SendHit", RpcTarget.Others, myindex, other.transform.GetComponentInParent<BattlePlayer>().myMagicNum);
+            
             BattleManager.Instance.HitScreen();
+        }
+
+        GameObject healEffect;
+        if (other.CompareTag("Item") && photonView.IsMine)
+        {
+            DamageMessage dm;
+            dm.damager = myindex;
+            dm.damage = -20;
+            ApplyDamage(dm);
+        
+            healEffect = Instantiate(BattleManager.Instance.HealEffect);
+            healEffect.transform.position = other.transform.position;
+
+            Destroy(other.gameObject);
+        }
+        else if(other.CompareTag("Item"))
+        {
+            healEffect = Instantiate(BattleManager.Instance.HealEffect);
+            healEffect.transform.position = new Vector3(other.transform.position.x,other.transform.position.y - 0.5f,other.transform.position.z);
+
+            Destroy(other.gameObject);
         }
     }
     
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Inside"))
+        if (other.CompareTag("Inside") && photonView.IsMine)
         {
             isSafe = false;
         }
@@ -990,10 +1253,24 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         if(!isSafe)
         {
-            if (other.CompareTag("Outside"))
+            if (other.CompareTag("Outside") && photonView.IsMine)
             {
                 Debug.Log("밖");
+                DamageMessage dm;
+                dm.damager = myindex;
+                dm.damage = 1;
+                ApplyDamage(dm);
+                BattleManager.Instance.HitScreen();
+                //GetDamage(1);
             }
+        }
+        
+        if (other.CompareTag("Heal") && photonView.IsMine)
+        {
+            DamageMessage dm;
+            dm.damager = myindex;
+            dm.damage = -1;
+            ApplyDamage(dm);
         }
     }
     
@@ -1002,6 +1279,13 @@ public class BattlePlayer : LivingEntity, IPunObservable
         health -= val;
         MyHPBar.Instance.SetHPBar(startingHealth, health);
         BattleManager.Instance.HitScreen();
+    }
+
+    public void ShowHitEffect(int who, int magicNum)
+    {
+        GameObject hitEffect;
+        hitEffect = Instantiate(BattleManager.Instance.HitEffects[magicNum]);
+        hitEffect.transform.position = BattleManager.Instance.players[who].transform.position;
     }
     
     public void AttackStart()
@@ -1016,8 +1300,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
                     break;
                 
                 case Item.WeaponType.Sword:
-                    TurnOnHandSword();
                     StartCoroutine(TurnOffHandSword());
+                    TurnOnHandSword();
                     break;
                 
                 case Item.WeaponType.Spear:
@@ -1080,7 +1364,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     IEnumerator TurnOffHandHammer()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.6f);
         
         col = handR.transform.GetChild(0).GetComponent<MeshCollider>();
         col.enabled = false;
@@ -1106,7 +1390,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     
     IEnumerator TurnOffHandSword()
     {
-        yield return new WaitForSeconds(0.9f);
+        yield return new WaitForSeconds(1f);
         
         col = handR.transform.GetChild(2).GetComponent<MeshCollider>();
         col.enabled = false;
@@ -1132,5 +1416,209 @@ public class BattlePlayer : LivingEntity, IPunObservable
         otherMagic = true;
         
         MakeMagic(magicNum, magicPosition, magicMaster);
+    }
+
+    IEnumerator Burns()
+    {
+        if (isOn) yield break;
+        
+        float total = 7f;
+        statusTime = 0f;
+        isOn = true;
+        
+        StartCoroutine(Timecheck());
+        
+        while (true)
+        {
+            if (statusTime >= total)
+            {
+                isOn = false;
+                break;
+            }
+
+            DamageMessage dm;
+            dm.damager = myindex;
+            dm.damage = 2;
+            ApplyDamage(dm);
+            
+            BattleManager.Instance.HitScreen();
+            
+            yield return new WaitForSeconds(2f);
+        }
+        
+        yield return null;
+    }
+
+    IEnumerator Toxic()
+    {
+        if (isOn) yield break;
+        
+        float total = 7f;
+        statusTime = 0f;
+        isOn = true;
+        
+        StartCoroutine(Timecheck());
+        
+        while (true)
+        {
+            if (statusTime >= total)
+            {
+                isOn = false;
+                break;
+            }
+
+            DamageMessage dm;
+            dm.damager = myindex;
+            dm.damage = 2;
+            ApplyDamage(dm);
+            
+            BattleManager.Instance.HitScreen();
+            
+            yield return new WaitForSeconds(2f);
+        }
+        
+        yield return null;
+    }
+
+    IEnumerator Timecheck()
+    {
+        while (true)
+        {
+            statusTime += Time.deltaTime;
+            
+            if (!isOn)
+                break;
+
+            yield return null;
+        }
+    }
+
+    void WhatWeapon(int who, int weaopnNum)
+    {
+        if (BattleManager.Instance.players[who] == null) return;
+        
+        switch (weaopnNum)
+        {
+            case (int)Item.WeaponType.Hammer:
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(0)
+                    .gameObject.SetActive(true);
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(1)
+                    .gameObject.SetActive(false);
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(2)
+                    .gameObject.SetActive(false);
+                break;
+
+            case (int)Item.WeaponType.Spear:
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(0)
+                    .gameObject.SetActive(false);
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(1)
+                    .gameObject.SetActive(true);
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(2)
+                    .gameObject.SetActive(false);
+                break;
+
+            case (int)Item.WeaponType.Sword:
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(0)
+                    .gameObject.SetActive(false);
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(1)
+                    .gameObject.SetActive(false);
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(2)
+                    .gameObject.SetActive(true);
+                break;
+
+            default:
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(0)
+                    .gameObject.SetActive(false);
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(1)
+                    .gameObject.SetActive(false);
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(2)
+                    .gameObject.SetActive(false);
+                break;
+        }
+    }
+
+    void WhatMagicEffect(int who, int magicNum)
+    {
+        if (BattleManager.Instance.players[who] == null) return;
+        
+        switch (magicNum)
+        {
+            case (int)Magic.Fire:
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().whatMagicPos.transform.GetChild(0)
+                    .gameObject.SetActive(true);
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().whatMagicPos.transform.GetChild(1)
+                    .gameObject.SetActive(false);
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().whatMagicPos.transform.GetChild(2)
+                    .gameObject.SetActive(false);
+                break;
+
+            case (int)Magic.Water:
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().whatMagicPos.transform.GetChild(0)
+                    .gameObject.SetActive(false);
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().whatMagicPos.transform.GetChild(1)
+                    .gameObject.SetActive(true);
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().whatMagicPos.transform.GetChild(2)
+                    .gameObject.SetActive(false);
+                break;
+
+            case (int)Magic.Light:
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().whatMagicPos.transform.GetChild(0)
+                    .gameObject.SetActive(false);
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().whatMagicPos.transform.GetChild(1)
+                    .gameObject.SetActive(false);
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().whatMagicPos.transform.GetChild(2)
+                    .gameObject.SetActive(true);
+                break;
+
+            default:
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().whatMagicPos.transform.GetChild(0)
+                    .gameObject.SetActive(false);
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().whatMagicPos.transform.GetChild(1)
+                    .gameObject.SetActive(false);
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().whatMagicPos.transform.GetChild(2)
+                    .gameObject.SetActive(false);
+                break;
+        }
+
+    }
+
+    [PunRPC]
+    void SendHit(int who, int magicNum)
+    {
+        ShowHitEffect(who, magicNum);
+    }
+
+    [PunRPC]
+    void SendIndex(int viewID, int index)
+    {
+        GameObject[] pl = GameObject.FindGameObjectsWithTag("Player");
+
+        for (int i = 0; i < pl.Length; ++i)
+        {
+            if (pl[i].GetComponent<BattlePlayer>().photonView.IsMine)
+            {
+                BattleManager.Instance.players[pl[i].GetComponent<BattlePlayer>().myindex] = pl[i].gameObject;
+                continue;
+            }
+
+            if (pl[i].GetComponent<BattlePlayer>().photonView.ViewID == viewID)
+            {
+                pl[i].GetComponent<BattlePlayer>().myindex = index;
+                BattleManager.Instance.players[index] = pl[i].gameObject;
+            }
+        }
+    }
+
+    [PunRPC]
+    void StartGame()
+    {
+        BattleManager.Instance.GameStart();
+    }
+
+    [PunRPC]
+    void ChangeWeapon(int who, int weaponNum, int magicNum)
+    {
+        WhatWeapon(who, weaponNum);
+        WhatMagicEffect(who, magicNum);
     }
 }

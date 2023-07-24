@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2982995426790283842}
   - component: {fileID: 8500709705389126006}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Dolla
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1429,7 +1429,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6948503045553806602}
   m_LocalRotation: {x: 0.000000028773226, y: 0.00000003106464, z: -0.00000003725146, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -1.71, y: -2.27, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2230,10 +2230,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: FX_Trail_Unique
       objectReference: {fileID: 0}
-    - target: {fileID: 558885924241475926, guid: 9b6d4a33071d47c42b3d1ed0adcfa9cc, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8036849022540144820, guid: 9b6d4a33071d47c42b3d1ed0adcfa9cc, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -2405,10 +2401,6 @@ PrefabInstance:
     - target: {fileID: 2496012199818071567, guid: bc5ccd18af38b114eaf6a58bccd7998f, type: 3}
       propertyPath: m_Name
       value: FX_Trail_Rare
-      objectReference: {fileID: 0}
-    - target: {fileID: 2496012199818071567, guid: bc5ccd18af38b114eaf6a58bccd7998f, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bc5ccd18af38b114eaf6a58bccd7998f, type: 3}
@@ -2670,10 +2662,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: FX_Trail_Epic
       objectReference: {fileID: 0}
-    - target: {fileID: 7667284132223336747, guid: 82fe1d7132cab0640afefab4c9249362, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 82fe1d7132cab0640afefab4c9249362, type: 3}
 --- !u!4 &1659830468829538205 stripped
@@ -2802,10 +2790,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: FX_Trail_Nomal
       objectReference: {fileID: 0}
-    - target: {fileID: 4019681595189112479, guid: fb6830738cd47d443bd9506965b865e6, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb6830738cd47d443bd9506965b865e6, type: 3}
 --- !u!4 &8406288774334421363 stripped
@@ -2867,10 +2851,6 @@ PrefabInstance:
     - target: {fileID: 7352127748771784102, guid: 11cd1dc262f3e9b4c93e727c98541189, type: 3}
       propertyPath: m_Name
       value: FX_Trail_Legendary
-      objectReference: {fileID: 0}
-    - target: {fileID: 7352127748771784102, guid: 11cd1dc262f3e9b4c93e727c98541189, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11cd1dc262f3e9b4c93e727c98541189, type: 3}

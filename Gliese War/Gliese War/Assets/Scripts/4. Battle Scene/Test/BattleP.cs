@@ -860,7 +860,7 @@ public class BattleP : MonoBehaviourPunCallbacks, IPunObservable
 
     IEnumerator TurnOffHandHammer()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.9f);
         
         col = handR.transform.GetChild(0).GetComponent<MeshCollider>();
         col.enabled = false;
@@ -886,7 +886,7 @@ public class BattleP : MonoBehaviourPunCallbacks, IPunObservable
     
     IEnumerator TurnOffHandSword()
     {
-        yield return new WaitForSeconds(0.9f);
+        yield return new WaitForSeconds(1f);
         
         col = handR.transform.GetChild(2).GetComponent<MeshCollider>();
         col.enabled = false;

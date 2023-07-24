@@ -21,7 +21,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _Add_Tex:
-        m_Texture: {fileID: 2800000, guid: 76e167ec492085f4bb837654a618ecb0, type: 3}
+        m_Texture: {fileID: 2800000, guid: b26641d4fa0a5ea46a39612813f2692b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
@@ -140,7 +140,7 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColorAddSubDiff: {r: 0, g: 0, b: 0, a: 0}
     - _Base_Tex_Flow: {r: -1, g: 0, b: 0, a: 0}
-    - _Base_Texture_Tiling: {r: 1, g: 1, b: 0, a: 0}
+    - _Base_Texture_Tiling: {r: 2, g: 2, b: 0, a: 0}
     - _Base_Texure_Offset: {r: 0, g: 0, b: 0, a: 0}
     - _CameraFadeParams: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}

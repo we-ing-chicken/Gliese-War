@@ -20,6 +20,11 @@ TagManager:
   - VirtualCamera
   - Inside
   - Outside
+  - Item
+  - Character
+  - Wall
+  - Water
+  - Heal
   layers:
   - Default
   - TransparentFX
