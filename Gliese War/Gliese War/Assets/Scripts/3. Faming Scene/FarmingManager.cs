@@ -101,7 +101,7 @@ public class FarmingManager : MonoBehaviour
 
     void Start()
     {
-        GameObject temp = Instantiate(GameManager.Instance.characters[GameManager.Instance.charNum], CPlayer.Instance.gameObject.transform);
+        GameObject temp = Instantiate(GameManager.Instance.farmingCharacters[GameManager.Instance.charNum], CPlayer.Instance.gameObject.transform);
         //temp.transform.position = new Vector3(116.67f, 19.52f, 185.36f);
         CPlayer.Instance.animator = temp.GetComponent<Animator>();
         CPlayer.Instance.playertransform = temp.transform;
@@ -111,7 +111,7 @@ public class FarmingManager : MonoBehaviour
         CPlayer.Instance.shoesEffectPos = temp.GetComponent<WeaponAttack>().shoesEffectPos;
 
 
-        GameObject temp2 = Instantiate(GameManager.Instance.characters[GameManager.Instance.charNum], CPlayerUI.instance.gameObject.transform);
+        GameObject temp2 = Instantiate(GameManager.Instance.farmingCharacters[GameManager.Instance.charNum], CPlayerUI.instance.gameObject.transform);
         CPlayerUI.instance.GetComponent<CPlayerUI>().animator = temp2.GetComponent<Animator>();
         CPlayerUI.instance.GetComponent<CPlayerUI>().playertransform = temp2.transform;
 

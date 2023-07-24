@@ -126,14 +126,6 @@ public class CPlayerUI : MonoBehaviour
 
         if (charactercontroller == null) return;
 
-        // move�� ���� �Է� ����
-        moveFB = Input.GetAxis(moveFBAxisName);
-
-        // rotate�� ���� �Է� ����
-        moveLR = Input.GetAxis(moveLRAxisName);
-
-        ismove = (Input.GetButton(moveFBAxisName) || Input.GetButton(moveLRAxisName));
-
         // fire�� ���� �Է� ����
         Mlattack = Input.GetButton(meleeAttackButtonName);
         Mgattack = Input.GetButton(magicAttackButtonName);
