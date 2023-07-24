@@ -187,7 +187,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
         
 
-        if (NetworkManager.Instance.sendOK && photonView.ViewID != 0 && PhotonNetwork.CurrentRoom.Players.Count == 1)
+        if (NetworkManager.Instance.sendOK && photonView.ViewID != 0 && PhotonNetwork.CurrentRoom.Players.Count == 2)
         {
             NetworkManager.Instance.sendOK = false;
             photonView.RPC("SendIndex", RpcTarget.All, photonView.ViewID, myindex);
@@ -1480,38 +1480,38 @@ public class BattlePlayer : LivingEntity, IPunObservable
         switch (weaopnNum)
         {
             case (int)Item.WeaponType.Hammer:
-                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(0)
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(0)
                     .gameObject.SetActive(true);
-                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(1)
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(1)
                     .gameObject.SetActive(false);
-                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(2)
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(2)
                     .gameObject.SetActive(false);
                 break;
 
             case (int)Item.WeaponType.Spear:
-                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(0)
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(0)
                     .gameObject.SetActive(false);
-                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(1)
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(1)
                     .gameObject.SetActive(true);
-                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(2)
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(2)
                     .gameObject.SetActive(false);
                 break;
 
             case (int)Item.WeaponType.Sword:
-                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(0)
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(0)
                     .gameObject.SetActive(false);
-                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(1)
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(1)
                     .gameObject.SetActive(false);
-                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(2)
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(2)
                     .gameObject.SetActive(true);
                 break;
 
             default:
-                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().whatMagicPos.transform.GetChild(0)
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(0)
                     .gameObject.SetActive(false);
-                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().whatMagicPos.transform.GetChild(1)
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(1)
                     .gameObject.SetActive(false);
-                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().whatMagicPos.transform.GetChild(2)
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(2)
                     .gameObject.SetActive(false);
                 break;
         }
