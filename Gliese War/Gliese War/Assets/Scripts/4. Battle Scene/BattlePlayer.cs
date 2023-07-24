@@ -1616,6 +1616,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     [PunRPC]
     void StartGame()
     {
+        isStart = true;
         BattleManager.Instance.GameStart();
     }
 
