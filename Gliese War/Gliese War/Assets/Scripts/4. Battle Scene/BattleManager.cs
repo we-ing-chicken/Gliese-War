@@ -359,22 +359,28 @@ public class BattleManager : MonoBehaviour
 
     public void MakeUICharacter()
     {
-        if (!BattlePlayer.instance.photonView.IsMine) return;
-        
-        GameObject temp;
-        
-        if (GameManager.Instance == null)
+        for (int i = 0; i < players.Length; ++i)
         {
-            temp = Instantiate(characterUIs[2]);
-        }
-        else
-        {
-            temp = Instantiate(GameManager.Instance.battleCharacters[GameManager.Instance.charNum]);
-        }
+            if (players[i] == null) continue;
 
-        temp.GetComponent<BattlePlayer>().isUI = true;
-        temp.transform.SetParent(characterUIParent.transform);
-        temp.transform.position = characterUIParent.transform.position;
-        temp.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll; 
+            if (players[i].GetComponent<BattlePlayer>().photonView.IsMine)
+            {
+                GameObject temp;
+
+                if (GameManager.Instance == null)
+                {
+                    temp = Instantiate(characterUIs[2]);
+                }
+                else
+                {
+                    temp = Instantiate(GameManager.Instance.battleCharacters[GameManager.Instance.charNum]);
+                }
+
+                temp.GetComponent<BattlePlayer>().isUI = true;
+                temp.transform.SetParent(characterUIParent.transform);
+                temp.transform.position = characterUIParent.transform.position;
+                temp.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+            }
+        }
     }
 }
