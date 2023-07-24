@@ -416,7 +416,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
             if (CheckHitWall(new Vector3(moveFB,0,moveLR)) || CheckHitWall(new Vector3(-moveFB,0,-moveLR)))
             {
-                Debug.Log("AAAAAAAAAAAAAAA");
             }
             else
             {
@@ -1130,8 +1129,10 @@ public class BattlePlayer : LivingEntity, IPunObservable
     public override bool ApplyDamage(DamageMessage damageMessage)
     {
         if (!base.ApplyDamage(damageMessage)) return false;
+        
         MyHPBar.Instance.SetHPBar(startingHealth, health);
-        BattleManager.Instance.HitScreen();
+        if(damageMessage.damage > 0)
+            BattleManager.Instance.HitScreen();
         return true;
     }
 

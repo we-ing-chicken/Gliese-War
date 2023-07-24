@@ -19299,6 +19299,7 @@ GameObject:
   - component: {fileID: 7437307415716281549}
   - component: {fileID: 7816886550048802181}
   - component: {fileID: 2339748411062452221}
+  - component: {fileID: 8102914638277984096}
   m_Layer: 0
   m_Name: Ground_light
   m_TagString: Untagged
@@ -23081,13 +23082,13 @@ ParticleSystem:
     collidesWithDynamic: 1
     interiorCollisions: 0
   TriggerModule:
-    enabled: 0
+    enabled: 1
     serializedVersion: 2
-    inside: 1
+    inside: 0
     outside: 0
-    enter: 0
+    enter: 2
     exit: 0
-    colliderQueryMode: 0
+    colliderQueryMode: 2
     radiusScale: 1
     primitives: []
   SubModule:
@@ -24100,6 +24101,18 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &8102914638277984096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7197104957716440378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18544ec3a9942d04e9cbe012b42d90ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7307481952208964059
 GameObject:
   m_ObjectHideFlags: 0
