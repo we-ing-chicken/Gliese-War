@@ -17,6 +17,7 @@ public class CPlayer : MonoBehaviour
     public float mouseSpeed;
     public bool isUI = false;
     public bool isFarming = true;
+    public bool isDead = false;
 
     private string moveFBAxisName = "Vertical"; // �յ� �������� ���� �Է��� �̸�
     private string moveLRAxisName = "Horizontal"; // �¿� �������� ���� �Է��� �̸�
@@ -624,6 +625,8 @@ public class CPlayer : MonoBehaviour
 
     public void GetDamage(int damage)
     {
+        if (isDead) return;
+        
         FarmingManager.Instance.HitScreen();
         currHealth -= damage;
         RefreshStat();
@@ -655,6 +658,7 @@ public class CPlayer : MonoBehaviour
         Instance.transform.position = FarmingManager.Instance.startPostion.transform.position;
         yield return new WaitForSeconds(0.1f);
         charactercontroller.enabled = true;
+        isDead = false;
         yield return null;
     }
 
