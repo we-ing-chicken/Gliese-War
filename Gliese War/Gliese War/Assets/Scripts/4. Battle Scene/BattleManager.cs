@@ -56,6 +56,8 @@ public class BattleManager : MonoBehaviour
 
     [Header("Magic")]
     public Sprite[] magics;
+    public GameObject magicSlider;
+    public GameObject magicCoolImage;
 
     [Header("Wait")]
     public GameObject mainCamera;

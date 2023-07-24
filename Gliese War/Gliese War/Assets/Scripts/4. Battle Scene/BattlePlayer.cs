@@ -162,7 +162,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
         SetEquipItemImage();
 
         RefreshStat();
-        
+        SetMagicImage();
+
         magicCooltime = 5f;
         isCool = false;
 
@@ -187,7 +188,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
         
 
-        if (NetworkManager.Instance.sendOK && photonView.ViewID != 0 && PhotonNetwork.CurrentRoom.Players.Count == 2)
+        if (NetworkManager.Instance.sendOK && photonView.ViewID != 0 && PhotonNetwork.CurrentRoom.Players.Count == 1)
         {
             NetworkManager.Instance.sendOK = false;
             photonView.RPC("SendIndex", RpcTarget.All, photonView.ViewID, myindex);
@@ -217,7 +218,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 if (weapon1 == null) return;
-
+                if (weaponNow == 1) return;
                 weaponNow = 1;
 
                 switch (weapon1.magic)
@@ -243,12 +244,14 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
                 RefreshStat();
                 WhatMagicEffect(myindex, (int)GetMagic());
+                SetMagicImage();
                 photonView.RPC("ChangeWeapon", RpcTarget.Others, myindex, (int)weapon1.item.weaponType, (int)weapon1.magic);
             }
             else if (Input.GetKeyDown(KeyCode.Alpha2))
             {
                 if (weapon2 == null) return;
-
+                if (weaponNow == 2) return;
+                
                 weaponNow = 2;
 
                 switch (weapon2.magic)
@@ -274,6 +277,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
                 RefreshStat();
                 WhatMagicEffect(myindex, (int)GetMagic());
+                SetMagicImage();
                 photonView.RPC("ChangeWeapon", RpcTarget.Others, myindex,(int)weapon2.item.weaponType, (int)weapon2.magic);
             }
             else if (Input.GetKeyDown(KeyCode.Alpha4))
@@ -367,6 +371,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
         else if (Input.GetMouseButtonDown(1))
         {
+            if (GetMagic() == Magic.Nothing) return;
+            
             if (isCool)
             {
                 Debug.Log("쿨타임");
@@ -378,8 +384,10 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
         else if (Input.GetMouseButtonUp(1))
         {
+            if (GetMagic() == Magic.Nothing) return;
+            
             isMagic = false;
-            StopCoroutine(magicCor);
+            if (magicCor != null) StopCoroutine(magicCor);
             MagicArea.Instance.transform.position = new Vector3(0,0,0);
         }
 
@@ -520,6 +528,30 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
     }
 
+    void SetMagicImage()
+    {
+        if (GetMagic() == Magic.Nothing)
+        {
+            Color c = BattleManager.Instance.magicCoolImage.GetComponent<Image>().color;
+            c.a = 0f;
+            BattleManager.Instance.magicCoolImage.GetComponent<Image>().color = c;
+            BattleManager.Instance.magicSlider.GetComponent<Slider>().value = 0f;
+        }
+        else
+        {
+            Color c = BattleManager.Instance.magicCoolImage.GetComponent<Image>().color;
+            c.a = 100f;
+            BattleManager.Instance.magicCoolImage.GetComponent<Image>().color = c;
+                    
+            BattleManager.Instance.magicCoolImage.GetComponent<Image>().sprite = BattleManager.Instance.magics[(int)GetMagic()];
+            
+            if (isCool) return;
+            
+            isCool = true;
+            StartCoroutine(CheckCoolTime(2.5f));
+        }
+    }
+
     void MakeMagic(int num, Vector3 pos, int who)
     {
         GameObject magic = Instantiate(magicEffect[num]); //1 Tornado , 2 Thunder  0 Fire
@@ -542,17 +574,18 @@ public class BattlePlayer : LivingEntity, IPunObservable
         magic.transform.position = pos;
     }
 
-    IEnumerator CheckCoolTime()
+    IEnumerator CheckCoolTime(float time = 0f)
     {
-        float time = 0f;
 
         while (true)
         {
             time += Time.deltaTime;
+            BattleManager.Instance.magicSlider.GetComponent<Slider>().value = time / magicCooltime;
 
             if (time >= magicCooltime)
             {
                 isCool = false;
+                BattleManager.Instance.magicSlider.GetComponent<Slider>().value = 1f;
                 break;
             }
 
@@ -1021,7 +1054,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             {
                 weapon2 = new RealItem();
                 weapon2.item = BattleManager.Instance.spear[1];
-                weapon2.magic = Magic.Water;
+                weapon2.magic = Magic.Nothing;
             }
         }
         else
