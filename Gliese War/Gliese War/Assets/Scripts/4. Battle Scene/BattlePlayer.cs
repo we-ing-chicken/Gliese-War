@@ -408,8 +408,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
         }
         
-        if (photonView.IsMine && BattleManager.Instance.mainCamera.gameObject.activeSelf)
+        if (photonView.IsMine)
         {
+            if (BattleManager.Instance.mainCamera.gameObject.activeSelf)
+            {
+                
+            
             //remoteDir = new Vector3(moveLR, 0, moveFB).normalized;
             //player_lookTarget();
 
@@ -443,7 +447,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             MouseX = MouseX + (Input.GetAxis("Mouse X") * mouseSpeed);
             remoteRot = Quaternion.Euler(0, MouseX, 0);
             transform.rotation = remoteRot;
-
+            }
         }
         else
         {
