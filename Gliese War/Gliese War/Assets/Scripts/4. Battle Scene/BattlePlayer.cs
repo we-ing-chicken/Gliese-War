@@ -1177,6 +1177,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         animator.SetTrigger("dying");
         yield return new WaitForSeconds(2.0f);
+        PhotonNetwork.LeaveRoom();
         SceneManager.LoadScene(1);
     }
 
