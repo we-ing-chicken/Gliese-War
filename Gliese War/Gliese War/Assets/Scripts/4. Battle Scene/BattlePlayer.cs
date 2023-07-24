@@ -1208,8 +1208,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
             ShowHitEffect(myindex, other.transform.GetComponentInParent<BattlePlayer>().myMagicNum);
             
             photonView.RPC("SendHit", RpcTarget.Others, myindex, other.transform.GetComponentInParent<BattlePlayer>().myMagicNum);
-            
-            BattleManager.Instance.HitScreen();
         }
 
         GameObject healEffect;
