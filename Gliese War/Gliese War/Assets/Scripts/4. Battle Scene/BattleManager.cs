@@ -164,6 +164,11 @@ public class BattleManager : MonoBehaviour
                 {
 
                     SwitchCanvasActive(pauseCanvas);
+                    
+                    if(pauseCanvas.gameObject.activeSelf)
+                        Cursor.visible = true;
+                    else
+                        Cursor.visible = false;
                 }
             }
         }
@@ -231,11 +236,13 @@ public class BattleManager : MonoBehaviour
     
     public void Resume()
     {
+        Cursor.visible = false;
         SwitchCanvasActive(pauseCanvas);
     }
 
     public void Exit()
     {
+        Cursor.visible = true;
         PhotonNetwork.LeaveRoom();
         SceneManager.LoadScene((int)(Scene.LobbyScene));
     }

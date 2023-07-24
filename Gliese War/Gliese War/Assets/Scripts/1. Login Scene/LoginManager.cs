@@ -63,6 +63,8 @@ namespace Team
             {
                 SceneManager.LoadScene(1);
             }
+            
+            Cursor.visible = true;
         }
 
         private void Update()

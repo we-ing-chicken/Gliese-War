@@ -66,6 +66,7 @@ public class LobbyManager : MonoBehaviour
         GameManager.Instance.charNum = charNum;
         
         isChanging = false;
+        Cursor.visible = true;
     }
 
     public void StartGame()

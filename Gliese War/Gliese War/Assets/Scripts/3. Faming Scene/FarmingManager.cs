@@ -101,6 +101,8 @@ public class FarmingManager : MonoBehaviour
 
     void Start()
     {
+        Cursor.visible = false;
+        
         GameObject temp = Instantiate(GameManager.Instance.farmingCharacters[GameManager.Instance.charNum], CPlayer.Instance.gameObject.transform);
         //temp.transform.position = new Vector3(116.67f, 19.52f, 185.36f);
         CPlayer.Instance.animator = temp.GetComponent<Animator>();
@@ -154,9 +156,12 @@ public class FarmingManager : MonoBehaviour
             {
                 if (!pauseCanvas.gameObject.activeSelf)
                 {
+                    Cursor.visible = false;
                     SwitchCanvasActive(invenCanvas);
                     SwitchGameObjectActive(characterCam);
                 }
+                else
+                    Cursor.visible = true; 
 
                 if (_isInven)
                     _isInven = false;
@@ -171,6 +176,7 @@ public class FarmingManager : MonoBehaviour
             {
                 SwitchCanvasActive(invenCanvas);
                 SwitchGameObjectActive(characterCam);
+                Cursor.visible = false;
             }
             else
             {
@@ -180,6 +186,11 @@ public class FarmingManager : MonoBehaviour
                     _isPause = true;
 
                 SwitchCanvasActive(pauseCanvas);
+                
+                if(pauseCanvas.gameObject.activeSelf)
+                    Cursor.visible = true;
+                else
+                    Cursor.visible = false;
             }
         }
         
@@ -350,6 +361,7 @@ public class FarmingManager : MonoBehaviour
     public void Resume()
     {
         _isPause = false;
+        Cursor.visible = false;
         SwitchCanvasActive(pauseCanvas);
     }
 
