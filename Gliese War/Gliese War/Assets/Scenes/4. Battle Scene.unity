@@ -247,7 +247,6 @@ GameObject:
   - component: {fileID: 18260353}
   - component: {fileID: 18260352}
   - component: {fileID: 18260351}
-  - component: {fileID: 18260350}
   m_Layer: 0
   m_Name: DeadTree4
   m_TagString: Untagged
@@ -271,18 +270,6 @@ Transform:
   m_Father: {fileID: 1275066436}
   m_RootOrder: 30
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &18260350
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 18260348}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ce3b0b27fa721244a44a0790bf4480f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!64 &18260351
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -688,7 +675,6 @@ GameObject:
   - component: {fileID: 77336795}
   - component: {fileID: 77336794}
   - component: {fileID: 77336793}
-  - component: {fileID: 77336792}
   m_Layer: 0
   m_Name: DeadTree3 (1)
   m_TagString: Untagged
@@ -711,18 +697,6 @@ Transform:
   m_Father: {fileID: 1275066436}
   m_RootOrder: 33
   m_LocalEulerAnglesHint: {x: 0.251, y: -93.401, z: 4.22}
---- !u!114 &77336792
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 77336790}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ce3b0b27fa721244a44a0790bf4480f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!64 &77336793
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3615,7 +3589,6 @@ GameObject:
   - component: {fileID: 515103872}
   - component: {fileID: 515103871}
   - component: {fileID: 515103870}
-  - component: {fileID: 515103869}
   m_Layer: 0
   m_Name: D_Castle3
   m_TagString: Untagged
@@ -3638,18 +3611,6 @@ Transform:
   m_Father: {fileID: 1275066436}
   m_RootOrder: 38
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 86.991}
---- !u!114 &515103869
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 515103867}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ce3b0b27fa721244a44a0790bf4480f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!65 &515103870
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3797,8 +3758,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: FarmingManager, Assembly-CSharp
+      - m_Target: {fileID: 440040327}
+        m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
         m_MethodName: Resume
         m_Mode: 1
         m_Arguments:
@@ -4382,7 +4343,6 @@ GameObject:
   - component: {fileID: 621936708}
   - component: {fileID: 621936707}
   - component: {fileID: 621936706}
-  - component: {fileID: 621936705}
   m_Layer: 0
   m_Name: D_Castle2
   m_TagString: Untagged
@@ -4405,18 +4365,6 @@ Transform:
   m_Father: {fileID: 1275066436}
   m_RootOrder: 37
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 205.408}
---- !u!114 &621936705
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 621936703}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ce3b0b27fa721244a44a0790bf4480f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!65 &621936706
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5262,8 +5210,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: FarmingManager, Assembly-CSharp
+      - m_Target: {fileID: 440040327}
+        m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
         m_MethodName: Exit
         m_Mode: 1
         m_Arguments:
@@ -5476,7 +5424,6 @@ GameObject:
   - component: {fileID: 760164228}
   - component: {fileID: 760164227}
   - component: {fileID: 760164226}
-  - component: {fileID: 760164225}
   m_Layer: 0
   m_Name: D_Castle1
   m_TagString: Untagged
@@ -5499,18 +5446,6 @@ Transform:
   m_Father: {fileID: 1275066436}
   m_RootOrder: 36
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 151.173}
---- !u!114 &760164225
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 760164223}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ce3b0b27fa721244a44a0790bf4480f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!65 &760164226
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6099,7 +6034,6 @@ GameObject:
   - component: {fileID: 829079417}
   - component: {fileID: 829079416}
   - component: {fileID: 829079415}
-  - component: {fileID: 829079414}
   m_Layer: 0
   m_Name: DeadTree1 (1)
   m_TagString: Untagged
@@ -6122,18 +6056,6 @@ Transform:
   m_Father: {fileID: 1275066436}
   m_RootOrder: 35
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &829079414
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 829079412}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ce3b0b27fa721244a44a0790bf4480f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!64 &829079415
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -6346,7 +6268,6 @@ GameObject:
   - component: {fileID: 834338091}
   - component: {fileID: 834338090}
   - component: {fileID: 834338089}
-  - component: {fileID: 834338088}
   m_Layer: 0
   m_Name: DeadTree2 (1)
   m_TagString: Untagged
@@ -6369,18 +6290,6 @@ Transform:
   m_Father: {fileID: 1275066436}
   m_RootOrder: 34
   m_LocalEulerAnglesHint: {x: -3.307, y: -57.177, z: 16.605}
---- !u!114 &834338088
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 834338086}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ce3b0b27fa721244a44a0790bf4480f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!64 &834338089
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -9331,7 +9240,6 @@ GameObject:
   - component: {fileID: 1269436588}
   - component: {fileID: 1269436587}
   - component: {fileID: 1269436586}
-  - component: {fileID: 1269436585}
   m_Layer: 0
   m_Name: DeadTree2
   m_TagString: Untagged
@@ -9354,18 +9262,6 @@ Transform:
   m_Father: {fileID: 1275066436}
   m_RootOrder: 28
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1269436585
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1269436583}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ce3b0b27fa721244a44a0790bf4480f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!64 &1269436586
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -10119,7 +10015,6 @@ GameObject:
   - component: {fileID: 1358754802}
   - component: {fileID: 1358754801}
   - component: {fileID: 1358754800}
-  - component: {fileID: 1358754799}
   m_Layer: 0
   m_Name: DeadTree5
   m_TagString: Untagged
@@ -10142,18 +10037,6 @@ Transform:
   m_Father: {fileID: 1275066436}
   m_RootOrder: 32
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1358754799
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1358754797}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ce3b0b27fa721244a44a0790bf4480f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!64 &1358754800
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -10396,7 +10279,6 @@ GameObject:
   - component: {fileID: 1379729384}
   - component: {fileID: 1379729383}
   - component: {fileID: 1379729382}
-  - component: {fileID: 1379729381}
   m_Layer: 0
   m_Name: DeadTree4 (1)
   m_TagString: Untagged
@@ -10420,18 +10302,6 @@ Transform:
   m_Father: {fileID: 1275066436}
   m_RootOrder: 31
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1379729381
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1379729379}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ce3b0b27fa721244a44a0790bf4480f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!64 &1379729382
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -12896,7 +12766,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1756889838
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13550,7 +13420,6 @@ GameObject:
   - component: {fileID: 1873967844}
   - component: {fileID: 1873967843}
   - component: {fileID: 1873967842}
-  - component: {fileID: 1873967841}
   m_Layer: 0
   m_Name: DeadTree1
   m_TagString: Untagged
@@ -13573,18 +13442,6 @@ Transform:
   m_Father: {fileID: 1275066436}
   m_RootOrder: 27
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1873967841
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1873967839}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ce3b0b27fa721244a44a0790bf4480f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!64 &1873967842
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -15168,7 +15025,6 @@ GameObject:
   - component: {fileID: 2128358269}
   - component: {fileID: 2128358268}
   - component: {fileID: 2128358267}
-  - component: {fileID: 2128358266}
   m_Layer: 0
   m_Name: DeadTree3
   m_TagString: Untagged
@@ -15191,18 +15047,6 @@ Transform:
   m_Father: {fileID: 1275066436}
   m_RootOrder: 29
   m_LocalEulerAnglesHint: {x: 12.924, y: 0, z: 4.831}
---- !u!114 &2128358266
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2128358264}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ce3b0b27fa721244a44a0790bf4480f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!64 &2128358267
 MeshCollider:
   m_ObjectHideFlags: 0

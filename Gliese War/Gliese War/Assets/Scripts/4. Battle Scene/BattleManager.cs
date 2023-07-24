@@ -2,12 +2,23 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class BattleManager : MonoBehaviour
 {
     private static BattleManager _instance;
+    
+    enum Scene
+    {
+        LoginScene = 0,
+        LobbyScene = 1,
+        FarmingScene = 2,
+        BattleScene = 3,
+        END
+    }
     
     [Header("Players")]
     public GameObject[] players;
@@ -120,6 +131,8 @@ public class BattleManager : MonoBehaviour
             temp.GetComponent<BattlePlayer>().isWait = true;
             temp.transform.position = waitPos.transform.position;
         }
+
+        Cursor.visible = false;
     }
 
     private void Update()
@@ -138,6 +151,20 @@ public class BattleManager : MonoBehaviour
                     _isInven = false;
                 else
                     _isInven = true;
+            }
+            
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                if (invenCanvas.gameObject.activeSelf)
+                {
+                    SwitchCanvasActive(invenCanvas);
+                    SwitchGameObjectActive(characterCam);
+                }
+                else
+                {
+
+                    SwitchCanvasActive(pauseCanvas);
+                }
             }
         }
     }
@@ -200,6 +227,17 @@ public class BattleManager : MonoBehaviour
 
             yield return null;
         }
+    }
+    
+    public void Resume()
+    {
+        SwitchCanvasActive(pauseCanvas);
+    }
+
+    public void Exit()
+    {
+        PhotonNetwork.LeaveRoom();
+        SceneManager.LoadScene((int)(Scene.LobbyScene));
     }
 
     public void BM_RemoveList(int removeNum)
