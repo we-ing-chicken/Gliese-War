@@ -1487,10 +1487,13 @@ public class BattlePlayer : LivingEntity, IPunObservable
     void WhatWeapon(int who, int weaopnNum)
     {
         if (BattleManager.Instance.players[who] == null) return;
+
+        Item.WeaponType weapon;
         
         switch (weaopnNum)
         {
             case (int)Item.WeaponType.Hammer:
+                weapon = Item.WeaponType.Hammer;
                 BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(0)
                     .gameObject.SetActive(true);
                 BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(1)
@@ -1500,6 +1503,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
                 break;
 
             case (int)Item.WeaponType.Spear:
+                weapon = Item.WeaponType.Spear;
                 BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(0)
                     .gameObject.SetActive(false);
                 BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(1)
@@ -1509,6 +1513,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
                 break;
 
             case (int)Item.WeaponType.Sword:
+                weapon = Item.WeaponType.Sword;
                 BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(0)
                     .gameObject.SetActive(false);
                 BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(1)
@@ -1518,6 +1523,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
                 break;
 
             default:
+                weapon = Item.WeaponType.Nothing;
                 BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(0)
                     .gameObject.SetActive(false);
                 BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(1)
@@ -1526,6 +1532,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
                     .gameObject.SetActive(false);
                 break;
         }
+
+        BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1.item.weaponType = weapon;
     }
 
     void WhatMagicEffect(int who, int magicNum)
