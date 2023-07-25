@@ -104,7 +104,7 @@ public class Drop : MonoBehaviour
             
                 
 
-            MeshCollider col = temp.GetComponent<MeshCollider>();
+            BoxCollider col = temp.GetComponent<BoxCollider>();
             col.enabled = true;
             
             Magnet mag = temp.AddComponent<Magnet>();

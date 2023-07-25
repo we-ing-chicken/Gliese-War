@@ -36,16 +36,6 @@ public class Magnet : MonoBehaviour
             rigid.AddForce(magnetDistanceStr*direction,ForceMode.Force );
             isEat = true;
         }
-        else if (onTree)
-        {
-            if(transform.position.y <= 51.5f)
-                rigid.constraints = RigidbodyConstraints.FreezePosition;
-        }
-        else if (!onTree)
-        {
-            if(transform.position.y <= 20f)
-                rigid.constraints = RigidbodyConstraints.FreezePosition;
-        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -94,5 +84,8 @@ public class Magnet : MonoBehaviour
          
             Destroy(gameObject);
         }
+        
+        if(!isEat)
+            rigid.constraints = RigidbodyConstraints.FreezePosition;
     }
 }
