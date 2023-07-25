@@ -85,7 +85,7 @@ public class Monster : MonoBehaviour
         if (other.CompareTag("Weapon"))
         {
             GetDamage();
-            KnockBack();
+            //KnockBack();
         }
         
         if (other.transform.CompareTag("Player") && !attackCoolTime)
