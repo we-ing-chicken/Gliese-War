@@ -176,15 +176,14 @@ public class CPlayer : MonoBehaviour
 
         if (isFarming)
         {
-            if (!FarmingManager.Instance._isInven && !isAttack)
+            if (Input.GetMouseButtonDown(0))
             {
-                if (Input.GetMouseButtonDown(0))
-                {
-                    AttackStart();
-                    AttackAnimation();
-                    StartCoroutine(AttackEffect());
-                    
-                }
+                if (FarmingManager.Instance._isInven) return;
+                if (isAttack) return;
+                
+                AttackStart(); 
+                AttackAnimation();
+                StartCoroutine(AttackEffect());
             }
         }
         else
