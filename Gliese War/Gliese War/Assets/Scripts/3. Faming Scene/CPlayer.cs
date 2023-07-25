@@ -365,7 +365,7 @@ public class CPlayer : MonoBehaviour
         if (weaponNow == 1)
         {
             if (weapon1 == null)
-                yield return null;
+                yield break;
             
             switch (weapon1.item.weaponType)
             {
@@ -394,7 +394,7 @@ public class CPlayer : MonoBehaviour
         else if (weaponNow == 2)
         {
             if (weapon2 == null)
-                yield return null;
+                yield break;
             
             switch (weapon2.item.weaponType)
             {
@@ -711,6 +711,8 @@ public class CPlayer : MonoBehaviour
 
         if (Instance.weaponNow == 1)
         {
+            if (weapon1 == null) return;
+            
             switch (weapon1.item.weaponType)
             {
                 case Item.WeaponType.Hammer:
@@ -731,6 +733,7 @@ public class CPlayer : MonoBehaviour
         }
         else if (weaponNow == 2)
         {
+            if (weapon2 == null) return;
 
             switch (weapon2.item.weaponType)
             {
