@@ -640,6 +640,17 @@ public class CPlayer : MonoBehaviour
 
     }
 
+    public void Heal(int value)
+    {
+        currHealth += value;
+
+        if (currHealth > maxHealth)
+            currHealth = maxHealth;
+        
+        RefreshStat();
+        FarmingManager.Instance.playerCurrentHPBar.value = (float)currHealth / maxHealth;
+    }
+
     public int GetAttackPower()
     {
         return (offensivePower + GetWeaponStat());

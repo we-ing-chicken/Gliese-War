@@ -208,7 +208,8 @@ public class FarmingManager : MonoBehaviour
             inventory.AcquireItem(inventory.sword[1]);
         else if (Input.GetKeyDown(KeyCode.F2)) 
             PlayBattlePhase();
-        
+        else if(Input.GetKeyDown(KeyCode.F3))
+            CPlayer.Instance.Heal(20);
 
     }
 
