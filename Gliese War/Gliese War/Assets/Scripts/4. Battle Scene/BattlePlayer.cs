@@ -144,6 +144,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         rot = 1.0f;
         isNear = false;
         life = 10;
+        
 
         if (GameManager.Instance != null)
         {
@@ -160,6 +161,11 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
         SetBattleItemEquip();
         SetEquipItemImage();
+
+        if (weapon1 == null)
+            weaponNow = 2;
+        if (weapon2 == null)
+            weaponNow = 3;
 
         RefreshStat();
         SetMagicImage();
@@ -193,7 +199,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
             NetworkManager.Instance.sendOK = false;
             photonView.RPC("SendIndex", RpcTarget.All, photonView.ViewID, myindex);
             photonView.RPC("StartGame", RpcTarget.All);
-            photonView.RPC("ChangeWeapon", RpcTarget.Others, myindex, (int)GetWeaponNum(), (int)weapon1.magic);
+            
+            if(weaponNow== 1)
+                photonView.RPC("ChangeWeapon", RpcTarget.Others, myindex, (int)GetWeaponNum(), (int)weapon1.magic);
+            else if (weaponNow == 2)
+                photonView.RPC("ChangeWeapon", RpcTarget.Others, myindex, (int)GetWeaponNum(), (int)weapon2.magic);
+            
             WhatMagicEffect(myindex, (int)GetMagic());
         }
 
@@ -1076,11 +1087,11 @@ public class BattlePlayer : LivingEntity, IPunObservable
         if (isWait || isUI ) return;
         if (!photonView.IsMine) return;
         
-        if(BattleManager.Instance.helmetEquip != null) BattleManager.Instance.helmetEquip.GetComponent<Image>().sprite = helmet.item.itemImage;
-        if(BattleManager.Instance.armorEquip != null) BattleManager.Instance.armorEquip.GetComponent<Image>().sprite = armor.item.itemImage;
-        if(BattleManager.Instance.shoeEquip != null) BattleManager.Instance.shoeEquip.GetComponent<Image>().sprite = shoe.item.itemImage;
+        if(GameManager.Instance.helmet != null) BattleManager.Instance.helmetEquip.GetComponent<Image>().sprite = helmet.item.itemImage;
+        if(GameManager.Instance.armor != null) BattleManager.Instance.armorEquip.GetComponent<Image>().sprite = armor.item.itemImage;
+        if(GameManager.Instance.shoe != null) BattleManager.Instance.shoeEquip.GetComponent<Image>().sprite = shoe.item.itemImage;
 
-        if (BattleManager.Instance.weapon1Equip != null)
+        if (GameManager.Instance.weapon1 != null)
         {
             BattleManager.Instance.weapon1Equip.GetComponent<Image>().sprite = weapon1.item.itemImage;
             BattleManager.Instance.weapon1Magic.GetComponent<Image>().sprite = GetMagicImage(weapon1.magic);
@@ -1092,7 +1103,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             }
         }
 
-        if (BattleManager.Instance.weapon2Equip != null)
+        if (GameManager.Instance.weapon2 != null)
         {
             BattleManager.Instance.weapon2Equip.GetComponent<Image>().sprite = weapon2.item.itemImage;
             BattleManager.Instance.weapon2Magic.GetComponent<Image>().sprite = GetMagicImage(weapon2.magic);
