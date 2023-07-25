@@ -617,7 +617,7 @@ public class CPlayer : MonoBehaviour
     {
         if (other.CompareTag("MonsterAttack"))
         {
-            GetDamage(5);
+            GetDamage(10);
             
         }
     }
@@ -625,9 +625,13 @@ public class CPlayer : MonoBehaviour
     public void GetDamage(int damage)
     {
         if (isDead) return;
+
+        float newDamage = damage - damage * (defensivePower * 1.2f) / 100;
+        int newIntDamage = (int)newDamage;
+        Debug.Log(newIntDamage);
         
         FarmingManager.Instance.HitScreen();
-        currHealth -= damage;
+        currHealth -= newIntDamage;
         RefreshStat();
         FarmingManager.Instance.playerCurrentHPBar.value = (float)currHealth / maxHealth;
 
