@@ -185,4 +185,9 @@ public class LobbyManager : MonoBehaviour
         
         yield return null;
     }
+
+    public void ExitButton()
+    {
+        Application.Quit();
+    }
 }
