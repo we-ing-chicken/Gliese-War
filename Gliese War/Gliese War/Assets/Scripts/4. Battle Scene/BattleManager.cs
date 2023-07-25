@@ -50,6 +50,7 @@ public class BattleManager : MonoBehaviour
     
     [SerializeField] private Image weapon1Image;
     [SerializeField] private Image weapon2Image;
+    public GameObject MagneticHitImage;
 
     [Header("Character UI")]
     public GameObject characterUIParent;

@@ -338,10 +338,13 @@ public class BattlePlayer : LivingEntity, IPunObservable
             LeftMouseButtonDown = Input.GetMouseButtonDown(0);
         }
 
-        if (LeftMouseButtonDown && !isAttack)
+        if (LeftMouseButtonDown )
         {
             if (photonView.IsMine)
             {
+                if (isAttack) return;
+                if (BattleManager.Instance._isInven) return;
+                
                 photonView.RPC("SendMouseButtonDown", RpcTarget.Others, LeftMouseButtonDown);
                 if (isMagic)
                 {
