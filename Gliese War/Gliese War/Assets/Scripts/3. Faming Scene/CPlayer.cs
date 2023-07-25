@@ -784,7 +784,7 @@ public class CPlayer : MonoBehaviour
 
     IEnumerator TurnOffHandHammer()
     {
-        yield return new WaitForSeconds(0.6f);
+        yield return new WaitForSeconds(0.9f);
         
         col = Instance.handR.transform.GetChild(0).GetComponent<MeshCollider>();
         col.enabled = false;
