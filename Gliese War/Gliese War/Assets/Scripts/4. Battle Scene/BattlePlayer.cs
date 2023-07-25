@@ -1240,6 +1240,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         if (other.CompareTag("Inside") && photonView.IsMine)
         {
             isSafe = true;
+            BattleManager.Instance.MagneticHitImage.SetActive(false);
         }
         
         if (other.CompareTag("Weapon") && !other.transform.GetComponentInParent<BattlePlayer>().photonView.IsMine)
@@ -1282,6 +1283,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         if (other.CompareTag("Inside") && photonView.IsMine)
         {
             isSafe = false;
+            BattleManager.Instance.MagneticHitImage.SetActive(true);
         }
     }
 
