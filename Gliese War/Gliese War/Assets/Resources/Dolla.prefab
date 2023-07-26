@@ -659,6 +659,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FX_HealingLoop
       objectReference: {fileID: 0}
+    - target: {fileID: 2896020621631393818, guid: 9f102d232377b2a4ab2960ee548446e9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2896020621631393823, guid: 9f102d232377b2a4ab2960ee548446e9, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -966,6 +970,10 @@ PrefabInstance:
     - target: {fileID: 2896020621631393818, guid: d97df317e660d9f4d90eb4ac2f676bc4, type: 3}
       propertyPath: m_Name
       value: FX_Healing
+      objectReference: {fileID: 0}
+    - target: {fileID: 2896020621631393818, guid: d97df317e660d9f4d90eb4ac2f676bc4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2896020621631393823, guid: d97df317e660d9f4d90eb4ac2f676bc4, type: 3}
       propertyPath: m_RootOrder
