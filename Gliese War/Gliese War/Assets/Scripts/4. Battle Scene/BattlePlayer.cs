@@ -1279,7 +1279,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
         else if(other.CompareTag("Item"))
         {
-            healEffect.SetActive(true);
+            other.GetComponent<BattlePlayer>().healEffect.SetActive(true);
 
             Destroy(other.gameObject);
         }
@@ -1295,7 +1295,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
         if (other.CompareTag("Heal"))
         {
-            healEffectLoop.SetActive(false);
+            other.GetComponent<BattlePlayer>().healEffectLoop.SetActive(true);
         }
     }
 
