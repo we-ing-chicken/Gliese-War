@@ -81,7 +81,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     private Coroutine magicCor; // set magic area position coroutine 
     [SerializeField] private GameObject[] magicEffect;
     private Vector3 magicPosition;
-    public int myMagicNum = 0; // my magic num
+    public int myMagicNum; // my magic num
     
     private int magicMaster;    // who's magic
     private float magicCooltime;    // how long wait for use magic again
@@ -1084,6 +1084,14 @@ public class BattlePlayer : LivingEntity, IPunObservable
                 shoe = GameManager.Instance.shoe;
                 weapon1 = GameManager.Instance.weapon1;
                 weapon2 = GameManager.Instance.weapon2;
+
+                if(weapon1 != null)
+                    myMagicNum = (int)weapon1.magic;
+                else if (weapon2 != null)
+                    myMagicNum = (int)weapon2.magic;
+                else
+                    myMagicNum = (int)Magic.Nothing;
+                
             }
         }
     }
