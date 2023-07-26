@@ -331,11 +331,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
             {
                 myMagicNum = 2;
             }
-            else if (Input.GetKeyDown(KeyCode.Alpha0))
-            {
-                Debug.Log(base.health);
-                GetDamage(5);
-            }
             else if (Input.GetKeyDown(KeyCode.P))
             {
                 StartCoroutine(Burns());
@@ -1189,19 +1184,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         if (!base.ApplyDamage(damageMessage)) return false;
         
-        if(damageMessage.damager != myindex) return false;
-        
-        if (damageMessage.damage > 0)
-        {
-            BattleManager.Instance.HitScreen();
-        }
-        else
-        {
-            if (health - damageMessage.damage > startingHealth)
-            {
-                health = startingHealth;
-            }
-        }
+        BattleManager.Instance.HitScreen();
         
         MyHPBar.Instance.SetHPBar(startingHealth, health);
         
@@ -1274,10 +1257,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         
         if (other.CompareTag("Item") && photonView.IsMine)
         {
-            DamageMessage dm;
-            dm.damager = myindex;
-            dm.damage = -20;
-            ApplyDamage(dm);
+            RestoreHealth(20);
         
             healEffect.SetActive(true);
 
@@ -1318,17 +1298,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
                 
                 BattleManager.Instance.HitScreen();
                 
-                
-                //GetDamage(1);
             }
         }
         
         if (other.CompareTag("Heal") && photonView.IsMine)
         {
-            DamageMessage dm;
-            dm.damager = myindex;
-            dm.damage = -1;
-            ApplyDamage(dm);
+            RestoreHealth(1);
             
             healEffectLoop.SetActive(true);
         }
@@ -1336,13 +1311,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
         {
             healEffectLoop.SetActive(true);
         }
-    }
-    
-    public void GetDamage(int val)
-    {
-        health -= val;
-        MyHPBar.Instance.SetHPBar(startingHealth, health);
-        BattleManager.Instance.HitScreen();
     }
 
     public void ShowHitEffect(int who, int magicNum)
