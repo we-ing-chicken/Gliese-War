@@ -139,6 +139,13 @@ public class BattlePlayer : LivingEntity, IPunObservable
         if (photonView.IsMine)
         {
             ApplyItems();
+            
+            if(weapon1 != null)
+                weaponNow = 1;
+            else if (weapon1 == null)
+                weaponNow = 2;
+            else if (weapon2 == null)
+                weaponNow = 3;
         }
         else
         {
@@ -1598,7 +1605,9 @@ public class BattlePlayer : LivingEntity, IPunObservable
                     .gameObject.SetActive(false);
                 break;
         }
-
+        
+        BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1 = new RealItem();
+        BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1.item = new Item();
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1.item.weaponType = weapon;
     }
 
