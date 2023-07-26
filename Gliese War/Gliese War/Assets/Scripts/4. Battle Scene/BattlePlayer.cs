@@ -232,6 +232,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             {
                 if (weapon1 == null) return;
                 if (weaponNow == 1) return;
+                if (isAttack) return;
                 weaponNow = 1;
 
                 switch (weapon1.magic)
@@ -264,6 +265,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             {
                 if (weapon2 == null) return;
                 if (weaponNow == 2) return;
+                if (isAttack) return;
                 
                 weaponNow = 2;
 
