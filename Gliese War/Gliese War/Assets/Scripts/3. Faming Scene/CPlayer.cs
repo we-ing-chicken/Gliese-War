@@ -178,7 +178,7 @@ public class CPlayer : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
-                if (FarmingManager.Instance._isInven) return;
+                if (FarmingManager.Instance.invenCanvas.activeSelf) return;
                 if (isAttack) return;
                 
                 AttackStart(); 
