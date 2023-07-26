@@ -1258,7 +1258,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
             GameObject healEffect;
             healEffect = Instantiate(BattleManager.Instance.HealEffect);
-            healEffect.transform.position = other.transform.position;
+            healEffect.transform.position = transform.position;
 
             Destroy(other.gameObject);
         }
@@ -1266,7 +1266,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         {
             GameObject healEffect;
             healEffect = Instantiate(BattleManager.Instance.HealEffect);
-            healEffect.transform.position = new Vector3(other.transform.position.x, other.transform.position.y - 0.5f, other.transform.position.z);
+            healEffect.transform.position = transform.position;
 
             Destroy(other.gameObject);
         }
@@ -1302,13 +1302,13 @@ public class BattlePlayer : LivingEntity, IPunObservable
             RestoreHealth(1);
             GameObject healEffect;    
             healEffect = Instantiate(BattleManager.Instance.HealEffect);
-            healEffect.transform.position = other.transform.position;
+            healEffect.transform.position = transform.position;
         }
         else if (other.CompareTag("Heal"))
         { 
             GameObject healEffect;
             healEffect = Instantiate(BattleManager.Instance.HealEffect);
-            healEffect.transform.position = new Vector3(other.transform.position.x, other.transform.position.y - 0.5f, other.transform.position.z);
+            healEffect.transform.position = transform.position;
         }
     }
 
