@@ -626,7 +626,7 @@ public class CPlayer : MonoBehaviour
     {
         if (isDead) return;
 
-        float newDamage = damage - damage * (defensivePower * 1.2f) / 100;
+        float newDamage = damage - damage * (defensivePower * 0.6f) / 100;
         int newIntDamage = (int)newDamage;
         Debug.Log(newIntDamage);
         

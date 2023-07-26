@@ -1251,7 +1251,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         if (other.CompareTag("Weapon") && !other.transform.GetComponentInParent<BattlePlayer>().photonView.IsMine)
         {
             int damage = other.transform.GetComponentInParent<BattlePlayer>().offensivePower;
-            float newDamage = damage - damage * (defensivePower * 1.2f) / 100;
+            float newDamage = damage - damage * (defensivePower * 0.6f) / 100;
             int newIntDamage = (int)newDamage;
             health -= newIntDamage;
             
