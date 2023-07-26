@@ -66,8 +66,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     [SerializeField] private GameObject attackEffectPos;
     [SerializeField] private GameObject[] attackEffect;
-    public GameObject healEffect;
-    public GameObject healEffectLoop;
 
     [SerializeField] private GameObject shoesEffectPos;
     [SerializeField] private GameObject whatMagicPos;
@@ -1257,14 +1255,18 @@ public class BattlePlayer : LivingEntity, IPunObservable
         if (other.CompareTag("Item") && photonView.IsMine)
         {
             RestoreHealth(20);
-        
-            healEffect.SetActive(true);
+
+            GameObject healEffect;
+            healEffect = Instantiate(BattleManager.Instance.HealEffect);
+            healEffect.transform.position = other.transform.position;
 
             Destroy(other.gameObject);
         }
         else if(other.CompareTag("Item"))
         {
-            other.GetComponent<BattlePlayer>().healEffect.SetActive(true);
+            GameObject healEffect;
+            healEffect = Instantiate(BattleManager.Instance.HealEffect);
+            healEffect.transform.position = new Vector3(other.transform.position.x, other.transform.position.y - 0.5f, other.transform.position.z);
 
             Destroy(other.gameObject);
         }
@@ -1276,11 +1278,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
         {
             isSafe = false;
             BattleManager.Instance.MagneticHitImage.SetActive(true);
-        }
-
-        if (other.CompareTag("Heal"))
-        {
-            other.GetComponent<BattlePlayer>().healEffectLoop.SetActive(true);
         }
     }
 
@@ -1303,12 +1300,15 @@ public class BattlePlayer : LivingEntity, IPunObservable
         if (other.CompareTag("Heal") && photonView.IsMine)
         {
             RestoreHealth(1);
-            
-            healEffectLoop.SetActive(true);
+            GameObject healEffect;    
+            healEffect = Instantiate(BattleManager.Instance.HealEffect);
+            healEffect.transform.position = other.transform.position;
         }
         else if (other.CompareTag("Heal"))
-        {
-            healEffectLoop.SetActive(true);
+        { 
+            GameObject healEffect;
+            healEffect = Instantiate(BattleManager.Instance.HealEffect);
+            healEffect.transform.position = new Vector3(other.transform.position.x, other.transform.position.y - 0.5f, other.transform.position.z);
         }
     }
 
