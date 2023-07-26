@@ -71,7 +71,7 @@ public class Tornado : MonoBehaviour
         // iterate
         GameObject obj = outData.GetCollider(0, 0).gameObject;
 
-        if (obj.CompareTag("Player"))
+        if (obj.CompareTag("Player")  && obj.GetComponent<BattlePlayer>().photonView.IsMine)
         {
             DamageMessage dm;
             dm.damager = master;

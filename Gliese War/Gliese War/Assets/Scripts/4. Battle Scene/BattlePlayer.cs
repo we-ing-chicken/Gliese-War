@@ -1183,9 +1183,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     public override bool ApplyDamage(DamageMessage damageMessage)
     {
         if (!base.ApplyDamage(damageMessage)) return false;
-        
-        BattleManager.Instance.HitScreen();
-        
+
         MyHPBar.Instance.SetHPBar(startingHealth, health);
         
         return true;
@@ -1215,6 +1213,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         animator.SetTrigger("dying");
         yield return new WaitForSeconds(2.0f);
+        NetworkManager.Instance.connect = false;
         PhotonNetwork.LeaveRoom();
         SceneManager.LoadScene(1);
     }
@@ -1242,8 +1241,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             int damage = other.transform.GetComponentInParent<BattlePlayer>().offensivePower;
             float newDamage = damage - damage * (defensivePower * 0.6f) / 100;
             int newIntDamage = (int)newDamage;
-            health -= newIntDamage;
-            
+
             DamageMessage dm;
             dm.damager = other.transform.GetComponentInParent<BattlePlayer>().myindex;
             dm.damage = newIntDamage;
@@ -1577,6 +1575,9 @@ public class BattlePlayer : LivingEntity, IPunObservable
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1 = new RealItem();
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1.item = new Item();
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1.item.weaponType = weapon;
+        
+        BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon2 = new RealItem();
+        BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon2.item = new Item();
     }
 
     void WhatMagicEffect(int who, int magicNum)
