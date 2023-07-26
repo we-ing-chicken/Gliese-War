@@ -66,6 +66,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     [SerializeField] private GameObject attackEffectPos;
     [SerializeField] private GameObject[] attackEffect;
+    public GameObject healEffect;
+    public GameObject healEffectLoop;
 
     [SerializeField] private GameObject shoesEffectPos;
     [SerializeField] private GameObject whatMagicPos;
@@ -1263,7 +1265,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             photonView.RPC("SendHit", RpcTarget.Others, myindex, other.transform.GetComponentInParent<BattlePlayer>().myMagicNum);
         }
 
-        GameObject healEffect;
+        
         if (other.CompareTag("Item") && photonView.IsMine)
         {
             DamageMessage dm;
@@ -1271,15 +1273,13 @@ public class BattlePlayer : LivingEntity, IPunObservable
             dm.damage = -20;
             ApplyDamage(dm);
         
-            healEffect = Instantiate(BattleManager.Instance.HealEffect);
-            healEffect.transform.position = other.transform.position;
+            healEffect.SetActive(true);
 
             Destroy(other.gameObject);
         }
         else if(other.CompareTag("Item"))
         {
-            healEffect = Instantiate(BattleManager.Instance.HealEffect);
-            healEffect.transform.position = new Vector3(other.transform.position.x,other.transform.position.y - 0.5f,other.transform.position.z);
+            healEffect.SetActive(true);
 
             Destroy(other.gameObject);
         }
@@ -1292,6 +1292,11 @@ public class BattlePlayer : LivingEntity, IPunObservable
             isSafe = false;
             BattleManager.Instance.MagneticHitImage.SetActive(true);
         }
+
+        if (other.CompareTag("Heal"))
+        {
+            healEffectLoop.SetActive(false);
+        }
     }
 
     private void OnTriggerStay(Collider other)
@@ -1300,12 +1305,14 @@ public class BattlePlayer : LivingEntity, IPunObservable
         {
             if (other.CompareTag("Outside") && photonView.IsMine)
             {
-                Debug.Log("밖");
                 DamageMessage dm;
                 dm.damager = myindex;
                 dm.damage = 1;
                 ApplyDamage(dm);
+                
                 BattleManager.Instance.HitScreen();
+                
+                
                 //GetDamage(1);
             }
         }
@@ -1316,6 +1323,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
             dm.damager = myindex;
             dm.damage = -1;
             ApplyDamage(dm);
+            
+            healEffectLoop.SetActive(true);
+        }
+        else if (other.CompareTag("Heal"))
+        {
+            healEffectLoop.SetActive(true);
         }
     }
     
