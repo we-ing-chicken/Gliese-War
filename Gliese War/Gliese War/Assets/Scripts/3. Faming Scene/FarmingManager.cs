@@ -156,17 +156,21 @@ public class FarmingManager : MonoBehaviour
             {
                 if (!pauseCanvas.gameObject.activeSelf)
                 {
-                    Cursor.visible = false;
                     SwitchCanvasActive(invenCanvas);
                     SwitchGameObjectActive(characterCam);
                 }
-                else
-                    Cursor.visible = true; 
 
                 if (_isInven)
+                {
                     _isInven = false;
+                    Cursor.visible = false;
+                }
                 else
+                {
                     _isInven = true;
+                    Cursor.visible = true;
+                    
+                }
             }
         }
 
