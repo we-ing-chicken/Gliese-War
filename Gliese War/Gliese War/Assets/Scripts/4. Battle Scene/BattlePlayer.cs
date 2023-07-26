@@ -1185,6 +1185,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
         MyHPBar.Instance.SetHPBar(startingHealth, health);
         BattleManager.Instance.HitScreen();
         
+        Inventory.instance.statParent.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Health : " + health + " / " + startingHealth;
+        
         return true;
     }
 
