@@ -127,12 +127,18 @@ public class BattlePlayer : LivingEntity, IPunObservable
             return;
         }
         
+        if(isWait)
+        {
+            GetComponent<AudioListener>().enabled = false;
+            return;
+        }   
+        
         Debug.Log(photonView.IsMine);
 
         instance = this;
         if (photonView.IsMine)
         {
-            applyItems();
+            ApplyItems();
         }
         else
         {
@@ -161,16 +167,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
             moveSpeed = 10;
         }
 
-        SetBattleItemEquip();
-        SetEquipItemImage();
-
-        if (weapon1 == null)
+        if(weapon1 != null)
+            weaponNow = 1;
+        else if (weapon1 == null)
             weaponNow = 2;
-        if (weapon2 == null)
+        else if (weapon2 == null)
             weaponNow = 3;
-
-        RefreshStat();
-        SetMagicImage();
 
         magicCooltime = 5f;
         isCool = false;
@@ -548,6 +550,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     void SetMagicImage()
     {
+        
         if (GetMagic() == Magic.Nothing)
         {
             Color c = BattleManager.Instance.magicCoolImage.GetComponent<Image>().color;
@@ -560,13 +563,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             Color c = BattleManager.Instance.magicCoolImage.GetComponent<Image>().color;
             c.a = 100f;
             BattleManager.Instance.magicCoolImage.GetComponent<Image>().color = c;
-                    
             BattleManager.Instance.magicCoolImage.GetComponent<Image>().sprite = BattleManager.Instance.magics[(int)GetMagic()];
-            
-            if (isCool) return;
-            
-            isCool = true;
-            StartCoroutine(CheckCoolTime(2.5f));
         }
     }
 
@@ -696,7 +693,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     private void AttackAnimation()
     {
-        //Debug.Log(weaponNow);
         if (weaponNow == 1)
         {
             if (weapon1 == null)
@@ -824,6 +820,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     private void RefreshStat()
     {
+    
         Inventory.instance.statParent.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Health : " + health + " / " + startingHealth;
         Inventory.instance.statParent.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Attack : " + (offensivePower + GetWeaponStat());
         Inventory.instance.statParent.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "Defense : " + defensivePower;
@@ -1046,56 +1043,46 @@ public class BattlePlayer : LivingEntity, IPunObservable
         // TO DO : 무기 스크립트 생성, 충돌 대상 태그가 플레이어라면 대상의 ApplyDamage 호출
            
     }
-    void applyItems()
-    {
-        if (GameManager.Instance == null) return;
-        helmet = GameManager.Instance.helmet;
-        armor = GameManager.Instance.armor;
-        shoe = GameManager.Instance.shoe;
-        weapon1 = GameManager.Instance.weapon1;
-        weapon2 = GameManager.Instance.weapon2;
-    }
-
-    void SetBattleItemEquip()
+    void ApplyItems()
     {
         if (GameManager.Instance == null)
         {
-            //Debug.Log(weapon1.item + ", " + weapon1.magic + ", " + weapon1.stat.attackPower);
-            if(weapon1 == null) 
-            {
-                weapon1 = new RealItem();
-                weapon1.item = BattleManager.Instance.sword[1];
-                weapon1.magic = Magic.Fire;
-            }
+            weapon1 = new RealItem();
+            weapon1.item = BattleManager.Instance.sword[1];
+            weapon1.magic = Magic.Fire;
 
-            if(weapon2 == null)
-            {
-                weapon2 = new RealItem();
-                weapon2.item = BattleManager.Instance.spear[1];
-                weapon2.magic = Magic.Nothing;
-            }
+            weapon2 = new RealItem();
+            weapon2.item = BattleManager.Instance.spear[1];
+            weapon2.magic = Magic.Nothing;
         }
         else
         {
-            if (photonView.IsMine)
+            
+            helmet = GameManager.Instance.helmet;
+            armor = GameManager.Instance.armor;
+            shoe = GameManager.Instance.shoe;
+            weapon1 = GameManager.Instance.weapon1;
+            weapon2 = GameManager.Instance.weapon2;
+            
+            if (weapon1 != null)
             {
-                helmet = GameManager.Instance.helmet;
-                armor = GameManager.Instance.armor;
-                shoe = GameManager.Instance.shoe;
-                weapon1 = GameManager.Instance.weapon1;
-                weapon2 = GameManager.Instance.weapon2;
-
-                if(weapon1 != null)
-                    myMagicNum = (int)weapon1.magic;
-                else if (weapon2 != null)
-                    myMagicNum = (int)weapon2.magic;
-                else
-                    myMagicNum = (int)Magic.Nothing;
-                
+                myMagicNum = (int)weapon1.magic;
+            }
+            else if (weapon2 != null)
+            {
+                myMagicNum = (int)weapon2.magic; 
+            }
+            else
+            {
+                myMagicNum = (int)Magic.Nothing;
             }
         }
+        
+        SetEquipItemImage();
+        RefreshStat();
+        SetMagicImage();
     }
-
+    
     void SetEquipItemImage()
     {
         if (GameManager.Instance == null) return;
@@ -1172,7 +1159,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
         {
             return weapon1.magic;
         }
-        else if (weaponNow == 2)
+
+        if (weaponNow == 2)
         {
             return weapon2.magic;
         }
