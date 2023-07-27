@@ -23,25 +23,25 @@ public class ItemMoving : MonoBehaviour
     {
         transform.Rotate(new Vector3(0, rotSpeed * Time.deltaTime, 0));
         
-        if (transform.position.y >= initY)
-        {
-            isUD = false;
-        }
-        else if (transform.position.y <= turningPoint)
-        {
-            isUD = true;
-        }
-
-        if (isUD)
-        {
-            
-            transform.position = transform.position + new Vector3(0, 1, 0) * Time.deltaTime;
-        }
-        else
-        {
-            
-            transform.position = transform.position + new Vector3(0, -1, 0) * Time.deltaTime;
-        }
+        // if (transform.position.y >= initY)
+        // {
+        //     isUD = false;
+        // }
+        // else if (transform.position.y <= turningPoint)
+        // {
+        //     isUD = true;
+        // }
+        //
+        // if (isUD)
+        // {
+        //     
+        //     transform.position = transform.position + new Vector3(0, 1, 0) * Time.deltaTime;
+        // }
+        // else
+        // {
+        //     
+        //     transform.position = transform.position + new Vector3(0, -1, 0) * Time.deltaTime;
+        // }
 
     }
 }
