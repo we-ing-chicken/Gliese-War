@@ -209,7 +209,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
         
 
-        if (NetworkManager.Instance.sendOK && photonView.ViewID != 0 && PhotonNetwork.CurrentRoom.Players.Count == 2)
+        if (NetworkManager.Instance.sendOK && photonView.ViewID != 0 && PhotonNetwork.CurrentRoom.Players.Count == 1)
         {
             NetworkManager.Instance.sendOK = false;
             BattleManager.Instance.alivePlayer = PhotonNetwork.CurrentRoom.Players.Count;
@@ -455,29 +455,31 @@ public class BattlePlayer : LivingEntity, IPunObservable
         {
             if (BattleManager.Instance.mainCamera.gameObject.activeSelf)
             {
+
+            
+                //remoteDir = new Vector3(moveLR, 0, moveFB).normalized;
+                //player_lookTarget();
                 
-            
-            //remoteDir = new Vector3(moveLR, 0, moveFB).normalized;
-            //player_lookTarget();
-
-
-            if (CheckHitWall(new Vector3(moveFB,0,moveLR)) || CheckHitWall(new Vector3(-moveFB,0,-moveLR)))
-            {
-            }
-            else
-            {
-                Vector3 lookForward = new Vector3(Camera.main.transform.forward.x, 0f, Camera.main.transform.forward.z).normalized;
-                Vector3 lookRight = new Vector3(Camera.main.transform.right.x, 0f, Camera.main.transform.right.z).normalized;
-                moveDir = lookForward * moveFB + lookRight * moveLR;
-                //Move();
-                transform.position += moveDir * moveSpeed * Time.deltaTime;
-                playertransform.LookAt(playertransform.position + moveDir);
-            
-            }   
                 //Look();
                 MouseX = MouseX + (Input.GetAxis("Mouse X") * mouseSpeed);
                 remoteRot = Quaternion.Euler(0, MouseX, 0);
                 transform.rotation = remoteRot;
+
+                if (isAttack) return;
+
+                if (CheckHitWall(new Vector3(moveFB,0,moveLR)) || CheckHitWall(new Vector3(-moveFB,0,-moveLR)))
+                {
+                }
+                else
+                {
+                    Vector3 lookForward = new Vector3(Camera.main.transform.forward.x, 0f, Camera.main.transform.forward.z).normalized;
+                    Vector3 lookRight = new Vector3(Camera.main.transform.right.x, 0f, Camera.main.transform.right.z).normalized;
+                    moveDir = lookForward * moveFB + lookRight * moveLR;
+                    //Move();
+                    transform.position += moveDir * moveSpeed * Time.deltaTime;
+                    playertransform.LookAt(playertransform.position + moveDir);
+                
+                }   
             
             }
         }

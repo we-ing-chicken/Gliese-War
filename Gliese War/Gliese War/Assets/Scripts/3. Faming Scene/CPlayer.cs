@@ -209,6 +209,7 @@ public class CPlayer : MonoBehaviour
         if (charactercontroller == null) return;
         Look();
 
+        
         if (!charactercontroller.isGrounded)
         {
             if(!ignoreGravity)
@@ -216,6 +217,8 @@ public class CPlayer : MonoBehaviour
         }
         else
         {
+            if (isAttack) return;
+            
             Move();
             if (p_Jump)
             {
@@ -228,7 +231,9 @@ public class CPlayer : MonoBehaviour
 
             }
         }
-
+        
+        
+        
         charactercontroller.Move(moveDir * Time.deltaTime);
         //tranform.position 전송
     }
