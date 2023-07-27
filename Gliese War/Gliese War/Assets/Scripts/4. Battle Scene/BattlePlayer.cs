@@ -12,6 +12,7 @@ using UnityEngine.AI;
 using UnityEngine.Animations;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering.UI;
+using UnityEngine.Rendering.VirtualTexturing;
 using UnityEngine.SceneManagement;
 
 public class BattlePlayer : LivingEntity, IPunObservable
@@ -22,6 +23,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
     public int life;
     public float MouseX;
     public float mouseSpeed;
+    public string id;
+    public string nickName;
 
     private string moveFBAxisName = "Vertical"; //  յ                 Է     ̸ 
     private string moveLRAxisName = "Horizontal"; //  ¿                 Է     ̸ 
@@ -203,11 +206,14 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
         
 
-        if (NetworkManager.Instance.sendOK && photonView.ViewID != 0 && PhotonNetwork.CurrentRoom.Players.Count == 1)
+        if (NetworkManager.Instance.sendOK && photonView.ViewID != 0 && PhotonNetwork.CurrentRoom.Players.Count == 2)
         {
             NetworkManager.Instance.sendOK = false;
+            BattleManager.Instance.alivePlayer = PhotonNetwork.CurrentRoom.Players.Count;
             photonView.RPC("SendIndex", RpcTarget.All, photonView.ViewID, myindex);
             photonView.RPC("StartGame", RpcTarget.All);
+            
+            // 모든 유저 DB 업데이트
             
             if(weaponNow== 1)
                 photonView.RPC("ChangeWeapon", RpcTarget.Others, myindex, (int)GetWeaponNum(), (int)weapon1.magic);
@@ -218,7 +224,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
 
         if (isWait || !isStart) return;
-        
+        if (!isalive) return;
         
         //if (charactercontroller == null) return;
 
@@ -825,6 +831,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
         Inventory.instance.statParent.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Attack : " + (offensivePower + GetWeaponStat());
         Inventory.instance.statParent.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "Defense : " + defensivePower;
         Inventory.instance.statParent.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = "Speed : " + moveSpeed;
+        
+        BattleManager.Instance.HPText.GetComponent<TextMeshProUGUI>().text = health + " / " + startingHealth;
     }
 
     private int GetWeaponStat()
@@ -1186,6 +1194,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         BattleManager.Instance.HitScreen();
         
         Inventory.instance.statParent.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Health : " + health + " / " + startingHealth;
+        BattleManager.Instance.HPText.GetComponent<TextMeshProUGUI>().text = health + " / " + startingHealth;
         
         return true;
     }
@@ -1213,10 +1222,11 @@ public class BattlePlayer : LivingEntity, IPunObservable
     IEnumerator die()
     {
         animator.SetTrigger("dying");
+        photonView.RPC("MinusLiveCount", RpcTarget.Others);
         yield return new WaitForSeconds(2.0f);
-        NetworkManager.Instance.connect = false;
-        PhotonNetwork.LeaveRoom();
-        SceneManager.LoadScene(1);
+        
+        BattleManager.Instance.openLoseCanvas();
+        //진 사람 DB추가
     }
 
     void OnCollisionEnter(Collision collision)
@@ -1638,6 +1648,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     void SendIndex(int viewID, int index)
     {
         GameObject[] pl = GameObject.FindGameObjectsWithTag("Player");
+        Debug.Log("SendIndex 실행");
 
         for (int i = 0; i < pl.Length; ++i)
         {
@@ -1667,5 +1678,19 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         WhatWeapon(who, weaponNum);
         WhatMagicEffect(who, magicNum);
+    }
+
+    [PunRPC]
+    void MinusLiveCount(int num)
+    {
+        BattleManager.Instance.alivePlayer--;
+        Debug.Log(BattleManager.Instance.alivePlayer + "명 남아있음");
+
+        if (BattleManager.Instance.alivePlayer == 1 && isalive)
+        {
+            isalive = false;
+            BattleManager.Instance.openWinCanvas();
+            //이긴 사람 DB 승리 추가
+        }
     }
 }

@@ -23,12 +23,16 @@ public class BattleManager : MonoBehaviour
     [Header("Players")]
     public GameObject[] players;
     public List<int> player_indexes = new List<int>();
+    public int alivePlayer;
     
     [Header("Canvas")] public GameObject invenCanvas;
     public Canvas pauseCanvas;
     public Canvas fadeCanvas;
     public Canvas hitCanvas;
     public Canvas playCanvas;
+    public Canvas winCanvas;
+    public Canvas loseCanvas;
+    public GameObject HPText;
 
     [Header("Item")]
     public Item[] sword;
@@ -244,8 +248,21 @@ public class BattleManager : MonoBehaviour
     public void Exit()
     {
         Cursor.visible = true;
+        NetworkManager.Instance.connect = false;
         PhotonNetwork.LeaveRoom();
         SceneManager.LoadScene((int)(Scene.LobbyScene));
+    }
+    
+    public void openWinCanvas()
+    {
+        Cursor.visible = true;
+        SwitchCanvasActive(winCanvas);
+    }
+    
+    public void openLoseCanvas()
+    {
+        Cursor.visible = true;
+        SwitchCanvasActive(loseCanvas);
     }
 
     public void BM_RemoveList(int removeNum)
@@ -287,6 +304,8 @@ public class BattleManager : MonoBehaviour
     
     public void HitScreen()
     {
+        if (BattlePlayer.instance.photonView.IsMine && !BattlePlayer.instance.isalive) return;
+        
         StartCoroutine(HitCoroutine());
     }
 
