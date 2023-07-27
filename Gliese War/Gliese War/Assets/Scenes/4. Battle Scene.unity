@@ -2701,6 +2701,7 @@ MonoBehaviour:
   playCanvas: {fileID: 867092536}
   winCanvas: {fileID: 1186696185}
   loseCanvas: {fileID: 1662573166}
+  HPText: {fileID: 1176798311}
   sword:
   - {fileID: 11400000, guid: 37030e55f953d1648adc88e3dd24bdf0, type: 2}
   - {fileID: 11400000, guid: 6281ae3d67e42bd43928ac56f1ef8472, type: 2}
