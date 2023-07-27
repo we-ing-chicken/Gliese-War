@@ -178,9 +178,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
         if(weapon1 != null)
             weaponNow = 1;
         else if (weapon1 == null)
-            weaponNow = 2;
-        else if (weapon2 == null)
-            weaponNow = 3;
+        {
+            if(weapon2 != null)
+                weaponNow = 2;
+            else if (weapon2 == null)
+                weaponNow = 3;
+        }
 
         magicCooltime = 5f;
         isCool = false;
@@ -214,11 +217,17 @@ public class BattlePlayer : LivingEntity, IPunObservable
             photonView.RPC("StartGame", RpcTarget.All);
             
             // 모든 유저 DB 업데이트
-            
-            if(weaponNow== 1)
+
+            if (weaponNow == 1)
+            {
+                Debug.Log(weaponNow);   
                 photonView.RPC("ChangeWeapon", RpcTarget.Others, myindex, (int)GetWeaponNum(), (int)weapon1.magic);
+            }
             else if (weaponNow == 2)
+            {
+                Debug.Log(weaponNow);
                 photonView.RPC("ChangeWeapon", RpcTarget.Others, myindex, (int)GetWeaponNum(), (int)weapon2.magic);
+            }
             
             WhatMagicEffect(myindex, (int)GetMagic());
         }
@@ -1685,7 +1694,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     }
 
     [PunRPC]
-    void MinusLiveCount(int num)
+    void MinusLiveCount()
     {
         BattleManager.Instance.alivePlayer--;
         Debug.Log(BattleManager.Instance.alivePlayer + "명 남아있음");
