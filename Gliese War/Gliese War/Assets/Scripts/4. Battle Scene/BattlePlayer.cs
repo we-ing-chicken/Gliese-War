@@ -1165,11 +1165,13 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         if (weaponNow == 1)
         {
+            if (weapon1 == null) return Magic.Nothing;
             return weapon1.magic;
         }
 
         if (weaponNow == 2)
         {
+            if (weapon2 == null) return Magic.Nothing;
             return weapon2.magic;
         }
 
