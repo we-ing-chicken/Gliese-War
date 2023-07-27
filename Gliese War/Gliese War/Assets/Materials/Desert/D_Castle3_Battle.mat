@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: D_Castle3
+  m_Name: D_Castle3_Battle
   m_Shader: {fileID: 4800000, guid: 99bb36e9d2c76874e8e8e2baed6debca, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords:
@@ -18,7 +18,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3001
+  m_CustomRenderQueue: 2000
   stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
