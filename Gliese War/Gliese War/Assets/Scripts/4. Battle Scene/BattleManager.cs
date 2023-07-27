@@ -194,6 +194,8 @@ public class BattleManager : MonoBehaviour
             {
                 Destroy(temp.gameObject);
 
+                loadingCamera.GetComponent<AudioListener>().enabled = false;
+                
                 loadingVCam.SetActive(false);
                 loadingCamera.SetActive(false);
 
@@ -209,6 +211,8 @@ public class BattleManager : MonoBehaviour
                     if (players[i].GetComponent<BattlePlayer>().photonView.IsMine)
                     {
                         players[i].GetComponent<BattlePlayer>().virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
+
+                        players[i].GetComponent<AudioListener>().enabled = true;
 
                         CServercamTest sct = Camera.main.GetComponent<CServercamTest>();
 

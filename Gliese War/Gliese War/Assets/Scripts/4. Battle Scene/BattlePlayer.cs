@@ -118,19 +118,20 @@ public class BattlePlayer : LivingEntity, IPunObservable
     public bool isWait = false;
     public bool isStart = false;
 
+    public AudioSource audio;
+    [SerializeField] private AudioClip[] attackSounds;
+
     public CinemachineVirtualCamera virtualCamera;
 
     private void Start()
     {
         if (isUI)
         {
-            GetComponent<AudioListener>().enabled = false;
             return;
         }
         
         if(isWait)
         {
-            GetComponent<AudioListener>().enabled = false;
             return;
         }   
         
@@ -150,7 +151,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
         else
         {
-            GetComponent<AudioListener>().enabled = false;
         }
         if (!isalive) isalive = true;
 
@@ -188,6 +188,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
         magicCooltime = 5f;
         isCool = false;
 
+        audio = GetComponent<AudioSource>();
+        
         EquipWeapon();
         if (photonView.IsMine)
         {
@@ -492,6 +494,15 @@ public class BattlePlayer : LivingEntity, IPunObservable
             transform.rotation = remoteRot;
         }
         //}
+        
+        if (ismove)
+        {
+            if (audio == null) return;
+            if (!audio.isPlaying)
+            {
+                audio.Play();
+            }
+        }
 
         //charactercontroller.Move(moveDir * Time.deltaTime * moveSpeed);
         animate_Run(isalive);
@@ -765,19 +776,21 @@ public class BattlePlayer : LivingEntity, IPunObservable
                     yield return new WaitForSeconds(0.7f);
                     attackEffectPos.transform.GetChild(2).gameObject.SetActive(true);
                     StartCoroutine(QuitAttackEffect(2));
+                    audio.PlayOneShot(attackSounds[2], 1f);
                     break;
 
                 case Item.WeaponType.Sword:
                     yield return new WaitForSeconds(0.2f);
                     attackEffectPos.transform.GetChild(0).gameObject.SetActive(true);
                     StartCoroutine(QuitAttackEffect(0));
-
+                    audio.PlayOneShot(attackSounds[0], 1f);
                     break;
 
                 case Item.WeaponType.Spear:
                     yield return new WaitForSeconds(0.2f);
                     attackEffectPos.transform.GetChild(1).gameObject.SetActive(true);
                     StartCoroutine(QuitAttackEffect(1));
+                    audio.PlayOneShot(attackSounds[1], 1f);
                     break;
             }
         }
@@ -792,19 +805,21 @@ public class BattlePlayer : LivingEntity, IPunObservable
                     yield return new WaitForSeconds(0.7f);
                     attackEffectPos.transform.GetChild(2).gameObject.SetActive(true);
                     StartCoroutine(QuitAttackEffect(2));
+                    audio.PlayOneShot(attackSounds[2], 1f);
                     break;
 
                 case Item.WeaponType.Sword:
                     yield return new WaitForSeconds(0.2f);
                     attackEffectPos.transform.GetChild(0).gameObject.SetActive(true);
                     StartCoroutine(QuitAttackEffect(0));
-
+                    audio.PlayOneShot(attackSounds[0], 1f);
                     break;
 
                 case Item.WeaponType.Spear:
                     yield return new WaitForSeconds(0.2f);
                     attackEffectPos.transform.GetChild(1).gameObject.SetActive(true);
                     StartCoroutine(QuitAttackEffect(1));
+                    audio.PlayOneShot(attackSounds[1], 1f);
                     break;
             }
         }
