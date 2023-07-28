@@ -2767,6 +2767,7 @@ MonoBehaviour:
   testPlayer: {fileID: 4804161492713886577, guid: 2996bd538cef5e348b0530e98c7a904c, type: 3}
   temp: {fileID: 0}
   inside: {fileID: 1029809768}
+  outside: {fileID: 655639624}
 --- !u!4 &440040328
 Transform:
   m_ObjectHideFlags: 0
@@ -4930,7 +4931,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &655639625
 BoxCollider:
   m_ObjectHideFlags: 0

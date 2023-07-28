@@ -217,7 +217,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             BattleManager.Instance.alivePlayer = PhotonNetwork.CurrentRoom.Players.Count;
             photonView.RPC("SendIndex", RpcTarget.All, photonView.ViewID, myindex);
             photonView.RPC("StartGame", RpcTarget.All);
-            photonView.RPC("SendShoeEffectNum", RpcTarget.All, (int)shoe.item.itemRank);
+            photonView.RPC("SendShoeEffectNum", RpcTarget.All, myindex, (int)shoe.item.itemRank);
             
             // 모든 유저 DB 업데이트
 
@@ -1113,7 +1113,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             shoe = new RealItem();
             shoe.item = new Item();
             shoe.item.itemCategory = Item.ItemCategory.Shoes;
-            shoe.item.itemRank = Item.ItemRank.Legendary;
+            shoe.item.itemRank = Item.ItemRank.Epic;
         }
         else
         {
@@ -1767,8 +1767,10 @@ public class BattlePlayer : LivingEntity, IPunObservable
     }
 
     [PunRPC]
-    void SendShoeEffectNum(int num)
+    void SendShoeEffectNum(int who, int num)
     {
-        shoesEffectPos.transform.GetChild(num).gameObject.SetActive(true);
+        if (BattleManager.Instance.players[who] == null) return;
+        
+        BattleManager.Instance.players[who].GetComponent<BattlePlayer>().shoesEffectPos.transform.GetChild(num).gameObject.SetActive(true);
     }
 }
