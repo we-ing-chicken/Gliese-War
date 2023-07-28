@@ -1221,8 +1221,17 @@ public class BattlePlayer : LivingEntity, IPunObservable
         if (!base.ApplyDamage(damageMessage)) return false;
 
         MyHPBar.Instance.SetHPBar(startingHealth, health);
-        BattleManager.Instance.HitScreen();
-        
+
+        if (damageMessage.damage > 0)
+        {
+            BattleManager.Instance.HitScreen();
+        }
+        else
+        {
+            if (health > startingHealth)
+                health = startingHealth;
+        }
+
         Inventory.instance.statParent.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Health : " + health + " / " + startingHealth;
         BattleManager.Instance.HPText.GetComponent<TextMeshProUGUI>().text = health + " / " + startingHealth;
         
@@ -1296,7 +1305,10 @@ public class BattlePlayer : LivingEntity, IPunObservable
         
         if (other.CompareTag("Item") && photonView.IsMine)
         {
-            RestoreHealth(20);
+            DamageMessage dm;
+            dm.damager = myindex;
+            dm.damage = -20;
+            ApplyDamage(dm);
 
             GameObject healEffect;
             healEffect = Instantiate(BattleManager.Instance.HealEffect);
@@ -1341,7 +1353,11 @@ public class BattlePlayer : LivingEntity, IPunObservable
         
         if (other.CompareTag("Heal") && photonView.IsMine)
         {
-            RestoreHealth(1);
+            DamageMessage dm;
+            dm.damager = myindex;
+            dm.damage = -1;
+            ApplyDamage(dm);
+            
             GameObject healEffect;    
             healEffect = Instantiate(BattleManager.Instance.HealEffect);
             healEffect.transform.position = transform.position;
