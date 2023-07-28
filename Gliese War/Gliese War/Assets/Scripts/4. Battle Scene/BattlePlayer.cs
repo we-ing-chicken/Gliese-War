@@ -412,7 +412,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         //     }
         // }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && photonView.IsMine)
         {
             if (isAttack) return;
             if (BattleManager.Instance._isInven) return;
@@ -435,7 +435,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             }
             
             isAttack = true;
-            AttackStart();
+            AttackStart(myindex);
             AttackAnimation();
             StartCoroutine(AttackEffect());
             photonView.RPC("SendAttack", RpcTarget.Others, myindex, (int)weapon1.item.weaponType);
@@ -1433,7 +1433,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         hitEffect.transform.position = BattleManager.Instance.players[who].transform.position;
     }
     
-    public void AttackStart()
+    public void AttackStart(int who)
     {
         if (weaponNow == 1)
         {
@@ -1441,17 +1441,17 @@ public class BattlePlayer : LivingEntity, IPunObservable
             {
                 case Item.WeaponType.Hammer:
                     TurnOnHandHammer();
-                    StartCoroutine(TurnOffHandHammer());
+                    StartCoroutine(TurnOffHandHammer(who));
                     break;
                 
                 case Item.WeaponType.Sword:
-                    StartCoroutine(TurnOffHandSword());
+                    StartCoroutine(TurnOffHandSword(who));
                     TurnOnHandSword();
                     break;
                 
                 case Item.WeaponType.Spear:
                     TurnOnHandSpear();
-                    StartCoroutine(TurnOffHandSpear());
+                    StartCoroutine(TurnOffHandSpear(who));
                     break;
             }
         }
@@ -1462,22 +1462,20 @@ public class BattlePlayer : LivingEntity, IPunObservable
             {
                 case Item.WeaponType.Hammer:
                     TurnOnHandHammer();
-                    StartCoroutine(TurnOffHandHammer());
+                    StartCoroutine(TurnOffHandHammer(who));
                     break;
                 
                 case Item.WeaponType.Sword:
                     TurnOnHandSword();
-                    StartCoroutine(TurnOffHandSword());
+                    StartCoroutine(TurnOffHandSword(who));
                     break;
                 
                 case Item.WeaponType.Spear:
                     TurnOnHandSpear();
-                    StartCoroutine(TurnOffHandSpear());
+                    StartCoroutine(TurnOffHandSpear(who));
                     break;
             }
         }
-
-        isAttack = true;
     }
 
     public void TurnOnHandHammer()
@@ -1507,7 +1505,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         col.enabled = true;
     }
 
-    IEnumerator TurnOffHandHammer()
+    IEnumerator TurnOffHandHammer(int who)
     {
         yield return new WaitForSeconds(0.9f);
         
@@ -1517,10 +1515,10 @@ public class BattlePlayer : LivingEntity, IPunObservable
         handR.transform.GetChild(0).gameObject.SetActive(false);
         back.transform.GetChild(0).gameObject.SetActive(true);
         
-        isAttack = false;
+        BattleManager.Instance.players[who].GetComponent<BattlePlayer>().isAttack = false;
     }
     
-    IEnumerator TurnOffHandSpear()
+    IEnumerator TurnOffHandSpear(int who)
     {
         yield return new WaitForSeconds(0.6f);
         
@@ -1530,10 +1528,10 @@ public class BattlePlayer : LivingEntity, IPunObservable
         handR.transform.GetChild(1).gameObject.SetActive(false);
         back.transform.GetChild(1).gameObject.SetActive(true);
         
-        isAttack = false;
+        BattleManager.Instance.players[who].GetComponent<BattlePlayer>().isAttack = false;
     }
     
-    IEnumerator TurnOffHandSword()
+    IEnumerator TurnOffHandSword(int who)
     {
         yield return new WaitForSeconds(1f);
         
@@ -1543,7 +1541,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         handR.transform.GetChild(2).gameObject.SetActive(false);
         back.transform.GetChild(2).gameObject.SetActive(true);
         
-        isAttack = false;
+        BattleManager.Instance.players[who].GetComponent<BattlePlayer>().isAttack = false;
     }
 
     [PunRPC]
@@ -1810,7 +1808,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         if (BattleManager.Instance.players[who] == null) return;
     
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().isAttack = true;
-        BattleManager.Instance.players[who].GetComponent<BattlePlayer>().AttackStart();
+        BattleManager.Instance.players[who].GetComponent<BattlePlayer>().AttackStart(who);
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().AttackAnimation();
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().StartCoroutine(AttackEffect());
     }
