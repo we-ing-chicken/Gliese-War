@@ -1167,7 +1167,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
                 myMagicNum = (int)Magic.Nothing;
             }
         }
-        
+
+        startingHealth = GameManager.Instance.stat.health;
+        offensivePower = GameManager.Instance.stat.attackPower;
+        defensivePower = GameManager.Instance.stat.defensePower;
+        moveSpeed = GameManager.Instance.stat.moveSpeed;
+
         SetEquipItemImage();
         RefreshStat();
         SetMagicImage();
