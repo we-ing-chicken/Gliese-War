@@ -482,6 +482,15 @@ public class BattlePlayer : LivingEntity, IPunObservable
                     playertransform.LookAt(playertransform.position + moveDir);
                 
                 }   
+                
+                if (ismove)
+                {
+                    if (audio == null) return;
+                    if (!audio.isPlaying)
+                    {
+                        audio.Play();
+                    }
+                }
             
             }
         }
@@ -492,17 +501,24 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
             remoteRot = Quaternion.Euler(0, MouseX, 0);
             transform.rotation = remoteRot;
+
+            if (audio == null) return;
+            
+            if (moveDir != Vector3.zero)
+            {
+                if (!audio.isPlaying)
+                {
+                    audio.Play();
+                }
+            }
+            else
+            {
+                 audio.Stop();
+            }
         }
         //}
         
-        if (ismove)
-        {
-            if (audio == null) return;
-            if (!audio.isPlaying)
-            {
-                audio.Play();
-            }
-        }
+        
 
         //charactercontroller.Move(moveDir * Time.deltaTime * moveSpeed);
         animate_Run(isalive);
