@@ -2864,6 +2864,7 @@ MonoBehaviour:
   waitPos: {fileID: 1368666398}
   testPlayer: {fileID: 4804161492713886577, guid: 2996bd538cef5e348b0530e98c7a904c, type: 3}
   temp: {fileID: 0}
+  inside: {fileID: 1029809768}
 --- !u!4 &440040328
 Transform:
   m_ObjectHideFlags: 0
