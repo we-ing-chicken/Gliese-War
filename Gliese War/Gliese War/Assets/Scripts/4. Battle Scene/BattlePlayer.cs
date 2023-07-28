@@ -1822,6 +1822,14 @@ public class BattlePlayer : LivingEntity, IPunObservable
     void SendMyWeapon(int who, int weapon1Type, int weapon2Type)
     {
         if (BattleManager.Instance.players[who] == null) return;
+        
+        weapon1 = new RealItem();
+        weapon1.item = new Item();
+        weapon1.item.itemCategory = Item.ItemCategory.Weapon;
+        
+        weapon2 = new RealItem();
+        weapon2.item = new Item();
+        weapon2.item.itemCategory = Item.ItemCategory.Weapon;
 
         switch (weapon1Type)
         {
