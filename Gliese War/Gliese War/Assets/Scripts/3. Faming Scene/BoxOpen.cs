@@ -27,6 +27,7 @@ public class BoxOpen : MonoBehaviour
         drop = gameObject.GetComponent<Drop>();
 
         anim = transform.GetChild(2).GetComponent<Animator>();
+        audio = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame

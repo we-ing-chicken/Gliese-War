@@ -149,6 +149,15 @@ public class CPlayer : MonoBehaviour
         moveLR = Input.GetAxis(moveLRAxisName);
 
         ismove = (Input.GetButton(moveFBAxisName) || Input.GetButton(moveLRAxisName));
+        
+        if (ismove)
+        {
+            if (audio == null) return; 
+            if (!audio.isPlaying)
+            {
+                audio.Play();
+            }
+        }
 
         // fire�� ���� �Է� ����
         Mlattack = Input.GetButton(meleeAttackButtonName);
