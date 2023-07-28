@@ -69,7 +69,8 @@ public class CPlayer : MonoBehaviour
     private MeshCollider col;
 
     private CharacterController charactercontroller;
-    private AudioSource audio;
+    public AudioSource audio;
+    public AudioClip eatSound;
 
 
     public float moveFB { get; private set; } // ������ �����̵� �Է°�

@@ -15,7 +15,7 @@ public class Magnet : MonoBehaviour
     public Item.WeaponType weaponType;
 
     public bool onTree = false;
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,6 +42,9 @@ public class Magnet : MonoBehaviour
     {
         if (other.transform.CompareTag("Player"))
         {
+            CPlayer.Instance.audio.PlayOneShot(CPlayer.Instance.eatSound, 1f);
+            
+            
             Item.ItemRank rank = RandomManager.RandomBox(100000000);
             
             switch(itemCategory)
@@ -81,9 +84,7 @@ public class Magnet : MonoBehaviour
                     _inven.AcquireItem(_inven.hammer[(int)rank]);
                     break;
             }
-            
-            GetComponent<AudioSource>().Play();
-         
+
             Destroy(gameObject);
         }
         
