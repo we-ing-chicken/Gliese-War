@@ -346,6 +346,10 @@ public class BattlePlayer : LivingEntity, IPunObservable
             {
                 myMagicNum = 2;
             }
+            else if (Input.GetKeyDown(KeyCode.Alpha0))
+            {
+                Debug.Log(PhotonNetwork.IsMasterClient);
+            }
             else if (Input.GetKeyDown(KeyCode.P))
             {
                 StartCoroutine(Burns());
@@ -1238,7 +1242,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
         MyHPBar.Instance.SetHPBar(startingHealth, health);
 
-        if (damageMessage.damage > 0)
+        if (damageMessage.damage >  0 && photonView.IsMine)
         {
             BattleManager.Instance.HitScreen();
         }
