@@ -397,12 +397,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
                 return;
             }
             
-            // isAttack = true;
-            // AttackStart(myindex);
-            // AttackAnimation();
-            // StartCoroutine(AttackEffect());
+            isAttack = true;
+            AttackStart(myindex);
+            AttackAnimation();
+            StartCoroutine(AttackEffect());
             if(weapon1 != null)
-                photonView.RPC("SendAttack", RpcTarget.All, myindex, (int)weapon1.item.weaponType);
+                photonView.RPC("SendAttack", RpcTarget.Others, myindex, (int)weapon1.item.weaponType);
             
         }
         else if (Input.GetMouseButtonDown(1))
