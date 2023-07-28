@@ -121,6 +121,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
     public AudioSource audio;
     [SerializeField] private AudioClip[] attackSounds;
 
+    public GameObject healEffect;
+
     public CinemachineVirtualCamera virtualCamera;
 
     private void Start()
@@ -217,7 +219,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
             BattleManager.Instance.alivePlayer = PhotonNetwork.CurrentRoom.Players.Count;
             photonView.RPC("SendIndex", RpcTarget.All, photonView.ViewID, myindex);
             photonView.RPC("StartGame", RpcTarget.All);
-            photonView.RPC("SendShoeEffectNum", RpcTarget.All, myindex, (int)shoe.item.itemRank);
+            if(shoe != null)
+                photonView.RPC("SendShoeEffectNum", RpcTarget.All, myindex, (int)shoe.item.itemRank);
             
             // 모든 유저 DB 업데이트
 
@@ -438,7 +441,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
             AttackStart(myindex);
             AttackAnimation();
             StartCoroutine(AttackEffect());
-            photonView.RPC("SendAttack", RpcTarget.Others, myindex, (int)weapon1.item.weaponType);
+            if(weapon1 != null)
+                photonView.RPC("SendAttack", RpcTarget.Others, myindex, (int)weapon1.item.weaponType);
             
         }
         else if (Input.GetMouseButtonDown(1))
@@ -1285,7 +1289,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
         if (damageMessage.damage >  0 && photonView.IsMine)
         {
-            //BattleManager.Instance.HitScreen();
+            BattleManager.Instance.HitScreen();
         }
         else
         {
@@ -1371,17 +1375,15 @@ public class BattlePlayer : LivingEntity, IPunObservable
             dm.damage = -20;
             ApplyDamage(dm);
 
-            GameObject healEffect;
-            healEffect = Instantiate(BattleManager.Instance.HealEffect);
-            healEffect.transform.position = transform.position;
+            //healEffect.SetActive(true);
+            healEffect.GetComponent<ParticleSystem>().Play();
 
             Destroy(other.gameObject);
         }
         else if(other.CompareTag("Item"))
         {
-            GameObject healEffect;
-            healEffect = Instantiate(BattleManager.Instance.HealEffect);
-            healEffect.transform.position = transform.position;
+            //healEffect.SetActive(true);
+            healEffect.GetComponent<ParticleSystem>().Play();
 
             Destroy(other.gameObject);
         }
@@ -1419,15 +1421,19 @@ public class BattlePlayer : LivingEntity, IPunObservable
             dm.damage = -1;
             ApplyDamage(dm);
             
-            GameObject healEffect;    
-            healEffect = Instantiate(BattleManager.Instance.HealEffect);
-            healEffect.transform.position = transform.position;
+            //if(!healEffect.gameObject.activeSelf)
+                //healEffect.SetActive(true);
+                
+            if(!healEffect.GetComponent<ParticleSystem>().isPlaying)
+                healEffect.GetComponent<ParticleSystem>().Play();
         }
         else if (other.CompareTag("Heal"))
         { 
-            GameObject healEffect;
-            healEffect = Instantiate(BattleManager.Instance.HealEffect);
-            healEffect.transform.position = transform.position;
+            //if(!healEffect.gameObject.activeSelf)
+                //healEffect.SetActive(true);
+            if(!healEffect.GetComponent<ParticleSystem>().isPlaying)
+                healEffect.GetComponent<ParticleSystem>().Play();
+            
         }
     }
 
@@ -1747,8 +1753,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
     void SendHit(int who, int magicNum)
     {
         ShowHitEffect(who, magicNum);
-        if(who == myindex)
-            BattleManager.Instance.HitScreen();
     }
 
     [PunRPC]
@@ -1813,6 +1817,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     void SendAttack(int who, int weaponNum)
     {
         if (BattleManager.Instance.players[who] == null) return;
+        if (BattleManager.Instance.players[who].GetComponent<BattlePlayer>().shoe == null) return;
     
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().isAttack = true;
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().AttackStart(who);
