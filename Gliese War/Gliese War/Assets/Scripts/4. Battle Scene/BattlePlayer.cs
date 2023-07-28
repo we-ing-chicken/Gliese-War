@@ -211,12 +211,13 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
         
 
-        if (NetworkManager.Instance.sendOK && photonView.ViewID != 0 && PhotonNetwork.CurrentRoom.Players.Count == 3)
+        if (NetworkManager.Instance.sendOK && photonView.ViewID != 0 && PhotonNetwork.CurrentRoom.Players.Count == 2)
         {
             NetworkManager.Instance.sendOK = false;
             BattleManager.Instance.alivePlayer = PhotonNetwork.CurrentRoom.Players.Count;
             photonView.RPC("SendIndex", RpcTarget.All, photonView.ViewID, myindex);
             photonView.RPC("StartGame", RpcTarget.All);
+            photonView.RPC("SendShoeEffectNum", RpcTarget.All, (int)shoe.item.itemRank);
             
             // 모든 유저 DB 업데이트
 
@@ -1108,6 +1109,11 @@ public class BattlePlayer : LivingEntity, IPunObservable
             weapon2 = new RealItem();
             weapon2.item = BattleManager.Instance.spear[1];
             weapon2.magic = Magic.Nothing;
+
+            shoe = new RealItem();
+            shoe.item = new Item();
+            shoe.item.itemCategory = Item.ItemCategory.Shoes;
+            shoe.item.itemRank = Item.ItemRank.Legendary;
         }
         else
         {
@@ -1758,5 +1764,11 @@ public class BattlePlayer : LivingEntity, IPunObservable
             BattleManager.Instance.openWinCanvas();
             //이긴 사람 DB 승리 추가
         }
+    }
+
+    [PunRPC]
+    void SendShoeEffectNum(int num)
+    {
+        shoesEffectPos.transform.GetChild(num).gameObject.SetActive(true);
     }
 }
