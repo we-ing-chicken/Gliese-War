@@ -1280,7 +1280,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
         if (damageMessage.damage >  0 && photonView.IsMine)
         {
-            BattleManager.Instance.HitScreen();
+            //BattleManager.Instance.HitScreen();
         }
         else
         {
@@ -1742,6 +1742,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
     void SendHit(int who, int magicNum)
     {
         ShowHitEffect(who, magicNum);
+        if(who == myindex)
+            BattleManager.Instance.HitScreen();
     }
 
     [PunRPC]
