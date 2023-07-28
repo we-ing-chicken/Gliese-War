@@ -184,8 +184,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
         {
             if(weapon2 != null)
                 weaponNow = 2;
-            else if (weapon2 == null)
-                weaponNow = 3;
         }
 
         magicCooltime = 5f;
