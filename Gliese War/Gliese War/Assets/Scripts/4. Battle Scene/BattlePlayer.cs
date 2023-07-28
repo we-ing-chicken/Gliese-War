@@ -219,6 +219,20 @@ public class BattlePlayer : LivingEntity, IPunObservable
             BattleManager.Instance.alivePlayer = PhotonNetwork.CurrentRoom.Players.Count;
             photonView.RPC("SendIndex", RpcTarget.All, photonView.ViewID, myindex);
             photonView.RPC("StartGame", RpcTarget.All);
+
+            if (weapon1 == null)
+            {
+                weapon1.item.weaponType = Item.WeaponType.Nothing;
+                weapon1.magic = Magic.Nothing;
+            }
+
+            if (weapon2 == null)
+            {
+                weapon2.item.weaponType = Item.WeaponType.Nothing;
+                weapon2.magic = Magic.Nothing;
+            }
+            
+            photonView.RPC("SendMyWeapon", RpcTarget.All, myindex, (int)weapon1.item.weaponType, (int)weapon2.item.weaponType);
             if(shoe != null)
                 photonView.RPC("SendShoeEffectNum", RpcTarget.All, myindex, (int)shoe.item.itemRank);
             
@@ -1403,6 +1417,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     
     public void AttackStart(int who)
     {
+
         if (weaponNow == 1)
         {
             switch (weapon1.item.weaponType)
@@ -1448,6 +1463,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     public void TurnOnHandHammer(int who)
     {
+        Debug.Log("Hammer");
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(0).gameObject.SetActive(true);
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(0).gameObject.SetActive(false);
         
@@ -1457,6 +1473,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     
     public void TurnOnHandSpear(int who)
     {
+        Debug.Log("Spear");
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(1).gameObject.SetActive(true);
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(1).gameObject.SetActive(false);
         
@@ -1466,6 +1483,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     
     public void TurnOnHandSword(int who)
     {
+        Debug.Log("Sword");
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(2).gameObject.SetActive(true);
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(2).gameObject.SetActive(false);
         
@@ -1775,9 +1793,59 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         if (BattleManager.Instance.players[who] == null) return;
     
+        Debug.Log("A");
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().isAttack = true;
+        Debug.Log("B");
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().AttackStart(who);
+        Debug.Log("C");
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().AttackAnimation();
+        Debug.Log("D");
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().StartCoroutine(AttackEffect());
+        Debug.Log("E");
+    }
+
+    [PunRPC]
+    void SendMyWeapon(int who, int weapon1Type, int weapon2Type)
+    {
+        if (BattleManager.Instance.players[who] == null) return;
+
+        switch (weapon1Type)
+        {
+            case 0:
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1.item.weaponType = Item.WeaponType.Sword;
+                break;
+            
+            case 1:
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1.item.weaponType = Item.WeaponType.Spear;
+                break;
+            
+            case 2:
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1.item.weaponType = Item.WeaponType.Hammer;
+                break;
+            
+            case 3:
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1.item.weaponType = Item.WeaponType.Nothing;
+                break;
+        }
+        
+        switch (weapon2Type)
+        {
+            case 0:
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon2.item.weaponType = Item.WeaponType.Sword;
+                break;
+            
+            case 1:
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon2.item.weaponType = Item.WeaponType.Spear;
+                break;
+            
+            case 2:
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon2.item.weaponType = Item.WeaponType.Hammer;
+                break;
+            
+            case 3:
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon2.item.weaponType = Item.WeaponType.Nothing;
+                break;
+        }
+        
     }
 }
