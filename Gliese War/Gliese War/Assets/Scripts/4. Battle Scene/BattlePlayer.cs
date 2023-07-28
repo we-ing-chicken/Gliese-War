@@ -147,12 +147,32 @@ public class BattlePlayer : LivingEntity, IPunObservable
             if(weapon1 != null)
                 weaponNow = 1;
             else if (weapon1 == null)
-                weaponNow = 2;
-            else if (weapon2 == null)
-                weaponNow = 3;
+            {
+                if(weapon2 != null)
+                    weaponNow = 2;
+                else if (weapon2 == null)
+                    weaponNow = 3;
+            }
         }
         else
         {
+            weapon1 = new RealItem();
+            weapon1.item = new Item();
+            weapon1.item.itemCategory = Item.ItemCategory.Weapon;
+        
+            weapon2 = new RealItem();
+            weapon2.item = new Item();
+            weapon2.item.itemCategory = Item.ItemCategory.Weapon;
+            
+            if(weapon1 != null)
+                weaponNow = 1;
+            else if (weapon1 == null)
+            {
+                if(weapon2 != null)
+                    weaponNow = 2;
+                else if (weapon2 == null)
+                    weaponNow = 3;
+            }
         }
         if (!isalive) isalive = true;
 
@@ -177,15 +197,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             moveSpeed = 10;
         }
 
-        if(weapon1 != null)
-            weaponNow = 1;
-        else if (weapon1 == null)
-        {
-            if(weapon2 != null)
-                weaponNow = 2;
-            else if (weapon2 == null)
-                weaponNow = 3;
-        }
+        
 
         magicCooltime = 5f;
         isCool = false;
@@ -1417,7 +1429,9 @@ public class BattlePlayer : LivingEntity, IPunObservable
     
     public void AttackStart(int who)
     {
-
+        Debug.Log(who + "가 " + weaponNow);
+        Debug.Log(who + "가 " + weapon1.item.weaponType);
+        Debug.Log(who + "가 " + BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1.item.weaponType);
         if (weaponNow == 1)
         {
             switch (weapon1.item.weaponType)
@@ -1808,14 +1822,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
     void SendMyWeapon(int who, int weapon1Type, int weapon2Type)
     {
         if (BattleManager.Instance.players[who] == null) return;
-
-        weapon1 = new RealItem();
-        weapon1.item = new Item();
-        weapon1.item.itemCategory = Item.ItemCategory.Weapon;
-        
-        weapon2 = new RealItem();
-        weapon2.item = new Item();
-        weapon2.item.itemCategory = Item.ItemCategory.Weapon;
 
         switch (weapon1Type)
         {
