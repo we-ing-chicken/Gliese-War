@@ -361,55 +361,85 @@ public class BattlePlayer : LivingEntity, IPunObservable
             }
         }
 
-        if (photonView.IsMine)
-        {
-            LeftMouseButtonDown = Input.GetMouseButtonDown(0);
-        }
+        // if (photonView.IsMine)
+        // {
+        //     LeftMouseButtonDown = Input.GetMouseButtonDown(0);
+        // }
+        //
+        // if (LeftMouseButtonDown )
+        // {
+        //     if (photonView.IsMine)
+        //     {
+        //         if (isAttack) return;
+        //         if (BattleManager.Instance._isInven) return;
+        //         
+        //         photonView.RPC("SendMouseButtonDown", RpcTarget.Others, LeftMouseButtonDown);
+        //         if (isMagic)
+        //         {
+        //             animator.SetTrigger("magicAttack");
+        //             MakeMagic(myMagicNum, MagicArea.Instance.transform.position, myindex);
+        //             isMagic = false;
+        //             StopCoroutine(magicCor);
+        //             
+        //             photonView.RPC("SendMagic", RpcTarget.Others, MagicArea.Instance.transform.position, myindex, myMagicNum);
+        //             
+        //             isCool = true;
+        //             MagicArea.Instance.transform.position = new Vector3(0,0,0);
+        //             StartCoroutine(CheckCoolTime());
+        //
+        //             return;
+        //         }
+        //         isAttack = true;
+        //         AttackStart();
+        //         AttackAnimation();
+        //         StartCoroutine(AttackEffect());
+        //     }
+        //     else
+        //     {
+        //         if (otherMagic)
+        //         {
+        //             animator.SetTrigger("magicAttack");
+        //             otherMagic = false;
+        //         }
+        //         else
+        //         {
+        //             AttackStart();
+        //             StartCoroutine(AttackEffect());
+        //         }
+        //         LeftMouseButtonDown = false;
+        //         photonView.RPC("SendMouseButtonDown", RpcTarget.All, LeftMouseButtonDown);
+        //
+        //     }
+        // }
 
-        if (LeftMouseButtonDown )
+        if (Input.GetMouseButtonDown(0))
         {
-            if (photonView.IsMine)
+            if (isAttack) return;
+            if (BattleManager.Instance._isInven) return;
+            
+            //photonView.RPC("SendMouseButtonDown", RpcTarget.Others, LeftMouseButtonDown);
+            if (isMagic)
             {
-                if (isAttack) return;
-                if (BattleManager.Instance._isInven) return;
+                animator.SetTrigger("magicAttack");
+                MakeMagic(myMagicNum, MagicArea.Instance.transform.position, myindex);
+                isMagic = false;
+                StopCoroutine(magicCor);
                 
-                photonView.RPC("SendMouseButtonDown", RpcTarget.Others, LeftMouseButtonDown);
-                if (isMagic)
-                {
-                    animator.SetTrigger("magicAttack");
-                    MakeMagic(myMagicNum, MagicArea.Instance.transform.position, myindex);
-                    isMagic = false;
-                    StopCoroutine(magicCor);
-                    
-                    photonView.RPC("SendMagic", RpcTarget.Others, MagicArea.Instance.transform.position, myindex, myMagicNum);
-                    
-                    isCool = true;
-                    MagicArea.Instance.transform.position = new Vector3(0,0,0);
-                    StartCoroutine(CheckCoolTime());
-
-                    return;
-                }
-                isAttack = true;
-                AttackStart();
-                AttackAnimation();
-                StartCoroutine(AttackEffect());
+                photonView.RPC("SendMagic", RpcTarget.Others, MagicArea.Instance.transform.position, myindex, myMagicNum);
+                
+                isCool = true;
+                MagicArea.Instance.transform.position = new Vector3(0,0,0);
+                StartCoroutine(CheckCoolTime());
+            
+                return;
             }
-            else
-            {
-                if (otherMagic)
-                {
-                    animator.SetTrigger("magicAttack");
-                    otherMagic = false;
-                }
-                else
-                {
-                    AttackStart();
-                    StartCoroutine(AttackEffect());
-                }
-                LeftMouseButtonDown = false;
-                photonView.RPC("SendMouseButtonDown", RpcTarget.All, LeftMouseButtonDown);
-
-            }
+            
+            isAttack = true;
+            AttackStart();
+            AttackAnimation();
+            StartCoroutine(AttackEffect());
+            photonView.RPC("SendAttack", RpcTarget.Others, myindex, (int)weapon1.item.weaponType);
+            
         }
         else if (Input.GetMouseButtonDown(1))
         {
@@ -1113,7 +1143,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             shoe = new RealItem();
             shoe.item = new Item();
             shoe.item.itemCategory = Item.ItemCategory.Shoes;
-            shoe.item.itemRank = Item.ItemRank.Epic;
+            shoe.item.itemRank = Item.ItemRank.Legendary;
         }
         else
         {
@@ -1772,5 +1802,16 @@ public class BattlePlayer : LivingEntity, IPunObservable
         if (BattleManager.Instance.players[who] == null) return;
         
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().shoesEffectPos.transform.GetChild(num).gameObject.SetActive(true);
+    }
+
+    [PunRPC]
+    void SendAttack(int who, int weaponNum)
+    {
+        if (BattleManager.Instance.players[who] == null) return;
+    
+        BattleManager.Instance.players[who].GetComponent<BattlePlayer>().isAttack = true;
+        BattleManager.Instance.players[who].GetComponent<BattlePlayer>().AttackStart();
+        BattleManager.Instance.players[who].GetComponent<BattlePlayer>().AttackAnimation();
+        BattleManager.Instance.players[who].GetComponent<BattlePlayer>().StartCoroutine(AttackEffect());
     }
 }
