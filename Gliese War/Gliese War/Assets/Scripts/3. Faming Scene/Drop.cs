@@ -22,6 +22,8 @@ public class Drop : MonoBehaviour
     [SerializeField] private bool isFirst = false;
     [SerializeField] private bool onTree = false;
 
+    public AudioClip eatSound;
+
     private void Start()
     {
         _inven = FarmingManager.Instance.inventory;
@@ -109,6 +111,10 @@ public class Drop : MonoBehaviour
             
             Magnet mag = temp.AddComponent<Magnet>();
             mag.itemCategory = itemCategory;
+
+            AudioSource audio = temp.AddComponent<AudioSource>();
+            audio.clip = eatSound;
+
             if (onTree)
                 mag.onTree = true;
             else

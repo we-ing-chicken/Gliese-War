@@ -14,6 +14,7 @@ public class BoxOpen : MonoBehaviour
     [SerializeField] private GameObject starEffect;
 
     private Animator anim;
+    private AudioSource audio;
     
     // Start is called before the first frame update
     void Start()
@@ -65,6 +66,7 @@ public class BoxOpen : MonoBehaviour
                 Instantiate(starEffect, effectPosition.transform.position, Quaternion.identity);
                 anim.SetTrigger("Open");
                 FarmingManager.Instance.UnActiveG();
+                audio.Play();
                 StartCoroutine(AfterOpen());
             }
         }

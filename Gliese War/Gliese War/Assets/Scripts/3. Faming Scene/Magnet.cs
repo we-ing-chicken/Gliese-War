@@ -81,6 +81,8 @@ public class Magnet : MonoBehaviour
                     _inven.AcquireItem(_inven.hammer[(int)rank]);
                     break;
             }
+            
+            GetComponent<AudioSource>().Play();
          
             Destroy(gameObject);
         }
