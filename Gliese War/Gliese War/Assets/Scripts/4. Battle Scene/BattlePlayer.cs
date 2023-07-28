@@ -213,7 +213,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
         
 
-        if (NetworkManager.Instance.sendOK && photonView.ViewID != 0 && PhotonNetwork.CurrentRoom.Players.Count == 3)
+        if (NetworkManager.Instance.sendOK && photonView.ViewID != 0 && PhotonNetwork.CurrentRoom.Players.Count == 2)
         {
             NetworkManager.Instance.sendOK = false;
             BattleManager.Instance.alivePlayer = PhotonNetwork.CurrentRoom.Players.Count;
@@ -364,63 +364,11 @@ public class BattlePlayer : LivingEntity, IPunObservable
             }
         }
 
-        // if (photonView.IsMine)
-        // {
-        //     LeftMouseButtonDown = Input.GetMouseButtonDown(0);
-        // }
-        //
-        // if (LeftMouseButtonDown )
-        // {
-        //     if (photonView.IsMine)
-        //     {
-        //         if (isAttack) return;
-        //         if (BattleManager.Instance._isInven) return;
-        //         
-        //         photonView.RPC("SendMouseButtonDown", RpcTarget.Others, LeftMouseButtonDown);
-        //         if (isMagic)
-        //         {
-        //             animator.SetTrigger("magicAttack");
-        //             MakeMagic(myMagicNum, MagicArea.Instance.transform.position, myindex);
-        //             isMagic = false;
-        //             StopCoroutine(magicCor);
-        //             
-        //             photonView.RPC("SendMagic", RpcTarget.Others, MagicArea.Instance.transform.position, myindex, myMagicNum);
-        //             
-        //             isCool = true;
-        //             MagicArea.Instance.transform.position = new Vector3(0,0,0);
-        //             StartCoroutine(CheckCoolTime());
-        //
-        //             return;
-        //         }
-        //         isAttack = true;
-        //         AttackStart();
-        //         AttackAnimation();
-        //         StartCoroutine(AttackEffect());
-        //     }
-        //     else
-        //     {
-        //         if (otherMagic)
-        //         {
-        //             animator.SetTrigger("magicAttack");
-        //             otherMagic = false;
-        //         }
-        //         else
-        //         {
-        //             AttackStart();
-        //             StartCoroutine(AttackEffect());
-        //         }
-        //         LeftMouseButtonDown = false;
-        //         photonView.RPC("SendMouseButtonDown", RpcTarget.All, LeftMouseButtonDown);
-        //
-        //     }
-        // }
-
         if (Input.GetMouseButtonDown(0) && photonView.IsMine)
         {
             if (isAttack) return;
             if (BattleManager.Instance._isInven) return;
             
-            //photonView.RPC("SendMouseButtonDown", RpcTarget.Others, LeftMouseButtonDown);
             if (isMagic)
             {
                 animator.SetTrigger("magicAttack");
@@ -437,12 +385,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
                 return;
             }
             
-            isAttack = true;
-            AttackStart(myindex);
-            AttackAnimation();
-            StartCoroutine(AttackEffect());
+            // isAttack = true;
+            // AttackStart(myindex);
+            // AttackAnimation();
+            // StartCoroutine(AttackEffect());
             if(weapon1 != null)
-                photonView.RPC("SendAttack", RpcTarget.Others, myindex, (int)weapon1.item.weaponType);
+                photonView.RPC("SendAttack", RpcTarget.All, myindex, (int)weapon1.item.weaponType);
             
         }
         else if (Input.GetMouseButtonDown(1))
@@ -1451,17 +1399,17 @@ public class BattlePlayer : LivingEntity, IPunObservable
             switch (weapon1.item.weaponType)
             {
                 case Item.WeaponType.Hammer:
-                    TurnOnHandHammer();
+                    TurnOnHandHammer(who);
                     StartCoroutine(TurnOffHandHammer(who));
                     break;
                 
                 case Item.WeaponType.Sword:
+                    TurnOnHandSword(who);
                     StartCoroutine(TurnOffHandSword(who));
-                    TurnOnHandSword();
                     break;
                 
                 case Item.WeaponType.Spear:
-                    TurnOnHandSpear();
+                    TurnOnHandSpear(who);
                     StartCoroutine(TurnOffHandSpear(who));
                     break;
             }
@@ -1472,47 +1420,47 @@ public class BattlePlayer : LivingEntity, IPunObservable
             switch (weapon2.item.weaponType)
             {
                 case Item.WeaponType.Hammer:
-                    TurnOnHandHammer();
+                    TurnOnHandHammer(who);
                     StartCoroutine(TurnOffHandHammer(who));
                     break;
                 
                 case Item.WeaponType.Sword:
-                    TurnOnHandSword();
+                    TurnOnHandSword(who);
                     StartCoroutine(TurnOffHandSword(who));
                     break;
                 
                 case Item.WeaponType.Spear:
-                    TurnOnHandSpear();
+                    TurnOnHandSpear(who);
                     StartCoroutine(TurnOffHandSpear(who));
                     break;
             }
         }
     }
 
-    public void TurnOnHandHammer()
+    public void TurnOnHandHammer(int who)
     {
-        handR.transform.GetChild(0).gameObject.SetActive(true);
-        back.transform.GetChild(0).gameObject.SetActive(false);
+        BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(0).gameObject.SetActive(true);
+        BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(0).gameObject.SetActive(false);
         
-        col = handR.transform.GetChild(0).GetComponent<MeshCollider>();
+        col = BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(0).GetComponent<MeshCollider>();
         col.enabled = true;
     }
     
-    public void TurnOnHandSpear()
+    public void TurnOnHandSpear(int who)
     {
-        handR.transform.GetChild(1).gameObject.SetActive(true);
-        back.transform.GetChild(1).gameObject.SetActive(false);
+        BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(1).gameObject.SetActive(true);
+        BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(1).gameObject.SetActive(false);
         
-        col = handR.transform.GetChild(1).GetComponent<MeshCollider>();
+        col = BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(1).GetComponent<MeshCollider>();
         col.enabled = true;
     }
     
-    public void TurnOnHandSword()
+    public void TurnOnHandSword(int who)
     {
-        handR.transform.GetChild(2).gameObject.SetActive(true);
-        back.transform.GetChild(2).gameObject.SetActive(false);
+        BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(2).gameObject.SetActive(true);
+        BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(2).gameObject.SetActive(false);
         
-        col = handR.transform.GetChild(2).GetComponent<MeshCollider>();
+        col = BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(2).GetComponent<MeshCollider>();
         col.enabled = true;
     }
 
@@ -1520,11 +1468,11 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         yield return new WaitForSeconds(0.9f);
         
-        col = handR.transform.GetChild(0).GetComponent<MeshCollider>();
+        col = BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(0).GetComponent<MeshCollider>();
         col.enabled = false;
         
-        handR.transform.GetChild(0).gameObject.SetActive(false);
-        back.transform.GetChild(0).gameObject.SetActive(true);
+        BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(0).gameObject.SetActive(false);
+        BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(0).gameObject.SetActive(true);
         
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().isAttack = false;
     }
@@ -1533,11 +1481,11 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         yield return new WaitForSeconds(0.6f);
         
-        col = handR.transform.GetChild(1).GetComponent<MeshCollider>();
+        col = BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(1).GetComponent<MeshCollider>();
         col.enabled = false;
         
-        handR.transform.GetChild(1).gameObject.SetActive(false);
-        back.transform.GetChild(1).gameObject.SetActive(true);
+        BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(1).gameObject.SetActive(false);
+        BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(1).gameObject.SetActive(true);
         
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().isAttack = false;
     }
@@ -1546,11 +1494,11 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         yield return new WaitForSeconds(1f);
         
-        col = handR.transform.GetChild(2).GetComponent<MeshCollider>();
+        col = BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(2).GetComponent<MeshCollider>();
         col.enabled = false;
         
-        handR.transform.GetChild(2).gameObject.SetActive(false);
-        back.transform.GetChild(2).gameObject.SetActive(true);
+        BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(2).gameObject.SetActive(false);
+        BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(2).gameObject.SetActive(true);
         
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().isAttack = false;
     }
