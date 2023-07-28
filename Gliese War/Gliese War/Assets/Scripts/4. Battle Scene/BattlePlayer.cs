@@ -226,12 +226,10 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
             if (weaponNow == 1)
             {
-                Debug.Log(weaponNow);   
                 photonView.RPC("ChangeWeapon", RpcTarget.Others, myindex, (int)GetWeaponNum(), (int)weapon1.magic);
             }
             else if (weaponNow == 2)
             {
-                Debug.Log(weaponNow);
                 photonView.RPC("ChangeWeapon", RpcTarget.Others, myindex, (int)GetWeaponNum(), (int)weapon2.magic);
             }
             
@@ -1120,10 +1118,21 @@ public class BattlePlayer : LivingEntity, IPunObservable
             }
         }
 
+        if (GameManager.Instance != null)
+        {
+            
         startingHealth = GameManager.Instance.stat.health;
         offensivePower = GameManager.Instance.stat.attackPower;
         defensivePower = GameManager.Instance.stat.defensePower;
         moveSpeed = GameManager.Instance.stat.moveSpeed;
+        }
+        else
+        {
+            startingHealth = 100;
+            offensivePower = 10;
+            defensivePower = 10;
+            moveSpeed = 8;
+        }
 
         SetEquipItemImage();
         RefreshStat();
@@ -1765,7 +1774,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
     void SendAttack(int who, int weaponNum)
     {
         if (BattleManager.Instance.players[who] == null) return;
-        if (BattleManager.Instance.players[who].GetComponent<BattlePlayer>().shoe == null) return;
     
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().isAttack = true;
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().AttackStart(who);
