@@ -1188,6 +1188,8 @@ MonoBehaviour:
   life: 0
   MouseX: 0
   mouseSpeed: 5
+  id: 
+  nickName: 
   offensivePower: 10
   defensivePower: 10
   moveSpeed: 8
