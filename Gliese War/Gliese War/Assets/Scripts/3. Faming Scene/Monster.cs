@@ -17,7 +17,8 @@ public class Monster : MonoBehaviour
 
     private int MaxHP;
     private int HP;
-    private int damage;
+    public int initDamage = 0;
+    public int nowDamage;
     private bool attackCoolTime;
 
     private Material mat;
@@ -59,8 +60,8 @@ public class Monster : MonoBehaviour
         
         MaxHP = 100;
         HP = 100;
-        damage = 10;
         attackCoolTime = false;
+        nowDamage = initDamage;
 
         isDead = false;
 

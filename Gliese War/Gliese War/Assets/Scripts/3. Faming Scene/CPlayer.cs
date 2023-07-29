@@ -632,8 +632,8 @@ public class CPlayer : MonoBehaviour
     {
         if (other.CompareTag("MonsterAttack"))
         {
-            GetDamage(10);
-            
+            int damage = other.GetComponent<Monster>().nowDamage;
+            GetDamage(damage);
         }
     }
 
