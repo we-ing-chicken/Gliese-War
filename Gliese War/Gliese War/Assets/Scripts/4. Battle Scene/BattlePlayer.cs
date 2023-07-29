@@ -4,6 +4,7 @@ using Photon.Pun.Demo.Cockpit.Forms;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using ExitGames.Client.Photon.StructWrapping;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -120,6 +121,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     public AudioSource audio;
     [SerializeField] private AudioClip[] attackSounds;
+    public AudioClip electricSound;
 
     public GameObject healEffect;
 
@@ -147,32 +149,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
             if(weapon1 != null)
                 weaponNow = 1;
             else if (weapon1 == null)
-            {
-                if(weapon2 != null)
-                    weaponNow = 2;
-                else if (weapon2 == null)
-                    weaponNow = 3;
-            }
+                weaponNow = 2;
+            else if (weapon2 == null)
+                weaponNow = 3;
         }
         else
         {
-            weapon1 = new RealItem();
-            weapon1.item = new Item();
-            weapon1.item.itemCategory = Item.ItemCategory.Weapon;
-        
-            weapon2 = new RealItem();
-            weapon2.item = new Item();
-            weapon2.item.itemCategory = Item.ItemCategory.Weapon;
-            
-            if(weapon1 != null)
-                weaponNow = 1;
-            else if (weapon1 == null)
-            {
-                if(weapon2 != null)
-                    weaponNow = 2;
-                else if (weapon2 == null)
-                    weaponNow = 3;
-            }
         }
         if (!isalive) isalive = true;
 
@@ -197,7 +179,13 @@ public class BattlePlayer : LivingEntity, IPunObservable
             moveSpeed = 10;
         }
 
-        
+        if(weapon1 != null)
+            weaponNow = 1;
+        else if (weapon1 == null)
+        {
+            if(weapon2 != null)
+                weaponNow = 2;
+        }
 
         magicCooltime = 5f;
         isCool = false;
@@ -231,20 +219,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
             BattleManager.Instance.alivePlayer = PhotonNetwork.CurrentRoom.Players.Count;
             photonView.RPC("SendIndex", RpcTarget.All, photonView.ViewID, myindex);
             photonView.RPC("StartGame", RpcTarget.All);
-
-            if (weapon1 == null)
-            {
-                weapon1.item.weaponType = Item.WeaponType.Nothing;
-                weapon1.magic = Magic.Nothing;
-            }
-
-            if (weapon2 == null)
-            {
-                weapon2.item.weaponType = Item.WeaponType.Nothing;
-                weapon2.magic = Magic.Nothing;
-            }
-            
-            photonView.RPC("SendMyWeapon", RpcTarget.All, myindex, (int)weapon1.item.weaponType, (int)weapon2.item.weaponType);
             if(shoe != null)
                 photonView.RPC("SendShoeEffectNum", RpcTarget.All, myindex, (int)shoe.item.itemRank);
             
@@ -409,12 +383,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
                 return;
             }
             
-            isAttack = true;
-            AttackStart(myindex);
-            AttackAnimation();
-            StartCoroutine(AttackEffect());
+            // isAttack = true;
+            // AttackStart(myindex);
+            // AttackAnimation();
+            // StartCoroutine(AttackEffect());
             if(weapon1 != null)
-                photonView.RPC("SendAttack", RpcTarget.Others, myindex, (int)weapon1.item.weaponType);
+                photonView.RPC("SendAttack", RpcTarget.All, myindex, (int)weapon1.item.weaponType);
             
         }
         else if (Input.GetMouseButtonDown(1))
@@ -1394,6 +1368,9 @@ public class BattlePlayer : LivingEntity, IPunObservable
                 
                 BattleManager.Instance.HitScreen();
                 
+                if(!audio.isPlaying)
+                    audio.PlayOneShot(electricSound, 1f);
+                
             }
         }
         
@@ -1429,9 +1406,15 @@ public class BattlePlayer : LivingEntity, IPunObservable
     
     public void AttackStart(int who)
     {
-        Debug.Log(who + "가 " + weaponNow);
-        Debug.Log(who + "가 " + weapon1.item.weaponType);
-        Debug.Log(who + "가 " + BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1.item.weaponType);
+        Debug.Log("누가 : " + who);
+        Debug.Log("누가 : " + BattleManager.Instance.players[who]);
+        Debug.Log("weaponNow : " + weaponNow);
+        Debug.Log("weapon1.item : " + weapon1.item);
+        Debug.Log("weapon1.item.weaponType : " + weapon1.item.weaponType);
+        Debug.Log("BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1 : " + BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1);
+        Debug.Log("BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1.item : " + BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1.item);
+        Debug.Log("BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1.item.weaponType : " + BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1.item.weaponType);
+        
         if (weaponNow == 1)
         {
             switch (weapon1.item.weaponType)
@@ -1477,7 +1460,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     public void TurnOnHandHammer(int who)
     {
-        Debug.Log("Hammer");
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(0).gameObject.SetActive(true);
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(0).gameObject.SetActive(false);
         
@@ -1487,7 +1469,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
     
     public void TurnOnHandSpear(int who)
     {
-        Debug.Log("Spear");
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(1).gameObject.SetActive(true);
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(1).gameObject.SetActive(false);
         
@@ -1497,7 +1478,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
     
     public void TurnOnHandSword(int who)
     {
-        Debug.Log("Sword");
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().handR.transform.GetChild(2).gameObject.SetActive(true);
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().back.transform.GetChild(2).gameObject.SetActive(false);
         
@@ -1807,67 +1787,9 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         if (BattleManager.Instance.players[who] == null) return;
     
-        Debug.Log("A");
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().isAttack = true;
-        Debug.Log("B");
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().AttackStart(who);
-        Debug.Log("C");
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().AttackAnimation();
-        Debug.Log("D");
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().StartCoroutine(AttackEffect());
-        Debug.Log("E");
-    }
-
-    [PunRPC]
-    void SendMyWeapon(int who, int weapon1Type, int weapon2Type)
-    {
-        if (BattleManager.Instance.players[who] == null) return;
-        
-        weapon1 = new RealItem();
-        weapon1.item = new Item();
-        weapon1.item.itemCategory = Item.ItemCategory.Weapon;
-        
-        weapon2 = new RealItem();
-        weapon2.item = new Item();
-        weapon2.item.itemCategory = Item.ItemCategory.Weapon;
-
-        switch (weapon1Type)
-        {
-            case 0:
-                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1.item.weaponType = Item.WeaponType.Sword;
-                break;
-            
-            case 1:
-                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1.item.weaponType = Item.WeaponType.Spear;
-                break;
-            
-            case 2:
-                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1.item.weaponType = Item.WeaponType.Hammer;
-                break;
-            
-            case 3:
-                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1.item.weaponType = Item.WeaponType.Nothing;
-                break;
-        }
-        
-        switch (weapon2Type)
-        {
-            case 0:
-                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon2.item.weaponType = Item.WeaponType.Sword;
-                break;
-            
-            case 1:
-                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon2.item.weaponType = Item.WeaponType.Spear;
-                break;
-            
-            case 2:
-                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon2.item.weaponType = Item.WeaponType.Hammer;
-                break;
-            
-            case 3:
-                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon2.item.weaponType = Item.WeaponType.Nothing;
-                break;
-        }
-        
     }
 }

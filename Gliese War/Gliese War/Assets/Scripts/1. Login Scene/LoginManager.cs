@@ -125,7 +125,10 @@ namespace Team
 
             if (int.Parse(reader[0].ToString()) == 1)
             {
-                //PlayerPrefs.SetString("ID", id);
+                reader.Close();
+                PlayerPrefs.SetString("ID", id);
+                string date = DateTime.Now.ToString("yyyy-MM-dd");
+                MySqlConnector.Instance.doNonQuery("update User set LastLogin = '" + date + "' where id = '" + id +"'");
                 SceneManager.LoadScene(1);
             }
             else

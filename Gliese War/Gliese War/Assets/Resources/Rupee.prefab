@@ -425,6 +425,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8861e021753706f458759094222bd7b5, type: 3}
   - {fileID: 8300000, guid: 49abf8689b4877244bc065ff9119ebf4, type: 3}
   - {fileID: 8300000, guid: 2714a844e8f38c9459b6c3e5321d0cd3, type: 3}
+  electricSound: {fileID: 8300000, guid: 5de5ba703ac5a0a4588e9cbca3b6d2d1, type: 3}
   healEffect: {fileID: 7057811889271760016}
   virtualCamera: {fileID: 0}
 --- !u!114 &-4829223945961888455

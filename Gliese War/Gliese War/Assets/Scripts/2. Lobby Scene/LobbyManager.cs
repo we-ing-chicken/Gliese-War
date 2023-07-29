@@ -50,7 +50,6 @@ public class LobbyManager : MonoBehaviour
         }
         else
         {
-            //nickNameText.GetComponent<TextMeshProUGUI>().text = id;
             nickNameText.GetComponent<TextMeshProUGUI>().text = "1234";
         }
 
@@ -58,6 +57,7 @@ public class LobbyManager : MonoBehaviour
         careerAnimation = careerCanvas.transform.GetChild(0).GetComponent<Animation>();
         helpAnimation = helpCanvas.transform.GetChild(0).GetComponent<Animation>();
         
+        reader.Close();
     }
 
     private void Start()
@@ -76,17 +76,21 @@ public class LobbyManager : MonoBehaviour
     
     public void OpenCareer()
     {
+        
         careerCanvas.gameObject.SetActive(true);
         careerAnimation.Play("CareerAnimation");
+
+        if (id == null) return;
         
-        //reader = MySqlConnector.Instance.doQuery("select * from Career where ID = '" + id + "'");
-        //reader = MySqlConnector.Instance.doQuery("select * from Career where ID = 'hsson'");
-        //reader.Read();
+        reader = MySqlConnector.Instance.doQuery("select * from Career where ID = '" + id + "'");
+        reader.Read();
 
         for (int i = 0; i < careerList.Length; ++i)
         {
-            //careerList[i].GetComponent<TextMeshProUGUI>().text = reader[i + 1].ToString();
+            careerList[i].GetComponent<TextMeshProUGUI>().text = reader[i + 1].ToString();
         }
+        
+        reader.Close();
     }
 
     public void CloseCareer()
