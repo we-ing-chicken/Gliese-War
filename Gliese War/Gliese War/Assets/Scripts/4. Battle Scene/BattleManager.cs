@@ -92,6 +92,7 @@ public class BattleManager : MonoBehaviour
 
     public GameObject inside;
     public GameObject outside;
+    public GameObject mf;
     
 
     public static BattleManager Instance
@@ -206,6 +207,7 @@ public class BattleManager : MonoBehaviour
                 mainCamera.SetActive(true);
                 
                 inside.SetActive(true);
+                mf.SetActive(true);
                 outside.SetActive(true);
 
                 playCanvas.gameObject.SetActive(true);
