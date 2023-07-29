@@ -218,25 +218,21 @@ public class BattleManager : MonoBehaviour
 
                     if (players[i].GetComponent<BattlePlayer>().photonView.IsMine)
                     {
-                        players[i].GetComponent<BattlePlayer>().virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
+                        BattlePlayer pl = players[i].GetComponent<BattlePlayer>();
+                        
+                        pl.virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
 
-                        players[i].GetComponent<AudioListener>().enabled = true;
+                        pl.enabled = true;
 
                         CServercamTest sct = Camera.main.GetComponent<CServercamTest>();
 
                         sct.bp = GetComponent<BattlePlayer>();
-                        players[i].GetComponent<BattlePlayer>().virtualCamera.Follow = players[i].GetComponent<BattlePlayer>().transform;
-                        players[i].GetComponent<BattlePlayer>().virtualCamera.LookAt = players[i].GetComponent<BattlePlayer>().transform;
+                        pl.virtualCamera.Follow = pl.transform;
+                        pl.virtualCamera.LookAt = pl.transform;
 
                         MakeUICharacter();
 
-                        players[i].GetComponent<BattlePlayer>().isStart = true;
-
-                        if (GameManager.Instance != null && GameManager.Instance.id != null)
-                        {
-                            //Career Update
-                            MySqlConnector.Instance.doNonQuery("update Career set Game = Game + 1 where id = '" + GameManager.Instance.id +"'");
-                        }
+                        pl.isStart = true;
                     }
                 }
 
@@ -312,12 +308,16 @@ public class BattleManager : MonoBehaviour
     public void openWinCanvas()
     {
         Cursor.visible = true;
+        NetworkManager.Instance.connect = false;
+        PhotonNetwork.LeaveRoom();
         SwitchCanvasActive(winCanvas);
     }
     
     public void openLoseCanvas()
     {
         Cursor.visible = true;
+        NetworkManager.Instance.connect = false;
+        PhotonNetwork.LeaveRoom();
         SwitchCanvasActive(loseCanvas);
     }
 

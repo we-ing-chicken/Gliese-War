@@ -109,6 +109,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     public bool isUI = false;
     public bool isWait = false;
     public bool isStart = false;
+    public bool isDbUpdate = false;
 
     public AudioSource audio;
     [SerializeField] private AudioClip[] attackSounds;
@@ -133,6 +134,9 @@ public class BattlePlayer : LivingEntity, IPunObservable
         instance = this;
         if (photonView.IsMine)
         {
+            id = GameManager.Instance.id;
+            nickName = GameManager.Instance.nickName;
+            
             ApplyItems();
             
             if(weapon1 != null)
@@ -206,7 +210,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         {
             NetworkManager.Instance.sendOK = false;
             BattleManager.Instance.alivePlayer = PhotonNetwork.CurrentRoom.Players.Count;
-            photonView.RPC("SendIndex", RpcTarget.All, photonView.ViewID, myindex);
+            photonView.RPC("SendIndex", RpcTarget.All, photonView.ViewID, myindex, id, nickName);
             photonView.RPC("StartGame", RpcTarget.All);
             if(shoe != null)
                 photonView.RPC("SendShoeEffectNum", RpcTarget.All, myindex, (int)shoe.item.itemRank);
@@ -223,6 +227,14 @@ public class BattlePlayer : LivingEntity, IPunObservable
             }
             
             WhatMagicEffect(myindex, (int)GetMagic());
+            
+            if (id != null && !isDbUpdate)
+            {
+                isDbUpdate = true;
+                
+                //Career Update
+                MySqlConnector.Instance.doNonQuery("update Career set Game = Game + 1 where id = '" + id +"'");
+            }
         }
 
         if (isWait || !isStart) return;
@@ -1283,12 +1295,9 @@ public class BattlePlayer : LivingEntity, IPunObservable
         //photonView.RPC("MinusLiveCount", RpcTarget.Others);
         photonView.RPC("SendDie", RpcTarget.Others, myindex);
         
-        NetworkManager.Instance.connect = false;
-        PhotonNetwork.LeaveRoom();
-        
         if(GameManager.Instance != null && GameManager.Instance.id != null)
         {
-            MySqlConnector.Instance.doNonQuery("update Career set Lose = Lose +1 where id = '" + GameManager.Instance.id +"'");
+            MySqlConnector.Instance.doNonQuery("update Career set Lose = Lose + 1 where id = '" + id +"'");
         }
         
         yield return new WaitForSeconds(2.0f);
@@ -1753,7 +1762,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     }
 
     [PunRPC]
-    void SendIndex(int viewID, int index)
+    void SendIndex(int viewID, int index, string id, string nick)
     {
         GameObject[] pl = GameObject.FindGameObjectsWithTag("Player");
         Debug.Log("SendIndex 실행");
@@ -1770,6 +1779,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
             {
                 pl[i].GetComponent<BattlePlayer>().myindex = index;
                 BattleManager.Instance.players[index] = pl[i].gameObject;
+                BattleManager.Instance.players[index].GetComponent<BattlePlayer>().id = id;
+                BattleManager.Instance.players[index].GetComponent<BattlePlayer>().nickName = nick;
             }
         }
     }
@@ -1823,9 +1834,9 @@ public class BattlePlayer : LivingEntity, IPunObservable
         {
             BattleManager.Instance.openWinCanvas();
             
-            if(GameManager.Instance != null && GameManager.Instance.id != null)
+            if(GameManager.Instance != null && id != null)
             {
-                MySqlConnector.Instance.doNonQuery("update Career set Win = Win + 1 where id = '" + GameManager.Instance.id +"'");
+                MySqlConnector.Instance.doNonQuery("update Career set Win = Win + 1 where id = '" + id +"'");
             }
         }
     }
