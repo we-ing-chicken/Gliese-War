@@ -230,7 +230,7 @@ public class BattleManager : MonoBehaviour
 
                         players[i].GetComponent<BattlePlayer>().isStart = true;
 
-                        if (GameManager.Instance.id != null)
+                        if (GameManager.Instance != null && GameManager.Instance.id != null)
                         {
                             //Career Update
                             MySqlConnector.Instance.doNonQuery("update Career set Game = Game + 1 where id = '" + GameManager.Instance.id +"'");
