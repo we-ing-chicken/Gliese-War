@@ -1375,9 +1375,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
                 dm.damage = 1;
                 dm.hitted = myindex;
                 ApplyDamage(dm);
-                
-                BattleManager.Instance.HitScreen();
-                
+
                 if(!audio.isPlaying)
                     audio.PlayOneShot(electricSound, 0.5f);
                 
@@ -1583,9 +1581,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             dm.damage = 2;
             dm.hitted = myindex;
             ApplyDamage(dm);
-            
-            BattleManager.Instance.HitScreen();
-            
+
             yield return new WaitForSeconds(2f);
         }
         
@@ -1615,9 +1611,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             dm.damage = 2;
             dm.hitted = myindex;
             ApplyDamage(dm);
-            
-            BattleManager.Instance.HitScreen();
-            
+
             yield return new WaitForSeconds(2f);
         }
         
