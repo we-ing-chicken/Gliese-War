@@ -123,8 +123,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
     [SerializeField] private AudioClip[] attackSounds;
     public AudioClip electricSound;
 
-    public GameObject healEffect;
-
     public CinemachineVirtualCamera virtualCamera;
 
     private void Start()
@@ -213,7 +211,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
         
 
-        if (NetworkManager.Instance.sendOK && photonView.ViewID != 0 && PhotonNetwork.CurrentRoom.Players.Count == 3)
+        if (NetworkManager.Instance.sendOK && photonView.ViewID != 0 && PhotonNetwork.CurrentRoom.Players.Count == 1)
         {
             NetworkManager.Instance.sendOK = false;
             BattleManager.Instance.alivePlayer = PhotonNetwork.CurrentRoom.Players.Count;
@@ -1247,15 +1245,18 @@ public class BattlePlayer : LivingEntity, IPunObservable
         if (damageMessage.damage >  0 && photonView.IsMine)
         {
             BattleManager.Instance.HitScreen();
+            Inventory.instance.statParent.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Health : " + health + " / " + startingHealth; 
+            BattleManager.Instance.HPText.GetComponent<TextMeshProUGUI>().text = health + " / " + startingHealth;
         }
-        else
+        else if(damageMessage.damage < 0 && photonView.IsMine)
         {
             if (health > startingHealth)
                 health = startingHealth;
+            
+            Inventory.instance.statParent.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Health : " + health + " / " + startingHealth; 
+            BattleManager.Instance.HPText.GetComponent<TextMeshProUGUI>().text = health + " / " + startingHealth;
         }
 
-        Inventory.instance.statParent.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Health : " + health + " / " + startingHealth;
-        BattleManager.Instance.HPText.GetComponent<TextMeshProUGUI>().text = health + " / " + startingHealth;
         
         return true;
     }
@@ -1333,14 +1334,22 @@ public class BattlePlayer : LivingEntity, IPunObservable
             ApplyDamage(dm);
 
             //healEffect.SetActive(true);
-            healEffect.GetComponent<ParticleSystem>().Play();
+            //healEffect.GetComponent<ParticleSystem>().Play();
+            
+            GameObject healEffect;
+            healEffect = Instantiate(BattleManager.Instance.HealEffect);
+            healEffect.transform.position = transform.position;
 
             Destroy(other.gameObject);
         }
         else if(other.CompareTag("Item"))
         {
             //healEffect.SetActive(true);
-            healEffect.GetComponent<ParticleSystem>().Play();
+            //healEffect.GetComponent<ParticleSystem>().Play();
+            
+            GameObject healEffect;
+            healEffect = Instantiate(BattleManager.Instance.HealEffect);
+            healEffect.transform.position = transform.position;
 
             Destroy(other.gameObject);
         }
@@ -1369,7 +1378,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
                 BattleManager.Instance.HitScreen();
                 
                 if(!audio.isPlaying)
-                    audio.PlayOneShot(electricSound, 1f);
+                    audio.PlayOneShot(electricSound, 0.5f);
                 
             }
         }
@@ -1384,15 +1393,23 @@ public class BattlePlayer : LivingEntity, IPunObservable
             //if(!healEffect.gameObject.activeSelf)
                 //healEffect.SetActive(true);
                 
-            if(!healEffect.GetComponent<ParticleSystem>().isPlaying)
-                healEffect.GetComponent<ParticleSystem>().Play();
+            // if(!healEffect.GetComponent<ParticleSystem>().isPlaying)
+            //     healEffect.GetComponent<ParticleSystem>().Play();
+            
+            GameObject healEffect;    
+            healEffect = Instantiate(BattleManager.Instance.HealEffect);
+            healEffect.transform.position = transform.position;
         }
         else if (other.CompareTag("Heal"))
         { 
             //if(!healEffect.gameObject.activeSelf)
                 //healEffect.SetActive(true);
-            if(!healEffect.GetComponent<ParticleSystem>().isPlaying)
-                healEffect.GetComponent<ParticleSystem>().Play();
+            // if(!healEffect.GetComponent<ParticleSystem>().isPlaying)
+            //     healEffect.GetComponent<ParticleSystem>().Play();
+            
+            GameObject healEffect;    
+            healEffect = Instantiate(BattleManager.Instance.HealEffect);
+            healEffect.transform.position = transform.position;
             
         }
     }
