@@ -121,6 +121,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     public AudioSource audio;
     [SerializeField] private AudioClip[] attackSounds;
+    public AudioClip electricSound;
 
     public GameObject healEffect;
 
@@ -1366,6 +1367,9 @@ public class BattlePlayer : LivingEntity, IPunObservable
                 ApplyDamage(dm);
                 
                 BattleManager.Instance.HitScreen();
+                
+                if(!audio.isPlaying)
+                    audio.PlayOneShot(electricSound, 1f);
                 
             }
         }
