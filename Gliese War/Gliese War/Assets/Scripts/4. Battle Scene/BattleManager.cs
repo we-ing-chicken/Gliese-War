@@ -290,11 +290,15 @@ public class BattleManager : MonoBehaviour
     {
         for (int i = 0; i < players.Length; ++i)
         {
+            if (players[i] == null) continue;
             if (!players[i].GetComponent<BattlePlayer>().photonView.IsMine) continue;
 
-            if (GameManager.Instance.id != null)
+            if (GameManager.Instance != null)
             {
-                MySqlConnector.Instance.doNonQuery("update Career set Lose = Lose +1 where id = '" + GameManager.Instance.id +"'");
+                if (GameManager.Instance.id != null)
+                {
+                    MySqlConnector.Instance.doNonQuery("update Career set Lose = Lose +1 where id = '" + GameManager.Instance.id +"'");
+                }
             }
 
             players[i].GetComponent<BattlePlayer>().isalive = false;
