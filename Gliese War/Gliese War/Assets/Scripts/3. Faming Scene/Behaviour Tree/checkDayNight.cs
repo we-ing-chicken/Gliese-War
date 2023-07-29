@@ -14,6 +14,7 @@ public class checkDayNight : ActionNode
             context.findRange = 10;
             context.agent.speed = 3;
             context.agent.GetComponent<Monster>().nowDamage = context.agent.GetComponent<Monster>().initDamage;
+            context.agent.GetComponent<Monster>().devilEffect.SetActive(false);
         }
         else
         {
@@ -21,6 +22,7 @@ public class checkDayNight : ActionNode
             context.findRange = 20;
             context.agent.speed = 5;
             context.agent.GetComponent<Monster>().nowDamage = (int)(context.agent.GetComponent<Monster>().initDamage * 1.2);
+            context.agent.GetComponent<Monster>().devilEffect.SetActive(true);
         }
     }
 
