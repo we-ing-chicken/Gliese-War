@@ -135,8 +135,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
             SHB();
         }
 
-        Debug.Log(photonView.IsMine);
-
         instance = this;
         if (photonView.IsMine)
         {
@@ -284,8 +282,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
                     case Magic.Nothing:
                         myMagicNum = 3;
-                        Debug.Log("무속성");
-                        Debug.Log(myMagicNum);
                         break;
                 }
 
@@ -321,8 +317,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
                     case Magic.Nothing:
                         myMagicNum = 3;
-                        Debug.Log("무속성");
-                        Debug.Log(myMagicNum);
                         break;
                 }
 
@@ -341,14 +335,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
                 dm.damager = myindex;
                 dm.hitted = myindex;
                 ApplyDamage(dm);
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha0))
-            {
-                Debug.Log(isalive);
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha0))
-            {
-                Debug.Log(PhotonNetwork.IsMasterClient);
             }
             else if (Input.GetKeyDown(KeyCode.P))
             {
@@ -519,12 +505,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
         rayPositions.Add(transform.position + Vector3.up * 0.1f);
         rayPositions.Add(transform.position + Vector3.up * GetComponent<CapsuleCollider>().height * 0.5f);
         rayPositions.Add(transform.position + Vector3.up * GetComponent<CapsuleCollider>().height);
-
-        // 디버깅을 위해 ray를 화면에 그린다.
-        foreach (Vector3 pos in rayPositions)
-        {
-            Debug.DrawRay(pos, movement * scope, Color.red);
-        }
 
         // ray와 벽의 충돌을 확인한다.
         foreach (Vector3 pos in rayPositions)
@@ -1425,7 +1405,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     public void ShowHitEffect(int who, int magicNum)
     {
-        Debug.Log(magicNum);
         GameObject hitEffect;
         hitEffect = Instantiate(BattleManager.Instance.HitEffects[magicNum]);
         hitEffect.transform.position = BattleManager.Instance.players[who].transform.position;
@@ -1433,15 +1412,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
     
     public void AttackStart(int who)
     {
-        // Debug.Log("누가 : " + who);
-        // Debug.Log("누가 : " + BattleManager.Instance.players[who]);
-        // Debug.Log("weaponNow : " + weaponNow);
-        // Debug.Log("weapon1.item : " + weapon1.item);
-        // Debug.Log("weapon1.item.weaponType : " + weapon1.item.weaponType);
-        // Debug.Log("BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1 : " + BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1);
-        // Debug.Log("BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1.item : " + BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1.item);
-        // Debug.Log("BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1.item.weaponType : " + BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1.item.weaponType);
-        //
         if (weaponNow == 1)
         {
             switch (weapon1.item.weaponType)
@@ -1757,7 +1727,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
     void SendIndex(int viewID, int index, string id, string nick)
     {
         GameObject[] pl = GameObject.FindGameObjectsWithTag("Player");
-        Debug.Log("SendIndex 실행");
 
         for (int i = 0; i < pl.Length; ++i)
         {
@@ -1795,7 +1764,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
     void MinusLiveCount()
     {
         --BattleManager.Instance.alivePlayer;
-        Debug.Log(BattleManager.Instance.alivePlayer + "명 남아있음");
 
         if (BattleManager.Instance.alivePlayer == 1 && isalive)
         {
@@ -1821,8 +1789,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
             if (BattleManager.Instance.players[i].GetComponent<BattlePlayer>().isalive) ++aliveCount;
         }
-        
-        Debug.Log(aliveCount + "명 남아있음");
 
         if (aliveCount == 1 && alive)
         {
