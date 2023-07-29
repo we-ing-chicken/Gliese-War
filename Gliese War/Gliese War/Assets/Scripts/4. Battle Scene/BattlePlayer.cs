@@ -266,6 +266,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
                     case Magic.Nothing:
                         myMagicNum = 3;
+                        Debug.Log("무속성");
+                        Debug.Log(myMagicNum);
                         break;
                 }
 
@@ -301,6 +303,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
                     case Magic.Nothing:
                         myMagicNum = 3;
+                        Debug.Log("무속성");
+                        Debug.Log(myMagicNum);
                         break;
                 }
 
@@ -1075,7 +1079,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         {
             weapon1 = new RealItem();
             weapon1.item = BattleManager.Instance.sword[1];
-            weapon1.magic = Magic.Fire;
+            weapon1.magic = Magic.Light;
 
             weapon2 = new RealItem();
             weapon2.item = BattleManager.Instance.spear[1];
@@ -1420,6 +1424,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     public void ShowHitEffect(int who, int magicNum)
     {
+        Debug.Log(magicNum);
         GameObject hitEffect;
         hitEffect = Instantiate(BattleManager.Instance.HitEffects[magicNum]);
         hitEffect.transform.position = BattleManager.Instance.players[who].transform.position;
@@ -1427,15 +1432,15 @@ public class BattlePlayer : LivingEntity, IPunObservable
     
     public void AttackStart(int who)
     {
-        Debug.Log("누가 : " + who);
-        Debug.Log("누가 : " + BattleManager.Instance.players[who]);
-        Debug.Log("weaponNow : " + weaponNow);
-        Debug.Log("weapon1.item : " + weapon1.item);
-        Debug.Log("weapon1.item.weaponType : " + weapon1.item.weaponType);
-        Debug.Log("BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1 : " + BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1);
-        Debug.Log("BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1.item : " + BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1.item);
-        Debug.Log("BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1.item.weaponType : " + BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1.item.weaponType);
-        
+        // Debug.Log("누가 : " + who);
+        // Debug.Log("누가 : " + BattleManager.Instance.players[who]);
+        // Debug.Log("weaponNow : " + weaponNow);
+        // Debug.Log("weapon1.item : " + weapon1.item);
+        // Debug.Log("weapon1.item.weaponType : " + weapon1.item.weaponType);
+        // Debug.Log("BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1 : " + BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1);
+        // Debug.Log("BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1.item : " + BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1.item);
+        // Debug.Log("BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1.item.weaponType : " + BattleManager.Instance.players[who].GetComponent<BattlePlayer>().weapon1.item.weaponType);
+        //
         if (weaponNow == 1)
         {
             switch (weapon1.item.weaponType)
@@ -1705,6 +1710,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
                     .gameObject.SetActive(false);
                 BattleManager.Instance.players[who].GetComponent<BattlePlayer>().whatMagicPos.transform.GetChild(2)
                     .gameObject.SetActive(false);
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().myMagicNum = 0;
                 break;
 
             case (int)Magic.Water:
@@ -1714,6 +1720,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
                     .gameObject.SetActive(true);
                 BattleManager.Instance.players[who].GetComponent<BattlePlayer>().whatMagicPos.transform.GetChild(2)
                     .gameObject.SetActive(false);
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().myMagicNum = 1;
                 break;
 
             case (int)Magic.Light:
@@ -1723,6 +1730,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
                     .gameObject.SetActive(false);
                 BattleManager.Instance.players[who].GetComponent<BattlePlayer>().whatMagicPos.transform.GetChild(2)
                     .gameObject.SetActive(true);
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().myMagicNum = 2;
                 break;
 
             default:
@@ -1732,9 +1740,10 @@ public class BattlePlayer : LivingEntity, IPunObservable
                     .gameObject.SetActive(false);
                 BattleManager.Instance.players[who].GetComponent<BattlePlayer>().whatMagicPos.transform.GetChild(2)
                     .gameObject.SetActive(false);
+                BattleManager.Instance.players[who].GetComponent<BattlePlayer>().myMagicNum = 3;
                 break;
         }
-
+        
     }
 
     [PunRPC]
