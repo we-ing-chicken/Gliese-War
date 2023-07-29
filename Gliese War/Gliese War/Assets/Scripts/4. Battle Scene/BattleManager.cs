@@ -229,6 +229,12 @@ public class BattleManager : MonoBehaviour
                         MakeUICharacter();
 
                         players[i].GetComponent<BattlePlayer>().isStart = true;
+
+                        if (GameManager.Instance.id != null)
+                        {
+                            //Career Update
+                            MySqlConnector.Instance.doNonQuery("update Career set Game = Game + 1 where id = '" + GameManager.Instance.id +"'");
+                        }
                     }
                 }
 

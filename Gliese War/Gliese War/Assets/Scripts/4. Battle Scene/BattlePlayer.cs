@@ -1,20 +1,11 @@
 using Cinemachine;
 using Photon.Pun;
-using Photon.Pun.Demo.Cockpit.Forms;
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using ExitGames.Client.Photon.StructWrapping;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.AI;
-using UnityEngine.Animations;
-using UnityEngine.EventSystems;
-using UnityEngine.Rendering.UI;
-using UnityEngine.Rendering.VirtualTexturing;
-using UnityEngine.SceneManagement;
+
 
 public class BattlePlayer : LivingEntity, IPunObservable
 {
@@ -1289,7 +1280,10 @@ public class BattlePlayer : LivingEntity, IPunObservable
         NetworkManager.Instance.connect = false;
         PhotonNetwork.LeaveRoom();
         
-        //진 사람 DB추가
+        if(GameManager.Instance.id != null)
+        {
+            MySqlConnector.Instance.doNonQuery("update Career set Lose = Lose +1 where id = '" + GameManager.Instance.id +"'");
+        }
         
         yield return new WaitForSeconds(2.0f);
         
@@ -1817,7 +1811,11 @@ public class BattlePlayer : LivingEntity, IPunObservable
         if (aliveCount == 1 && isalive)
         {
             BattleManager.Instance.openWinCanvas();
-            //이긴 사람 DB 승리 추가
+            
+            if(GameManager.Instance.id != null)
+            {
+                MySqlConnector.Instance.doNonQuery("update Career set Win = Win + 1 where id = '" + GameManager.Instance.id +"'");
+            }
         }
     }
 
@@ -1838,5 +1836,10 @@ public class BattlePlayer : LivingEntity, IPunObservable
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().AttackStart(who);
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().AttackAnimation();
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().StartCoroutine(AttackEffect());
+    }
+
+    public string GetMyId()
+    {
+        return id;
     }
 }

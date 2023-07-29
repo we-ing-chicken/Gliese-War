@@ -1,10 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MySql.Data.MySqlClient;
 
 public class GameManager : MonoBehaviour
 {
     private static GameManager _instance;
+    public MySqlDataReader reader;
+
+    public string id;
+    public string nickName;
 
     public GameObject[] farmingCharacters;
     public GameObject[] battleCharacters;

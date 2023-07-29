@@ -45,7 +45,36 @@ public class LivingEntity : MonoBehaviourPunCallbacks, IDamageable
         lastDamagedTime = Time.time;
         health -= damageMessage.damage;
 
-        if (health <= 0) Die();
+        if (health <= 0)
+        {
+            Die();
+            // 공격자, 무기 DB 업데이트
+
+            for (int i = 0; i < BattleManager.Instance.players.Length; ++i)
+            {
+                if (BattleManager.Instance.players[i].GetComponent<BattlePlayer>().myindex != damageMessage.damager) continue;
+
+                string id = BattleManager.Instance.players[i].GetComponent<BattlePlayer>().GetMyId();
+                
+                switch (BattleManager.Instance.players[i].GetComponent<BattlePlayer>().weapon1.item.weaponType)
+                {
+                    case Item.WeaponType.Hammer:
+                        MySqlConnector.Instance.doNonQuery("update Career set Hammer = Hammer + 1 where id = '" + id + "'");
+                        break;
+
+                    case Item.WeaponType.Spear:
+                        MySqlConnector.Instance.doNonQuery("update Career set Spear = Spear + 1 where id = '" + id + "'");
+                        break;
+
+                    case Item.WeaponType.Sword:
+                        MySqlConnector.Instance.doNonQuery("update Career set Sword = Sword + 1 where id = '" + id + "'");
+                        break;
+
+                    case Item.WeaponType.Nothing:
+                        break;
+                }
+            }
+        }
 
         return true;
     }
