@@ -257,9 +257,7 @@ public class BattleManager : MonoBehaviour
 
     public void Exit()
     {
-        Cursor.visible = true;
-        NetworkManager.Instance.connect = false;
-        PhotonNetwork.LeaveRoom();
+        
         SceneManager.LoadScene((int)(Scene.LobbyScene));
     }
     
