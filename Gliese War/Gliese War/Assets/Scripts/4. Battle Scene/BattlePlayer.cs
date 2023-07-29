@@ -1298,6 +1298,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         if(GameManager.Instance != null && GameManager.Instance.id != null)
         {
             MySqlConnector.Instance.doNonQuery("update Career set Lose = Lose + 1 where id = '" + id +"'");
+            MySqlConnector.Instance.doNonQuery("update Career set Death = Death + 1 where id = '" + id +"'");
         }
         
         yield return new WaitForSeconds(2.0f);
@@ -1823,7 +1824,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         int aliveCount = 0;
         for (int i = 0; i < BattleManager.Instance.players.Length; ++i)
         {
-            if (BattleManager.Instance.players[i] == null) return;
+            if (BattleManager.Instance.players[i] == null) continue;
 
             if (BattleManager.Instance.players[i].GetComponent<BattlePlayer>().isalive) ++aliveCount;
         }
