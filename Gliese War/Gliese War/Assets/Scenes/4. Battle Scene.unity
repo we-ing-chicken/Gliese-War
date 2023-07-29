@@ -7879,6 +7879,9 @@ MonoBehaviour:
   inside: {fileID: 1205796015}
   outside: {fileID: 655639624}
   mf: {fileID: 1922377784}
+  terrain: {fileID: 16259192}
+  hamburgers: 5
+  hamburger: {fileID: 6071914464483409527, guid: cf2c9bc122ea45a4c86722038edcbb11, type: 3}
 --- !u!4 &440040328
 Transform:
   m_ObjectHideFlags: 0
@@ -22059,7 +22062,7 @@ Transform:
   - {fileID: 5256101208800263333}
   - {fileID: 120881315}
   m_Father: {fileID: 0}
-  m_RootOrder: 33
+  m_RootOrder: 34
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &980730236
 GameObject:
@@ -29753,7 +29756,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6847748128668820685, guid: cf2c9bc122ea45a4c86722038edcbb11, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.16
+      value: 2.66
       objectReference: {fileID: 0}
     - target: {fileID: 6847748128668820685, guid: cf2c9bc122ea45a4c86722038edcbb11, type: 3}
       propertyPath: m_LocalPosition.z
@@ -38269,7 +38272,7 @@ RectTransform:
   m_Children:
   - {fileID: 1736780408}
   m_Father: {fileID: 0}
-  m_RootOrder: 32
+  m_RootOrder: 33
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}

@@ -93,7 +93,10 @@ public class BattleManager : MonoBehaviour
     public GameObject inside;
     public GameObject outside;
     public GameObject mf;
-    
+    public GameObject terrain;
+    public int hamburgers;
+    public GameObject hamburger;
+
 
     public static BattleManager Instance
     {
@@ -505,5 +508,11 @@ public class BattleManager : MonoBehaviour
                 temp.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
             }
         }
+    }
+
+    public float GetTerrainY(int x, int z)
+    {
+        float y = terrain.GetComponent<Terrain>().terrainData.GetHeight(x + (int)terrain.GetComponent<Terrain>().terrainData.size.x, z + (int)terrain.GetComponent<Terrain>().terrainData.size.z);
+        return y;
     }
 }

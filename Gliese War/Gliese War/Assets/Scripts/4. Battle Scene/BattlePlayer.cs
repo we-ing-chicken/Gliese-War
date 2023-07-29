@@ -115,6 +115,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     public AudioClip electricSound;
 
     public CinemachineVirtualCamera virtualCamera;
+    
 
     private void Start()
     {
@@ -126,8 +127,13 @@ public class BattlePlayer : LivingEntity, IPunObservable
         if(isWait)
         {
             return;
-        }   
-        
+        }
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            SHB();
+        }
+
         Debug.Log(photonView.IsMine);
 
         instance = this;
@@ -202,7 +208,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
         
 
-        if (NetworkManager.Instance.sendOK && photonView.ViewID != 0 && PhotonNetwork.CurrentRoom.Players.Count == 2)
+        if (NetworkManager.Instance.sendOK && photonView.ViewID != 0 && PhotonNetwork.CurrentRoom.Players.Count == 1)
         {
             NetworkManager.Instance.sendOK = false;
             BattleManager.Instance.alivePlayer = PhotonNetwork.CurrentRoom.Players.Count;
@@ -1847,6 +1853,36 @@ public class BattlePlayer : LivingEntity, IPunObservable
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().AttackStart(who);
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().AttackAnimation();
         BattleManager.Instance.players[who].GetComponent<BattlePlayer>().StartCoroutine(AttackEffect());
+    }
+
+    void SHB()
+    {
+        int i = 0;
+        while (i < BattleManager.Instance.hamburgers)
+        {
+            int x = Random.Range(125, 275);
+            int z = Random.Range(125, 275);
+            float y = BattleManager.Instance.GetTerrainY(x, z);
+            if (y > 15.0f)
+            {
+                continue;
+            }
+            else
+            {
+                Vector3 xyz = new Vector3(x, 15.0f, z);
+                photonView.RPC("SendHamburger", RpcTarget.All, xyz);
+                ++i;
+            }
+        }
+    }
+
+    [PunRPC]
+    void SendHamburger(Vector3 xyz)
+    {
+
+        Instantiate(BattleManager.Instance.hamburger, xyz, Quaternion.identity);
+
+
     }
 
     public string GetMyId()
