@@ -261,12 +261,48 @@ public class BattleManager : MonoBehaviour
         SwitchCanvasActive(pauseCanvas);
     }
 
-    public void Exit()
+    public void EndExit()
     {
         
         SceneManager.LoadScene((int)(Scene.LobbyScene));
     }
     
+    public void PauseExit()
+    {
+        for (int i = 0; i < players.Length; ++i)
+        {
+            if (!players[i].GetComponent<BattlePlayer>().photonView.IsMine) continue;
+
+            if (GameManager.Instance.id != null)
+            {
+                MySqlConnector.Instance.doNonQuery("update Career set Lose = Lose +1 where id = '" + GameManager.Instance.id +"'");
+            }
+
+            players[i].GetComponent<BattlePlayer>().isalive = false;
+            players[i].GetComponent<BattlePlayer>().photonView.RPC("SendDie", RpcTarget.Others, players[i].GetComponent<BattlePlayer>().myindex);
+            NetworkManager.Instance.connect = false;
+        }
+        
+        SceneManager.LoadScene((int)(Scene.LobbyScene));
+    }
+
+    void OnApplicationQuit()
+    {
+        for (int i = 0; i < players.Length; ++i)
+        {
+            if (!players[i].GetComponent<BattlePlayer>().photonView.IsMine) continue;
+
+            if (GameManager.Instance.id != null)
+            {
+                MySqlConnector.Instance.doNonQuery("update Career set Lose = Lose +1 where id = '" + GameManager.Instance.id +"'");
+            }
+
+            players[i].GetComponent<BattlePlayer>().isalive = false;
+            players[i].GetComponent<BattlePlayer>().photonView.RPC("SendDie", RpcTarget.Others, players[i].GetComponent<BattlePlayer>().myindex);
+            NetworkManager.Instance.connect = false;
+        }
+    }
+
     public void openWinCanvas()
     {
         Cursor.visible = true;

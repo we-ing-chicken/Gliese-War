@@ -7085,7 +7085,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 440040327}
         m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
-        m_MethodName: Exit
+        m_MethodName: EndExit
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -20004,7 +20004,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 440040327}
         m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
-        m_MethodName: Exit
+        m_MethodName: PauseExit
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -43222,7 +43222,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 440040327}
         m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
-        m_MethodName: Exit
+        m_MethodName: EndExit
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
