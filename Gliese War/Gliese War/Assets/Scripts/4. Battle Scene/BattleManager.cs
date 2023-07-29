@@ -273,6 +273,8 @@ public class BattleManager : MonoBehaviour
     {
         for (int i = 0; i < players.Length; ++i)
         {
+            if (players[i] == null) continue;
+            
             if (!players[i].GetComponent<BattlePlayer>().photonView.IsMine) continue;
 
             if (GameManager.Instance != null && GameManager.Instance.id != null)
