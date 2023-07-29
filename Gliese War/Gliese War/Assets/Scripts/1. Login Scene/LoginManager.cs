@@ -259,7 +259,7 @@ namespace Team
             string nick = joinNickInput.text;
 
             MySqlConnector.Instance.doNonQuery("insert into User values ('" + id + "','" + pw +"','" + nick + "','0','0','2022-08-09')");
-            MySqlConnector.Instance.doNonQuery("insert into Career (id) values ('" + id + "'");
+            MySqlConnector.Instance.doNonQuery("insert into Career values ('" + id + "', 0, 0, 0, 0, 0, 0, 0, 0");
 
 
             JoinCancel();
