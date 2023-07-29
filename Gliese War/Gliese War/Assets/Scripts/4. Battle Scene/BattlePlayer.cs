@@ -1240,24 +1240,22 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         if (!base.ApplyDamage(damageMessage)) return false;
 
-        MyHPBar.Instance.SetHPBar(startingHealth, health);
+        if (damageMessage.hitted != myindex) return false;
 
-        if (damageMessage.damage >  0 && photonView.IsMine)
+        if (damageMessage.damage > 0)
         {
             BattleManager.Instance.HitScreen();
-            Inventory.instance.statParent.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Health : " + health + " / " + startingHealth; 
-            BattleManager.Instance.HPText.GetComponent<TextMeshProUGUI>().text = health + " / " + startingHealth;
         }
-        else if(damageMessage.damage < 0 && photonView.IsMine)
+        else
         {
             if (health > startingHealth)
                 health = startingHealth;
-            
-            Inventory.instance.statParent.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Health : " + health + " / " + startingHealth; 
-            BattleManager.Instance.HPText.GetComponent<TextMeshProUGUI>().text = health + " / " + startingHealth;
         }
 
-        
+        Inventory.instance.statParent.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Health : " + health + " / " + startingHealth;
+        BattleManager.Instance.HPText.GetComponent<TextMeshProUGUI>().text = health + " / " + startingHealth;
+        MyHPBar.Instance.SetHPBar(startingHealth, health);
+
         return true;
     }
 
@@ -1318,6 +1316,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             DamageMessage dm;
             dm.damager = other.transform.GetComponentInParent<BattlePlayer>().myindex;
             dm.damage = newIntDamage;
+            dm.hitted = myindex;
             ApplyDamage(dm);
 
             ShowHitEffect(myindex, other.transform.GetComponentInParent<BattlePlayer>().myMagicNum);
@@ -1331,6 +1330,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             DamageMessage dm;
             dm.damager = myindex;
             dm.damage = -20;
+            dm.hitted = myindex;
             ApplyDamage(dm);
 
             //healEffect.SetActive(true);
@@ -1373,6 +1373,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
                 DamageMessage dm;
                 dm.damager = myindex;
                 dm.damage = 1;
+                dm.hitted = myindex;
                 ApplyDamage(dm);
                 
                 BattleManager.Instance.HitScreen();
@@ -1388,6 +1389,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             DamageMessage dm;
             dm.damager = myindex;
             dm.damage = -1;
+            dm.hitted = myindex;
             ApplyDamage(dm);
             
             //if(!healEffect.gameObject.activeSelf)
@@ -1579,6 +1581,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             DamageMessage dm;
             dm.damager = myindex;
             dm.damage = 2;
+            dm.hitted = myindex;
             ApplyDamage(dm);
             
             BattleManager.Instance.HitScreen();
@@ -1610,6 +1613,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             DamageMessage dm;
             dm.damager = myindex;
             dm.damage = 2;
+            dm.hitted = myindex;
             ApplyDamage(dm);
             
             BattleManager.Instance.HitScreen();

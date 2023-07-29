@@ -5,6 +5,7 @@ using UnityEngine;
 public struct DamageMessage
 {
     public int damager;      // ������
-    public int damage;            // ���ݷ�
+    public int damage; // ���ݷ�         
+    public int hitted;          
 
 }
