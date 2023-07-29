@@ -273,7 +273,7 @@ public class BattleManager : MonoBehaviour
         {
             if (!players[i].GetComponent<BattlePlayer>().photonView.IsMine) continue;
 
-            if (GameManager.Instance.id != null)
+            if (GameManager.Instance != null && GameManager.Instance.id != null)
             {
                 MySqlConnector.Instance.doNonQuery("update Career set Lose = Lose +1 where id = '" + GameManager.Instance.id +"'");
             }

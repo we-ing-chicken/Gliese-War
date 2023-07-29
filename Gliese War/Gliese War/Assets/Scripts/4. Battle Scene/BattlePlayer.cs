@@ -1280,7 +1280,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         NetworkManager.Instance.connect = false;
         PhotonNetwork.LeaveRoom();
         
-        if(GameManager.Instance.id != null)
+        if(GameManager.Instance != null && GameManager.Instance.id != null)
         {
             MySqlConnector.Instance.doNonQuery("update Career set Lose = Lose +1 where id = '" + GameManager.Instance.id +"'");
         }
@@ -1812,7 +1812,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         {
             BattleManager.Instance.openWinCanvas();
             
-            if(GameManager.Instance.id != null)
+            if(GameManager.Instance != null && GameManager.Instance.id != null)
             {
                 MySqlConnector.Instance.doNonQuery("update Career set Win = Win + 1 where id = '" + GameManager.Instance.id +"'");
             }

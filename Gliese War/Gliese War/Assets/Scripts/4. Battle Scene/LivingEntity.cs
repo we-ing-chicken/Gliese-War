@@ -52,6 +52,7 @@ public class LivingEntity : MonoBehaviourPunCallbacks, IDamageable
 
             for (int i = 0; i < BattleManager.Instance.players.Length; ++i)
             {
+                if (BattleManager.Instance.players[i] == null) continue;
                 if (BattleManager.Instance.players[i].GetComponent<BattlePlayer>().myindex != damageMessage.damager) continue;
 
                 string id = BattleManager.Instance.players[i].GetComponent<BattlePlayer>().GetMyId();
