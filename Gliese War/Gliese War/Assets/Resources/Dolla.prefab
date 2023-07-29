@@ -420,6 +420,7 @@ MonoBehaviour:
   isUI: 0
   isWait: 0
   isStart: 0
+  isDbUpdate: 0
   audio: {fileID: 0}
   attackSounds:
   - {fileID: 8300000, guid: 8861e021753706f458759094222bd7b5, type: 3}
