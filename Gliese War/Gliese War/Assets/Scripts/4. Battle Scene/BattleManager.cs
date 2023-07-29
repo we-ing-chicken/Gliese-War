@@ -382,9 +382,18 @@ public class BattleManager : MonoBehaviour
     
     public void SetEquipWeaponImage()
     {
-        if (!BattlePlayer.instance.photonView.IsMine) return;
+        BattlePlayer pl = null;
         
-        if (BattlePlayer.instance.weapon1 == null)
+        for (int i = 0; i < players.Length; ++i)
+        {
+            if (players[i].GetComponent<BattlePlayer>().photonView.IsMine)
+            {
+                pl = players[i].GetComponent<BattlePlayer>();
+                break;
+            }
+        }
+        
+        if (pl.weapon1 == null)
         {
             Color color = weapon1Image.color;
             color.a = 0f;
@@ -396,7 +405,7 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
-            switch (BattlePlayer.instance.weapon1.item.weaponType)
+            switch (pl.weapon1.item.weaponType)
             {
                 case Item.WeaponType.Hammer:
                     weapon1Image.sprite = weaponImage[0];
@@ -411,7 +420,7 @@ public class BattleManager : MonoBehaviour
                     break;
             }
             
-            if (BattlePlayer.instance.weaponNow == 1)
+            if (pl.weaponNow == 1)
             {
                 Color color = weapon1Image.color;
                 color.a = 1f;
@@ -433,7 +442,7 @@ public class BattleManager : MonoBehaviour
             }
         }
 
-        if (BattlePlayer.instance.weapon2 == null)
+        if (pl.weapon2 == null)
         {
             Color color = weapon2Image.color;
             color.a = 0f;
@@ -445,7 +454,7 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
-            switch (BattlePlayer.instance.weapon2.item.weaponType)
+            switch (pl.weapon2.item.weaponType)
             {
                 case Item.WeaponType.Hammer:
                     weapon2Image.sprite = weaponImage[0];
@@ -460,7 +469,7 @@ public class BattleManager : MonoBehaviour
                     break;
             }
             
-            if (BattlePlayer.instance.weaponNow == 2)
+            if (pl.weaponNow == 2)
             {
                 Color color = weapon2Image.color;
                 color.a = 1f;
