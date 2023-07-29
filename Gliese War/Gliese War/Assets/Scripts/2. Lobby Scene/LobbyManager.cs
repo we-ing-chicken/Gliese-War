@@ -11,6 +11,8 @@ public class LobbyManager : MonoBehaviour
 {
     private MySqlDataReader reader;
     private string id;
+    private string nick;
+    
 
     [Header("Lobby")] [SerializeField] private GameObject nickNameText;
     
@@ -45,11 +47,8 @@ public class LobbyManager : MonoBehaviour
         {
             reader = MySqlConnector.Instance.doQuery("select * from User where ID = '" + id + "'");
             reader.Read();
-            string nick = reader[2].ToString();
+            nick = reader[2].ToString();
             nickNameText.GetComponent<TextMeshProUGUI>().text = nick;
-
-            GameManager.Instance.id = id;
-            GameManager.Instance.nickName = nick;
         }
         else
         {
@@ -70,6 +69,9 @@ public class LobbyManager : MonoBehaviour
         
         isChanging = false;
         Cursor.visible = true;
+        
+        GameManager.Instance.id = id;
+        GameManager.Instance.nickName = nick;
     }
 
     public void StartGame()

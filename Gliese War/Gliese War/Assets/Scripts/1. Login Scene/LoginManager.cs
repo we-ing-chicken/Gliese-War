@@ -32,6 +32,9 @@ namespace Team
         private bool nickOK = false;
         public Button joinOKButton;
 
+        [Header("Sound")] public AudioSource audio;
+        public AudioClip buttonClickSound;
+
         void Awake()
         {
             if (null == _instance)
@@ -55,6 +58,8 @@ namespace Team
 
         private void Start()
         {
+            audio = GetComponent<AudioSource>();
+            
             reader = MySqlConnector.Instance.doQuery("select count(*) from User");
             reader.Read();
             reader.Close();
@@ -259,10 +264,15 @@ namespace Team
             string nick = joinNickInput.text;
 
             MySqlConnector.Instance.doNonQuery("insert into User values ('" + id + "','" + pw +"','" + nick + "','0','0','2022-08-09')");
-            MySqlConnector.Instance.doNonQuery("insert into Career values ('" + id + "', 0, 0, 0, 0, 0, 0, 0, 0");
+            MySqlConnector.Instance.doNonQuery("insert into Career values ('" + id + "', '0', '0', '0', '0', '0', '0', '0', '0')");
 
 
             JoinCancel();
+        }
+
+        public void PlayButtonClick()
+        {
+            audio.PlayOneShot(buttonClickSound, 1f);
         }
     }
 }
