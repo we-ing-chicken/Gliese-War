@@ -334,32 +334,16 @@ public class BattlePlayer : LivingEntity, IPunObservable
                 SetMagicImage();
                 photonView.RPC("ChangeWeapon", RpcTarget.Others, myindex,(int)weapon2.item.weaponType, (int)weapon2.magic);
             }
-            else if (Input.GetKeyDown(KeyCode.Alpha4))
-            {
-                weapon1.item = BattleManager.Instance.sword[1];
-                EquipWeapon();
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha5))
-            {
-                weapon1.item = BattleManager.Instance.spear[1];
-                EquipWeapon();
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha6))
-            {
-                weapon1.item = BattleManager.Instance.hammer[1];
-                EquipWeapon();
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha7))
-            {
-                myMagicNum = 0;
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha8))
-            {
-                myMagicNum = 1;
-            }
             else if (Input.GetKeyDown(KeyCode.Alpha9))
             {
-                myMagicNum = 2;
+                DamageMessage dm;
+                dm.damage = 100;
+                dm.damager = myindex;
+                dm.hitted = myindex;
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha0))
+            {
+                Debug.Log(isalive);
             }
             else if (Input.GetKeyDown(KeyCode.Alpha0))
             {
@@ -1823,6 +1807,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
     void SendDie(int who)
     {
         if (BattleManager.Instance.players[who] == null) return;
+        
+        bool alive = BattleManager.Instance.players[myindex].GetComponent<BattlePlayer>().isalive;
 
         if (BattleManager.Instance.players[who].GetComponent<BattlePlayer>().isalive)
             BattleManager.Instance.players[who].GetComponent<BattlePlayer>().isalive = false;
@@ -1837,11 +1823,11 @@ public class BattlePlayer : LivingEntity, IPunObservable
         
         Debug.Log(aliveCount + "명 남아있음");
 
-        if (aliveCount == 1 && isalive)
+        if (aliveCount == 1 && alive)
         {
             BattleManager.Instance.openWinCanvas();
             
-            if(GameManager.Instance != null && id != null)
+            if(GameManager.Instance != null && id != null && photonView.IsMine)
             {
                 MySqlConnector.Instance.doNonQuery("update Career set Win = Win + 1 where id = '" + id +"'");
             }

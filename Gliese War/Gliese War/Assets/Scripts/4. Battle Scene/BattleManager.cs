@@ -225,7 +225,7 @@ public class BattleManager : MonoBehaviour
                         
                         pl.virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
 
-                        pl.enabled = true;
+                        players[i].GetComponent<AudioListener>().enabled = true;
 
                         CServercamTest sct = Camera.main.GetComponent<CServercamTest>();
 
