@@ -265,6 +265,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
                         break;
 
                     case Magic.Nothing:
+                        myMagicNum = 3;
                         break;
                 }
 
@@ -299,6 +300,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
                         break;
 
                     case Magic.Nothing:
+                        myMagicNum = 3;
                         break;
                 }
 
