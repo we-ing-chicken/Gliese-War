@@ -340,6 +340,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
                 dm.damage = 100;
                 dm.damager = myindex;
                 dm.hitted = myindex;
+                ApplyDamage(dm);
             }
             else if (Input.GetKeyDown(KeyCode.Alpha0))
             {
@@ -1825,12 +1826,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
         if (aliveCount == 1 && alive)
         {
-            BattleManager.Instance.openWinCanvas();
             
             if(GameManager.Instance != null && id != null && photonView.IsMine)
             {
                 MySqlConnector.Instance.doNonQuery("update Career set Win = Win + 1 where id = '" + id +"'");
             }
+            BattleManager.Instance.openWinCanvas();
         }
     }
 
