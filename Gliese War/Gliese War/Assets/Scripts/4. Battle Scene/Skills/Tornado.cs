@@ -76,6 +76,7 @@ public class Tornado : MonoBehaviour
             DamageMessage dm;
             dm.damager = master;
             dm.damage = 1;
+            dm.hitted = obj.GetComponent<BattlePlayer>().myindex;
             obj.GetComponent<BattlePlayer>().ApplyDamage(dm);
             //obj.GetComponent<BattlePlayer>().GetDamage(1);
             return;
