@@ -1282,7 +1282,10 @@ public class BattlePlayer : LivingEntity, IPunObservable
     IEnumerator die()
     {
         animator.SetTrigger("dying");
-        photonView.RPC("MinusLiveCount", RpcTarget.Others);
+        
+        //photonView.RPC("MinusLiveCount", RpcTarget.Others);
+        photonView.RPC("SendDie", RpcTarget.Others, myindex);
+        
         NetworkManager.Instance.connect = false;
         PhotonNetwork.LeaveRoom();
         
@@ -1787,6 +1790,31 @@ public class BattlePlayer : LivingEntity, IPunObservable
         Debug.Log(BattleManager.Instance.alivePlayer + "명 남아있음");
 
         if (BattleManager.Instance.alivePlayer == 1 && isalive)
+        {
+            BattleManager.Instance.openWinCanvas();
+            //이긴 사람 DB 승리 추가
+        }
+    }
+
+    [PunRPC]
+    void SendDie(int who)
+    {
+        if (BattleManager.Instance.players[who] == null) return;
+
+        if (BattleManager.Instance.players[who].GetComponent<BattlePlayer>().isalive)
+            BattleManager.Instance.players[who].GetComponent<BattlePlayer>().isalive = false;
+
+        int aliveCount = 0;
+        for (int i = 0; i < BattleManager.Instance.players.Length; ++i)
+        {
+            if (BattleManager.Instance.players[i] == null) return;
+
+            if (BattleManager.Instance.players[i].GetComponent<BattlePlayer>().isalive) ++aliveCount;
+        }
+        
+        Debug.Log(aliveCount + "명 남아있음");
+
+        if (aliveCount == 1 && isalive)
         {
             BattleManager.Instance.openWinCanvas();
             //이긴 사람 DB 승리 추가
