@@ -1283,10 +1283,15 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         animator.SetTrigger("dying");
         photonView.RPC("MinusLiveCount", RpcTarget.Others);
+        NetworkManager.Instance.connect = false;
+        PhotonNetwork.LeaveRoom();
+        
+        //진 사람 DB추가
+        
         yield return new WaitForSeconds(2.0f);
         
+        Cursor.visible = true;
         BattleManager.Instance.openLoseCanvas();
-        //진 사람 DB추가
     }
 
     void OnCollisionEnter(Collision collision)
@@ -1778,12 +1783,11 @@ public class BattlePlayer : LivingEntity, IPunObservable
     [PunRPC]
     void MinusLiveCount()
     {
-        BattleManager.Instance.alivePlayer--;
+        --BattleManager.Instance.alivePlayer;
         Debug.Log(BattleManager.Instance.alivePlayer + "명 남아있음");
 
         if (BattleManager.Instance.alivePlayer == 1 && isalive)
         {
-            isalive = false;
             BattleManager.Instance.openWinCanvas();
             //이긴 사람 DB 승리 추가
         }
