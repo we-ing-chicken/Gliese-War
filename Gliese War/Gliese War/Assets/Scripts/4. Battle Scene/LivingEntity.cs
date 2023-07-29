@@ -56,6 +56,8 @@ public class LivingEntity : MonoBehaviourPunCallbacks, IDamageable
                 if (BattleManager.Instance.players[i].GetComponent<BattlePlayer>().myindex != damageMessage.damager) continue;
 
                 string id = BattleManager.Instance.players[i].GetComponent<BattlePlayer>().GetMyId();
+
+                MySqlConnector.Instance.doNonQuery("update Career set Killed = Killed + 1 where id = '" + id + "'");
                 
                 switch (BattleManager.Instance.players[i].GetComponent<BattlePlayer>().weapon1.item.weaponType)
                 {
