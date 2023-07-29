@@ -47,6 +47,9 @@ public class LobbyManager : MonoBehaviour
             reader.Read();
             string nick = reader[2].ToString();
             nickNameText.GetComponent<TextMeshProUGUI>().text = nick;
+
+            GameManager.Instance.id = id;
+            GameManager.Instance.nickName = nick;
         }
         else
         {
