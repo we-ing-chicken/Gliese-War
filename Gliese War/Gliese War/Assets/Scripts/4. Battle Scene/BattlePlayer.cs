@@ -1826,11 +1826,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
         if (aliveCount == 1 && alive)
         {
-            
-            if(GameManager.Instance != null && id != null && photonView.IsMine)
+
+            if(GameManager.Instance != null && GameManager.Instance.id != null)
             {
-                MySqlConnector.Instance.doNonQuery("update Career set Win = Win + 1 where id = '" + id +"'");
+                MySqlConnector.Instance.doNonQuery("update Career set Win = Win + 1 where id = '" + GameManager.Instance.id +"'");
             }
+            
             BattleManager.Instance.openWinCanvas();
         }
     }
