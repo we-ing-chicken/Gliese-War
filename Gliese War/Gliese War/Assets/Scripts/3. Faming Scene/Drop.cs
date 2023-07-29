@@ -138,19 +138,19 @@ public class Drop : MonoBehaviour
         switch (dropLevel)
         {
             case DropLevel.VeryLow:
-                return 1;
+                return 3;
             
             case DropLevel.Low:
-                return 2;
+                return 4;
             
             case DropLevel.Medium:
-                return Random.Range(2, 4);
+                return Random.Range(5, 7);
             
             case DropLevel.High:
-                return Random.Range(4, 6);
+                return Random.Range(7, 9);
             
             case DropLevel.VeryHigh:
-                return Random.Range(6, 8);
+                return Random.Range(9, 11);
         }
 
         return 1;
