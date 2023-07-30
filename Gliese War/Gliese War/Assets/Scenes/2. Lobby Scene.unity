@@ -7499,6 +7499,8 @@ MonoBehaviour:
   originPosition: {fileID: 1089408137}
   leftPosition: {fileID: 290204112}
   rightPosition: {fileID: 1118300706}
+  leftButton: {fileID: 333151401}
+  rightButton: {fileID: 1628521384}
   optionCanvas: {fileID: 969170930}
 --- !u!4 &1129677638
 Transform:
@@ -12020,6 +12022,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 753fccbbdbef55542a9f3d9334ad77a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 
+  nickName: 
+  myIndex: 0
+  isAlive: 0
   farmingCharacters:
   - {fileID: 405712581622059825, guid: 69261c6960d959c41a7b72761c7c1315, type: 3}
   - {fileID: 8980038520097037082, guid: 2c236d4f45a2eff47891c770256afb63, type: 3}

@@ -34,6 +34,8 @@ public class LobbyManager : MonoBehaviour
     [SerializeField] private GameObject originPosition;
     [SerializeField] private GameObject leftPosition;
     [SerializeField] private GameObject rightPosition;
+    [SerializeField] private Button leftButton;
+    [SerializeField] private Button rightButton;
 
     [Header("Option")]
     [SerializeField] private Canvas optionCanvas;
@@ -162,6 +164,9 @@ public class LobbyManager : MonoBehaviour
         
         characters[charNum].gameObject.SetActive(true);
         characters[charNum].transform.position = rightPosition.transform.position;
+
+        leftButton.interactable = false;
+        rightButton.interactable = false;
         
         StartCoroutine(MoveCharacter(characters[originNum], characters[charNum], leftPosition));
     }
@@ -182,6 +187,9 @@ public class LobbyManager : MonoBehaviour
         characters[charNum].gameObject.SetActive(true);
         characters[charNum].transform.position = leftPosition.transform.position;
         
+        leftButton.interactable = false;
+        rightButton.interactable = false;
+        
         StartCoroutine(MoveCharacter(characters[originNum], characters[charNum], rightPosition));
     }
 
@@ -192,18 +200,27 @@ public class LobbyManager : MonoBehaviour
         
         while (true)
         {
-            origin.transform.position = Vector3.SmoothDamp(origin.transform.position, to.transform.position, ref velo, offset);
-            newChar.transform.position = Vector3.SmoothDamp(newChar.transform.position, originPosition.transform.position, ref velo, offset);
-    
+            origin.transform.position = Vector3.Lerp(origin.transform.position, to.transform.position, 0.1f);
+            newChar.transform.position = Vector3.Lerp(newChar.transform.position, originPosition.transform.position, 0.1f);
+
+            if (origin.transform.position == to.transform.position)
+            {
+                isChanging = false;
+                origin.SetActive(false);
+                leftButton.interactable = true;
+                rightButton.interactable = true;
+                yield break;
+            }
+            
             //target.y + offset <= this.transform.position.y
             
-            if ((newChar.transform.position == originPosition.transform.position) || (origin.transform.position.x <= -11) || (origin.transform.position.x >= 11))
-            {
-                origin.SetActive(false);
-                newChar.transform.position = new Vector3(0f, -2.703704f, 80f);
-                isChanging = false;
-                break;
-            }
+            // if ((newChar.transform.position == originPosition.transform.position) || (origin.transform.position.x <= -11) || (origin.transform.position.x >= 11))
+            // {
+            //     origin.SetActive(false);
+            //     newChar.transform.position = new Vector3(0f, -2.703704f, 80f);
+            //     isChanging = false;
+            //     break;
+            // }
 
             yield return null;
         }
