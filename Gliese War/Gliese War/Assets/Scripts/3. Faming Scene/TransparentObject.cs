@@ -54,7 +54,9 @@ public class TransparentObject : MonoBehaviour
                 // color.a = 1f;
                 //material.color = color;
                 gameObject.layer = 0;
-                StopCoroutine(cor);
+                
+                if(cor != null)
+                    StopCoroutine(cor);
             }
 
             yield return null;
