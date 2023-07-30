@@ -189,7 +189,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
         audio = GetComponent<AudioSource>();
         
-        EquipWeapon();
         if (photonView.IsMine)
         {
             WhatMagicEffect(myindex, (int)GetMagic());
@@ -218,6 +217,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
             photonView.RPC("StartGame", RpcTarget.All);
             if(shoe != null)
                 photonView.RPC("SendShoeEffectNum", RpcTarget.All, myindex, (int)shoe.item.itemRank);
+            
+            EquipWeapon();
             
             // 모든 유저 DB 업데이트
 
