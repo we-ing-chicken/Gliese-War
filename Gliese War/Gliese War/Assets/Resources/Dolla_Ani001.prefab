@@ -3007,10 +3007,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: FX_Trail_Nomal
       objectReference: {fileID: 0}
-    - target: {fileID: 4019681595189112479, guid: fb6830738cd47d443bd9506965b865e6, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb6830738cd47d443bd9506965b865e6, type: 3}
 --- !u!4 &8406288774334421363 stripped
@@ -3069,85 +3065,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6039297833056940226, guid: 11cd1dc262f3e9b4c93e727c98541189, type: 3}
-      propertyPath: ClampVelocityModule.dampen
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 6039297833056940226, guid: 11cd1dc262f3e9b4c93e727c98541189, type: 3}
-      propertyPath: ClampVelocityModule.drag.scalar
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6039297833056940226, guid: 11cd1dc262f3e9b4c93e727c98541189, type: 3}
-      propertyPath: CustomDataModule.vector0_1.scalar
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 6039297833056940226, guid: 11cd1dc262f3e9b4c93e727c98541189, type: 3}
-      propertyPath: InitialModule.startSize.minScalar
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6039297833056940226, guid: 11cd1dc262f3e9b4c93e727c98541189, type: 3}
-      propertyPath: ClampVelocityModule.drag.minScalar
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6039297833056940226, guid: 11cd1dc262f3e9b4c93e727c98541189, type: 3}
-      propertyPath: InitialModule.startColor.maxColor.b
-      value: 0.2588235
-      objectReference: {fileID: 0}
-    - target: {fileID: 6039297833056940226, guid: 11cd1dc262f3e9b4c93e727c98541189, type: 3}
-      propertyPath: InitialModule.startColor.maxColor.g
-      value: 0.45078716
-      objectReference: {fileID: 0}
-    - target: {fileID: 6039297833056940226, guid: 11cd1dc262f3e9b4c93e727c98541189, type: 3}
-      propertyPath: InitialModule.startColor.minColor.a
-      value: 0.9372549
-      objectReference: {fileID: 0}
-    - target: {fileID: 6039297833056940226, guid: 11cd1dc262f3e9b4c93e727c98541189, type: 3}
-      propertyPath: InitialModule.startColor.minColor.b
-      value: 0.056692798
-      objectReference: {fileID: 0}
-    - target: {fileID: 6039297833056940226, guid: 11cd1dc262f3e9b4c93e727c98541189, type: 3}
-      propertyPath: InitialModule.startColor.minColor.g
-      value: 0.4994839
-      objectReference: {fileID: 0}
-    - target: {fileID: 6039297833056940226, guid: 11cd1dc262f3e9b4c93e727c98541189, type: 3}
-      propertyPath: InitialModule.startColor.minColor.r
-      value: 0.9245283
-      objectReference: {fileID: 0}
-    - target: {fileID: 6039297833056940226, guid: 11cd1dc262f3e9b4c93e727c98541189, type: 3}
-      propertyPath: ClampVelocityModule.drag.minMaxState
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6039297833056940226, guid: 11cd1dc262f3e9b4c93e727c98541189, type: 3}
-      propertyPath: CustomDataModule.vector0_1.minScalar
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6039297833056940226, guid: 11cd1dc262f3e9b4c93e727c98541189, type: 3}
-      propertyPath: CustomDataModule.vector0_2.minScalar
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6039297833056940226, guid: 11cd1dc262f3e9b4c93e727c98541189, type: 3}
-      propertyPath: InitialModule.startColor.minMaxState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6039297833056940226, guid: 11cd1dc262f3e9b4c93e727c98541189, type: 3}
-      propertyPath: CustomDataModule.vector0_1.minMaxState
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6039297833056940226, guid: 11cd1dc262f3e9b4c93e727c98541189, type: 3}
-      propertyPath: CustomDataModule.vector0_2.minMaxState
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6039297833056940226, guid: 11cd1dc262f3e9b4c93e727c98541189, type: 3}
-      propertyPath: ClampVelocityModule.multiplyDragByParticleSize
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6039297833056940236, guid: 11cd1dc262f3e9b4c93e727c98541189, type: 3}
-      propertyPath: m_Name
-      value: FX_Dust
-      objectReference: {fileID: 0}
     - target: {fileID: 7352127748771784102, guid: 11cd1dc262f3e9b4c93e727c98541189, type: 3}
       propertyPath: m_Name
       value: FX_Trail_Legendary
+      objectReference: {fileID: 0}
+    - target: {fileID: 7352127748771784102, guid: 11cd1dc262f3e9b4c93e727c98541189, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11cd1dc262f3e9b4c93e727c98541189, type: 3}

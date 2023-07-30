@@ -14448,7 +14448,7 @@ GameObject:
   - component: {fileID: 6039297833056940226}
   - component: {fileID: 6039297833056940237}
   m_Layer: 0
-  m_Name: FX_Dust_01
+  m_Name: FX_Dust
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14657,9 +14657,9 @@ ParticleSystem:
         m_RotationOrder: 4
     startColor:
       serializedVersion: 2
-      minMaxState: 0
-      minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0.53488845, b: 0.25943398, a: 0.9372549}
+      minMaxState: 2
+      minColor: {r: 0.9245283, g: 0.4994839, b: 0.056692798, a: 0.9372549}
+      maxColor: {r: 1, g: 0.45078716, b: 0.2588235, a: 0.9372549}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -14722,7 +14722,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 3
       scalar: 5
-      minScalar: 3
+      minScalar: 2
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -17117,14 +17117,14 @@ ParticleSystem:
         m_RotationOrder: 4
     separateAxis: 0
     inWorldSpace: 0
-    multiplyDragByParticleSize: 1
+    multiplyDragByParticleSize: 0
     multiplyDragByParticleVelocity: 1
-    dampen: 1
+    dampen: 0.8
     drag:
       serializedVersion: 2
-      minMaxState: 0
-      scalar: 1
-      minScalar: 0
+      minMaxState: 3
+      scalar: 0.5
+      minScalar: 1
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -18804,9 +18804,9 @@ ParticleSystem:
     vectorLabel0_0: Dissolve
     vector0_1:
       serializedVersion: 2
-      minMaxState: 0
-      scalar: 0.45
-      minScalar: 0
+      minMaxState: 3
+      scalar: 0.7
+      minScalar: 0.3
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -18858,9 +18858,9 @@ ParticleSystem:
     vectorLabel0_1: Dissolve_Sharpness
     vector0_2:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 1
-      minScalar: 0
+      minScalar: 0.5
       maxCurve:
         serializedVersion: 2
         m_Curve:
