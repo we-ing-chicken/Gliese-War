@@ -632,7 +632,7 @@ public class CPlayer : MonoBehaviour
     {
         if (other.CompareTag("MonsterAttack"))
         {
-            int damage = other.GetComponent<Monster>().nowDamage;
+            int damage = other.transform.GetComponentInParent<Monster>().nowDamage;
             GetDamage(damage);
         }
     }
