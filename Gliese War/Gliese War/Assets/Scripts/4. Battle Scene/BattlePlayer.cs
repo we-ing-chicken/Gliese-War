@@ -1362,7 +1362,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             {
                 DamageMessage dm;
                 dm.damager = myindex;
-                dm.damage = 1;
+                dm.damage = 2;
                 dm.hitted = myindex;
                 ApplyDamage(dm);
 
