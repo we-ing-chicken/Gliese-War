@@ -1362,7 +1362,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             {
                 DamageMessage dm;
                 dm.damager = myindex;
-                dm.damage = 1;
+                dm.damage = 2;
                 dm.hitted = myindex;
                 ApplyDamage(dm);
 
@@ -1779,6 +1779,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         if (BattleManager.Instance.players[who] == null) return;
         
         bool alive = BattleManager.Instance.players[myindex].GetComponent<BattlePlayer>().isalive;
+        if (!alive) return;
 
         if (BattleManager.Instance.players[who].GetComponent<BattlePlayer>().isalive)
             BattleManager.Instance.players[who].GetComponent<BattlePlayer>().isalive = false;
