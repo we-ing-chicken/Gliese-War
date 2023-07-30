@@ -49,6 +49,7 @@ public class LivingEntity : MonoBehaviourPunCallbacks, IDamageable
         {
             Die();
             // 공격자, 무기 DB 업데이트
+            if (damageMessage.damager == damageMessage.hitted) return false; 
 
             for (int i = 0; i < BattleManager.Instance.players.Length; ++i)
             {

@@ -1219,9 +1219,10 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     public override bool ApplyDamage(DamageMessage damageMessage)
     {
+        if (damageMessage.hitted != myindex) return false;
+        
         if (!base.ApplyDamage(damageMessage)) return false;
 
-        if (damageMessage.hitted != myindex) return false;
 
         if (damageMessage.damage > 0)
         {

@@ -250,9 +250,10 @@ public class CPlayer : MonoBehaviour
 
     private void Move()
     {
+        if (FarmingManager.Instance._isInven) return;
+        
         player_lookTarget();
-
-
+            
         moveDir = charactercontroller.transform.TransformDirection(new Vector3(moveLR, 0, moveFB)) * moveSpeed;
     }
 
@@ -268,6 +269,8 @@ public class CPlayer : MonoBehaviour
 
     private void Look()
     {
+        if (FarmingManager.Instance._isInven) return;
+        
         MouseX += Input.GetAxis("Mouse X") * mouseSpeed;
         if(!isUI)
             transform.rotation = Quaternion.Euler(0, MouseX, 0);

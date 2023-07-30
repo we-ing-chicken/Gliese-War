@@ -68,6 +68,7 @@ public class FarmingManager : MonoBehaviour
     [SerializeField] private Image weapon2Image;
 
     [Header("Debug")][SerializeField] private Playercam playercam;
+   [SerializeField] private GameObject CvCam;
 
     //[SerializeField] private GameObject[] characters;
 
@@ -163,11 +164,13 @@ public class FarmingManager : MonoBehaviour
                 if (_isInven)
                 {
                     _isInven = false;
+                    CvCam.SetActive(true);
                     Cursor.visible = false;
                 }
                 else
                 {
                     _isInven = true;
+                    CvCam.SetActive(false);
                     Cursor.visible = true;
                     
                 }
