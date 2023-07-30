@@ -116,6 +116,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     public AudioClip electricSound;
 
     public CinemachineVirtualCamera virtualCamera;
+    private Coroutine ignoreAttackCor;
     
 
     private void Start()
@@ -1304,6 +1305,9 @@ public class BattlePlayer : LivingEntity, IPunObservable
         if (other.CompareTag("Weapon") && !other.transform.GetComponentInParent<BattlePlayer>().photonView.IsMine)
         {
             if (!GameManager.Instance.isAlive) return;
+            if (ignoreAttackCor != null) return;
+            
+            ignoreAttackCor = StartCoroutine(NoDamageTimer());
             
             int damage = other.transform.GetComponentInParent<BattlePlayer>().offensivePower;
             float newDamage = damage - damage * (defensivePower * 0.6f) / 100;
@@ -1349,6 +1353,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
             Destroy(other.gameObject);
         }
+    }
+    
+    IEnumerator NoDamageTimer()
+    {
+        yield return new WaitForSeconds(0.6f);
+        ignoreAttackCor = null;
     }
     
     private void OnTriggerExit(Collider other)
