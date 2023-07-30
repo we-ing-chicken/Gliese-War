@@ -81,8 +81,8 @@ Material:
     m_Floats:
     - BOOLEAN_D42C41C1: 0
     - Boolean_9C0948F4: 1
-    - Vector1_270105AC: -2
-    - Vector1_2C5A3101: 1
+    - Vector1_270105AC: -2.78
+    - Vector1_2C5A3101: 2
     - Vector1_930B327D: -10
     - _AlphaClip: 0
     - _BUILTIN_QueueControl: -1
