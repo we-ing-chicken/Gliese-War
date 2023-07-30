@@ -225,7 +225,7 @@ public class BattleManager : MonoBehaviour
                         
                         pl.virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
 
-                        pl.enabled = true;
+                        players[i].GetComponent<AudioListener>().enabled = true;
 
                         CServercamTest sct = Camera.main.GetComponent<CServercamTest>();
 
@@ -264,7 +264,8 @@ public class BattleManager : MonoBehaviour
 
     public void EndExit()
     {
-        
+        NetworkManager.Instance.connect = false;
+        PhotonNetwork.LeaveRoom();
         SceneManager.LoadScene((int)(Scene.LobbyScene));
     }
     
@@ -272,6 +273,8 @@ public class BattleManager : MonoBehaviour
     {
         for (int i = 0; i < players.Length; ++i)
         {
+            if (players[i] == null) continue;
+            
             if (!players[i].GetComponent<BattlePlayer>().photonView.IsMine) continue;
 
             if (GameManager.Instance != null && GameManager.Instance.id != null)
@@ -282,6 +285,7 @@ public class BattleManager : MonoBehaviour
             players[i].GetComponent<BattlePlayer>().isalive = false;
             players[i].GetComponent<BattlePlayer>().photonView.RPC("SendDie", RpcTarget.Others, players[i].GetComponent<BattlePlayer>().myindex);
             NetworkManager.Instance.connect = false;
+            PhotonNetwork.LeaveRoom();
         }
         
         SceneManager.LoadScene((int)(Scene.LobbyScene));
@@ -305,22 +309,19 @@ public class BattleManager : MonoBehaviour
             players[i].GetComponent<BattlePlayer>().isalive = false;
             players[i].GetComponent<BattlePlayer>().photonView.RPC("SendDie", RpcTarget.Others, players[i].GetComponent<BattlePlayer>().myindex);
             NetworkManager.Instance.connect = false;
+            PhotonNetwork.LeaveRoom();
         }
     }
 
     public void openWinCanvas()
     {
         Cursor.visible = true;
-        NetworkManager.Instance.connect = false;
-        PhotonNetwork.LeaveRoom();
         SwitchCanvasActive(winCanvas);
     }
     
     public void openLoseCanvas()
     {
         Cursor.visible = true;
-        NetworkManager.Instance.connect = false;
-        PhotonNetwork.LeaveRoom();
         SwitchCanvasActive(loseCanvas);
     }
 
@@ -381,9 +382,20 @@ public class BattleManager : MonoBehaviour
     
     public void SetEquipWeaponImage()
     {
-        if (!BattlePlayer.instance.photonView.IsMine) return;
+        BattlePlayer pl = null;
         
-        if (BattlePlayer.instance.weapon1 == null)
+        for (int i = 0; i < players.Length; ++i)
+        {
+
+            if (players[i] == null) continue;
+            if (players[i].GetComponent<BattlePlayer>().photonView.IsMine)
+            {
+                pl = players[i].GetComponent<BattlePlayer>();
+                break;
+            }
+        }
+        
+        if (pl.weapon1 == null)
         {
             Color color = weapon1Image.color;
             color.a = 0f;
@@ -395,7 +407,7 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
-            switch (BattlePlayer.instance.weapon1.item.weaponType)
+            switch (pl.weapon1.item.weaponType)
             {
                 case Item.WeaponType.Hammer:
                     weapon1Image.sprite = weaponImage[0];
@@ -410,7 +422,7 @@ public class BattleManager : MonoBehaviour
                     break;
             }
             
-            if (BattlePlayer.instance.weaponNow == 1)
+            if (pl.weaponNow == 1)
             {
                 Color color = weapon1Image.color;
                 color.a = 1f;
@@ -432,7 +444,7 @@ public class BattleManager : MonoBehaviour
             }
         }
 
-        if (BattlePlayer.instance.weapon2 == null)
+        if (pl.weapon2 == null)
         {
             Color color = weapon2Image.color;
             color.a = 0f;
@@ -444,7 +456,7 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
-            switch (BattlePlayer.instance.weapon2.item.weaponType)
+            switch (pl.weapon2.item.weaponType)
             {
                 case Item.WeaponType.Hammer:
                     weapon2Image.sprite = weaponImage[0];
@@ -459,7 +471,7 @@ public class BattleManager : MonoBehaviour
                     break;
             }
             
-            if (BattlePlayer.instance.weaponNow == 2)
+            if (pl.weaponNow == 2)
             {
                 Color color = weapon2Image.color;
                 color.a = 1f;

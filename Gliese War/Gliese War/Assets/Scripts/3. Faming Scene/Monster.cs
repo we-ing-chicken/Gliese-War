@@ -44,6 +44,7 @@ public class Monster : MonoBehaviour
     
     private AudioSource audio;
     [SerializeField] private AudioClip[] sounds;
+    public GameObject devilEffect;
     
     
     // Start is called before the first frame update
