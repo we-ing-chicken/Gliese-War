@@ -219,6 +219,8 @@ public class CPlayer : MonoBehaviour
         if (charactercontroller == null) return;
         Look();
 
+        if (FarmingManager.Instance._isInven) return;
+        if (FarmingManager.Instance._isPause) return;
         
         if (!charactercontroller.isGrounded)
         {
@@ -251,6 +253,7 @@ public class CPlayer : MonoBehaviour
     private void Move()
     {
         if (FarmingManager.Instance._isInven) return;
+        if (FarmingManager.Instance._isPause) return;
         
         player_lookTarget();
             
@@ -270,6 +273,8 @@ public class CPlayer : MonoBehaviour
     private void Look()
     {
         if (FarmingManager.Instance._isInven) return;
+        if (FarmingManager.Instance._isPause) return;
+
         
         MouseX += Input.GetAxis("Mouse X") * mouseSpeed;
         if(!isUI)

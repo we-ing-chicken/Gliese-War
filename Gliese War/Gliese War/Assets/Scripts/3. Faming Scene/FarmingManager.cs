@@ -161,11 +161,12 @@ public class FarmingManager : MonoBehaviour
                     SwitchGameObjectActive(characterCam);
                 }
 
-                if (_isInven)
+                if (!invenCanvas.activeSelf)
                 {
                     _isInven = false;
                     CvCam.SetActive(true);
                     Cursor.visible = false;
+                    
                 }
                 else
                 {
@@ -183,21 +184,26 @@ public class FarmingManager : MonoBehaviour
             {
                 SwitchCanvasActive(invenCanvas);
                 SwitchGameObjectActive(characterCam);
+                _isInven = false;
+                CvCam.SetActive(true);
                 Cursor.visible = false;
             }
             else
             {
-                if (_isPause)
-                    _isPause = false;
-                else
-                    _isPause = true;
-
                 SwitchCanvasActive(pauseCanvas);
-                
-                if(pauseCanvas.gameObject.activeSelf)
+
+                if (pauseCanvas.gameObject.activeSelf)
+                {
+                    _isPause = true;
+                    CvCam.SetActive(false);
                     Cursor.visible = true;
+                }
                 else
+                {
+                    _isPause = false;
+                    CvCam.SetActive(true);
                     Cursor.visible = false;
+                }
             }
         }
         
