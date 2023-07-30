@@ -1550,6 +1550,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2028145953595022997}
     m_Modifications:
+    - target: {fileID: 107351481300681525, guid: 92cdae211817b384987e246f5414b55d, type: 3}
+      propertyPath: ShapeModule.m_Position.y
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 4079303045468716322, guid: 92cdae211817b384987e246f5414b55d, type: 3}
       propertyPath: m_Name
       value: FX_Devil_P
