@@ -111,6 +111,7 @@ public class Monster : MonoBehaviour
         if (HP <= 0 && !isDead)
         {
             isDead = true;
+            devilEffect.SetActive(false);
             audio.clip = sounds[2];
             audio.Play();
             drop.DropItem();
