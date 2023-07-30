@@ -82,7 +82,7 @@ public class LobbyManager : MonoBehaviour
         {
             CharacterChangeLeftButton();
         }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             CharacterChangeRightButton();
         }
