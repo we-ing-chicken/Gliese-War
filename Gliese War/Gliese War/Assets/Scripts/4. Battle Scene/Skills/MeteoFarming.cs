@@ -12,7 +12,6 @@ public class MeteoFarming : MonoBehaviour
     {
         audio = GetComponent<AudioSource>();
         
-        StartCoroutine(Timer());
         StartCoroutine(SoundTimer());
     }
 
@@ -20,24 +19,6 @@ public class MeteoFarming : MonoBehaviour
     {
         yield return new WaitForSeconds(2.5f);
         audio.Play();
-    }
-
-    IEnumerator Timer()
-    {
-        float time = 0f;
-
-        while (true)
-        {
-            time += Time.deltaTime;
-
-            if (time >= 5f)
-            {
-                Destroy(transform.parent.parent.parent.gameObject);
-                break;
-            }
-
-            yield return null;
-        }
     }
 
     void OnParticleTrigger()
