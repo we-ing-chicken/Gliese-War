@@ -214,6 +214,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             NetworkManager.Instance.sendOK = false;
             BattleManager.Instance.alivePlayer = PhotonNetwork.CurrentRoom.Players.Count;
             GameManager.Instance.myIndex = myindex;
+            GameManager.Instance.isAlive = true;
             photonView.RPC("SendIndex", RpcTarget.All, photonView.ViewID, myindex, id, nickName);
             photonView.RPC("StartGame", RpcTarget.All);
             if(shoe != null)
@@ -1256,7 +1257,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     }
     public void SetParameter()
     {
-        isalive = false;
+        GameManager.Instance.isAlive = false;
         animator.SetBool("isRun", false);
         moveDir = Vector3.zero;
         moveSpeed = 0;
@@ -1780,9 +1781,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
     void SendDie(int who)
     {
         if (BattleManager.Instance.players[who] == null) return;
-        
-        bool alive = BattleManager.Instance.players[myindex].GetComponent<BattlePlayer>().isalive;
-        if (!alive) return;
 
         if (BattleManager.Instance.players[who].GetComponent<BattlePlayer>().isalive)
             BattleManager.Instance.players[who].GetComponent<BattlePlayer>().isalive = false;
@@ -1795,7 +1793,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             if (BattleManager.Instance.players[i].GetComponent<BattlePlayer>().isalive) ++aliveCount;
         }
 
-        if (aliveCount == 1 && alive)
+        if (aliveCount == 1 && GameManager.Instance.isAlive)
         {
 
             if(GameManager.Instance != null && GameManager.Instance.id != null)
