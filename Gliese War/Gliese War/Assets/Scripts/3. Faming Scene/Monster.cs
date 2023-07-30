@@ -45,6 +45,8 @@ public class Monster : MonoBehaviour
     private AudioSource audio;
     [SerializeField] private AudioClip[] sounds;
     public GameObject devilEffect;
+
+    private Coroutine ignoreAttackCor;
     
     
     // Start is called before the first frame update
@@ -86,7 +88,8 @@ public class Monster : MonoBehaviour
     {
         if (other.CompareTag("Weapon"))
         {
-            GetDamage();
+            if(ignoreAttackCor == null)
+                GetDamage();
             //KnockBack();
         }
         
@@ -101,6 +104,7 @@ public class Monster : MonoBehaviour
 
     private void GetDamage()
     {
+        ignoreAttackCor = StartCoroutine(NoDamageTimer());
         HP -= CPlayer.Instance.GetAttackPower();
         StartCoroutine(HitColor());
         HPCor = StartCoroutine(FollowHPBar());
@@ -120,6 +124,12 @@ public class Monster : MonoBehaviour
             StopFindImage();
             DestructObject();
         }
+    }
+    
+    IEnumerator NoDamageTimer()
+    {
+        yield return new WaitForSeconds(0.6f);
+        ignoreAttackCor = null;
     }
 
     IEnumerator HitColor()
