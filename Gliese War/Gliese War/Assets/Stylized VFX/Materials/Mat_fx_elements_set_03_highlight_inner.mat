@@ -21,8 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Mat_fx_elements_set_03_highlight_inner
-  m_Shader: {fileID: -6465566751694194690, guid: f4f96caa19b27524687b441f720f958f,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: f4f96caa19b27524687b441f720f958f, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
