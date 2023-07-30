@@ -3007,10 +3007,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: FX_Trail_Nomal
       objectReference: {fileID: 0}
-    - target: {fileID: 4019681595189112479, guid: fb6830738cd47d443bd9506965b865e6, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb6830738cd47d443bd9506965b865e6, type: 3}
 --- !u!4 &8406288774334421363 stripped
