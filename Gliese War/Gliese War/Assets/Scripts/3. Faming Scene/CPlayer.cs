@@ -250,6 +250,8 @@ public class CPlayer : MonoBehaviour
 
     private void Move()
     {
+        if (FarmingManager.Instance._isInven) return;
+        
         player_lookTarget();
             
         moveDir = charactercontroller.transform.TransformDirection(new Vector3(moveLR, 0, moveFB)) * moveSpeed;
