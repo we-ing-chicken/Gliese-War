@@ -1303,6 +1303,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
         
         if (other.CompareTag("Weapon") && !other.transform.GetComponentInParent<BattlePlayer>().photonView.IsMine)
         {
+            if (!GameManager.Instance.isAlive) return;
+            
             int damage = other.transform.GetComponentInParent<BattlePlayer>().offensivePower;
             float newDamage = damage - damage * (defensivePower * 0.6f) / 100;
             int newIntDamage = (int)newDamage;
@@ -1364,6 +1366,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
         {
             if (other.CompareTag("Outside") && photonView.IsMine)
             {
+                if (!GameManager.Instance.isAlive) return;
+                
                 DamageMessage dm;
                 dm.damager = myindex;
                 dm.damage = 2;
@@ -1378,6 +1382,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
         
         if (other.CompareTag("Heal") && photonView.IsMine)
         {
+            if (!GameManager.Instance.isAlive) return;
+            
             DamageMessage dm;
             dm.damager = myindex;
             dm.damage = -1;
