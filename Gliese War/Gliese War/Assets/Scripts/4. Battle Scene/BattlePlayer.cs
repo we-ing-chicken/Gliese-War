@@ -1779,6 +1779,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         if (BattleManager.Instance.players[who] == null) return;
         
         bool alive = BattleManager.Instance.players[myindex].GetComponent<BattlePlayer>().isalive;
+        if (!alive) return;
 
         if (BattleManager.Instance.players[who].GetComponent<BattlePlayer>().isalive)
             BattleManager.Instance.players[who].GetComponent<BattlePlayer>().isalive = false;
