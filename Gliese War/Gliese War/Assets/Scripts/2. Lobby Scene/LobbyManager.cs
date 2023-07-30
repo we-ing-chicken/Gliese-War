@@ -74,6 +74,22 @@ public class LobbyManager : MonoBehaviour
         GameManager.Instance.nickName = nick;
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            CharacterChangeLeftButton();
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            CharacterChangeRightButton();
+        }
+        else if (Input.GetKeyDown(KeyCode.F5))
+        {
+            StartGame();
+        }
+    }
+
     public void StartGame()
     {
         SceneManager.LoadScene(2);
