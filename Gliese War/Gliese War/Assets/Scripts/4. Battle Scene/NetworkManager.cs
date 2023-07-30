@@ -62,7 +62,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks //Ŭ���� ���
     }
 
     //���� ���� ǥ�� 
-    private void Update() => StatusText.text = PhotonNetwork.NetworkClientState.ToString();
+    private void Update() => StatusText.text = "Loading...";
         
     public void Connect() => PhotonNetwork.ConnectUsingSettings();
     public override void OnConnectedToMaster()

@@ -266,6 +266,7 @@ public class BattleManager : MonoBehaviour
     {
         NetworkManager.Instance.connect = false;
         PhotonNetwork.LeaveRoom();
+        PhotonNetwork.Disconnect();
         SceneManager.LoadScene((int)(Scene.LobbyScene));
     }
     
@@ -286,8 +287,9 @@ public class BattleManager : MonoBehaviour
             players[i].GetComponent<BattlePlayer>().photonView.RPC("SendDie", RpcTarget.Others, players[i].GetComponent<BattlePlayer>().myindex);
             NetworkManager.Instance.connect = false;
             PhotonNetwork.LeaveRoom();
+            PhotonNetwork.Disconnect();
         }
-        
+
         SceneManager.LoadScene((int)(Scene.LobbyScene));
     }
 
@@ -310,6 +312,7 @@ public class BattleManager : MonoBehaviour
             players[i].GetComponent<BattlePlayer>().photonView.RPC("SendDie", RpcTarget.Others, players[i].GetComponent<BattlePlayer>().myindex);
             NetworkManager.Instance.connect = false;
             PhotonNetwork.LeaveRoom();
+            PhotonNetwork.Disconnect();
         }
     }
 
