@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
 
     public string id;
     public string nickName;
+    public int myIndex;
 
     public GameObject[] farmingCharacters;
     public GameObject[] battleCharacters;

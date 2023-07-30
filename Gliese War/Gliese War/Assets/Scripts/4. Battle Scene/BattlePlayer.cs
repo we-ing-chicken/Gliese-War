@@ -213,6 +213,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         {
             NetworkManager.Instance.sendOK = false;
             BattleManager.Instance.alivePlayer = PhotonNetwork.CurrentRoom.Players.Count;
+            GameManager.Instance.myIndex = myindex;
             photonView.RPC("SendIndex", RpcTarget.All, photonView.ViewID, myindex, id, nickName);
             photonView.RPC("StartGame", RpcTarget.All);
             if(shoe != null)
@@ -1219,7 +1220,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
     public override bool ApplyDamage(DamageMessage damageMessage)
     {
-        if (damageMessage.hitted != myindex) return false;
+
+        if (damageMessage.hitted != GameManager.Instance.myIndex) return false;
         
         if (!base.ApplyDamage(damageMessage)) return false;
 
