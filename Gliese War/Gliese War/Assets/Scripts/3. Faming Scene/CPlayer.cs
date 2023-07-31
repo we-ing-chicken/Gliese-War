@@ -660,7 +660,9 @@ public class CPlayer : MonoBehaviour
 
         if (currHealth <= 0)
         {
-            animator.SetTrigger("doDie");
+            isDead = true;
+            animator.SetBool("isRun", false);
+            animator.SetTrigger("dying");
             StartCoroutine(StartRevive());
         }
 
@@ -684,11 +686,14 @@ public class CPlayer : MonoBehaviour
 
     IEnumerator StartRevive()
     {
+        yield return new WaitForSeconds(0.5f);
         FarmingManager.Instance.StartFadeOut();
         yield return new WaitForSeconds(2f);
+        animator.SetTrigger("doJump");
 
         currHealth = maxHealth;
         FarmingManager.Instance.playerCurrentHPBar.value = (float)currHealth / maxHealth;
+        
         
         charactercontroller.enabled = false;
         yield return new WaitForSeconds(0.1f);
