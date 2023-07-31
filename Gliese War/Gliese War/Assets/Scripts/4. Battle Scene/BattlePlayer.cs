@@ -1262,6 +1262,10 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         animator.SetTrigger("dying");
         
+        Inventory.instance.statParent.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Health : " + 0 + " / " + startingHealth;
+        BattleManager.Instance.HPText.GetComponent<TextMeshProUGUI>().text = 0 + " / " + startingHealth;
+        MyHPBar.Instance.SetHPBar(startingHealth, 0);
+        
         //photonView.RPC("MinusLiveCount", RpcTarget.Others);
         photonView.RPC("SendDie", RpcTarget.Others, myindex);
         
