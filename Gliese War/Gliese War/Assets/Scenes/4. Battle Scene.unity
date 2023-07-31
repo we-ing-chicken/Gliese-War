@@ -22216,7 +22216,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 7ebe04b6a6185e547b9e3c28a09b0d90, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 2ddf62ce7bdf2b14d97446160385e148, type: 2}
+      objectReference: {fileID: 2100000, guid: a440431bab5b46246beb96344127e486, type: 2}
     - target: {fileID: 919132149155446097, guid: 7ebe04b6a6185e547b9e3c28a09b0d90, type: 3}
       propertyPath: m_Name
       value: Flipped_Sphere (1)
@@ -29309,7 +29309,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1205796016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29334,9 +29334,9 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.5000001
-  m_Height: 2
+  m_Height: 2.9810827
   m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+  m_Center: {x: 0.000000076293944, y: -0.06385559, z: -0.000000076293944}
 --- !u!23 &1205796018
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -55314,7 +55314,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1922377785
 Transform:
   m_ObjectHideFlags: 0
