@@ -357,15 +357,18 @@ public class BattlePlayer : LivingEntity, IPunObservable
             
             if (isMagic)
             {
+                if (isCool) return;
+                
                 animator.SetTrigger("magicAttack");
                 MakeMagic(myMagicNum, MagicArea.Instance.transform.position, myindex);
+                
                 isMagic = false;
                 StopCoroutine(magicCor);
+                MagicArea.Instance.transform.position = new Vector3(0,0,0);
                 
                 photonView.RPC("SendMagic", RpcTarget.Others, MagicArea.Instance.transform.position, myindex, myMagicNum);
                 
                 isCool = true;
-                MagicArea.Instance.transform.position = new Vector3(0,0,0);
                 StartCoroutine(CheckCoolTime());
             
                 return;
@@ -382,12 +385,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
         else if (Input.GetMouseButtonDown(1))
         {
             if (GetMagic() == Magic.Nothing) return;
-            
-            if (isCool)
-            {
-                Debug.Log("쿨타임");
-                return;
-            }
+            if (magicCor != null) return;
+            if (isCool) return;
 
             isMagic = true;
             magicCor = StartCoroutine(SetMagicArea());
@@ -395,9 +394,11 @@ public class BattlePlayer : LivingEntity, IPunObservable
         else if (Input.GetMouseButtonUp(1))
         {
             if (GetMagic() == Magic.Nothing) return;
+            if (magicCor == null) return;
+            if (!isMagic) return;
             
             isMagic = false;
-            if (magicCor != null) StopCoroutine(magicCor);
+            StopCoroutine(magicCor);
             MagicArea.Instance.transform.position = new Vector3(0,0,0);
         }
 
@@ -526,25 +527,15 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         Debug.Log("On");
 
-        Transform playerTransform = null;
-        
-        for (int i = 0; i < BattleManager.Instance.players.Length; ++i)
-        {
-            if (BattleManager.Instance.players[i] == null) continue;
+        Transform playerTransform = BattleManager.Instance.players[GameManager.Instance.myIndex].GetComponent<BattlePlayer>().transform;
 
-            if (BattleManager.Instance.players[i].GetComponent<BattlePlayer>().photonView.IsMine)
-            {
-                playerTransform = BattleManager.Instance.players[i].GetComponent<BattlePlayer>().transform;
-            }
-        }
-        
-        float distance = Vector3.Distance(Camera.main.transform.position, playerTransform.position);
+        float distance = Vector3.Distance(Camera.main.transform.position, playerTransform.position) + 10f;
         RaycastHit[] hit;
 
         while (true)
         {
-            Vector3 direction = ((playerTransform.position + new Vector3(0f, 1f, 0f)) - Camera.main.transform.position).normalized;
-            hit = (Physics.RaycastAll(Camera.main.transform.position, direction, distance + 10f));
+            Vector3 direction = (playerTransform.position + new Vector3(0f, 1f, 0f) - Camera.main.transform.position).normalized;
+            hit = (Physics.RaycastAll(Camera.main.transform.position, direction, distance));
 
             for (int i = 0; i < hit.Length; ++i)
             {
