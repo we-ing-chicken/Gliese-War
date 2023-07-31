@@ -1231,6 +1231,9 @@ public class BattlePlayer : LivingEntity, IPunObservable
         if (damageMessage.damage > 0)
         {
             BattleManager.Instance.HitScreen();
+            
+            if (health < 0)
+                health = 0;
         }
         else
         {
