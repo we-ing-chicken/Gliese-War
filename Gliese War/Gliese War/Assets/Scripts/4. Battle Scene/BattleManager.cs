@@ -96,7 +96,7 @@ public class BattleManager : MonoBehaviour
     public GameObject terrain;
     public int hamburgers;
     public GameObject hamburger;
-
+    public GameObject mag;
 
     public static BattleManager Instance
     {
@@ -529,5 +529,14 @@ public class BattleManager : MonoBehaviour
     {
         float y = terrain.GetComponent<Terrain>().terrainData.GetHeight(x + (int)terrain.GetComponent<Terrain>().terrainData.size.x, z + (int)terrain.GetComponent<Terrain>().terrainData.size.z);
         return y;
+    }
+
+    public void OffMag()
+    {
+        mag.SetActive(false);
+    }
+    public void ONMag()
+    {
+        mag.SetActive(true);
     }
 }

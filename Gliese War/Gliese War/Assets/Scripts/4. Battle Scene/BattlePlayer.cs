@@ -1300,6 +1300,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         {
             isSafe = true;
             BattleManager.Instance.MagneticHitImage.SetActive(false);
+            BattleManager.Instance.OffMag();
         }
         
         if (other.CompareTag("Weapon") && !other.transform.GetComponentInParent<BattlePlayer>().photonView.IsMine)
@@ -1367,6 +1368,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
         {
             isSafe = false;
             BattleManager.Instance.MagneticHitImage.SetActive(true);
+            BattleManager.Instance.ONMag();
+
         }
     }
 
