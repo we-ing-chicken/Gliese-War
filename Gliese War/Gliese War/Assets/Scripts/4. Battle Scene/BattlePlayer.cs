@@ -210,7 +210,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
         
 
-        if (NetworkManager.Instance.sendOK && photonView.ViewID != 0 && PhotonNetwork.CurrentRoom.Players.Count == 1)
+        if (NetworkManager.Instance.sendOK && photonView.ViewID != 0 && PhotonNetwork.CurrentRoom.Players.Count == 3)
         {
             NetworkManager.Instance.sendOK = false;
             BattleManager.Instance.alivePlayer = PhotonNetwork.CurrentRoom.Players.Count;
@@ -250,7 +250,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         
         //if (charactercontroller == null) return;
 
-        if (photonView.IsMine && isalive)
+        if (photonView.IsMine && GameManager.Instance.isAlive)
         {
             moveFB = Input.GetAxis(moveFBAxisName);
             moveLR = Input.GetAxis(moveLRAxisName);
