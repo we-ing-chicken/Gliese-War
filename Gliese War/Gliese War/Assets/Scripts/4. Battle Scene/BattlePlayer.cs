@@ -357,18 +357,15 @@ public class BattlePlayer : LivingEntity, IPunObservable
             
             if (isMagic)
             {
-                if (isCool) return;
-                
                 animator.SetTrigger("magicAttack");
                 MakeMagic(myMagicNum, MagicArea.Instance.transform.position, myindex);
-                
                 isMagic = false;
                 StopCoroutine(magicCor);
-                MagicArea.Instance.transform.position = new Vector3(0,0,0);
                 
                 photonView.RPC("SendMagic", RpcTarget.Others, MagicArea.Instance.transform.position, myindex, myMagicNum);
                 
                 isCool = true;
+                MagicArea.Instance.transform.position = new Vector3(0,0,0);
                 StartCoroutine(CheckCoolTime());
             
                 return;
@@ -385,8 +382,12 @@ public class BattlePlayer : LivingEntity, IPunObservable
         else if (Input.GetMouseButtonDown(1))
         {
             if (GetMagic() == Magic.Nothing) return;
-            if (magicCor != null) return;
-            if (isCool) return;
+            
+            if (isCool)
+            {
+                Debug.Log("쿨타임");
+                return;
+            }
 
             isMagic = true;
             magicCor = StartCoroutine(SetMagicArea());
@@ -394,11 +395,9 @@ public class BattlePlayer : LivingEntity, IPunObservable
         else if (Input.GetMouseButtonUp(1))
         {
             if (GetMagic() == Magic.Nothing) return;
-            if (magicCor == null) return;
-            if (!isMagic) return;
             
             isMagic = false;
-            StopCoroutine(magicCor);
+            if (magicCor != null) StopCoroutine(magicCor);
             MagicArea.Instance.transform.position = new Vector3(0,0,0);
         }
 
@@ -529,13 +528,13 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
         Transform playerTransform = BattleManager.Instance.players[GameManager.Instance.myIndex].GetComponent<BattlePlayer>().transform;
 
-        float distance = Vector3.Distance(Camera.main.transform.position, playerTransform.position) + 10f;
+        float distance = Vector3.Distance(Camera.main.transform.position, playerTransform.position);
         RaycastHit[] hit;
 
         while (true)
         {
-            Vector3 direction = (playerTransform.position + new Vector3(0f, 1f, 0f) - Camera.main.transform.position).normalized;
-            hit = (Physics.RaycastAll(Camera.main.transform.position, direction, distance));
+            Vector3 direction = ((playerTransform.position + new Vector3(0f, 1f, 0f)) - Camera.main.transform.position).normalized;
+            hit = (Physics.RaycastAll(Camera.main.transform.position, direction, distance + 10f));
 
             for (int i = 0; i < hit.Length; ++i)
             {
