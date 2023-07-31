@@ -526,18 +526,8 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         Debug.Log("On");
 
-        Transform playerTransform = null;
-        
-        for (int i = 0; i < BattleManager.Instance.players.Length; ++i)
-        {
-            if (BattleManager.Instance.players[i] == null) continue;
+        Transform playerTransform = BattleManager.Instance.players[GameManager.Instance.myIndex].GetComponent<BattlePlayer>().transform;
 
-            if (BattleManager.Instance.players[i].GetComponent<BattlePlayer>().photonView.IsMine)
-            {
-                playerTransform = BattleManager.Instance.players[i].GetComponent<BattlePlayer>().transform;
-            }
-        }
-        
         float distance = Vector3.Distance(Camera.main.transform.position, playerTransform.position);
         RaycastHit[] hit;
 
@@ -1272,6 +1262,10 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         animator.SetTrigger("dying");
         
+        Inventory.instance.statParent.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Health : " + 0 + " / " + startingHealth;
+        BattleManager.Instance.HPText.GetComponent<TextMeshProUGUI>().text = 0 + " / " + startingHealth;
+        MyHPBar.Instance.SetHPBar(startingHealth, 0);
+        
         //photonView.RPC("MinusLiveCount", RpcTarget.Others);
         photonView.RPC("SendDie", RpcTarget.Others, myindex);
         
@@ -1342,7 +1336,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             
             GameObject healEffect;
             healEffect = Instantiate(BattleManager.Instance.HealEffect);
-            healEffect.transform.position = transform.position;
+            healEffect.transform.position = transform.position + new Vector3(0, -2f,  0);
 
             Destroy(other.gameObject);
         }
@@ -1353,7 +1347,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             
             GameObject healEffect;
             healEffect = Instantiate(BattleManager.Instance.HealEffect);
-            healEffect.transform.position = transform.position;
+            healEffect.transform.position = transform.position + new Vector3(0, -2f,0);
 
             Destroy(other.gameObject);
         }
@@ -1414,7 +1408,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             
             GameObject healEffect;    
             healEffect = Instantiate(BattleManager.Instance.HealEffect);
-            healEffect.transform.position = transform.position;
+            healEffect.transform.position = transform.position + new Vector3(0, -2f,  0);
         }
         else if (other.CompareTag("Heal"))
         { 
@@ -1425,7 +1419,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             
             GameObject healEffect;    
             healEffect = Instantiate(BattleManager.Instance.HealEffect);
-            healEffect.transform.position = transform.position;
+            healEffect.transform.position = transform.position + new Vector3(0, -2f,  0);
             
         }
     }
