@@ -19,7 +19,7 @@ public class Drop : MonoBehaviour
     [SerializeField] private Inventory _inven;
     private int itemCount;
     [SerializeField] private DropLevel dropLevel;
-    [SerializeField] private bool isFirst = false;
+    public bool isFirst = false;
     [SerializeField] private bool onTree = false;
 
     public AudioClip eatSound;
@@ -35,6 +35,94 @@ public class Drop : MonoBehaviour
         // {
         //     DropItem();
         // }
+    }
+
+    public void DropBasicItem()
+    {
+        Item[] items = new Item[5];
+        for (int i = 0; i < items.Length; ++i)
+            items[i] = new Item();
+        items[0].itemCategory = Item.ItemCategory.Helmet;
+        items[1].itemCategory = Item.ItemCategory.Armor;
+        items[2].itemCategory = Item.ItemCategory.Shoes;
+        items[3].itemCategory = Item.ItemCategory.Weapon;
+        items[4].itemCategory = Item.ItemCategory.Weapon;
+
+        for (int i = 0; i < 5; ++i)
+        {
+            GameObject temp;
+
+            switch (items[i].itemCategory)
+            {
+                case Item.ItemCategory.Helmet:
+                    temp = Instantiate(_inven.helmet[0].itemPrefab);
+                    break;
+
+                case Item.ItemCategory.Armor:
+                    temp = Instantiate(_inven.armor[0].itemPrefab);
+                    break;
+
+                case Item.ItemCategory.Shoes:
+                    temp = Instantiate(_inven.shoes[0].itemPrefab);
+                    break;
+
+                case Item.ItemCategory.Weapon:
+                {
+                    items[i].weaponType = (Item.WeaponType)Random.Range(0, 3);
+                    switch (items[i].weaponType)
+                    {
+                        case Item.WeaponType.Hammer:
+                            temp = Instantiate(_inven.hammer[0].itemPrefab);
+                            break;
+                        
+                        case Item.WeaponType.Sword:
+                            temp = Instantiate(_inven.sword[0].itemPrefab);
+                            break;
+                        
+                        case Item.WeaponType.Spear:
+                            temp = Instantiate(_inven.spear[0].itemPrefab);
+                            break;
+
+                        default:
+                            temp = Instantiate(_inven.sword[0].itemPrefab);
+                            break;                        
+                    }
+                    
+                }
+                    break;
+                
+                default:
+                    temp = Instantiate(_inven.sword[0].itemPrefab);
+                    break;
+            }
+
+            temp.transform.position = transform.position;
+            if(items[i].itemCategory == Item.ItemCategory.Weapon)
+                temp.transform.localScale = new Vector3(1f, 1f, 1f);
+            else
+                temp.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+            
+            
+            BoxCollider col = temp.GetComponent<BoxCollider>();
+            col.enabled = true;
+            
+            Magnet mag = temp.AddComponent<Magnet>();
+            mag.itemCategory = items[i].itemCategory;
+            mag.isFirst = true;
+            
+            if (items[i].itemCategory == Item.ItemCategory.Weapon)
+            {
+                mag.weaponType = items[i].weaponType;
+            }
+            else
+            {
+                mag.weaponType = Item.WeaponType.Nothing;
+            }
+            mag._inven = _inven;
+                
+            Rigidbody comp = temp.AddComponent<Rigidbody>();
+            comp.AddExplosionForce(200f, transform.position, 200f, 10f);
+        }
     }
 
     public void DropItem()

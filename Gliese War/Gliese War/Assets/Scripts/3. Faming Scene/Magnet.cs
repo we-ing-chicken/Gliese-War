@@ -13,6 +13,7 @@ public class Magnet : MonoBehaviour
     private bool isEat = false;
     public Item.ItemCategory itemCategory;
     public Item.WeaponType weaponType;
+    public bool isFirst = false;
 
     public bool onTree = false;
 
@@ -43,9 +44,12 @@ public class Magnet : MonoBehaviour
         if (other.transform.CompareTag("Player"))
         {
             CPlayer.Instance.audio.PlayOneShot(CPlayer.Instance.eatSound, 1f);
+            Item.ItemRank rank;
             
-            
-            Item.ItemRank rank = RandomManager.RandomBox(100000000);
+            if (isFirst)
+                rank = Item.ItemRank.Normal;
+            else
+                rank = RandomManager.RandomBox(100000000);
             
             switch(itemCategory)
             {
