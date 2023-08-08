@@ -417,9 +417,9 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
         if (p_Jump && !isjump)
         {
-            isAttack = true;
             isjump = true;
-            animator.SetTrigger("doJump");
+            if(!isAttack)
+                animator.SetTrigger("doJump");
             rigidbody.AddForce(Vector3.up * JumpPower, ForceMode.Impulse);
 
             //Jump();
@@ -439,8 +439,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
                 MouseX = MouseX + (Input.GetAxis("Mouse X") * mouseSpeed);
                 remoteRot = Quaternion.Euler(0, MouseX, 0);
                 transform.rotation = remoteRot;
-
-                if (isAttack) return;
 
                 if (CheckHitWall(new Vector3(moveFB,0,moveLR)) || CheckHitWall(new Vector3(-moveFB,0,-moveLR)))
                 {
