@@ -229,7 +229,7 @@ public class CPlayer : MonoBehaviour
         }
         else
         {
-            if (isAttack) return;
+            //if (isAttack) return;
             
             Move();
             if (p_Jump)
