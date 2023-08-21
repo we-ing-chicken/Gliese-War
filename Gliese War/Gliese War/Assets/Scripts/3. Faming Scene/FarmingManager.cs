@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Cinemachine;
 using Debug = UnityEngine.Debug;
 
 public class FarmingManager : MonoBehaviour
@@ -67,8 +68,15 @@ public class FarmingManager : MonoBehaviour
     [SerializeField] private Image weapon1Image;
     [SerializeField] private Image weapon2Image;
 
-    [Header("Debug")][SerializeField] private Playercam playercam;
-   [SerializeField] private GameObject CvCam;
+    //[Header("Debug")][SerializeField] private Playercam playercam;
+
+    [Header("Camera")]
+    [SerializeField] private GameObject loadingCam; 
+    [SerializeField] private GameObject loadingTrack; 
+    [SerializeField] private GameObject CvCam;
+    [SerializeField] private GameObject playereCam;
+    
+    public bool isLoading = true;
 
     //[SerializeField] private GameObject[] characters;
 
@@ -133,10 +141,13 @@ public class FarmingManager : MonoBehaviour
         SwitchCanvasActive(fadeCanvas);
         StartCoroutine(FadeIn(2f));
         SwitchGameObjectActive(characterCam);
+
+        StartCoroutine(StartGame());
     }
 
     private void Update()
     {
+        if (isLoading) return;
         if (_isFading) return;
 
         if (!_isEnd && !_isPause)
@@ -224,6 +235,23 @@ public class FarmingManager : MonoBehaviour
         else if(Input.GetKeyDown(KeyCode.F3))
             CPlayer.Instance.Heal(20);
 
+    }
+
+    IEnumerator StartGame()
+    {
+        while (true)
+        {
+            if (loadingTrack.GetComponent<CinemachineSmoothPath>().m_Waypoints[5].position + loadingTrack.transform.position == playereCam.transform.position)
+            {
+                CvCam.SetActive(true);
+                loadingCam.SetActive(false);
+                isLoading = false;
+                
+                yield break;
+            }
+            
+            yield return null;
+        }
     }
 
     IEnumerator FadeIn(float fadeTime)

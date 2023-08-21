@@ -141,6 +141,8 @@ public class CPlayer : MonoBehaviour
         //    return;
         //}
 
+        if (FarmingManager.Instance.isLoading) return;
+        
         if (charactercontroller == null) return;
 
         // move�� ���� �Է� ����
@@ -212,6 +214,8 @@ public class CPlayer : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (FarmingManager.Instance.isLoading) return;
+        
         if(isFarming)
             if (FarmingManager.Instance._isFading) return;
         //else
