@@ -48,7 +48,7 @@ public class Magnetic : MonoBehaviour
             // time * 0.1f == 41초
             // time * 0.2f == 20초
 
-            transform.localScale = Vector3.Lerp(transform.localScale, Vector3.zero, Time.deltaTime * 0.0125f);
+            transform.localScale = Vector3.Lerp(transform.localScale, Vector3.zero, Time.deltaTime * 0.0225f);
             transform.localScale = new Vector3(transform.localScale.x, originY, transform.localScale.z);
             mf.transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z);
 
