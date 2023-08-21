@@ -16,7 +16,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks //Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï
     public TMP_InputField NickNameInput;
     public TMP_InputField roomNameInput;
     public GameObject uiPanel;
-    public byte userNum = 4;
+    public byte userNum = 3;
     //public List<Transform> spawnpoints = new List<Transform>();
     public GameObject[] spawnpoints;
     int i = 0;

@@ -533,10 +533,10 @@ public class BattleManager : MonoBehaviour
 
     public void OffMag()
     {
-        mag.SetActive(false);
+        mag.GetComponent<Renderer>().material.SetFloat("_power", 0f);
     }
     public void ONMag()
     {
-        mag.SetActive(true);
+        mag.GetComponent<Renderer>().material.SetFloat("_power", 0.01f);
     }
 }

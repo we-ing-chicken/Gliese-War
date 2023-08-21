@@ -86,7 +86,10 @@ public class BoxOpen : MonoBehaviour
     IEnumerator AfterOpen()
     {
         yield return new WaitForSeconds(1.01f);
-        drop.DropItem();
+        if (drop.isFirst)
+            drop.DropBasicItem();
+        else
+            drop.DropItem();
         gameObject.SetActive(false);
     }
 }

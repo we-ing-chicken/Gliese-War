@@ -230,6 +230,8 @@ public class LobbyManager : MonoBehaviour
 
     public void ExitButton()
     {
+        if(PlayerPrefs.HasKey("ID"))
+            PlayerPrefs.DeleteKey("ID");
         Application.Quit();
     }
 }

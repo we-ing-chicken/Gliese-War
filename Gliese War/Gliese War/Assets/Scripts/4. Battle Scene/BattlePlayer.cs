@@ -250,7 +250,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         
         //if (charactercontroller == null) return;
 
-        if (photonView.IsMine && isalive)
+        if (photonView.IsMine && GameManager.Instance.isAlive)
         {
             moveFB = Input.GetAxis(moveFBAxisName);
             moveLR = Input.GetAxis(moveLRAxisName);
@@ -417,9 +417,9 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
         if (p_Jump && !isjump)
         {
-            isAttack = true;
             isjump = true;
-            animator.SetTrigger("doJump");
+            if(!isAttack)
+                animator.SetTrigger("doJump");
             rigidbody.AddForce(Vector3.up * JumpPower, ForceMode.Impulse);
 
             //Jump();
@@ -439,8 +439,6 @@ public class BattlePlayer : LivingEntity, IPunObservable
                 MouseX = MouseX + (Input.GetAxis("Mouse X") * mouseSpeed);
                 remoteRot = Quaternion.Euler(0, MouseX, 0);
                 transform.rotation = remoteRot;
-
-                if (isAttack) return;
 
                 if (CheckHitWall(new Vector3(moveFB,0,moveLR)) || CheckHitWall(new Vector3(-moveFB,0,-moveLR)))
                 {
@@ -1336,7 +1334,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             
             GameObject healEffect;
             healEffect = Instantiate(BattleManager.Instance.HealEffect);
-            healEffect.transform.position = transform.position;
+            healEffect.transform.position = body.transform.position+ new Vector3(0, -2f,  0);
 
             Destroy(other.gameObject);
         }
@@ -1347,7 +1345,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             
             GameObject healEffect;
             healEffect = Instantiate(BattleManager.Instance.HealEffect);
-            healEffect.transform.position = transform.position;
+            healEffect.transform.position = body.transform.position+ new Vector3(0, -2f,  0);
 
             Destroy(other.gameObject);
         }
@@ -1408,7 +1406,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             
             GameObject healEffect;    
             healEffect = Instantiate(BattleManager.Instance.HealEffect);
-            healEffect.transform.position = transform.position;
+            healEffect.transform.position = body.transform.position + new Vector3(0, -2f,  0);;
         }
         else if (other.CompareTag("Heal"))
         { 
@@ -1419,7 +1417,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
             
             GameObject healEffect;    
             healEffect = Instantiate(BattleManager.Instance.HealEffect);
-            healEffect.transform.position = transform.position;
+            healEffect.transform.position = body.transform.position + new Vector3(0, -2f,  0);
             
         }
     }
