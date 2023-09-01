@@ -511,7 +511,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inven: {fileID: 0}
-  dropLevel: 0
+  dropLevel: 2
   isFirst: 0
   onTree: 0
   eatSound: {fileID: 0}
