@@ -71,12 +71,7 @@ public class FarmingManager : MonoBehaviour
     //[Header("Debug")][SerializeField] private Playercam playercam;
 
     [Header("Camera")]
-    [SerializeField] private GameObject loadingCam; 
-    [SerializeField] private GameObject loadingTrack; 
     [SerializeField] private GameObject CvCam;
-    [SerializeField] private GameObject playereCam;
-    
-    public bool isLoading = true;
 
     //[SerializeField] private GameObject[] characters;
 
@@ -142,12 +137,10 @@ public class FarmingManager : MonoBehaviour
         StartCoroutine(FadeIn(2f));
         SwitchGameObjectActive(characterCam);
 
-        StartCoroutine(StartGame());
     }
 
     private void Update()
     {
-        if (isLoading) return;
         if (_isFading) return;
 
         if (!_isEnd && !_isPause)
@@ -236,24 +229,7 @@ public class FarmingManager : MonoBehaviour
             CPlayer.Instance.Heal(20);
 
     }
-
-    IEnumerator StartGame()
-    {
-        while (true)
-        {
-            if (loadingTrack.GetComponent<CinemachineSmoothPath>().m_Waypoints[5].position + loadingTrack.transform.position == playereCam.transform.position)
-            {
-                CvCam.SetActive(true);
-                loadingCam.SetActive(false);
-                isLoading = false;
-                
-                yield break;
-            }
-            
-            yield return null;
-        }
-    }
-
+    
     IEnumerator FadeIn(float fadeTime)
     {
         float alpha = fadeCanvas.transform.GetChild(0).GetComponent<Image>().color.a;
