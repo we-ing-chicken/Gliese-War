@@ -154,7 +154,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         else
         {
         }
-        if (!isalive) isalive = true;
+        if (!GameManager.Instance.isAlive) GameManager.Instance.isAlive = true;
 
         //charactercontroller = GetComponent<CharacterController>();
         rigidbody = GetComponent<Rigidbody>();
@@ -246,7 +246,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         }
 
         if (isWait || !isStart) return;
-        if (!isalive) return;
+        if (!GameManager.Instance.isAlive) return;
         
         //if (charactercontroller == null) return;
 
@@ -353,6 +353,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         if (Input.GetMouseButtonDown(0) && photonView.IsMine)
         {
             if (isAttack) return;
+            if (!GameManager.Instance.isAlive) return;
             if (BattleManager.Instance._isInven) return;
             
             if (isMagic)
@@ -417,6 +418,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
 
         if (p_Jump && !isjump)
         {
+            if (!GameManager.Instance.isAlive) return;
             isjump = true;
             if(!isAttack)
                 animator.SetTrigger("doJump");
@@ -430,7 +432,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         {
             if (BattleManager.Instance.mainCamera.gameObject.activeSelf)
             {
-
+                if (!GameManager.Instance.isAlive) return;
             
                 //remoteDir = new Vector3(moveLR, 0, moveFB).normalized;
                 //player_lookTarget();
@@ -492,7 +494,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         
 
         //charactercontroller.Move(moveDir * Time.deltaTime * moveSpeed);
-        animate_Run(isalive);
+        animate_Run(GameManager.Instance.isAlive);
     }
     
     bool CheckHitWall(Vector3 movement)
@@ -1784,7 +1786,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
     {
         --BattleManager.Instance.alivePlayer;
 
-        if (BattleManager.Instance.alivePlayer == 1 && isalive)
+        if (BattleManager.Instance.alivePlayer == 1 && GameManager.Instance.isAlive)
         {
             BattleManager.Instance.openWinCanvas();
             //이긴 사람 DB 승리 추가
