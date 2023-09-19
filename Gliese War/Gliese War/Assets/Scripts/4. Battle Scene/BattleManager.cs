@@ -125,7 +125,7 @@ public class BattleManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        players = new GameObject[4];
+        players = new GameObject[2];
     }
 
     private void Start()
