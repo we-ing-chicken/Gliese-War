@@ -1801,15 +1801,7 @@ public class BattlePlayer : LivingEntity, IPunObservable
         if (BattleManager.Instance.players[who].GetComponent<BattlePlayer>().isalive)
             BattleManager.Instance.players[who].GetComponent<BattlePlayer>().isalive = false;
 
-        int aliveCount = 0;
-        for (int i = 0; i < BattleManager.Instance.players.Length; ++i)
-        {
-            if (BattleManager.Instance.players[i] == null) continue;
-
-            if (BattleManager.Instance.players[i].GetComponent<BattlePlayer>().isalive) ++aliveCount;
-        }
-
-        if (aliveCount == 1 && GameManager.Instance.isAlive)
+        if (BattleManager.Instance.alivePlayer == 1 && GameManager.Instance.isAlive)
         {
 
             if(GameManager.Instance != null && GameManager.Instance.id != null)
